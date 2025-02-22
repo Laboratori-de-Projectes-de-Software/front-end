@@ -1,3 +1,1 @@
-# Front-end
-
-Client web del servidor central.
+"# Human-TrAIts" 
