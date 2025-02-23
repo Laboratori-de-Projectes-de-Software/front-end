@@ -1,0 +1,58 @@
+/* 1. Dark page styling */
+body {
+    background-color: #121212;
+    /* Dark background */
+    color: #ffffff;
+    /* Light text for contrast */
+    margin: 0;
+    font-family: 'Courier New', Courier, monospace;
+    /* Use any preferred font */
+}
+
+/* 2. Container that centers content */
+.container {
+    display: flex;
+    /* Establishes a flex container */
+    flex-direction: column;
+    /* Stacks children (h1, p) vertically */
+    align-items: center;
+    /* Horizontally centers children */
+    /* justify-content: center; */
+    /* Vertically centers children */
+    height: 100vh;
+    /* Make container fill entire viewport height */
+    text-align: center;
+    /* Centers text within h1, p */
+
+    /* My stuff */
+    padding: 80px 340px;
+    
+}
+
+ul.layout {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+  }
+  
+  li.layout {
+    float: left;
+  }
+  
+  li.layout a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 35px 20px;
+    text-decoration: none;
+  }
+  
+  li.layout a:hover {
+    background-color: #111;
+  }
+  
