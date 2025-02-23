@@ -1,11 +1,11 @@
-package com.debateia.debateia.model;
+package com.debateia.model;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.debateia.debateia.dto.DebateRequest;
-import com.debateia.debateia.repository.DebateRepository;
-import com.debateia.debateia.repository.MessageRepository;
+import com.debateia.dto.DebateRequest;
+import com.debateia.repository.DebateRepository;
+import com.debateia.repository.MessageRepository;
 @Service
 public class DebateService {
     @Autowired

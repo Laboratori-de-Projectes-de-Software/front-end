@@ -1,4 +1,4 @@
-package com.debateia.debateia.model;
+package com.debateia.model;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

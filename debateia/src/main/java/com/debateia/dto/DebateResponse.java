@@ -1,4 +1,4 @@
-package com.debateia.debateia.dto;
+package com.debateia.dto;
 
 import java.time.LocalDateTime;
 import java.util.List;

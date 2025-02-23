@@ -1,4 +1,5 @@
-package com.debateia.debateia.controller;
+package com.debateia.controller;
+
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -7,16 +8,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
-import com.debateia.debateia.dto.DebateRequest;
-import com.debateia.debateia.model.Debate;
-import com.debateia.debateia.service.AIService;
-import com.debateia.debateia.model.Message;;
+import com.debateia.dto.DebateRequest;
+import com.debateia.model.Debate;
+import com.debateia.model.Message;
 
 @RestController
 @RequestMapping("/api/debates")
 public class DebateController {
-    @Autowired
-    private AIService aiService;
     @PostMapping("/start")
     public ResponseEntity<Debate> startDebate(@RequestBody DebateRequest request) {
         // Iniciar nuevo debate

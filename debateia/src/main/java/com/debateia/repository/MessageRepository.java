@@ -1,4 +1,4 @@
-package com.debateia.debateia.dto;
+package com.debateia.repository;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.debateia.debateia.model.Message;
+import com.debateia.model.Message;
 
 @Repository
 public interface MessageRepository extends JpaRepository<Message, Long> {
