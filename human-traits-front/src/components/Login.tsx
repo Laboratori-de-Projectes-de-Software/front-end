@@ -47,6 +47,7 @@ export default function Login(){
     };
   
     return (
+      <>
       <div className="flex justify-center items-center h-screen bg-gray-100">
         <div className="bg-white p-8 rounded-lg shadow-lg w-96">
           <h2 className="text-2xl font-bold text-center mb-4">
@@ -68,6 +69,8 @@ export default function Login(){
           </p>
         </div>
       </div>
+      <Footer />
+      </>
     );
   
 }
