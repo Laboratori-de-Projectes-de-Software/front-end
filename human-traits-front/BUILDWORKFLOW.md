@@ -6,3 +6,4 @@
     yarn run build
 
 # After that just go to the human-traits-font/dist directory and copy all of that into the de
+
