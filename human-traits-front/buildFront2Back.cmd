@@ -6,7 +6,6 @@ set "destination_source_folder=\assets"
 set "source_folder=dist%destination_source_folder%"
 set "folder_to_remove=..\debateia\src\main\resources\static"
 set "file_to_copy=dist\index.html"
-set "install_command=npm install"
 set "build_command=npm run build"
 
 REM Remove the folder and all its contents
@@ -17,9 +16,7 @@ if exist "%folder_to_remove%" (
 ) else (
     echo Folder does not exist, skipping removal.
 )
-REM Run the command that makes sure the dependencies in node are up to date
-echo Checking that the dependencies in node are up to date: %install_command%
-call %install_command%
+
 REM Run the command
 echo Running build command: %build_command%
 call %build_command%
