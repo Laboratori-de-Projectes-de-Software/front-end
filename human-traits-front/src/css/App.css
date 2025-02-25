@@ -132,12 +132,6 @@ ul.footer {
     color: #fff;
     margin: 10px;
   }
-
-  .login_container {
-    display: flex;
-    height: 80vh; 
-    text-align: center;
-  }
   
   .login_content {
     flex: 1; /* Ocupa el resto del espacio */

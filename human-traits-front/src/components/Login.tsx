@@ -1,5 +1,4 @@
 import Footer from "./Footer";
-import SideBar from"./SideBar";
 import { useState } from "react";
 import { Link } from "react-router";
 
@@ -13,11 +12,7 @@ interface InputFieldProps {
   const InputField: React.FC<InputFieldProps> = ({ label, type, value, onChange }) => (
     <div>
       <label>{label}</label>
-      <input
-        type={type}
-        value={value}
-        onChange={onChange}
-      />
+      <input type={type} value={value} onChange={onChange}/>
     </div>
   );
   
@@ -27,9 +22,7 @@ interface InputFieldProps {
   }
   
   const Button: React.FC<ButtonProps> = ({ text, onClick }) => (
-    <button
-      onClick={onClick}
-    >
+    <button onClick={onClick}>
       {text}
     </button>
   );
@@ -44,7 +37,7 @@ export default function Login(){
   
     return (
       <>
-      <div className="login_container">
+      <div className="general_container">
         <Footer />
         <div className="login_content">
           <h2>{isSignUp ? "Crear Cuenta" : "Iniciar Sesión"}</h2>
