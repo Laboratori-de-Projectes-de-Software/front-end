@@ -4,9 +4,9 @@ export default function Footer() {
 
     return (
         <>
-            <div>
-                <ul className="layout">
-                    <li className="layout">
+            <div className="container_footer">
+                <ul className="footer">
+                    <li className="footer">
                         <a
                             href="https://www.uib.cat"
                             target="_blank"
@@ -19,7 +19,7 @@ export default function Footer() {
                             />
                         </a>
                     </li>
-                    <li className="layout">
+                    <li className="footer">
                         <a
                             href="https://www.github.com"
                             target="_blank"

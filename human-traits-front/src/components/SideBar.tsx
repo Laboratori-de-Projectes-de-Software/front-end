@@ -10,7 +10,7 @@ const SideBar: React.FC = () => {
             <div className="sidebar-item">Home</div>
         </Link>
         <div className="sidebar-item">Scores</div>
-        <Link to="/">
+        <Link to="/account">
             <div className="sidebar-item">Account</div>
         </Link>
       </div>

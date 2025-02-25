@@ -31,7 +31,7 @@ body {
     
 }
 
-ul.layout {
+ul.footer {
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -42,11 +42,11 @@ ul.layout {
     width: 100%;
   }
   
-  li.layout {
+  li.footer {
     float: left;
   }
   
-  li.layout a {
+  li.footer a {
     display: block;
     color: white;
     text-align: center;
@@ -54,10 +54,9 @@ ul.layout {
     text-decoration: none;
   }
   
-  li.layout a:hover {
+  li.footer a:hover {
     background-color: #111;
   }
-
 
   .sidebar {
     height: 69vh;
@@ -101,7 +100,40 @@ ul.layout {
     border-color: #F87171;
   }
 
-  .container_login {
+  .account_container{
+    display: flex;
+    text-align: center;
+    gap: 2rem;
+    flex:1;
+  }
+  
+  .account_content {
+    flex: 1; /* Ocupa el resto del espacio */
+    display: flex;
+    padding-bottom: 1rem;
+    background-color: #333;
+    margin-right: 2rem;
+    gap: 1rem;
+  }
+
+  .account_save{
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    text-align: center;
+    flex-direction:row;
+    border: 1rem solid #ccc;
+    border-radius: 0.3rem;
+  }
+
+  .account_save h2 {
+    font-size: 2rem;
+    color: #fff;
+    margin: 10px;
+  }
+
+  .login_container {
     display: flex;
     height: 80vh; 
     text-align: center;
@@ -123,12 +155,13 @@ ul.layout {
     margin: 1rem;
     background-color: #333;
     border: 1rem solid #333;
+    border-radius: 0.3rem;
   
   }
   
   .input_group input {
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    border: 0.2rem solid #ccc;
+    border-radius: 0.25rem;
     width: 8rem;  /* Ajusta el tamaño de los inputs */
   }
   

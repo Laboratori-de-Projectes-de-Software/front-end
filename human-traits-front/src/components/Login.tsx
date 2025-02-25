@@ -44,8 +44,8 @@ export default function Login(){
   
     return (
       <>
-      <div className="container_login">
-        <SideBar/>
+      <div className="login_container">
+        <Footer />
         <div className="login_content">
           <h2>{isSignUp ? "Crear Cuenta" : "Iniciar Sesión"}</h2>
           <form>
@@ -54,7 +54,7 @@ export default function Login(){
               <InputField label="Contraseña " type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
               {isSignUp && <InputField label="Confirmar contraseña " type="password" value={password_check} onChange={(e) => checkPassword(e.target.value)} />}
             </div>
-            <Link to="/login/home">
+            <Link to="/account">
               <Button text={isSignUp ? "Registrarse" : "Ingresar"} />
             </Link>
           </form>
@@ -64,7 +64,6 @@ export default function Login(){
           </button>
         </div>
       </div>
-      <Footer />
       </>
     );
   
