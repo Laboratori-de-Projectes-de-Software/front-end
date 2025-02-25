@@ -1,7 +1,7 @@
 import Footer from "./Footer";
 import SideBar from"./SideBar";
 import { useState } from "react";
-//import { Link } from "react-router";
+import Usuario from "../assets/icono_usuario.png";
 
 interface InputFieldProps {
     label: string;
@@ -39,12 +39,18 @@ interface InputFieldProps {
                 <SideBar/>
                 <div className="account_content">
                     <div className="account_save">
-                    <h2>Account Settings</h2>
-                        <form>
-                            <InputField label="Nombre de Usuario " type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
-                            <InputField label="Contraseña " type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-                            <Button text="Save" />
-                        </form>
+                    <h2> Account Settings</h2>
+                        <img src={Usuario} alt="Representación visual del usuario" className="imagen_usuario"/>
+                        <div className="input_group">
+                          <form>
+                              <InputField label="Cambiar nombre " type="text" value={username} onChange={(e) => setUsername(e.target.value)}/>
+                              <InputField label="Cambiar contraseña " type="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
+                              <Button text="Save"/>
+                          </form>
+                        </div>
+                    </div>
+                    <div className="IAs_container">
+
                     </div>
                 </div>
             </div>

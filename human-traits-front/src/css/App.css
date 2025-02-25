@@ -5,7 +5,7 @@ body {
     color: #ffffff;
     /* Light text for contrast */
     margin: 0;
-    font-family: 'Courier New', Courier, monospace;
+    font-family: 'Roboto', Courier, monospace;
     /* Use any preferred font */
     font-size: 1.5rem;
 }
@@ -108,8 +108,9 @@ ul.footer {
   }
   
   .account_content {
-    flex: 1; /* Ocupa el resto del espacio */
+    flex: 1;
     display: flex;
+    flex-direction: column;
     padding-bottom: 1rem;
     background-color: #333;
     margin-right: 2rem;
@@ -117,20 +118,24 @@ ul.footer {
   }
 
   .account_save{
-    flex-direction: column;
+    flex:1;
     display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
-    align-items: flex-start;
     text-align: center;
-    flex-direction:row;
-    border: 1rem solid #ccc;
-    border-radius: 0.3rem;
   }
 
+  .imagen_usuario {
+    width: 150px; 
+    height: 160px;
+  }
+  
+
   .account_save h2 {
-    font-size: 2rem;
+    font-size: 1.5rem;
     color: #fff;
-    margin: 10px;
+    margin-left: 10px;
   }
   
   .login_content {
@@ -150,7 +155,6 @@ ul.footer {
     background-color: #333;
     border: 1rem solid #333;
     border-radius: 0.3rem;
-  
   }
   
   .input_group input {
