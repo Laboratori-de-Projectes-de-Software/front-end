@@ -7,10 +7,12 @@ body {
     margin: 0;
     font-family: 'Courier New', Courier, monospace;
     /* Use any preferred font */
+    font-size: 1.5rem;
 }
 
 /* 2. Container that centers content */
 .container {
+
     display: flex;
     /* Establishes a flex container */
     flex-direction: column;
@@ -55,4 +57,79 @@ ul.layout {
   li.layout a:hover {
     background-color: #111;
   }
+
+
+  .sidebar {
+    height: 69vh;
+    width: 8rem;
+    background-color: #333;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1rem;
+  }
+  
+  .sidebar-blocks {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .sidebar-item, .sidebar-exit {
+    padding: 1rem;
+    background-color: #374151;
+    margin-bottom: 0.5rem;
+    border-radius: 0.5rem;
+    text-align: center;
+    font-size: 1rem;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: background-color 0.3s, border-color 0.3s;
+    color: #ccc; /* Hereda el color del texto del elemento padre */
+  }
+  
+  .sidebar-exit {
+    background-color: #DC2626;
+  }
+  
+  .sidebar-item:hover {
+    background-color: #4B5563;
+    border-color: #9CA3AF;
+  }
+  
+  .sidebar-exit:hover {
+    background-color: #B91C1C;
+    border-color: #F87171;
+  }
+
+  .container_login {
+    display: flex;
+    height: 80vh; 
+    text-align: center;
+  }
+  
+  .login_content {
+    flex: 1; /* Ocupa el resto del espacio */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+    padding-bottom: 1rem;
+  }
+  
+  .input_group {
+    display: flex;
+    gap: 2rem;  /* Espacio entre los inputs */
+    margin: 1rem;
+    background-color: #333;
+    border: 1rem solid #333;
+  
+  }
+  
+  .input_group input {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 8rem;  /* Ajusta el tamaño de los inputs */
+  }
+  
   
