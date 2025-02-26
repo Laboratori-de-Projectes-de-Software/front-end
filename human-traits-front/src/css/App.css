@@ -132,7 +132,10 @@ ul.footer {
     width: 150px; 
     height: 160px;
   }
-  
+  .user-image{
+    width: 160px; 
+    height: 160px;
+  }
 
   .account_save h2 {
     font-size: 1.5rem;
@@ -218,4 +221,84 @@ ul.footer {
   
   .match_link:hover {
     text-decoration: underline;
-  }  
+  }
+  
+/* Common styles for all round buttons */
+.button-round {
+  border-radius: 50px;  /* Makes buttons round */
+  padding: 10px 20px;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  display: inline-block;
+  margin: 5px;
+}
+
+/* Blue round buttons */
+.button-blue {
+  background-color: #3498db;  /* Blue color */
+  color: white;
+  box-shadow: 0 4px 6px rgba(52, 152, 219, 0.3);
+}
+
+.button-blue:hover {
+  background-color: #2980b9;  /* Darker blue on hover */
+  transform: translateY(-2px);
+}
+
+/* Grey round buttons */
+.button-grey {
+  background-color: #7f8c8d;  /* Grey color */
+  color: white;
+  box-shadow: 0 4px 6px rgba(127, 140, 141, 0.3);
+}
+
+.button-grey:hover {
+  background-color: #6c7a7b;  /* Darker grey on hover */
+  transform: translateY(-2px);
+}
+
+/* Container for form elements */
+.form-group {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 400px;
+}
+
+/* Style for the labels */
+.form-label {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Common styles for inputs */
+.form-input {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box; /* Makes sure padding doesn't affect width */
+  transition: border-color 0.3s ease;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 4px rgba(52, 152, 219, 0.5);
+}
+
+/* Container to keep everything aligned */
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}

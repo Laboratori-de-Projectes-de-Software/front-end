@@ -11,11 +11,11 @@ export default function Home() {
                 </p>
                 <div>
                     <Link to="/login">
-                        <button style={{margin: "1rem" ,backgroundColor: "lightblue"}}
+                        <button className="button-round button-blue"
                         
                         > Log In</button>
                     </Link>
-                    <button>Leatherboard</button>
+                    <button className="button-round button-grey">Leatherboard</button>
                 </div>
             </div >
 

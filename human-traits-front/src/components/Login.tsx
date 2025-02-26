@@ -22,7 +22,7 @@ interface InputFieldProps {
   }
   
   const Button: React.FC<ButtonProps> = ({ text, onClick }) => (
-    <button onClick={onClick}>
+    <button onClick={onClick} className="button-round">
       {text}
     </button>
   );
@@ -48,13 +48,12 @@ export default function Login(){
               {isSignUp && <InputField label="Confirmar contraseña " type="password" value={password_check} onChange={(e) => checkPassword(e.target.value)} />}
             </div>
             <Link to="/account">
-              <Button text={isSignUp ? "Registrarse" : "Ingresar"} />
+              <Button text={isSignUp ? "Registrarse" : "Ingresar"}/>
             </Link>
           </form>
           <p>{isSignUp ? "¿Ya tienes una cuenta?" : "¿No tienes cuenta?"}</p>
-          <button onClick={() => setIsSignUp(!isSignUp)}>
-              {isSignUp ? "Inicia sesión" : "Regístrate"}
-          </button>
+          <Button text={isSignUp ? "Inicia sesión" : "Regístrate"} onClick={() => setIsSignUp(!isSignUp)}/>
+
         </div>
       </div>
       </>
