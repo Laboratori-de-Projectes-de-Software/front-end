@@ -4,12 +4,15 @@ import SideBar from"./SideBar";
 export default function Scores(){
     return (
         <>
-            <SideBar />
-            <div className="scores-container">
-                <h1>Scores</h1>
-                {/* Aquí se mostrarán los scores */}
+        <div>
+            <div className="page_container">
+                <SideBar />
+                <div className="content_container">
+
+                </div>
             </div>
             <Footer />
+        </div>
         </>
     )
 }

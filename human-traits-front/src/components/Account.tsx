@@ -34,10 +34,10 @@ interface InputFieldProps {
 
     return (
         <>
-        <div className="general-container">
-            <div className="account_container">        
+        <div>
+            <div className="page_container">        
                 <SideBar/>
-                <div className="account_content">
+                <div className="content_container">
                     <div className="account_save">
                     <h2> Account Settings</h2>
                         <img src={Usuario} alt="Representación visual del usuario" className="imagen_usuario"/>
