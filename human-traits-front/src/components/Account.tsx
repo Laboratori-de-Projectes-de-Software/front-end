@@ -44,8 +44,8 @@ export default function Account() {
               <div className="form-container">
                 <form>
 
-                  <InputField label="Username: " type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
-                  <InputField label="Password: " type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                  <InputField label="Username" type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+                  <InputField label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
 
                   <Button text="Save" />
                 </form>
