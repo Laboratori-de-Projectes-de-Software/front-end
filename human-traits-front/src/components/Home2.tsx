@@ -1,32 +1,23 @@
 import Footer from "./Footer";
 import SideBar from "./SideBar";
-
-interface InputFieldProps {
-  label: string;
-  type: string;
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
-
-const InputField: React.FC<InputFieldProps> = ({ label, type, value, onChange }) => (
-  <div className="form-group">
-    <label htmlFor={label} className="form-label">{label}</label>
-    <input className="form-input" id={label} type={type} value={value} onChange={onChange} />
-  </div>
-);
-
-interface ButtonProps {
-  text: string;
-  onClick?: () => void;
-}
-
-const Button: React.FC<ButtonProps> = ({ text, onClick }) => (
-  <button onClick={onClick} className="button-round button-blue">
-    {text}
-  </button>
-);
+import React, { useState } from "react";
 
 export default function Account() {
+    
+const [values, setValues] = useState<{ [key: string]: number }>({
+    combat_time: 0,
+    n_combat: 0,
+});
+
+const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    const newValue = parseInt(value);
+    
+    setValues((prevValues) => ({
+        ...prevValues,
+        [name]: isNaN(newValue) || newValue < 0 ? 0 : newValue, // Evita negativos
+    }));
+};
 
   return (
     <>
@@ -35,7 +26,25 @@ export default function Account() {
           <SideBar />
           <div className="content_container">
             <div className="account_save">
-              <h2> Home </h2>
+                <h2> Home </h2>
+                <div className="counter">         
+                    <label>Combat Time (s):</label>
+                    <input 
+                        type="number" 
+                        name="combat_time"
+                        value={values.combat_time} 
+                        onChange={handleChange} 
+                        className="counter-input" 
+                    />
+                    <label>Nº of combats:</label>
+                    <input 
+                        type="number" 
+                        name="n_combat"
+                        value={values.n_combat} 
+                        onChange={handleChange} 
+                        className="counter-input" 
+                    />
+                </div>
               
             </div>
             <div className="IAs_container">
