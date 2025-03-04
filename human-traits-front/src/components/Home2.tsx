@@ -1,23 +1,13 @@
 import Footer from "./Footer";
 import SideBar from "./SideBar";
-import React, { useState } from "react";
 
 export default function Account() {
-    
-const [values, setValues] = useState<{ [key: string]: number }>({
-    combat_time: 0,
-    n_combat: 0,
-});
 
 const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    const newValue = parseInt(value);
-    
-    setValues((prevValues) => ({
-        ...prevValues,
-        [name]: isNaN(newValue) || newValue < 0 ? 0 : newValue, // Evita negativos
-    }));
-};
+  if (parseInt(e.target.value) < 0 || isNaN(parseInt(e.target.value))) {
+    e.target.value = "0"; // Si el valor es negativo, lo forzamos a 0
+  }
+}
 
   return (
     <>
@@ -32,7 +22,7 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
                     <input 
                         type="number" 
                         name="combat_time"
-                        value={values.combat_time} 
+                        defaultValue="0"
                         onChange={handleChange} 
                         className="counter-input" 
                     />
@@ -40,7 +30,7 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
                     <input 
                         type="number" 
                         name="n_combat"
-                        value={values.n_combat} 
+                        defaultValue="0"
                         onChange={handleChange} 
                         className="counter-input" 
                     />
