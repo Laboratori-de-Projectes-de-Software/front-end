@@ -352,6 +352,11 @@ ul.footer {
   align-items: center;
 }
 
+.dropdown-details{
+  width: 100%;
+  color: black;
+}
+
 .icon {
   font-size: 0.8rem;
 }
@@ -360,7 +365,7 @@ ul.footer {
   position: absolute;
   top: 100%;
   left: 0;
-  width: 100%;
+  width: 50vw;
   background: white;
   border: 0.1rem solid #ccc;
   border-radius: 0.4rem;

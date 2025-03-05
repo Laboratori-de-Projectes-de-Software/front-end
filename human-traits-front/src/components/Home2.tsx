@@ -13,7 +13,6 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 }
 
 const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
-const [isOpen, setIsOpen] = useState(false);
 
 const toggleOption = (option: string) => {
   setSelectedOptions((prev) =>
@@ -31,11 +30,11 @@ const toggleOption = (option: string) => {
                 <h2> Home </h2>
                 <p>Select the AIs for the match:</p>
                 <div className="dropdown-container">
-                  <button className="dropdown-button" onClick={() => setIsOpen(!isOpen)}>
-                    {selectedOptions.length > 0 ? selectedOptions.join(", ") : "Seleccionar..."}
-                    <span className="icon">▼</span>
-                  </button>
-                  {isOpen && (
+                  <details className="dropdown-details">
+                    <summary className="dropdown-button">
+                      {selectedOptions.length > 0 ? selectedOptions.join(", ") : "Seleccionar..."}
+                      <span className="icon">▼</span>
+                    </summary>
                     <div className="dropdown-menu">
                       {options.map((option) => (
                         <div
@@ -52,7 +51,7 @@ const toggleOption = (option: string) => {
                         </div>
                       ))}
                     </div>
-                  )}
+                  </details>
                 </div>
                 <p>Match details:</p>
                 <div className="counter">  
