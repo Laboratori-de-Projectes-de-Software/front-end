@@ -1,5 +1,8 @@
 import Footer from "./Footer";
 import SideBar from "./SideBar";
+import { useState } from "react";
+
+const options = ["Opción 1", "Opción 2", "Opción 3", "Opción 4"];
 
 export default function Account() {
 
@@ -9,15 +12,50 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   }
 }
 
+const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+const [isOpen, setIsOpen] = useState(false);
+
+const toggleOption = (option: string) => {
+  setSelectedOptions((prev) =>
+    prev.includes(option) ? prev.filter((item) => item !== option) : [...prev, option]
+  );
+};
+
   return (
     <>
       <div>
         <div className="page_container">
           <SideBar />
           <div className="content_container">
-            <div className="account_save">
+            <div className="content_home">
                 <h2> Home </h2>
-                <div className="counter">         
+                <p>Select the AIs for the match:</p>
+                <div className="dropdown-container">
+                  <button className="dropdown-button" onClick={() => setIsOpen(!isOpen)}>
+                    {selectedOptions.length > 0 ? selectedOptions.join(", ") : "Seleccionar..."}
+                    <span className="icon">▼</span>
+                  </button>
+                  {isOpen && (
+                    <div className="dropdown-menu">
+                      {options.map((option) => (
+                        <div
+                          key={option}
+                          className={`option-item ${selectedOptions.includes(option) ? "selected" : ""}`}
+                          onClick={() => toggleOption(option)}
+                        >
+                          <input
+                            type="checkbox"
+                            checked={selectedOptions.includes(option)}
+                            readOnly
+                          />
+                          {option}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                <p>Match details:</p>
+                <div className="counter">  
                     <label>Combat Time (s):</label>
                     <input 
                         type="number" 
@@ -35,11 +73,8 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
                         className="counter-input" 
                     />
                 </div>
-              
-            </div>
-            <div className="IAs_container">
-
-            </div>
+                <button className="button-round button-blue">Start</button>
+              </div>
           </div>
         </div>
         <Footer />
