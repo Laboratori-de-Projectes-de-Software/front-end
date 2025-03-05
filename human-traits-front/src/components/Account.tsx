@@ -31,7 +31,7 @@ const Button: React.FC<ButtonProps> = ({ text, onClick }) => (
 export default function Account() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
+  const [email, setEmail] = useState("");
   return (
     <>
       <div>
@@ -46,7 +46,7 @@ export default function Account() {
 
                   <InputField label="Username" type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
                   <InputField label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-
+                  <InputField label="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
                   <Button text="Save" />
                 </form>
               </div>
