@@ -1,59 +1,33 @@
 import Footer from "./Footer";
-import { useState } from "react";
-import { Link } from "react-router";
-
-interface InputFieldProps {
-    label: string;
-    type: string;
-    value: string;
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  }
-  
-  const InputField: React.FC<InputFieldProps> = ({ label, type, value, onChange }) => (
-    <div>
-      <label>{label}</label>
-      <input type={type} value={value} onChange={onChange}/>
-    </div>
-  );
-  
-  interface ButtonProps {
-    text: string;
-    onClick?: () => void;
-  }
-  
-  const Button: React.FC<ButtonProps> = ({ text, onClick }) => (
-    <button onClick={onClick} className="button-round">
-      {text}
-    </button>
-  );
-
-  
 
 export default function Login(){
-    const [isSignUp, setIsSignUp] = useState(false);
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const [password_check, checkPassword] = useState("");
   
     return (
       <>
       <div className="general_container">
         <Footer />
         <div className="login_content">
-          <h2>{isSignUp ? "Crear Cuenta" : "Iniciar Sesión"}</h2>
-          <form>
-            <div className="input_group">
-              <InputField label="Nombre de Usuario " type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
-              <InputField label="Contraseña " type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-              {isSignUp && <InputField label="Confirmar contraseña " type="password" value={password_check} onChange={(e) => checkPassword(e.target.value)} />}
+          <div className="auth-box">
+            <div className="auth-section">
+              <h2>Welcome back!</h2>
+              <label>User:</label>
+              <input type="text" placeholder="Enter your username" />
+              <label>Password:</label>
+              <input type="password" placeholder="Enter your password" />
+              <button className="button-round button-blue">Log In</button>
             </div>
-            <Link to="/account">
-              <Button text={isSignUp ? "Registrarse" : "Ingresar"}/>
-            </Link>
-          </form>
-          <p>{isSignUp ? "¿Ya tienes una cuenta?" : "¿No tienes cuenta?"}</p>
-          <Button text={isSignUp ? "Inicia sesión" : "Regístrate"} onClick={() => setIsSignUp(!isSignUp)}/>
-
+            <div className="separator">or</div>
+            <div className="auth-section">
+              <h2>Sign Up</h2>
+              <label>User:</label>
+              <input type="text" placeholder="Choose a username" />
+              <label>Password:</label>
+              <input type="password" placeholder="Create a password" />
+              <label>Repeat Password:</label>
+              <input type="password" placeholder="Confirm your password" />
+              <button className="button-round button-blue">Sign Up</button>
+            </div>
+          </div>
         </div>
       </div>
       </>
