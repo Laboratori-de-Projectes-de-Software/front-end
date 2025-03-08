@@ -1,9 +1,19 @@
 import Footer from "./Footer";
 import SideBar from "./SideBar";
 
+
+interface TableRow {
+  trait: string;
+  endpoint: string;
+  date: string;
+}
+
+const tableData: TableRow[] = [
+  { trait: "Compassion", endpoint: "http://endpoint.com", date: "01/01/2025" },
+  { trait: "Empathy.................", endpoint: "http://endpoint.com", date: "01/01/2025" },
+];
+
 export default function Account() {
-
-
   return (
     <>
       <div>
@@ -21,34 +31,30 @@ export default function Account() {
                     <input type="text" placeholder="Endpoint" />
                 </div>
                 <button className="button-round button-blue">ADD</button>
-                <table className="table">
-                    <thead>
-                        <tr>
-                        <th>Trait</th>
-                        <th>Endpoint</th>
-                        <th>Date</th>
-                        <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                        <td>Compassion</td>
-                        <td>http://endpoint.com</td>
-                        <td>01/01/2025</td>
-                        <td>
-                            <button className="delete-button">✖</button>
-                        </td>
-                        </tr>
-                        <tr>
-                        <td>Empathy</td>
-                        <td>http://endpoint.com</td>
-                        <td>01/01/2025</td>
-                        <td>
-                            <button className="delete-button">✖</button>
-                        </td>
-                        </tr>
+                <div className="table_container">
+                  <table className="table">
+                      <thead>
+                          <tr>
+                          <th>Trait</th>
+                          <th>Endpoint</th>
+                          <th>Date</th>
+                          <th>Delete</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                        {tableData.map((row, index) => (
+                          <tr key={index}>
+                            <td>{row.trait}</td>
+                            <td>{row.endpoint}</td>
+                            <td>{row.date}</td>
+                            <td>
+                              <button className="delete-button">✖</button>
+                            </td>
+                          </tr>
+                        ))}
                     </tbody>
-                </table>
+                  </table>
+                </div>
             </div>
           </div>
         </div>

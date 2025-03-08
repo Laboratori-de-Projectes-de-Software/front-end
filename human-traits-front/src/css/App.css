@@ -449,24 +449,29 @@ input {
   font-weight: bold;
 }
 
-.table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-  background: #2d3748;
-  border-radius: 5px;
+.table_container {
+  margin-top: 1.25rem;
+  border-radius: 0.31rem;
   overflow: hidden;
+  display: flex;
+  justify-content: center;  
+}
+
+.table {
+  border: 0.1rem solid white;
+  border-collapse: collapse;
 }
 
 .table th, .table td {
-  padding: 15px;
-  border-bottom: 1px solid #718096;
+  padding: 0.94rem;
+  border: 0.1rem solid white;
   text-align: left;
 }
 
+
 .table th {
-  background: #4a5568;
   color: white;
+  text-align: center;
 }
 
 .table tr:hover {
