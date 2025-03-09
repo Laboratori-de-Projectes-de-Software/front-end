@@ -5,6 +5,7 @@ import Login from "./components/Login";
 import Account from "./components/Account";
 import Scores from "./components/Scores";
 import Home2 from "./components/Home2";
+import MatchPage from "./components/MatchPage";
 import AddIA from "./components/AddIA";
 import './css/App.css';
 export default function App() {
@@ -18,6 +19,7 @@ export default function App() {
                     <Route path="/account" element={<Account />}/>
                     <Route path="/scores" element={<Scores/>}/>
                     <Route path="/home2" element={<Home2/>}/>
+                    <Route path="/combat" element={<MatchPage/>}/>
                     <Route path="/addia" element={<AddIA/>}/>
                 </Routes>
             </Router>
