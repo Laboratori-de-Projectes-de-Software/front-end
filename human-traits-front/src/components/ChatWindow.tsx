@@ -16,7 +16,7 @@ interface ChatWindowProps {
   otherUser: string;
 }
 
-const ChatWindow: React.FC<ChatWindowProps> = ({ messages, currentUser, otherUser }) => {
+const ChatWindow: React.FC<ChatWindowProps> = ({ messages, otherUser }) => {
   // Format timestamp to readable time
   const formatTime = (date: Date): string => {
     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });

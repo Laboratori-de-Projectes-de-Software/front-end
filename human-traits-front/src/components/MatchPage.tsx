@@ -10,11 +10,11 @@ interface Message {
   }
   
   // Props for the ChatWindow component
-  interface ChatWindowProps {
-    messages: Message[];
-    currentUser: string;
-    otherUser: string;
-  }
+//   interface ChatWindowProps {
+//     messages: Message[];
+//     currentUser: string;
+//     otherUser: string;
+//   }
 export default function MatchPage(){
     const sampleMessages: Message[] = [
         {
