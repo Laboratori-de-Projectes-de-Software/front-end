@@ -1,7 +1,7 @@
 
 function App() {
   return (
-    <h1>Liga bots</h1>
+    <h1 className="text-3xl font-bold underline">Liga bots</h1>
   )
 }
 
