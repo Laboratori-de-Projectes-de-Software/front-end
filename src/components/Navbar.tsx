@@ -1,6 +1,6 @@
 const Navbar = () => {
     return (
-        <nav className="flex justify-between items-center p-4 bg-gray-800 text-white">
+        <nav className="flex justify-between items-center p-4 bg-(--navbar)">
             <div className="text-xl font-bold">Nombre web</div>
             <ul className="flex space-x-4">
                 <li>Ligas</li>

@@ -14,7 +14,7 @@ const participants = [
 
 const ParticipantsPage: React.FC = () => {
   return (
-    <div className="min-h-screen bg-gray-800 text-white">
+    <div className="min-h-screen">
       <header>
         <Navbar />
       </header>
@@ -32,7 +32,7 @@ const ParticipantsPage: React.FC = () => {
             />
           ))}
         </div>
-        <button className="mt-8 bg-gray-700 text-white p-2 rounded">Añadir</button>
+        <button className="mt-8 bg-(--btn-bkg) text-black p-2 rounded">Añadir</button>
       </main>
     </div>
   );
