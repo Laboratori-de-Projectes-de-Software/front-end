@@ -1,7 +1,13 @@
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import ParticipantsPage from './routes/ParticipantsPage'
 
 function App() {
   return (
-    <h1 className="text-3xl font-bold underline">Liga bots</h1>
+    <Router>
+      <Routes>
+        <Route path="/participantes" element={<ParticipantsPage />} />
+      </Routes>
+    </Router>
   )
 }
 
