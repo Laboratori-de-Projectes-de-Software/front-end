@@ -1,10 +1,31 @@
 @import "tailwindcss";
 
+@theme {
+  --color-green: #7BB369;
+  --color-blue: #038BFA;
+  --color-red: #C51D34;
+  --color-yellow: #EFB810;
+  --btn-bkg: #D9D9D9;
+  --navbar: #383838;
+  --chat1-bkg: #373737;
+  --chat2-bkg: #959595;
+  --primary: #222;
+  --secondary: #111;
+  --lliga-btn: #282828;
+  --lliga-btn-sel: #464646;
+  --clas-btn-sel: #575757;
+  --table-index: #565656;
+  --table-border: #999;
+  --bot-card-color: #898989;
+  --bot-card-btn: #B3B3B3;
+  --checklist-color: #CCC;
+  --checklist: #444;
+}
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
+  color: white;
   background-color: #222;
 }
 
