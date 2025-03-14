@@ -5,7 +5,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/participantes" element={<ParticipantsPage />} />
+        <Route path="/participants" element={<ParticipantsPage />} />
       </Routes>
     </Router>
   )
