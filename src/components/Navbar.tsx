@@ -4,7 +4,7 @@ const Navbar = () => {
             <div className="flex space-x-8 content-center">
                 <span className="text-xl font-bold">Nombre web</span>
                 <ul className="flex space-x-4">
-                    <li><a href="/lligas">Ligas</a></li>
+                    <li><a href="/leagues">Ligas</a></li>
                     <li><a href="/participants">Participantes</a></li>
                 </ul>
             </div>
