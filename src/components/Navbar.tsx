@@ -4,8 +4,8 @@ const Navbar = () => {
             <div className="flex space-x-8 content-center">
                 <span className="text-xl font-bold">Nombre web</span>
                 <ul className="flex space-x-4">
-                    <li><a href="/ligas">Ligas</a></li>
-                    <li><a href="/participantes">Participantes</a></li>
+                    <li><a href="/lligas">Ligas</a></li>
+                    <li><a href="/participants">Participantes</a></li>
                 </ul>
             </div>
             <div className="flex items-center">
