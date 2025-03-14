@@ -1,10 +1,3 @@
-@font-face {
-  font-family: "Shippori Antique";
-  src: url("../fonts/Shippori_Antique/ShipporiAntique-Regular.ttf")
-    format("truetype");
-  font-weight: normal;
-  font-style: normal;
-}
 
 .form-field__container {
   --form-field-height: 40px;

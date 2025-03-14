@@ -1,0 +1,28 @@
+---
+import Input from "@components/Input.tsx";
+import type { InputConfig } from "@interfaces/Input-config";
+import "@styles/Login.style.css";
+
+const emailInputConfig: InputConfig = {
+  id: "login-email",
+  label: "Email",
+};
+
+const passwordInputConfig: InputConfig = {
+  id: "login-password",
+  label: "Contraseña",
+};
+---
+
+<form class="login-form" action="POST">
+  <h1>BIENVENIDO</h1>
+  <h3>Inicia sesión para continuar con tu cuenta</h3>
+  <Input config={emailInputConfig} />
+  <Input config={passwordInputConfig} />
+  <button class="login-form__submit" type="submit">Iniciar Sesión</button>
+  <p class="login-form__sign-up-reminder">
+    Todavía no tienes una cuenta? <span class="login-form__sign-up-link"
+      >Regístrate</span
+    >
+  </p>
+</form>
