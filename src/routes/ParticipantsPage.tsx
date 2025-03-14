@@ -18,7 +18,7 @@ const ParticipantsPage: React.FC = () => {
       <header>
         <Navbar />
       </header>
-      <main className="p-8">
+      <main className="p-8 flex flex-col items-center">
         <h1 className="text-3xl font-bold mb-8">Participantes</h1>
         <div className="grid grid-cols-3 gap-6">
           {participants.map((participant) => (
