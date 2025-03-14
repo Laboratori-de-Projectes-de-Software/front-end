@@ -27,10 +27,9 @@ const Input = ({ config }: InputProps) => {
           {config.label}
         </label>
       </div>
-      <div className="form-field__error">
-        // TODO: Agregar validación de errores
-      </div>
+      <div className="form-field__error"></div>
     </>
+    // TODO: Agregar validación de errores
   );
 };
 
