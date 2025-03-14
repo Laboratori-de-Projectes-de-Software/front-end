@@ -1,5 +1,5 @@
 export interface InputConfig {
-    id: string;
-    label: string;
-    type?: string;
+  id: string;
+  label: string;
+  type?: string;
 }
