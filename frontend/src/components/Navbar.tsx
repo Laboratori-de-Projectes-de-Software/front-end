@@ -5,10 +5,10 @@ import "../styles.css"; // Importamos los estilos
 
 export default function Navbar() {
   return (
-    <AppBar position="fixed" className="navbar">
+    <AppBar position="fixed" sx={{ backgroundColor: "#0a0f1d" }}> {/* Color oscuro */}
       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
         {/* 🔹 Logo IA */}
-        <Typography variant="h6" component={Link} to="/" sx={{ textDecoration: "none", fontSize: "1.8rem" }}>
+        <Typography variant="h6" component={Link} to="/" sx={{ textDecoration: "none", fontSize: "1.8rem", color: "cyan" }}>
           🤖 <span style={{ color: "cyan" }}>AI Battle Arena</span>
         </Typography>
 

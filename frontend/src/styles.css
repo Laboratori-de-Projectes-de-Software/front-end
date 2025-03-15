@@ -1,43 +1,70 @@
-/* 🎨 Estilos Generales */
+/* Estilos Generales */
 html, body {
     margin: 0;
     padding: 0;
     font-family: 'Orbitron', sans-serif;
-    background: linear-gradient(to right, #0a0f1d, #1a2333);
+    background: linear-gradient(to top, #0a0f1d, #1a2333);
     color: white;
     height: 100%;
     overflow: hidden;
-  }
-  
-  /* 🚀 Contenedor de la Página de Inicio */
-  .full-screen {
+}
+
+/* Contenedor de la Página de Inicio */
+.banner {
+    display: grid;
+    grid-template-columns: 0.6fr 1.8fr 0.6fr 1.9fr 0.2fr; 
+    grid-template-rows: 1fr 1fr 1fr 1fr; 
+    grid-column-gap: 10px;
+    grid-row-gap: 0px;
+    width: 80vw; /* Ajuste al ancho */
+    height: 80vh; /* Ajuste a la altura */
+    align-items: center; /* Centramos verticalmente */
+    justify-content: center; /* Centramos horizontalmente */
+}
+
+/* Imagen del Banner a la Izquierda */
+.banner-img {
+    grid-area: 1 / 1 / 4 / 5; /* Posicionamiento en Grid */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.banner img {
+    width: 100%;  
+    max-height: 50vh;  
+    object-fit: contain;  
+}
+
+
+/* Contenedor del Texto a la Derecha */
+.banner-text1 {
+    grid-area: 1 / 6 / 3 / 8;/* Posicionamiento en Grid */
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
-    height: calc(100vh - 120px); /* Resta la altura del navbar y footer */
-    text-align: center;
-  }
-  
-  /* 🛸 Imagen del Banner */
-  .banner img {
-    width: 100%;
-    max-height: 60vh;
-    object-fit: cover;
-    border-radius: 10px;
-    box-shadow: 0 0 25px rgba(0, 255, 255, 0.5);
-  }
-  
-  /* 🦾 Texto con Efecto Neón */
-  .neon-text {
-    font-size: 3rem;
+    align-items: flex-start;
+    text-align: left;
+}
+
+/* Texto con Efecto Neón */
+.neon-text {
     font-weight: bold;
     color: cyan;
-    text-shadow: 0 0 15px cyan, 0 0 30px cyan, 0 0 40px cyan;
-  }
-  
-  /* 📜 Footer */
-  .footer {
+    text-shadow: 0 0 10px cyan, 0 0 25px cyan, 0 0 35px cyan;
+}
+
+.banner-text2 {
+    grid-area: 2 / 6 / 4 / 8; /* Posicionamiento en Grid */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    text-align: left;
+}
+
+/* Footer */
+.footer {
     text-align: center;
     padding: 15px;
     background: rgba(0, 0, 0, 0.5);
@@ -47,5 +74,4 @@ html, body {
     position: absolute;
     bottom: 0;
     width: 100%;
-  }
-  
+}
