@@ -1,0 +1,51 @@
+/* 🎨 Estilos Generales */
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Orbitron', sans-serif;
+    background: linear-gradient(to right, #0a0f1d, #1a2333);
+    color: white;
+    height: 100%;
+    overflow: hidden;
+  }
+  
+  /* 🚀 Contenedor de la Página de Inicio */
+  .full-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 120px); /* Resta la altura del navbar y footer */
+    text-align: center;
+  }
+  
+  /* 🛸 Imagen del Banner */
+  .banner img {
+    width: 100%;
+    max-height: 60vh;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.5);
+  }
+  
+  /* 🦾 Texto con Efecto Neón */
+  .neon-text {
+    font-size: 3rem;
+    font-weight: bold;
+    color: cyan;
+    text-shadow: 0 0 15px cyan, 0 0 30px cyan, 0 0 40px cyan;
+  }
+  
+  /* 📜 Footer */
+  .footer {
+    text-align: center;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.5);
+    box-shadow: 0px -4px 15px rgba(0, 255, 255, 0.2);
+    font-size: 0.9rem;
+    opacity: 0.8;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+  }
+  
