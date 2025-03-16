@@ -1,16 +1,13 @@
 import type { InputConfig } from "@interfaces/Input-config";
 import "@styles/Input.style.css";
-import { useState } from "react";
 
 type InputProps = {
   config: InputConfig;
 };
 
 const Input = ({ config }: InputProps) => {
-  const [inputValue, setInputValue] = useState<string>("");
-
   const handleOnChange = (e: any) => {
-    setInputValue(e.target.value);
+    config.state(e.target.value);
   };
   return (
     <>
@@ -18,7 +15,6 @@ const Input = ({ config }: InputProps) => {
         <input
           required
           id={config.id}
-          value={inputValue}
           className="form-field__input"
           type={config.type || "text"}
           onChange={handleOnChange}
