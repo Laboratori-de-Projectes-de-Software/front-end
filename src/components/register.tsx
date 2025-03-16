@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import Input from "./Input.tsx";
 import type { InputConfig } from "@interfaces/Input-config";
-import "@styles/Login.style.css";
+import "@styles/Register.style.css";
 import axios from "axios";
 
-const Login: React.FC = () => {
+const Register: React.FC = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -53,4 +53,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default Register;
