@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import ParticipantsPage from './routes/ParticipantsPage'
-import ClassificationPage from './routes/ClassificationPage'
-import EnfrontamentsPage from './routes/EnfrontamentsPage'
+import ParticipantsPage from '@/routes/ParticipantsPage'
+import ClassificationPage from '@/routes/ClassificationPage'
+import EnfrontamentsPage from '@/routes/EnfrontamentsPage'
 
 function App() {
   return (

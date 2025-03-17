@@ -1,7 +1,6 @@
 import React from 'react';
-// import ParticipantCard from '@/components/ParticipantCard';
-import ParticipantCard from '../components/ParticipantCard';
-import Navbar from '../components/Navbar';
+import ParticipantCard from '@/components/ParticipantCard';
+import Navbar from '@/components/Navbar';
 
 const participants = [
   { name: 'Bot 1', team: 'Equipo 1', wins: 4, draws: 2, losses: 1 },

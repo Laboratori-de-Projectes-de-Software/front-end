@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Navbar from "../components/Navbar"; 
-import AddLeagueBar from "../components/AddLeagueBar"; 
+import Navbar from "@/components/Navbar"; 
+import AddLeagueBar from "@/components/AddLeagueBar"; 
 
 const leagues = ["League 1", "League 2", "League 3"];
 const participants = [

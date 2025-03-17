@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Navbar from "../components/Navbar";
-import AddLeagueBar from "../components/AddLeagueBar";
+import Navbar from "@/components/Navbar";
+import AddLeagueBar from "@/components/AddLeagueBar";
 
 const leagues = ["Liga 1", "Liga 2", "Liga 3"];
 const matches = Array(10).fill({ bot1: "Bot 1", bot2: "Bot 2", winner: "Bot 2" });
