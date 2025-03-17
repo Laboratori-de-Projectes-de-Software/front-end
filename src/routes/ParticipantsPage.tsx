@@ -1,6 +1,5 @@
 import React from 'react';
 import ParticipantCard from '@/components/ParticipantCard';
-import Navbar from '@/components/Navbar';
 
 const participants = [
   { name: 'Bot 1', team: 'Team 1', wins: 4, draws: 2, losses: 1 },
@@ -14,9 +13,6 @@ const participants = [
 const ParticipantsPage: React.FC = () => {
   return (
     <div className="min-h-screen">
-      <header>
-        <Navbar />
-      </header>
       <main className="p-8 flex flex-col items-center">
         <h1 className="text-3xl font-bold mb-8">Participants</h1>
         <div className="grid grid-cols-3 gap-6">

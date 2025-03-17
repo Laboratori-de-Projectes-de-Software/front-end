@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Navbar from "@/components/Navbar";
 import LeagueBar from "@/components/LeagueBar";
 
 const leagues = ["League 1", "League 2", "League 3"];
@@ -10,7 +9,6 @@ const LeagueMatches: React.FC = () => {
 
   return (
     <div className="min-h-screen">
-      <Navbar />
       <main className="flex flex-row items-start gap-8">
         <LeagueBar
           leagues={leagues}

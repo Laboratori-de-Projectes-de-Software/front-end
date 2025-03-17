@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Navbar from "@/components/Navbar"; 
 import LeagueBar from "@/components/LeagueBar"; 
 
 const leagues = ["League 1", "League 2", "League 3"];
@@ -13,9 +12,7 @@ const LeagueTable: React.FC = () => {
   const [selectedLeague, setSelectedLeague] = useState("League 2");
 
   return (
-    <div className="min-h-screen">
-         <Navbar />
-      
+    <div className="min-h-screen">      
       <main className="flex flex-row items-start gap-8">
        
         <LeagueBar leagues={leagues} selectedLeague={selectedLeague} onSelectLeague={setSelectedLeague}/>
