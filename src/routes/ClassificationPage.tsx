@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Navbar from "@/components/Navbar"; 
-import AddLeagueBar from "@/components/AddLeagueBar"; 
+import LeagueBar from "@/components/LeagueBar"; 
 
 const leagues = ["League 1", "League 2", "League 3"];
 const participants = [
@@ -16,25 +16,19 @@ const LeagueTable: React.FC = () => {
     <div className="min-h-screen">
          <Navbar />
       
-      {/* Contingut pagina */}
       <main className="flex flex-row items-start gap-8">
        
-        {/* Barra Lateral // mirar dins components */}
-        <AddLeagueBar leagues={leagues} selectedLeague={selectedLeague} onSelectLeague={setSelectedLeague}/>
+        <LeagueBar leagues={leagues} selectedLeague={selectedLeague} onSelectLeague={setSelectedLeague}/>
 
 
         <div className="flex-1">
             <h1 className="pt-5 pb-2 text-3xl font-bold text-center mb-4">{selectedLeague}</h1>
 
-            {/* Botons */}
             <div className="pb-12 flex justify-center mb-4">
                 <button className="bg-(--clas-btn-sel) px-4 py-2 rounded-l">Classification</button>
-                {/*---------->  Falta ficar enllaç a pàgina que pertoca */}
-                <button className="bg-(--secondary) px-4 py-2 rounded-r">Debate clashes</button>
+                <button className="bg-(--secondary) px-4 py-2 rounded-r">Confrontations</button>
             </div>
 
-            
-            {/* Taula classificació */}
             <div className="pr-10 pl-10 overflow-x-auto">
                 <table className="w-full border border-(--table-border)">
                 <thead className="bg-(--table-index)  text-white">
