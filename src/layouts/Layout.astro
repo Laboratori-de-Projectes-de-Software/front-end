@@ -1,3 +1,8 @@
+---
+
+import { ClientRouter } from "astro:transitions";
+---
+
 <!doctype html>
 <html lang="en">
 	<head>
@@ -8,10 +13,11 @@
 		<link href="/src/styles/global.css" rel="stylesheet" />
 		<meta name="generator" content={Astro.generator} />
 		<title>Astro Basics</title>
+		<ClientRouter />
 	</head>
-	<body>
-		<slot />
-	</body>
+		<body>
+			<slot />
+		</body>
 </html>
 
 <style>

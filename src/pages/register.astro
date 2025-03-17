@@ -1,0 +1,23 @@
+---
+import Layout from "../layouts/Layout.astro";
+import {RegisterForm} from "../components/auth/RegisterForm.tsx";
+import Image from "astro/components/Image.astro";
+import EmojiBackground from "../components/EmojiBackground.astro";
+
+const emojis : string[] = ["🤢","🤮"];
+---
+<!-- Inicio sesion en medio -->
+<Layout>
+  <EmojiBackground emojis={emojis} zIndex="-100" count={10}>
+    <div class="flex items-center justify-center min-h-screen py-6 px-4">
+      <div class="flex flex-col md:flex-row max-w-4xl w-full">
+        <div class="hidden md:block">
+          <Image src="/public/inside/asco.jpg" alt="Login" width={400} height={400} class="rounded-2xl md:rounded-r-none md:rounded-l-2xl h-full object-cover" transition:name="photo"/>
+        </div>
+        <div class="relative z-10 mb-4 md:mb-0">
+          <RegisterForm className="w-full md:w-[450px] p-6 md:p-10 bg-white rounded-2xl md:rounded-r-2xl md:rounded-l-none shadow-md" client:idle />
+        </div>
+      </div>
+    </div>
+  </EmojiBackground>
+</Layout>

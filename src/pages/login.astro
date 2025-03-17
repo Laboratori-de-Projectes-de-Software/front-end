@@ -1,10 +1,23 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import {LoginForm} from "../components/auth/LoginForm.tsx";
+import Image from "astro/components/Image.astro";
+import EmojiBackground from "../components/EmojiBackground.astro";
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const emojis : string[] = ["😒","🤫"];
 ---
-
+<!-- Inicio sesion en medio -->
 <Layout>
-  Hello world!
+    <EmojiBackground emojis={emojis} zIndex="-100" count={10}>
+      <div class="flex items-center justify-center min-h-screen py-6 px-4">
+        <div class="flex flex-col md:flex-row max-w-4xl w-full">
+          <div class="relative z-10 md:mr-[0px] mb-4 md:mb-0">
+            <LoginForm className="w-full md:w-[450px] p-6 md:p-10 bg-white rounded-2xl md:rounded-r-none shadow-md" client:idle />
+          </div>
+          <div class="hidden md:block">
+            <Image src="/public/inside/envy.webp" alt="Login" width={400} height={400} class="rounded-2xl md:rounded-l-none h-full object-cover" transition:name="photo"/>
+          </div>
+        </div>
+      </div>
+      </EmojiBackground>
 </Layout>
