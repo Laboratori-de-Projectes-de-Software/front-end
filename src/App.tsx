@@ -7,9 +7,7 @@ import Navbar from '@/components/Navbar'
 function App() {
   return (
     <>
-      <header>
-        <Navbar />
-      </header>
+      <Navbar />
       <Router>
         <Routes>
           <Route path="/participants" element={<ParticipantsPage />} />
