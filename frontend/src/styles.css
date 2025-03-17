@@ -118,7 +118,7 @@ html, body {
     border: none;
     padding: 0.8rem;
     cursor: pointer;
-    margin-top: 1rem;
+    margin-top: 1rem !important;
   }
   
   .login-button:hover {
@@ -129,10 +129,10 @@ html, body {
     outline: 2px solid cyan;
   }
   /* Estilos generales para los TextField */
-.MuiTextField-root {
-    background-color: #333; /* Fondo oscuro para que sea coherente con el diseño */
-    border-radius: 4px;
-  }
+  .MuiTextField-root {
+      background-color: #333; /* Fondo oscuro para que sea coherente con el diseño */
+      border-radius: 4px;
+    }
   
   /* Personalización del borde del TextField cuando está en estado normal */
   .MuiOutlinedInput-root {

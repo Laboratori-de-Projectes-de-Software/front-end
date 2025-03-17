@@ -125,12 +125,23 @@ export default function Register() {
           onChange={handleChange}
         />
 
-        {/* Mostrar el mensaje de error si las contraseñas no coinciden */}
-        {errorMessages && (
-          <Typography color="error" style={{ marginTop: "1rem" }}>
-            {errorMessages}
-          </Typography>
-        )}
+        {/* Renderizado de errores*/}
+        {errorMessages.length > 0 && (
+        <Box sx={{ mt: 2, mb: 2 }}>
+          {errorMessages.map((message, index) => (
+            <Typography 
+              key={index} 
+              color="error" 
+              sx={{ 
+                marginBottom: '0.5rem',
+                display: 'block'
+              }}
+            >
+              {message}
+            </Typography>
+          ))}
+        </Box>
+      )}
 
         {/* Botón de registro */}
         <Button
