@@ -1,0 +1,21 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+@font-face {
+  font-family: "Shippori Antique";
+  src: url("../fonts/Shippori_Antique/ShipporiAntique-Regular.ttf")
+    format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Shippori Mincho";
+  src: url("../fonts/Shippori_Mincho/ShipporiMincho-Regular.ttf")
+    format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}

@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import Input from "@components/Input.tsx";
-import type { InputConfig } from "@interfaces/Input-config";
-import "@styles/Login.style.css";
+import Input from "../../shared/input/Input";
+import type { InputConfig } from "@interfaces/shared/Input-config";
+import "./Login.scss";
 import axios from "axios";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   // TODO: Llevar a un archivo externo de configuraciones
-  const apiUrl = "www.ejemplo.com";
+  const apiUrl = "http://localhost:8081/register";
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,6 +27,7 @@ const Login: React.FC = () => {
     id: "login-password",
     label: "Contraseña",
     state: setPassword,
+    type: "password",
   };
 
   return (
