@@ -1,173 +1,179 @@
 /* Estilos Generales */
 html, body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Orbitron', sans-serif;
-    background: linear-gradient(to top, #0a0f1d, #1a2333);
-    color: white;
-    height: 100%;
-    overflow: hidden;
-    justify-content: center;
+  margin: 0;
+  padding: 0;
+  font-family: 'Orbitron', sans-serif;
+  background: linear-gradient(to top, #0a0f1d, #1a2333);
+  color: white;
+  height: 100%;
+  overflow: auto; /* Permitir el desplazamiento */
+  justify-content: center;
 }
 
 /* Contenedor de la Página de Inicio */
 .banner {
-    display: grid;
-    grid-template-columns: 0.6fr 1.8fr 0.6fr 1.9fr 0.2fr; 
-    grid-template-rows: 1fr 1fr 1fr 1fr; 
-    grid-column-gap: 10px;
-    grid-row-gap: 0px;
-    width: 80vw; /* Ajuste al ancho */
-    height: 80vh; /* Ajuste a la altura */
-    align-items: center; /* Centramos verticalmente */
-    justify-content: center; /* Centramos horizontalmente */
+  display: grid;
+  grid-template-columns: 0.6fr 1.8fr 0.6fr 1.9fr 0.2fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
+  grid-column-gap: 10px;
+  grid-row-gap: 0px;
+  width: 80vw; /* Ajuste al ancho */
+  height: 80vh; /* Ajuste a la altura */
+  align-items: center; /* Centramos verticalmente */
+  justify-content: center; /* Centramos horizontalmente */
 }
 
 /* Imagen del Banner a la Izquierda */
 .banner-img {
-    grid-area: 1 / 1 / 4 / 5; /* Posicionamiento en Grid */
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  grid-area: 1 / 1 / 4 / 5; /* Posicionamiento en Grid */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .banner img {
-    width: 100%;  
-    max-height: 50vh;  
-    object-fit: contain;  
+  width: 100%;  
+  max-height: 50vh;  
+  object-fit: contain;  
 }
-
 
 /* Contenedor del Texto a la Derecha */
 .banner-text1 {
-    grid-area: 1 / 6 / 3 / 8;/* Posicionamiento en Grid */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    text-align: left;
+  grid-area: 1 / 6 / 3 / 8; /* Posicionamiento en Grid */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  text-align: left;
 }
 
 /* Texto con Efecto Neón */
 .neon-text {
-    font-weight: bold;
-    color: cyan;
-    text-shadow: 0 0 10px cyan, 0 0 25px cyan, 0 0 35px cyan;
+  font-weight: bold;
+  color: cyan;
+  text-shadow: 0 0 10px cyan, 0 0 25px cyan, 0 0 35px cyan;
 }
 
 .banner-text2 {
-    grid-area: 2 / 6 / 4 / 8; /* Posicionamiento en Grid */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    text-align: left;
+  grid-area: 2 / 6 / 4 / 8; /* Posicionamiento en Grid */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  text-align: left;
 }
 
 /* Footer */
 .footer {
-    text-align: center;
-    padding: 15px;
-    background: rgba(0, 0, 0, 0.5);
-    box-shadow: 0px -4px 15px rgba(0, 255, 255, 0.2);
-    font-size: 0.9rem;
-    opacity: 0.8;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
+  text-align: center;
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.5);
+  box-shadow: 0px -4px 15px rgba(0, 255, 255, 0.2);
+  font-size: 0.9rem;
+  opacity: 0.8;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1; /* Asegura que el footer no se solape con otros elementos */
 }
+
 /* Fondo y contenedor de la página de login */
 .login-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background: linear-gradient(to top, #0a0f1d, #1a2333); /* Fondo de la app */
-    padding: 2rem;
-    color: white;
-  }
-  
-  .login-title {
-    margin-bottom: 2rem;
-    text-align: center;
-    font-size: 2rem;
-    font-weight: bold;
-    color: cyan;
-  }
-  
-  .login-form {
-    margin-top: 2rem;
-    width: 100%;
-    max-width: 400px;
-    background: rgba(0, 0, 0, 0.7); /* Fondo oscuro con opacidad */
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
-  }
-  
-  .login-form .MuiTextField-root {
-    margin-bottom: 1rem;
-    color: white;
-  }
-  
-  .login-button {
-    background-color: cyan;
-    border-radius: 4px;
-    border: none;
-    padding: 0.8rem;
-    cursor: pointer;
-    margin-top: 1rem !important;
-  }
-  
-  .login-button:hover {
-    background-color: #00bcd4;
-  }
-  
-  .login-button:focus {
-    outline: 2px solid cyan;
-  }
-  /* Estilos generales para los TextField */
-  .MuiTextField-root {
-      background-color: #333; /* Fondo oscuro para que sea coherente con el diseño */
-      border-radius: 4px;
-    }
-  
-  /* Personalización del borde del TextField cuando está en estado normal */
-  .MuiOutlinedInput-root {
-    &.Mui-focused .MuiOutlinedInput-notchedOutline {
-      border-color: cyan !important; /* Color azul para el borde */
-    }
-    .MuiOutlinedInput-notchedOutline {
-      border-color: cyan; /* Color azul para el borde cuando no está enfocado */
-    }
-  }
-  
-  /* Estilos para el texto dentro del campo de texto */
-  .MuiInputLabel-root {
-    color: white !important; /* El texto del label es blanco */
-  }
-  
-  /* Personalización del texto dentro del TextField cuando está enfocado */
-  .MuiInputBase-root {
-    color: white; /* Texto en blanco para los valores del input */
-  }
-  
-  .MuiOutlinedInput-root.Mui-focused .MuiInputBase-input {
-    color: white; /* Texto blanco cuando el TextField está enfocado */
-  }
-  
-  /* Estilo para el borde del TextField en estado normal */
-  .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
-    border-color: cyan !important; /* Color cian del borde cuando está en estado normal */
-  }
-  
-  /* Estilo para el label en estado normal */
-  .MuiInputLabel-root.Mui-focused {
-    color: cyan !important; /* Color cian cuando el label está enfocado */
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(to top, #0a0f1d, #1a2333);
+  padding: 2rem;
+  color: white;
+  padding-top: 100px; /* Ajusta según la altura del Navbar */
+  padding-bottom: 120px; /* Evita que el contenido se sobreponga al Footer */
+}
 
-  .MuiInputBase-input {
-    color: white !important;
+.login-title {
+  margin-bottom: 2rem;
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  color: cyan;
+}
+
+/* El formulario */
+.login-form {
+  margin-top: 2rem;
+  width: 100%;
+  max-width: 400px;
+  background: rgba(0, 0, 0, 0.7); /* Fondo oscuro con opacidad */
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+}
+
+/* Estilos adicionales */
+.MuiTextField-root {
+  margin-bottom: 1rem;
+  color: white;
+}
+
+.login-button {
+  background-color: cyan;
+  border-radius: 4px;
+  border: none;
+  padding: 0.8rem;
+  cursor: pointer;
+  margin-top: 1rem !important;
+}
+
+.login-button:hover {
+  background-color: #00bcd4;
+}
+
+.login-button:focus {
+  outline: 2px solid cyan;
+}
+
+/* Estilos generales para los TextField */
+.MuiTextField-root {
+  background-color: #333; /* Fondo oscuro para que sea coherente con el diseño */
+  border-radius: 4px;
+}
+
+/* Personalización del borde del TextField cuando está en estado normal */
+.MuiOutlinedInput-root {
+  &.Mui-focused .MuiOutlinedInput-notchedOutline {
+      border-color: cyan !important; /* Color azul para el borde */
   }
+  .MuiOutlinedInput-notchedOutline {
+      border-color: cyan; /* Color azul para el borde cuando no está enfocado */
+  }
+}
+
+/* Estilos para el texto dentro del campo de texto */
+.MuiInputLabel-root {
+  color: white !important; /* El texto del label es blanco */
+}
+
+/* Personalización del texto dentro del TextField cuando está enfocado */
+.MuiInputBase-root {
+  color: white; /* Texto en blanco para los valores del input */
+}
+
+.MuiOutlinedInput-root.Mui-focused .MuiInputBase-input {
+  color: white; /* Texto blanco cuando el TextField está enfocado */
+}
+
+/* Estilo para el borde del TextField en estado normal */
+.MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
+  border-color: cyan !important; /* Color cian del borde cuando está en estado normal */
+}
+
+/* Estilo para el label en estado normal */
+.MuiInputLabel-root.Mui-focused {
+  color: cyan !important; /* Color cian cuando el label está enfocado */
+}
+
+.MuiInputBase-input {
+  color: white !important;
+}
