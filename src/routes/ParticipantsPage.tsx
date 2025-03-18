@@ -1,5 +1,5 @@
 import React from 'react';
-import ParticipantCard from '@/components/ParticipantCard';
+import ParticipantCard from '@components/ParticipantCard';
 
 const participants = [
   { name: 'Bot 1', team: 'Team 1', wins: 4, draws: 2, losses: 1 },

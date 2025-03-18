@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import LeagueBar from "@/components/LeagueBar"; 
+import LeagueBar from "@components/LeagueBar"; 
 
 const leagues = ["League 1", "League 2", "League 3"];
 const participants = [
