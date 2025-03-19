@@ -1,10 +1,7 @@
-.register-form {
-    width: 480px;
+.login-form {
     display: flex;
     flex-direction: column;
     align-items: center;
-    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
-    border-radius: 10px;
   
     h1 {
       margin: 0;
@@ -28,7 +25,7 @@
       margin-bottom: 40px;
     }
   
-    .register-form__submit {
+    .login-form__submit {
       font-size: 24px;
       width: 220px;
       height: 50px;
@@ -45,13 +42,13 @@
       }
     }
   
-    .register-form__sign-in-reminder {
+    .login-form__sign-up-reminder {
       font-family: "Shippori Mincho", sans-serif;
       font-size: 16px;
       margin-top: 10px;
       cursor: default;
   
-      .register-form__sign-in-link {
+      .login-form__sign-up-link {
         color: #6b00bd;
         text-decoration: none;
         font-weight: bold;

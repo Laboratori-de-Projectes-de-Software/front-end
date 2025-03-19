@@ -1,0 +1,49 @@
+.top-level-header {
+  border-bottom: 1px solid black;
+  padding: 10px;
+  .top-level-header__item-list {
+    display: flex;
+    justify-content: flex-end;
+    list-style: none;
+    gap: 50px;
+    align-items: center;
+    padding: 0 20px;
+    height: 100%;
+
+    .top-level-header__login {
+      background: none;
+      border: none;
+      font-family: "Shippori Antique", sans-serif;
+      position: relative;
+
+      &:hover {
+        cursor: pointer;
+
+        & ~ .top-level-header__login-decoration {
+          width: 87px;
+          transition: all 0.2s;
+        }
+      }
+    }
+    .top-level-header__login-decoration {
+      position: absolute;
+      width: 0;
+      height: 2px;
+      background-color: black;
+    }
+
+    .top-level-header__register {
+      background: black;
+      padding: 5px;
+      width: 100px;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-family: "Shippori Antique", sans-serif;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+}

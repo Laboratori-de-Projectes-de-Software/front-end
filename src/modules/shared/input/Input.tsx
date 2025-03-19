@@ -1,5 +1,5 @@
-import type { InputConfig } from "@interfaces/Input-config";
-import "@styles/Input.style.css";
+import { InputConfig } from "@interfaces/shared/Input-config";
+import "./Input.scss";
 
 type InputProps = {
   config: InputConfig;

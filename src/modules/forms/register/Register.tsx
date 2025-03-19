@@ -1,18 +1,18 @@
 import React, { useState } from "react";
-import Input from "./Input.tsx";
-import type { InputConfig } from "@interfaces/Input-config";
-import "@styles/Register.style.css";
+import Input from "../../shared/input/Input";
+import type { InputConfig } from "@interfaces/shared/Input-config";
+import "./Register.scss";
 import axios from "axios";
 
 const Register: React.FC = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const apiUrl = "www.ejemplo.com"; // TODO: Cambiar la url de la api
+  const apiUrl = "http://localhost:8081/api/register"; // TODO: Cambiar la url de la api
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    axios.post(apiUrl, { name, email, password }).then((response) => {
+    axios.post(apiUrl, { name, username: email, password }).then((response) => {
       alert(response);
     });
   };
@@ -33,6 +33,7 @@ const Register: React.FC = () => {
     id: "register-password",
     label: "Contraseña",
     state: setPassword,
+    type: "password",
   };
 
   return (
