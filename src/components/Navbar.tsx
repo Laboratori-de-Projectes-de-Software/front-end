@@ -2,7 +2,7 @@ const Navbar = () => {
     return (
         <nav className="flex justify-between items-center p-4 bg-(--navbar) h-20">
             <div className="flex space-x-8 content-center">
-                <span className="text-xl font-bold">Web name</span>
+                <a href="/"><span className="text-xl font-bold">Web name</span></a>
                 <ul className="flex space-x-4">
                     <li><a href="/classification">Leagues</a></li>
                     <li><a href="/participants">Participants</a></li>
