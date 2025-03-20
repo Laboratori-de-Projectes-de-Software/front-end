@@ -4,6 +4,7 @@ import ParticipantsPage from '@routes/ParticipantsPage'
 import ClassificationPage from '@routes/ClassificationPage'
 import ConfrontationsPage from '@routes/ConfrontationsPage'
 import Navbar from '@components/Navbar'
+import AddLeaguePage from '@routes/AddLeaguePage'
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/participants" element={<ParticipantsPage />} />
           <Route path="/classification" element={<ClassificationPage />} />
           <Route path="/confrontations" element={<ConfrontationsPage />} />
+          <Route path="/add-league" element={<AddLeaguePage />} />
         </Routes>
       </Router>
     </>
