@@ -9,6 +9,10 @@ const WelcomePage: React.FC = () => {
           This is a simple tournament management system.
           Posar botons per anar a Login i Register.
         </p>
+        <div className='flex flex-row items-center gap-4'>
+          <a href="/login" className="mt-8 bg-(--btn-bkg) text-black font-bold px-4 py-2 rounded-lg">Login</a>
+          <a href="/register" className="mt-8 bg-(--btn-bkg) text-black font-bold px-4 py-2 rounded-lg">Register</a>
+        </div>
       </main>
     </div>
   );
