@@ -10,7 +10,7 @@ Permite a los usuarios interactuar con el sistema y consumir la API del backend.
 ### **1. Clonar el repositorio**
 
 ```sh
-git clone <https://github.com/tu-usuario/front-end-gironeta.git>
+git clone https://github.com/Laboratori-de-Projectes-de-Software/front-end-gironeta.git
 
 cd front-end-gironeta
 ```
