@@ -6,6 +6,7 @@ import ClassificationPage from '@routes/ClassificationPage'
 import ConfrontationsPage from '@routes/ConfrontationsPage'
 import Navbar from '@components/Navbar'
 import AddLeaguePage from '@routes/AddLeaguePage'
+import AddParticipantPage from '@routes/AddParticipantPage'
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/classification" element={<ClassificationPage />} />
           <Route path="/confrontations" element={<ConfrontationsPage />} />
           <Route path="/add-league" element={<AddLeaguePage />} />
+          <Route path="/add-bot" element={<AddParticipantPage />} />
         </Routes>
       </Router>
     </>
