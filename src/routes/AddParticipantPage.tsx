@@ -18,7 +18,7 @@ const AddParticipantPage: React.FC = () => {
         <label className="block text-left mb-2 font-bold">Name:</label>
         <input
           type="text"
-          className="w-full p-2 rounded bg-black text-white"
+          className="w-full p-2 rounded bg-(--input-bkg) text-white"
           value={participantName}
           onChange={(e) => setParticipantName(e.target.value)}
         />
@@ -28,7 +28,7 @@ const AddParticipantPage: React.FC = () => {
         <label className="block text-left mb-2 font-bold">Team:</label>
         <input
           type="text"
-          className="w-full p-2 rounded bg-black text-white"
+          className="w-full p-2 rounded bg-(--input-bkg) text-white"
           value={team}
           onChange={(e) => setTeam(e.target.value)}
         />
@@ -38,14 +38,14 @@ const AddParticipantPage: React.FC = () => {
         <label className="block text-left mb-2 font-bold">Link API REST:</label>
         <input
           type="text"
-          className="w-full p-2 rounded bg-black text-white"
+          className="w-full p-2 rounded bg-(--input-bkg) text-white"
           value={apiLink}
           onChange={(e) => setApiLink(e.target.value)}
         />
       </div>
 
       <button
-        className="bg-white text-black px-6 py-2 rounded font-bold"
+        className="bg-(--btn-bkg) text-black px-6 py-2 rounded font-bold"
         onClick={handleSubmit}
       >
         Add
