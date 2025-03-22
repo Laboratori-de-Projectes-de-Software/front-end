@@ -27,7 +27,9 @@ const ParticipantsPage: React.FC = () => {
             />
           ))}
         </div>
-        <button className="mt-8 bg-(--btn-bkg) text-black p-2 rounded">Add</button>
+        <a href="/add-bot">
+          <button className="mt-8 bg-(--btn-bkg) text-black p-2 rounded hover:cursor-pointer">Add</button>
+        </a>
       </main>
     </div>
   );
