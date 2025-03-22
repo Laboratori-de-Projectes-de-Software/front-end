@@ -1,13 +1,13 @@
 import React from "react";
 import { useNavigate } from "react-router-dom"; // 🔹 Importa useNavigate
 
-interface AddLeagueBarProps {
+interface LeagueBarProps {
   leagues: string[]; // Llista de lligues a mostrar
   selectedLeague: string; // LLiga a marcar
   onSelectLeague: (league: string) => void; // Per si s'ha de actualizar
 }
 
-const AddLeagueBar: React.FC<AddLeagueBarProps> = ({ leagues, selectedLeague, onSelectLeague }) => {
+const AddLeagueBar: React.FC<LeagueBarProps> = ({ leagues, selectedLeague, onSelectLeague }) => {
   const navigate = useNavigate(); // 🔹 Hook per navegar
 
   return (
