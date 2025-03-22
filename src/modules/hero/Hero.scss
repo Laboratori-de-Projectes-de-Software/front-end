@@ -1,0 +1,48 @@
+.hero-banner {
+  width: 100%;
+  position: relative;
+
+  .hero-banner__image {
+    width: 100%;
+    border-radius: 5px;
+  }
+
+  .hero-banner__title {
+    display: block;
+    background: linear-gradient(180deg, #ffffff 0% 50%, #000000 50% 100%);
+    font-family: "Shippori Antique";
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    font-size: 2rem;
+    width: inherit;
+    text-align: center;
+    position: absolute;
+    bottom: -50px;
+  }
+}
+
+@media (min-width: 560px) {
+  .hero-banner {
+    .hero-banner__title {
+      font-size: 3rem;
+    }
+  }
+}
+
+@media (min-width: 980px) {
+  .hero-banner {
+    .hero-banner__image {
+      width: auto;
+    }
+
+    .hero-banner__title {
+      background: linear-gradient(90deg, #ffffff 0% 50%, #000000 50% 100%);
+      top: 50px;
+      max-width: 250px;
+      left: 500px;
+      white-space: pre-line;
+      text-align: left;
+    }
+  }
+}
