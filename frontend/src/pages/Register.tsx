@@ -5,7 +5,7 @@ import "../styles.css";
 
 interface FormData {
   username: string;
-  email: string;
+  mail: string;
   password: string;
   confirmPassword: string;
 }
@@ -13,7 +13,7 @@ interface FormData {
 export default function Register() {
   const [formData, setFormData] = useState<FormData>({
     username: "",
-    email: "",
+    mail: "",
     password: "",
     confirmPassword: "",
   });
@@ -42,9 +42,9 @@ export default function Register() {
       errors.push("El nombre de usuario es obligatorio");
       newFieldErrors.username = "El nombre de usuario es obligatorio";
     }
-    if (!formData.email.trim()) {
+    if (!formData.mail.trim()) {
       errors.push("El correo electrónico es obligatorio");
-      newFieldErrors.email = "El correo electrónico es obligatorio";
+      newFieldErrors.mail = "El correo electrónico es obligatorio";
     }
     if (!formData.password) {
       errors.push("La contraseña es obligatoria");
@@ -81,7 +81,7 @@ export default function Register() {
       },
       body: JSON.stringify({
         username: formData.username,
-        email: formData.email,
+        mail: formData.mail,
         password: formData.password,
       }),
     })
@@ -124,10 +124,10 @@ export default function Register() {
           variant="outlined"
           fullWidth
           margin="normal"
-          name="email"
-          value={formData.email}
+          name="mail"
+          value={formData.mail}
           onChange={handleChange}
-          error={!!fieldErrors.email}
+          error={!!fieldErrors.mail}
         />
         <TextField
           label="Contraseña"

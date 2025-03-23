@@ -16,25 +16,41 @@ import {
   EmojiEvents as LeagueIcon,
   Public as AllIcon,
   Logout as LogoutIcon,
+  
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import BotRegisterForm from "./RegisterBot";
+import LeagueRegisterForm from "./RegisterLiga";
+
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+
+
 
 type Section =
   | "dashboard"
   | "myBots"
   | "myLeagues"
   | "allLeagues"
-  | "allBots";
+  | "allBots"
+  | "registerBot"
+  | "registerLeague";
+
 
 export default function Dashboard() {
+  
   const [section, setSection] = useState<Section>("dashboard");
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    navigate("/");
-  };
+  
 
-  const username = "admin"; // Puedes reemplazarlo por un contexto global
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    navigate("/");
+  };  
+
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const username = user.username || "Desconocido";
 
   return (
     <Box sx={{ display: "flex", minHeight: "100vh" }}>
@@ -51,6 +67,7 @@ export default function Dashboard() {
         <Typography sx={{ px: 2, mb: 2 }} variant="h6">
           👤 {username}
         </Typography>
+
         <List>
           <ListItem disablePadding>
             <ListItemButton onClick={() => setSection("dashboard")}>
@@ -133,9 +150,10 @@ export default function Dashboard() {
             <Typography variant="h4" color="cyan" gutterBottom>
               🤖 Mis Bots
             </Typography>
-            <Button variant="contained" sx={{ mb: 2 }}>
+            <Button variant="contained" sx={{ mb: 2 }} onClick={() => setSection("registerBot")}>
               + Registrar nuevo bot
             </Button>
+
             <Typography>📌 Aquí irán tus bots registrados (aún no implementado).</Typography>
           </>
         )}
@@ -145,9 +163,10 @@ export default function Dashboard() {
             <Typography variant="h4" color="cyan" gutterBottom>
               🏆 Mis Ligas
             </Typography>
-            <Button variant="contained" sx={{ mb: 2 }}>
+            <Button variant="contained" sx={{ mb: 2 }} onClick={() => setSection("registerLeague")}>
               + Crear nueva liga
             </Button>
+
             <Typography>📌 Aquí irán tus ligas creadas (aún no implementado).</Typography>
           </>
         )}
@@ -169,6 +188,79 @@ export default function Dashboard() {
             <Typography>📌 Aquí se mostrarán todos los bots registrados en la plataforma.</Typography>
           </>
         )}
+
+        {section === "registerBot" && (
+          <Box>
+            <Button
+              variant="outlined"
+              onClick={() => setSection("myBots")}
+              sx={{
+                mb: 2,
+                color: "cyan",
+                borderColor: "cyan",
+                minWidth: "40px",
+                padding: "6px",
+                borderRadius: "50%",
+                "&:hover": {
+                  backgroundColor: "rgba(0,255,255,0.1)",
+                  borderColor: "cyan",
+                },
+              }}
+            >
+              <ArrowBackIcon />
+            </Button>
+
+            <Box
+              sx={{
+                backgroundColor: "#111827",
+                padding: 4,
+                borderRadius: 2,
+                boxShadow: "0 0 15px rgba(0,255,255,0.2)",
+                maxWidth: 500,
+                margin: "0 auto",
+              }}
+            >
+              <BotRegisterForm />
+            </Box>
+          </Box>
+        )}
+
+        {section === "registerLeague" && (
+          <Box>
+            <Button
+              variant="outlined"
+              onClick={() => setSection("myLeagues")}
+              sx={{
+                mb: 2,
+                color: "cyan",
+                borderColor: "cyan",
+                minWidth: "40px",
+                padding: "6px",
+                borderRadius: "50%",
+                "&:hover": {
+                  backgroundColor: "rgba(0,255,255,0.1)",
+                  borderColor: "cyan",
+                },
+              }}
+            >
+              <ArrowBackIcon />
+            </Button>
+
+            <Box
+              sx={{
+                backgroundColor: "#111827",
+                padding: 4,
+                borderRadius: 2,
+                boxShadow: "0 0 15px rgba(0,255,255,0.2)",
+                maxWidth: 500,
+                margin: "0 auto",
+              }}
+            >
+              <LeagueRegisterForm onSuccess={() => setSection("myLeagues")} />
+            </Box>
+          </Box>
+        )}
+
       </Box>
     </Box>
   );

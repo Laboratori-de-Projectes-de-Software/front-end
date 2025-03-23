@@ -47,10 +47,19 @@ export default function Login() {
   
       if (response.ok) {
         const data = await response.json();
+      
+        // 🔐 Guarda el token y datos del usuario
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify({
+          username: data.username,
+          email: data.email,
+          role: data.role
+        }));
+      
         console.log("Usuario autenticado:", data);
         setErrorMessages([]);
         navigate("/dashboard");
-      } else if (response.status === 401) {
+      }else if (response.status === 401) {
         setFieldErrors({
           username: "Credenciales incorrectas",
           password: "Credenciales incorrectas",

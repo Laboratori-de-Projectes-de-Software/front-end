@@ -7,8 +7,8 @@ export default function Navbar() {
       <div className="container navbar-content">
         <Link to="/" className="logo">🤖 AI Battle Arena</Link>
         <nav className="nav-links">
-          <Link to="/register">Registro</Link>
-          <Link to="/login">Login</Link>
+          <Link to="/register">Registrarse</Link>
+          <Link to="/login">Iniciar Sesión</Link>
         </nav>
       </div>
     </header>
