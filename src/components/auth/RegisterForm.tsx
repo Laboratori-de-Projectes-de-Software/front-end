@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 
 interface RegisterForm {
   email: string;
@@ -17,19 +18,39 @@ export const RegisterForm = ({ className }: { className?: string }) => {
 
   const [error, setError] = React.useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+
     e.preventDefault();
+    setError(null);
 
-    if (form.password.length < 8) {
-      setError("La contraseña debe tener al menos 8 caracteres");
-      return;
+    try {
+
+      if (form.password.length < 8) {
+        setError("La contraseña debe tener al menos 8 caracteres");
+        return;
+      }
+
+      if (form.password !== form.repetirPassword) {
+        setError("Las contraseñas no coinciden");
+        return;
+      }
+
+      const { repetirPassword, ...dataToSend } = form;
+      const response = await axios.post(`localhost:8080/auth/register`, dataToSend); // TODO: quitar localhost
+
+      localStorage.setItem('authToken', response.data.token);
+      localStorage.setItem('user', JSON.stringify(response.data.usuario));
+
+      window.location.href = '/home'; // TODO sería recomendable usar useNavigate pero entonces necesitaría <BrowserRouter>
+
+    } catch (err: any) {
+      if (err.response && err.response.data) {
+        setError(err.response.data.message || 'Error en el registro');
+      } else {
+        setError('Error de conexión con el servidor');
+      }
+      console.log(err);
     }
-
-    if (form.password !== form.repetirPassword) {
-      setError("Las contraseñas no coinciden");
-      return;
-    }
-
     console.log(form);
   };
 

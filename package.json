@@ -17,6 +17,7 @@
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "astro": "^5.4.3",
+    "axios": "^1.8.4",
     "frontend": "file:",
     "preline": "^3.0.1",
     "react": "^19.0.0",

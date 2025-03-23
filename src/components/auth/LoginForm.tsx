@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 
 interface LoginForm {
   email: string;
@@ -11,8 +12,25 @@ export const LoginForm = ({ className }: { className?: string }) => {
     password: "",
   });
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const [error, setError] = React.useState<string | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    try {
+      const response = await axios.post(`localhost:8080/auth/login`, form); // TODO: quitar localhost
+
+      localStorage.setItem('authToken', response.data.token);
+      localStorage.setItem('user', JSON.stringify(response.data.usuario));
+
+      window.location.href = '/home'; // TODO sería recomendable usar useNavigate pero entonces necesitaría <BrowserRouter>
+    } catch (err: any) {
+      if (err.response && err.response.data) {
+        setError(err.response.data.message || 'Credenciales incorrectas');
+      } else {
+        setError('Error de conexión con el servidor');
+      }
+    }
     console.log(form);
   };
 
