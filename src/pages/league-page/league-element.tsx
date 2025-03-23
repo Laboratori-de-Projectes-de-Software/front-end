@@ -15,7 +15,9 @@ type Props = {
 
 const LeagueElement: FC<Props> = ({id, name, date, numRounds, playTime, playing}) => {
 
-    console.log(id);
+    if (!id) {
+        return null;
+    }
 
     const handleOnClick = () => {
         return <Navigate to={`/`} />;

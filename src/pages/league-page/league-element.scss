@@ -1,6 +1,5 @@
 .league-element {
     margin: 10px;
-    border-radius: 5px;
     width: 270px;
     height: 320px;
     display: grid;
@@ -26,7 +25,7 @@
         font-family: "Shippori Antique", sans-serif;
     }
 
-    &-date, &-play-time, &-num-rounds {
+    &-date, &-play-time, &-num-rounds, &-playing {
         font-size: 18px;
         font-family: "Shippori Antique", sans-serif;
     }
