@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./Modal.scss";
 
 interface ModalProps {
@@ -8,13 +8,38 @@ interface ModalProps {
 }
 
 const Modal: React.FC<ModalProps> = ({ children, isOpen, onClose }) => {
-  if (!isOpen) {
-    return null;
-  }
+  const modalRef = React.useRef<HTMLDialogElement>(null);
+
+  useEffect(() => {
+    const modalElement = modalRef.current;
+    if (!modalElement) return;
+    if (isOpen) {
+      modalElement.showModal();
+    } else {
+      modalElement.close();
+    }
+  }, [isOpen]);
+
+  const handleCloseModal = () => {
+    if (onClose) {
+      onClose();
+    }
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDialogElement>) => {
+    if (event.key === "Escape") {
+      handleCloseModal();
+    }
+  };
+
   return (
-    <dialog className="modal" open={true}>
-      <button className="modal__close-button" onClick={onClose}>
-        <img src="close-button.svg" alt="" width={30}/>
+    <dialog className="modal" ref={modalRef} onKeyDown={handleKeyDown}>
+      <button
+        className="modal__close-button"
+        onClick={handleCloseModal}
+        aria-label="Close modal"
+      >
+        <img src="close-button.svg" alt="" width={30} />
       </button>
       {children}
     </dialog>
