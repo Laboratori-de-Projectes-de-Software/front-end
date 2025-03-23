@@ -1,125 +1,164 @@
-/* Estilos Generales */
-html, body {
+/* --------- BASE --------- */
+* {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
   font-family: 'Orbitron', sans-serif;
   background: linear-gradient(to top, #0a0f1d, #1a2333);
   color: white;
-  height: 100%;
-  overflow: auto; /* Permitir el desplazamiento */
-  justify-content: center;
 }
 
-/* Contenedor de la Página de Inicio */
-.banner {
+/* --------- GLOBAL CONTAINER --------- */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  width: 100%;
+}
+
+/* --------- LAYOUT --------- */
+.app-layout {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-  text-align: center;
-  background: linear-gradient(to top, #0a0f1d, #1a2333);
+  flex-direction: column;
+  min-height: 100vh;
 }
 
-/* Imagen del Banner a la Izquierda */
-.banner-img {
-  flex: 1 1 300px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 1rem;
+.main-content {
+  flex: 1;
 }
 
-.banner-img img {
-  max-width: 100%;
-  height: auto;
-  max-height: 300px;
+/* --------- NAVBAR --------- */
+.navbar {
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.5);
+  box-shadow: 0 2px 10px rgba(0, 255, 255, 0.2);
 }
 
-
-.banner img {
-  width: 100%;  
-  max-height: 50vh;  
-  object-fit: contain;  
-}
-
-/* Contenedor del Texto a la Derecha */
-.banner-text1, .banner-text2 {
-  flex: 1 1 300px;
-  text-align: center;
-  margin: 1rem 0;
-}
-
-/* Texto con Efecto Neón */
-.neon-text {
-  font-weight: bold;
-  color: cyan;
-  text-shadow: 0 0 10px cyan, 0 0 25px cyan, 0 0 35px cyan;
-}
-
-.home-section {
-  max-width: 1000px;
-  margin: 2rem auto;
-  padding: 1rem 2rem;
-  border-radius: 8px;
-  background: rgba(0, 0, 0, 0.4);
-  box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
-  color: white;
-}
-
-.section-header {
+.navbar-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 1rem 0;
 }
 
-/* Footer */
+.logo {
+  color: cyan;
+  font-weight: bold;
+  font-size: 1.3rem;
+  text-decoration: none;
+}
+
+.nav-links a {
+  color: cyan;
+  margin-left: 1.5rem;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: #0ff;
+}
+
+/* --------- FOOTER --------- */
 .footer {
-  text-align: center;
-  padding: 15px;
+  width: 100vw;
   background: rgba(0, 0, 0, 0.5);
   box-shadow: 0px -4px 15px rgba(0, 255, 255, 0.2);
+  padding: 1.5rem 0;
   font-size: 0.9rem;
-  opacity: 0.8;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1; /* Asegura que el footer no se solape con otros elementos */
+  opacity: 0.9;
+  text-align: center;
+  position: relative;
 }
 
-/* Fondo y contenedor de la página de login */
-.login-container {
+/* --------- HERO --------- */
+.hero-section {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
-  background: linear-gradient(to top, #0a0f1d, #1a2333);
-  padding: 2rem;
-  color: white;
-  padding-top: 120px; 
-  padding-bottom: 120px;
+  min-height: calc(100vh - 160px);
+}
+
+.hero-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+  flex-wrap: wrap;
+  text-align: center;
+}
+
+.hero-image {
+  width: 250px;
+  height: auto;
+}
+
+.hero-text {
+  max-width: 600px;
+}
+
+.neon-text {
+  color: #0ff;
+  /* text-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 15px #0ff;*/
+}
+
+.hero-buttons {
+  display: flex;
+  justify-content: center; /* centra horizontalmente */
+  gap: 1rem;                /* espacio entre botones */
+  margin-top: 2rem;
+  flex-wrap: wrap;          /* para móviles */
 }
 
 
-.login-title {
-  margin-bottom: 2rem;
+/* --------- RESPONSIVE --------- */
+@media (max-width: 768px) {
+  .navbar-content {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .nav-links a {
+    margin: 0 0.5rem;
+  }
+
+  .hero-content {
+    flex-direction: column;
+  }
+}
+
+
+/* --------- REGISTRO --------- */
+.auth-wrapper {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(to top, #0a0f1d, #1a2333);
+  padding: 2rem;
+}
+
+.auth-form {
+  background: rgba(0, 0, 0, 0.401);
+  padding: 2rem;
+  border-radius: 12px;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: 0 0 25px rgba(0, 255, 255, 0.4);
+}
+
+.auth-title {
   text-align: center;
   font-size: 2rem;
   font-weight: bold;
   color: cyan;
-}
-
-/* El formulario */
-.login-form {
-  margin-top: 2rem;
-  width: 100%;
-  max-width: 400px;
-  background: rgba(0, 0, 0, 0.7); /* Fondo oscuro con opacidad */
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+  margin-bottom: 1rem;
 }
 
 /* Estilos adicionales */

@@ -79,12 +79,12 @@ export default function Register() {
   };
 
   return (
-    <Box className="login-container">
-      <Typography variant="h4" className="login-title">
-        Registrarse
-      </Typography>
-
-      <form onSubmit={handleSubmit} className="login-form">
+    <div className="auth-wrapper">
+      <form onSubmit={handleSubmit} className="auth-form">
+        <Typography variant="h4" className="auth-title">
+          Registrarse
+        </Typography>
+  
         <TextField
           label="Nombre de usuario"
           variant="outlined"
@@ -95,11 +95,9 @@ export default function Register() {
           onChange={handleChange}
           error={!!fieldErrors.username}
         />
-
         <TextField
           label="Correo electrónico"
           variant="outlined"
-          type="email"
           fullWidth
           margin="normal"
           name="email"
@@ -107,7 +105,6 @@ export default function Register() {
           onChange={handleChange}
           error={!!fieldErrors.email}
         />
-
         <TextField
           label="Contraseña"
           variant="outlined"
@@ -119,7 +116,6 @@ export default function Register() {
           onChange={handleChange}
           error={!!fieldErrors.password}
         />
-
         <TextField
           label="Confirmar contraseña"
           variant="outlined"
@@ -131,38 +127,28 @@ export default function Register() {
           onChange={handleChange}
           error={!!fieldErrors.confirmPassword}
         />
-
+  
         {errorMessages.length > 0 && (
           <Box sx={{ mt: 2, mb: 2 }}>
-            {errorMessages.map((message, index) => (
-              <Typography
-                key={index}
-                color="error"
-                sx={{ marginBottom: "0.5rem", display: "block" }}
-              >
-                {message}
+            {errorMessages.map((msg, i) => (
+              <Typography key={i} color="error" sx={{ mb: 1 }}>
+                {msg}
               </Typography>
             ))}
           </Box>
         )}
-
-        <Button
-          type="submit"
-          variant="contained"
-          fullWidth
-          className="login-button"
-          style={{ marginTop: "1rem" }}
-        >
-          Crear Cuenta
+  
+        <Button type="submit" variant="contained" fullWidth className="login-button">
+          Crear cuenta
         </Button>
-
-        <div style={{ marginTop: "1rem", textAlign: "center" }}>
-          <span>¿Ya tienes una cuenta? </span>
+  
+        <Typography sx={{ mt: 2, textAlign: "center" }}>
+          ¿Ya tienes una cuenta?{" "}
           <Link to="/login" style={{ color: "cyan", textDecoration: "none" }}>
             Inicia sesión
           </Link>
-        </div>
+        </Typography>
       </form>
-    </Box>
-  );
+    </div>
+  );  
 }

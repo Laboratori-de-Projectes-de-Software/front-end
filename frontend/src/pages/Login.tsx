@@ -48,12 +48,12 @@ export default function Login() {
   };
 
   return (
-    <Box className="login-container">
-      <Typography variant="h4" className="login-title">
-        Iniciar sesión
-      </Typography>
-
-      <form onSubmit={handleSubmit} className="login-form">
+    <div className="auth-wrapper">
+      <form onSubmit={handleSubmit} className="auth-form">
+        <Typography variant="h4" className="auth-title">
+          Iniciar sesión
+        </Typography>
+  
         <TextField
           label="Nombre de usuario"
           variant="outlined"
@@ -63,7 +63,7 @@ export default function Login() {
           onChange={(e) => setUsername(e.target.value)}
           error={!!fieldErrors.username}
         />
-
+  
         <TextField
           label="Contraseña"
           type="password"
@@ -74,7 +74,7 @@ export default function Login() {
           onChange={(e) => setPassword(e.target.value)}
           error={!!fieldErrors.password}
         />
-
+  
         {errorMessages.length > 0 && (
           <Box sx={{ mt: 2, mb: 2 }}>
             {errorMessages.map((message, index) => (
@@ -88,18 +88,18 @@ export default function Login() {
             ))}
           </Box>
         )}
-
+  
         <Button type="submit" variant="contained" fullWidth className="login-button">
           Iniciar sesión
         </Button>
-
-        <div style={{ marginTop: "1rem", textAlign: "center" }}>
-          <span>¿No tienes una cuenta? </span>
+  
+        <Typography sx={{ mt: 2, textAlign: "center" }}>
+          ¿No tienes una cuenta?{" "}
           <Link to="/register" style={{ color: "cyan", textDecoration: "none" }}>
             Regístrate
           </Link>
-        </div>
+        </Typography>
       </form>
-    </Box>
-  );
+    </div>
+  );  
 }
