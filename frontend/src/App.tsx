@@ -4,7 +4,7 @@ import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import Login from "./pages/Login"; 
 import Register from "./pages/Register";
-import RegisterBot from "./pages/registerBot";
+import RegisterBot from "./pages/RegisterBot";
 import RegisterLiga from "./pages/RegisterLiga";
 
 export default function App() {

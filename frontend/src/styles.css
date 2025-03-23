@@ -12,24 +12,30 @@ html, body {
 
 /* Contenedor de la Página de Inicio */
 .banner {
-  display: grid;
-  grid-template-columns: 0.6fr 1.8fr 0.6fr 1.9fr 0.2fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr;
-  grid-column-gap: 10px;
-  grid-row-gap: 0px;
-  width: 80vw; /* Ajuste al ancho */
-  height: 80vh; /* Ajuste a la altura */
-  align-items: center; /* Centramos verticalmente */
-  justify-content: center; /* Centramos horizontalmente */
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+  background: linear-gradient(to top, #0a0f1d, #1a2333);
 }
 
 /* Imagen del Banner a la Izquierda */
 .banner-img {
-  grid-area: 1 / 1 / 4 / 5; /* Posicionamiento en Grid */
+  flex: 1 1 300px;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  margin-bottom: 1rem;
 }
+
+.banner-img img {
+  max-width: 100%;
+  height: auto;
+  max-height: 300px;
+}
+
 
 .banner img {
   width: 100%;  
@@ -38,13 +44,10 @@ html, body {
 }
 
 /* Contenedor del Texto a la Derecha */
-.banner-text1 {
-  grid-area: 1 / 6 / 3 / 8; /* Posicionamiento en Grid */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  text-align: left;
+.banner-text1, .banner-text2 {
+  flex: 1 1 300px;
+  text-align: center;
+  margin: 1rem 0;
 }
 
 /* Texto con Efecto Neón */
@@ -54,13 +57,20 @@ html, body {
   text-shadow: 0 0 10px cyan, 0 0 25px cyan, 0 0 35px cyan;
 }
 
-.banner-text2 {
-  grid-area: 2 / 6 / 4 / 8; /* Posicionamiento en Grid */
+.home-section {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+  color: white;
+}
+
+.section-header {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  text-align: left;
+  justify-content: space-between;
+  align-items: center;
 }
 
 /* Footer */
@@ -88,9 +98,10 @@ html, body {
   background: linear-gradient(to top, #0a0f1d, #1a2333);
   padding: 2rem;
   color: white;
-  padding-top: 100px; /* Ajusta según la altura del Navbar */
-  padding-bottom: 120px; /* Evita que el contenido se sobreponga al Footer */
+  padding-top: 120px; 
+  padding-bottom: 120px;
 }
+
 
 .login-title {
   margin-bottom: 2rem;
@@ -152,7 +163,7 @@ html, body {
 
 /* Estilos para el texto dentro del campo de texto */
 .MuiInputLabel-root {
-  color: white !important; /* El texto del label es blanco */
+  color: cyan !important; /* El texto del label es cyan */
 }
 
 /* Personalización del texto dentro del TextField cuando está enfocado */
@@ -176,4 +187,14 @@ html, body {
 
 .MuiInputBase-input {
   color: white !important;
+}
+
+/* Borde rojo cuando el TextField tiene un error */
+.MuiOutlinedInput-root.Mui-error .MuiOutlinedInput-notchedOutline {
+  border-color: red !important;
+}
+
+/* Label en rojo cuando hay error */
+.MuiInputLabel-root.Mui-error {
+  color: red !important;
 }
