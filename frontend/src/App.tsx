@@ -6,6 +6,8 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import RegisterBot from "./pages/RegisterBot";
 import RegisterLiga from "./pages/RegisterLiga";
+import Dashboard from "./pages/Dashboard";
+
 import "./styles.css";
 
 function AppContent() {
@@ -24,6 +26,7 @@ function AppContent() {
           <Route path="/register" element={<Register />} />
           <Route path="/registerBot" element={<RegisterBot />} />
           <Route path="/registerLiga" element={<RegisterLiga />} />
+          <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
       </main>
       {!hideLayout && <Footer />}

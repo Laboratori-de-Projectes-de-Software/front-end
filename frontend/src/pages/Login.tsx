@@ -37,7 +37,7 @@ export default function Login() {
     if (username === "admin" && password === "admin") {
       setFieldErrors({});
       setErrorMessages([]);
-      navigate("/");
+      navigate("/dashboard");
     } else {
       setFieldErrors({
         username: "Credenciales incorrectas",
