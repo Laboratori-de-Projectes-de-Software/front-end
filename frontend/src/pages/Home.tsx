@@ -1,27 +1,32 @@
-import { Typography} from "@mui/material";
-import "../styles.css";// Importamos los estilos
+import {IconButton } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import { useNavigate } from "react-router-dom";
+import "../styles.css";
 
 export default function Home() {
-    return (
-        <div className="banner">
-            {/*Imagen a la Izquierda */}
-            <div className="banner-img">
-                <img src="/ai-banner2.png" alt="AI Battle Arena" />
+  const navigate = useNavigate();
 
-            </div>
-
-            {/* Texto a la Derecha */}
-            <div className="banner-text1">
-                <Typography className="neon-text" sx={{ fontSize: "2.5em !important" }}>
-                    Bienvenido a la Liga de Bots
-                </Typography>
-            </div>
-            <div className="banner-text2">
-                <Typography className="banner-des-text" sx={{ fontSize: "1.5em !important", mt: 1, opacity: 0.9 }}>
-                    Regístrate y compite en épicos debates de IA.
-                </Typography>
-            </div>
+  return (
+    <div>
+      {/* 🔹 Sección de Bots */}
+      <section className="home-section">
+        <div className="section-header">
+          <h2>Registro de Bots</h2>
+          <IconButton onClick={() => navigate("/RegisterBot")} style={{ color: "cyan" }}>
+            <EditIcon />
+          </IconButton>
         </div>
-    );
-}
+      </section>
 
+      {/* 🔹 Sección de Ligas */}
+      <section className="home-section">
+        <div className="section-header">
+          <h2>Registro de Ligas</h2>
+          <IconButton onClick={() => navigate("/RegisterLiga")} style={{ color: "cyan" }}>
+            <EditIcon />
+          </IconButton>
+        </div>
+      </section>
+    </div>
+  );
+}
