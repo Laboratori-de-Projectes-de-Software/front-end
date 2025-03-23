@@ -11,41 +11,57 @@ export default function Login() {
 
   const navigate = useNavigate();
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-
+  
     const newFieldErrors: { username?: string; password?: string } = {};
     const messages: string[] = [];
-
+  
     if (!username.trim()) {
       newFieldErrors.username = "El nombre de usuario es obligatorio";
       messages.push("El nombre de usuario es obligatorio");
     }
-
+  
     if (!password) {
       newFieldErrors.password = "La contraseña es obligatoria";
       messages.push("La contraseña es obligatoria");
     }
-
+  
     if (messages.length > 0) {
       setFieldErrors(newFieldErrors);
       setErrorMessages(messages);
       return;
     }
-
-    // Validación temporal para ejemplo
-    if (username === "admin" && password === "admin") {
-      setFieldErrors({});
-      setErrorMessages([]);
-      navigate("/dashboard");
-    } else {
-      setFieldErrors({
-        username: "Credenciales incorrectas",
-        password: "Credenciales incorrectas",
+  
+   
+      const response = await fetch("http://localhost:8080/users/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username,
+          password,
+        }),
       });
-      setErrorMessages(["Nombre de usuario o contraseña incorrectos"]);
-    }
+  
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Usuario autenticado:", data);
+        setErrorMessages([]);
+        navigate("/dashboard");
+      } else if (response.status === 401) {
+        setFieldErrors({
+          username: "Credenciales incorrectas",
+          password: "Credenciales incorrectas",
+        });
+        setErrorMessages(["Nombre de usuario o contraseña incorrectos"]);
+      } else {
+        setErrorMessages(["Error inesperado. Intenta más tarde."]);
+      }
+  
   };
+  
 
   return (
     <div className="auth-wrapper">
