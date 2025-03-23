@@ -73,9 +73,33 @@ export default function Register() {
     // Si no hay errores
     setErrorMessages([]);
     setFieldErrors({});
-    alert("Cuenta creada exitosamente");
-    console.log("Registro exitoso", formData);
-    navigate("/login");
+    // Envía la petición al backend
+    fetch("http://localhost:8080/users/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: formData.username,
+        email: formData.email,
+        password: formData.password,
+      }),
+    })
+    .then((res) => {
+      if (res.status === 201) {
+        alert("Cuenta creada exitosamente 🎉");
+        navigate("/login");
+      } else if (res.status === 409) {
+        setErrorMessages(["El nombre de usuario o email ya existe"]);
+      } else if (res.status === 400) {
+        setErrorMessages(["Datos inválidos. Revisa el formulario."]);
+      } else {
+        setErrorMessages(["Error inesperado. Intenta más tarde."]);
+      }
+    })
+    .catch(() => {
+      setErrorMessages(["No se pudo conectar con el servidor"]);
+    });
   };
 
   return (
