@@ -7,6 +7,7 @@ import { LeaguesFilters, LeagueType } from './league-types';
 import './leagues-page.scss';
 import LeagueFilters from './league-filters';
 import Modal from '../../modules/shared/modal/Modal';
+import NewLeague from '../../modules/forms/new-league/NewLeague';
 
 type Props = LeaguesFilters;
 
@@ -57,7 +58,10 @@ const LeaguesPage: FC<Props> = (Props) => {
   ]);
   const [filters, setFilters] = useState<LeaguesFilters>(Props)
   const [modalOpen, setModalOpen] = useState(false);
+  const [isNewLeagueModalOpen, setIsNewLeagueModalOpen] = useState(false);
 
+
+  const closeNewLeagueModal = () => setIsNewLeagueModalOpen(false);
   const closeLoginModal = () => setModalOpen(false);
 
   const fetchLeagues = () => {
@@ -79,6 +83,7 @@ const LeaguesPage: FC<Props> = (Props) => {
     <div className='leagues-page-main-container'>
       <div className="leagues-page-header">
         <h2 className='leagues-page-main-title'>Listado de ligas</h2>
+        <button className='leagues-page-new' onClick={() => setIsNewLeagueModalOpen(true)}>Nueva liga</button>
         <button className='leagues-page-filters-button' onClick={() => setModalOpen(true)}>Filtros</button>
       </div>
       <div className='leagues-page-leagues-container'>
@@ -98,6 +103,10 @@ const LeaguesPage: FC<Props> = (Props) => {
       </div>
       <Modal isOpen={modalOpen} onClose={closeLoginModal}>
         <LeagueFilters filters={filters} setFilters={setFilters} />
+      </Modal>
+
+      <Modal isOpen={isNewLeagueModalOpen} onClose={closeNewLeagueModal}>
+        <NewLeague />
       </Modal>
     </div>
   );
