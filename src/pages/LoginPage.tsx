@@ -1,50 +1,34 @@
-// src/pages/LoginPage.tsx
+import React from "react";
+import "./LoginPage.css";
+import logo from "../assets/robot.svg"; // Asegúrate de tener el logo en esta ruta o ajusta la ruta según corresponda
 
-import React, { useState } from "react";
-
-const LoginPage = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-
-    const handleLogin = (e: React.FormEvent) => {
-        e.preventDefault();
-        // Aquí iría la lógica de autenticación
-        console.log("Inicio de sesión con", email, password);
-    };
-
+const LoginPage: React.FC = () => {
     return (
         <div className="login-container">
-            <h2>Iniciar sesión</h2>
-            <form onSubmit={handleLogin}>
-                <div className="input-group">
-                    <label htmlFor="email">Correo electrónico</label>
-                    <input
-                        type="email"
-                        id="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
+            <div className="login-box">
+                {/* Logo encima del formulario */}
+                <div className="logo">
+                    <img src={logo} alt="Logo" className="logo-img" />
                 </div>
-                <div className="input-group">
-                    <label htmlFor="password">Contraseña</label>
-                    <input
-                        type="password"
-                        id="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                </div>
-                <button type="submit" className="btn-login">
-                    Iniciar sesión
-                </button>
-            </form>
-            <p>
-                ¿No tienes cuenta? <a href="/register">Regístrate aquí</a>
-            </p>
+                <h1>Iniciar Sesión</h1>
+                <form>
+                    <div className="input-group">
+                        <label>Email:</label>
+                        <input type="email" placeholder="Tu email" required />
+                    </div>
+                    <div className="input-group">
+                        <label>Contraseña:</label>
+                        <input type="password" placeholder="Tu contraseña" required />
+                    </div>
+                    <button className="login-button" type="submit">Ingresar</button>
+                </form>
+                <a href="/register" className="register-link">¿No tienes cuenta? Regístrate</a>
+            </div>
         </div>
     );
 };
 
 export default LoginPage;
+
+
+

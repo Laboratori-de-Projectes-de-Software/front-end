@@ -38,3 +38,28 @@
 .auth-link:hover {
     color: #1DB954;
 }
+
+.auth-options {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.auth-link {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+}
+
+.auth-link:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+

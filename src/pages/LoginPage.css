@@ -1,0 +1,86 @@
+/* Estilos generales */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #282c34; /* Fondo oscuro */
+    color: white;
+}
+
+/* Tarjeta de inicio de sesión */
+.login-box {
+    background: #1e1e1e;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    width: 350px;
+    text-align: center;
+}
+
+/* Logo encima del formulario */
+.logo {
+    margin-bottom: 20px;
+}
+
+.logo-img {
+    width: 80px; /* Ajusta el tamaño del logo según lo que necesites */
+    height: auto;
+}
+
+/* Título */
+.login-box h1 {
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+/* Campos de entrada */
+.input-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    text-align: left;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.input-group input {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* Botón */
+.login-button {
+    width: 100%;
+    padding: 10px;
+    background: #1db954; /* Verde tipo Spotify */
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.login-button:hover {
+    background: #17a74a;
+}
+
+/* Enlace de registro */
+.register-link {
+    display: block;
+    margin-top: 15px;
+    color: #1db954;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.register-link:hover {
+    text-decoration: underline;
+}
+
