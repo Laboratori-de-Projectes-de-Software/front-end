@@ -26,10 +26,10 @@ const AddLeaguePage: React.FC = () => {
       <main className="flex flex-row items-start gap-8">
         <LeagueBar leagues={leagues} selectedLeague={""} onSelectLeague={() => {}} />
         <div className="flex-1 text-center p-10 flex flex-col items-center">
-          <h1 className="text-3xl font-bold mb-6 font-bold">Añadir liga</h1>
+          <h1 className="text-3xl font-bold mb-6 font-bold">Add League</h1>
 
           <div className="mb-4 w-2/3 md:w-1/2 lg:w-2/3">
-            <label className="block text-left mb-2 font-bold">Nombre:</label>
+            <label className="block text-left mb-2 font-bold">Name:</label>
             <input
               type="text"
               className="w-full p-2 rounded-lg bg-black text-white"
@@ -39,7 +39,7 @@ const AddLeaguePage: React.FC = () => {
           </div>
 
           <div className="mb-4 w-2/3 md:w-1/2 lg:w-2/3">
-            <label className="block text-left mb-2 font-bold">Participantes:</label>
+            <label className="block text-left mb-2 font-bold">Participants:</label>
             <div className="bg-(--input-bkg) p-2 rounded-lg">
               {participants.map((bot) => (
                 <div key={bot} className="flex items-center justify-between p-1">
@@ -55,7 +55,7 @@ const AddLeaguePage: React.FC = () => {
           </div>
 
           <div className="mb-4 w-2/3 md:w-1/2 lg:w-2/3">
-            <label className="block text-left mb-2 font-bold">Rondas Máximas:</label>
+            <label className="block text-left mb-2 font-bold">Maximum Rounds:</label>
             <input
               type="number"
               className="w-full p-2 rounded-lg bg-(--input-bkg) text-white"
@@ -65,7 +65,7 @@ const AddLeaguePage: React.FC = () => {
           </div>
 
           <div className="mb-6 w-2/3 md:w-1/2 lg:w-2/3">
-            <label className="block text-left mb-2 font-bold">Tiempo Máximo:</label>
+            <label className="block text-left mb-2 font-bold">Maximum Time:</label>
             <input
               type="number"
               className="w-full p-2 rounded-lg bg-(--input-bkg) text-white"
@@ -78,7 +78,7 @@ const AddLeaguePage: React.FC = () => {
             className="bg-white text-black px-6 py-2 rounded font-bold"
             onClick={handleSubmit}
           >
-            Añadir
+            Add
           </button>
         </div>
       </main>
