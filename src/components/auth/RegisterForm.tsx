@@ -36,7 +36,7 @@ export const RegisterForm = ({ className }: { className?: string }) => {
       }
 
       const { repetirPassword, ...dataToSend } = form;
-      const response = await axios.post(`localhost:8080/auth/register`, dataToSend); // TODO: quitar localhost
+      const response = await axios.post(`http://localhost:8080/register`, dataToSend); // TODO: quitar localhost
 
       localStorage.setItem('authToken', response.data.token);
       localStorage.setItem('user', JSON.stringify(response.data.usuario));

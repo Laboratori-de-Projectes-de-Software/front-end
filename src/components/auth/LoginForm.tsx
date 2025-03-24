@@ -18,7 +18,7 @@ export const LoginForm = ({ className }: { className?: string }) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(`localhost:8080/auth/login`, form); // TODO: quitar localhost
+      const response = await axios.post(`http://localhost:8080/login`, form); // TODO: quitar localhost
 
       localStorage.setItem('authToken', response.data.token);
       localStorage.setItem('user', JSON.stringify(response.data.usuario));
