@@ -11,7 +11,7 @@ interface ParticipantCardProps {
 const ParticipantCard: React.FC<ParticipantCardProps> = ({ name, team, wins, draws, losses }) => {
   return (
     <div className="flex justify-between content-center bg-(--secondary) p-4 rounded-lg shadow-md w-64">
-      <div className='flex flex-col'>
+      <div className='flex flex-col justify-center'>
         <h2 className="text-2xl font-bold">{name}</h2>
         <p className="text-sm text-(--bot-card-color)">Equipo: {team}</p>
       </div>
