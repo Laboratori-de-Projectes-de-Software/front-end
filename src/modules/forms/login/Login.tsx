@@ -2,25 +2,22 @@ import React, { useState } from "react";
 import Input from "../../shared/input/Input";
 import type { InputConfig } from "@interfaces/shared/Input-config";
 import "./Login.scss";
-import axios from "axios";
+import { useAuth } from "../../../auth/AuthProvider";
 
 const Login: React.FC = () => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  // TODO: Llevar a un archivo externo de configuraciones
-  const apiUrl = "http://localhost:8081/register";
+  const auth = useAuth();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    axios.post(apiUrl, { email, password }).then((response) => {
-      alert(response);
-    });
+    auth!.login({ username, password });
   };
 
-  const emailInputConfig: InputConfig = {
+  const usernameInputConfig: InputConfig = {
     id: "login-email",
     label: "Email",
-    state: setEmail,
+    state: setUsername,
   };
 
   const passwordInputConfig: InputConfig = {
@@ -34,7 +31,7 @@ const Login: React.FC = () => {
     <form className="login-form" onSubmit={handleSubmit}>
       <h1>BIENVENIDO</h1>
       <h3>Inicia sesión para continuar con tu cuenta</h3>
-      <Input config={emailInputConfig} />
+      <Input config={usernameInputConfig} />
       <Input config={passwordInputConfig} />
       <button className="login-form__submit" type="submit">
         Iniciar Sesión
