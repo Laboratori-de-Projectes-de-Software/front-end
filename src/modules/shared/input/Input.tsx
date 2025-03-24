@@ -1,12 +1,14 @@
 import { InputConfig } from "@interfaces/shared/Input-config";
+import { FC } from "react";
 import "./Input.scss";
 
 type InputProps = {
   config: InputConfig;
+  value?: string;
 };
 
-const Input = ({ config }: InputProps) => {
-  const handleOnChange = (e: any) => {
+const Input: FC<InputProps> = ({ config, value }) => {
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     config.state(e.target.value);
   };
   return (
@@ -18,6 +20,7 @@ const Input = ({ config }: InputProps) => {
           className="form-field__input"
           type={config.type || "text"}
           onChange={handleOnChange}
+          value={value || ''}
         />
         <label htmlFor={config.id} className="form-field__label">
           {config.label}
