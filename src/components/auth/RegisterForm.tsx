@@ -1,5 +1,5 @@
 import React from "react";
-import axios from "axios";
+import {registerUser, setCurrentUser} from "./AuthUtils.tsx";
 
 interface RegisterForm {
   email: string;
@@ -36,11 +36,13 @@ export const RegisterForm = ({ className }: { className?: string }) => {
       }
 
       const { repetirPassword, ...dataToSend } = form;
-      const response = await axios.post(`http://localhost:8080/register`, dataToSend); // TODO: quitar localhost
-
-      localStorage.setItem('authToken', response.data.token);
-      localStorage.setItem('user', JSON.stringify(response.data.usuario));
-
+      const response = await registerUser(
+          dataToSend.email,
+          dataToSend.nombre,
+          dataToSend.password
+      );
+      // TODO manejar error usuario ya existe
+      setCurrentUser(response.usuario);
       window.location.href = '/home'; // TODO sería recomendable usar useNavigate pero entonces necesitaría <BrowserRouter>
 
     } catch (err: any) {

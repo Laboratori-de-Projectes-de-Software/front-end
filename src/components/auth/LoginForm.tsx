@@ -1,5 +1,5 @@
 import React from "react";
-import axios from "axios";
+import {loginUser, setCurrentUser} from "./AuthUtils.tsx";
 
 interface LoginForm {
   email: string;
@@ -16,12 +16,12 @@ export const LoginForm = ({ className }: { className?: string }) => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setError(null);
 
     try {
-      const response = await axios.post(`http://localhost:8080/login`, form); // TODO: quitar localhost
+      const response = await loginUser(form.email, form.password);
 
-      localStorage.setItem('authToken', response.data.token);
-      localStorage.setItem('user', JSON.stringify(response.data.usuario));
+      setCurrentUser(response.usuario);
 
       window.location.href = '/home'; // TODO sería recomendable usar useNavigate pero entonces necesitaría <BrowserRouter>
     } catch (err: any) {
