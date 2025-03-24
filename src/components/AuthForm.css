@@ -1,0 +1,52 @@
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.input-group label {
+    color: white;
+    font-weight: bold;
+}
+
+.input-group input {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid white;
+    background-color: transparent;
+    color: white;
+}
+
+.login-button {
+    background-color: transparent;
+    color: white;
+    border: 2px solid white;
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s;
+}
+
+.login-button:hover {
+    background-color: #4CAF50;
+    border-color: #4CAF50;
+    transform: scale(1.05);
+}
+
+.register-link {
+    color: white;
+    text-align: center;
+    text-decoration: none;
+}
+
+.register-link:hover {
+    text-decoration: underline;
+}
+
