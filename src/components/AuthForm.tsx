@@ -1,5 +1,6 @@
 import React from "react";
 import "./AuthForm.css";
+import Button from "./Button";
 
 const AuthForm: React.FC = () => {
     return (
@@ -12,8 +13,7 @@ const AuthForm: React.FC = () => {
                 <label>Contraseña:</label>
                 <input type="password" placeholder="Tu contraseña" required />
             </div>
-            <button className="login-button" type="submit">Ingresar</button>
-            <a href="/register" className="register-link">¿No tienes cuenta? Regístrate</a>
+            <Button onClick={() => { console.log("Formulario enviado"); }} label="Ingresar" className="login-button" />
         </form>
     );
 };

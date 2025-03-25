@@ -9,14 +9,14 @@
 }
 
 .button:hover {
-    background-color: #4CAF50; /* Verde */
+    background-color: rgba(29, 185, 84, 0.3); /* Verde */
     color: white;
-    border-color: #4CAF50;
+    border-color: rgba(29, 185, 84, 0.9);
     transform: scale(1.05);
 }
 
 .button:active {
-    background-color: #3e8e41;
+    background-color: rgba(29, 185, 84, 0.7);
     border-color: #3e8e41;
     transform: scale(0.95);
 }

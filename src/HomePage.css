@@ -1,42 +1,28 @@
-/* HomePage.css */
-
-/* Establece el diseño general para la página */
+/* Establece el diseño general */
 .home-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh; /* Asegura que ocupe toda la altura de la ventana */
-    background-color: #282c34; /* Puedes cambiar el color de fondo si lo deseas */
+    height: 100vh;
     position: relative;
+}
+
+/* Evita que el fondo animado cause scroll */
+html, body {
+    margin: 0;
+    height: 100vh;
+    overflow: hidden;
 }
 
 /* Estilo para el logo */
 .logo {
-    margin-bottom: 30px; /* Espacio debajo del logo */
+    margin-bottom: 30px;
 }
 
 .logo-img {
-    width: 150px; /* Ajusta el tamaño del logo según lo necesites */
+    width: 150px;
     height: auto;
-}
-
-/* Estilos para las opciones de inicio de sesión y registro */
-.auth-options {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-}
-
-.auth-link {
-    margin-left: 20px;
-    text-decoration: none;
-    color: #f0f0f0;
-    font-size: 16px;
-}
-
-.auth-link:hover {
-    color: #1DB954;
 }
 
 .auth-options {
@@ -53,13 +39,11 @@
     color: white;
     font-size: 16px;
     cursor: pointer;
-    text-decoration: none;
     padding: 8px 12px;
     border-radius: 5px;
     transition: background 0.3s ease;
 }
 
-.auth-link:hover {
-    background: rgba(255, 255, 255, 0.2);
-}
+
+
 
