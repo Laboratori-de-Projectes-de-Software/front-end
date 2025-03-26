@@ -2,17 +2,19 @@ import React from "react";
 import "./AuthForm.css";
 import Button from "./Button";
 
-const AuthForm: React.FC = () => {
+interface AuthFormProps {
+    campos: { nombre: string; tipo: string }[];
+}
+
+const AuthForm: React.FC<AuthFormProps> = ({ campos }) => {
     return (
         <form className="auth-form">
-            <div className="input-group">
-                <label>Email:</label>
-                <input type="email" placeholder="Tu email" required />
-            </div>
-            <div className="input-group">
-                <label>Contraseña:</label>
-                <input type="password" placeholder="Tu contraseña" required />
-            </div>
+            {campos.map((campo, index) => (
+                <div key={index} className="input-group">
+                    <label>{campo.nombre}:</label>
+                    <input type={campo.tipo} placeholder={`Ingrese ${campo.nombre}`} required={true}/>
+                </div>
+            ))}
             <Button onClick={() => { console.log("Formulario enviado"); }} label="Ingresar" className="login-button" />
         </form>
     );
