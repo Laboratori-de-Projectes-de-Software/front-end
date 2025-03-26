@@ -13,6 +13,23 @@ type Props = {
     text?: string;
 }
 
+/**
+ * 
+ * @param value Valor por defecto
+ * @param setValue Función para setear el valor
+ * @param options Opciones del select
+ * @param text Texto del label
+ * @returns Estructura de un input de tipo select
+ * 
+ * @example
+ * ```tsx
+ * <OptionsInput
+ * value={hook_variable}
+ * setValue={hook_function}
+ * options={[{value: '1', text: 'Opción 1'}, {value: '2', text: 'Opción 2'}]}
+ * text='Titulo'
+ * />
+ */
 const OptionsInput: FC<Props> = ({value, setValue, options, text}) => {
   return (
     <div className="form__options">
@@ -32,8 +49,9 @@ const OptionsInput: FC<Props> = ({value, setValue, options, text}) => {
           id="options-input"
           name="options-input"
           className="form__options-input"
+          required
         >
-          <option value="" selected></option>
+          <option value="" disabled selected></option>
           {options.map((option) => (
             <option key={option.value} value={option.value}>{option.text}</option>
           ))}
