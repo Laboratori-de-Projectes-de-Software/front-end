@@ -1,0 +1,96 @@
+/* Estilos generales */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;  /* Asegura que ocupe todo el ancho de la pantalla */
+    position: relative; /* Necesario para posicionar el fondo de manera correcta */
+    overflow: hidden; /* Evita el scroll */
+    color: white;
+}
+
+/* Fondo animado - Esto asegura que el canvas ocupe todo el fondo */
+.login-container canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Pone el fondo detrás del contenido */
+}
+
+/* Tarjeta de inicio de sesión */
+.login-box {
+    background: rgba(30,30,30,.8);
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8);
+    width: 350px;
+    text-align: center;
+    position: relative; /* Necesario para asegurar que se quede encima del canvas */
+    z-index: 1; /* Asegura que el formulario esté por encima del fondo */
+}
+
+/* Logo encima del formulario */
+.logo {
+    margin-bottom: 20px;
+}
+
+.logo-img {
+    width: 80px; /* Ajusta el tamaño del logo según lo que necesites */
+    height: auto;
+}
+
+/* Título */
+.login-box h1 {
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+/* Campos de entrada */
+.input-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    text-align: left;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.input-group input {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* Botón */
+.login-button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+/* Enlace de registro */
+.register-link {
+    display: block;
+    margin-top: 15px;
+    color: #1db954;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.register-link:hover {
+    text-decoration: underline;
+}
+
+

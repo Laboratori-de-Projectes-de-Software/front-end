@@ -1,0 +1,49 @@
+/* Establece el diseño general */
+.home-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    position: relative;
+}
+
+/* Evita que el fondo animado cause scroll */
+html, body {
+    margin: 0;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Estilo para el logo */
+.logo {
+    margin-bottom: 30px;
+}
+
+.logo-img {
+    width: 150px;
+    height: auto;
+}
+
+.auth-options {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.auth-link {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+}
+
+
+
+
