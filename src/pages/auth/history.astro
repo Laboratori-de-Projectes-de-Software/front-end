@@ -1,0 +1,12 @@
+---
+import HomeLayout from "../../layouts/HomeLayout.astro";
+import HistorySearcher from "../../components/search/HistorySearcher.tsx";
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout title="Home Menu">
+  <HomeLayout title="Historial de Ligas">
+    <!-- Search bar -->
+    <HistorySearcher client:only />
+  </HomeLayout>
+</Layout>

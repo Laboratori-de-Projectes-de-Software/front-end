@@ -1,0 +1,14 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Icons from "../../components/HomeMenu.astro";
+import HomeLayout from "../../layouts/HomeLayout.astro";
+
+const user = null;
+// cuando el user este autenticado y tenga img de perfil cambiar a const user = { photoUrl: "/path/to/profile.jpg" }
+---
+
+<Layout title="Home Menu">
+  <HomeLayout title="Home">
+    <Icons client:load />
+  </HomeLayout>
+</Layout>

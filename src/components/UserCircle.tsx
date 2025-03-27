@@ -1,7 +1,10 @@
-import React from "react";
 import { FaUser } from "react-icons/fa";
 
-export default function UserCircle({ user }) {
+interface User {
+  photoUrl?: string;
+}
+
+export default function UserCircle({ user }: { user?: User }) {
   return (
     <div className="user-circle">
       {user && user.photoUrl ? (

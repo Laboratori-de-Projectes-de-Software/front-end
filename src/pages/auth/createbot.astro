@@ -1,0 +1,13 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { CreateBotForm } from "../../components/CreateBotForm.tsx";
+import HomeLayout from "../../layouts/HomeLayout.astro";
+
+const user = null;
+---
+
+<Layout title="Create Bot Menu">
+  <HomeLayout title="Create Bot" href="/auth/home">
+    <CreateBotForm client:load />
+  </HomeLayout>
+</Layout>
