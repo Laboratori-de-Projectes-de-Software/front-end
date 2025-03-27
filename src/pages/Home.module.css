@@ -1,0 +1,22 @@
+.banner {
+    background-size: 100%;
+    background-position: center;
+    height: 850px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: left;
+    color: white;
+    text-align: left;
+    padding : 0em 7.5em;
+}
+
+.bannerContent {
+    background-color: #272727;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    width: 300px;
+    padding: 2em 2em;
+}

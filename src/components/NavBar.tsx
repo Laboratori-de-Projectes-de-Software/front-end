@@ -12,7 +12,6 @@ const NavBar: React.FC = () => {
 
     return (
         <div className={styles.navbar}>
-            {/* Contenedor del logo y texto */}
             <div className={styles.logoContainer}>
                 <img src={logo} alt="IA SUPERLEAGUE Logo" className={styles.logo} />
                 <p className={styles.logoText}>IA SUPERLEAGUE</p>
