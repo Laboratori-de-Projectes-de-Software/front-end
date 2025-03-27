@@ -19,7 +19,6 @@ const RegisterPage: React.FC = () => {
                 <Logo />
                 <h1>Registrarse</h1>
                 <AuthForm campos={CamposRegister} />
-                <a href="/register" className="register-link">¿No tienes cuenta? Regístrate</a>
             </div>
         </div>
     );
