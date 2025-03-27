@@ -1,9 +1,9 @@
 import React from "react";
 import styles from "./NavBar.module.css";
+import logo from "./../assets/img/logo.png";
 
 const NavBar: React.FC = () => {
-
-    const links: { id: number; link: string }[] = [
+    const links = [
         { id: 1, link: "Home" },
         { id: 2, link: "Bots" },
         { id: 3, link: "Leagues" },
@@ -12,11 +12,16 @@ const NavBar: React.FC = () => {
 
     return (
         <div className={styles.navbar}>
-            <p className = {styles.logo}>IA SUPERLEAGUE</p>
-            <ul className = {styles.linksContainer}>
+            {/* Contenedor del logo y texto */}
+            <div className={styles.logoContainer}>
+                <img src={logo} alt="IA SUPERLEAGUE Logo" className={styles.logo} />
+                <p className={styles.logoText}>IA SUPERLEAGUE</p>
+            </div>
+
+            <ul className={styles.linksContainer}>
                 {links.map((link) => (
                     <li key={link.id}>
-                        <a className = {styles.navlink} href={link.link}>{link.link}</a>
+                        <a className={styles.navlink} href={link.link}>{link.link}</a>
                     </li>
                 ))}
             </ul>

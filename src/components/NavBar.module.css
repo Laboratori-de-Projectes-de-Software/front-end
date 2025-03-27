@@ -32,4 +32,6 @@
     color: #ffffff;
     font-size: 1.5em;
     font-weight: 500;
+    width: 100px; /* Ajusta el tamaño según necesites */
+    height: auto;
 }
