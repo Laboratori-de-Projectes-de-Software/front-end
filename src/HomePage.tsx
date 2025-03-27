@@ -6,24 +6,33 @@ import Button from "./components/Button";
 import BackgroundCanvas from "./components/BackgroundCanvas"; // Importamos la animación
 
 const HomePage: React.FC = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    return (
-        <div className="home-container">
-            <BackgroundCanvas /> {/* Añadimos el fondo animado */}
-
-            <div className="logo">
-                <Logo />
-            </div>
-
-            <div className="auth-options">
-                <Button onClick={() => navigate("/login")} label="Iniciar sesión" className="auth-link" />
-                <Button onClick={() => navigate("/register")} label="Registrar" className="auth-link" />
-            </div>
-        </div>
-    );
+  return (
+    <div className="home-container">
+      <BackgroundCanvas /> {/* Añadimos el fondo animado */}
+      <div className="logo">
+        <Logo />
+      </div>
+      <div className="auth-options">
+        <Button
+          onClick={() => navigate("/login")}
+          label="Iniciar sesión"
+          className="auth-link"
+        />
+        <Button
+          onClick={() => navigate("/register")}
+          label="Registrar"
+          className="auth-link"
+        />
+        <Button
+          onClick={() => navigate("/dashboard")}
+          label="Dashboard"
+          className="auth-link"
+        />
+      </div>
+    </div>
+  );
 };
 
 export default HomePage;
-
-
