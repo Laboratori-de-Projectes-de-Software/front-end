@@ -8,6 +8,7 @@ import ConfrontationsPage from '@routes/ConfrontationsPage'
 import Navbar from '@components/Navbar'
 import AddLeaguePage from '@routes/AddLeaguePage'
 import AddParticipantPage from '@routes/AddParticipantPage'
+import Match from '@routes/MatchPage'
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="/confrontations" element={<ConfrontationsPage />} />
           <Route path="/add-league" element={<AddLeaguePage />} />
           <Route path="/add-bot" element={<AddParticipantPage />} />
+          <Route path="/match/:matchId" element={<Match />} />
         </Routes>
       </Router>
     </>
