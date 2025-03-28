@@ -1,14 +1,13 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import "../../styles/home.css";
 import { BotList } from "../../components/BotList.tsx";
-import HomeLayout from "../../layouts/HomeLayout.astro";
+import AplicationLayout from "../../layouts/AplicationLayout.astro";
 
 const user = null;
 ---
 
 <Layout title="Bots Menu">
-  <HomeLayout title="Bots" href="/auth/home">
+  <AplicationLayout>
     <BotList client:load />
-  </HomeLayout>
+  </AplicationLayout>
 </Layout>

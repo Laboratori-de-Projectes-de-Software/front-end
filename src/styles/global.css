@@ -1,7 +1,14 @@
 @import "tailwindcss";
 
-@import url('https://fonts.googleapis.com/css2?family=Concert+One&display=swap');
+@import "../../node_modules/preline/variants.css";
 
-:root {
-  font-family: 'Concert One', cursive;
+@source "node_modules/preline/dist";
+@source "node_modules/preline/";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  html {
+    font-family: "Poppins", sans-serif;
+  }
 }
