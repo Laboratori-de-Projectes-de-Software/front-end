@@ -6,33 +6,34 @@ interface Props {
   onSuccess: () => void;
 }
 
-export default function LeagueRegisterForm({ onSuccess }: Props) {
+export default function LeagueRegisterForm() {
   const [name, setName] = useState("");
-  const [numberMatch, setNumberMatch] = useState("");
-  const [timeMatch, setTimeMatch] = useState("");
-  
+  const [season, setSeason] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [numRounds, setNumRounds] = useState("");
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!name || !numberMatch || !timeMatch) {
+    if (!name || !season || !startDate || !endDate || !numRounds) {
       alert("Por favor, completa todos los campos.");
       return;
     }
 
     const payload = {
       name,
-      number_match: Number(numberMatch),
-      time_match: Number(timeMatch),
+      season,
+      startDate,
+      endDate,
+      numRounds: Number(numRounds),
     };
-
-    const token = localStorage.getItem("token");
 
     try {
       const response = await fetch("http://localhost:8080/api/leagues", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(payload),
       });
@@ -40,11 +41,10 @@ export default function LeagueRegisterForm({ onSuccess }: Props) {
       if (response.ok) {
         alert("Liga registrada correctamente.");
         setName("");
-        setNumberMatch("");
-        setTimeMatch("");
-        onSuccess(); // vuelve al dashboard
-      } else if (response.status === 409) {
-        alert("Ya existe una liga con ese nombre.");
+        setSeason("");
+        setStartDate("");
+        setEndDate("");
+        setNumRounds("");
       } else {
         alert("Error al registrar la liga.");
       }
@@ -55,11 +55,11 @@ export default function LeagueRegisterForm({ onSuccess }: Props) {
   };
 
   return (
-    <Box>
-      <Typography variant="h4" color="cyan" gutterBottom>
+    <Box className="login-container">
+      <Typography variant="h4" className="login-title">
         Registrar Liga
       </Typography>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="login-form">
         <TextField
           label="Nombre de la Liga"
           variant="outlined"
@@ -69,26 +69,44 @@ export default function LeagueRegisterForm({ onSuccess }: Props) {
           onChange={(e) => setName(e.target.value)}
         />
         <TextField
+          label="Temporada"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          value={season}
+          onChange={(e) => setSeason(e.target.value)}
+        />
+        <TextField
+          label="Fecha de Inicio"
+          type="date"
+          fullWidth
+          margin="normal"
+          InputLabelProps={{ shrink: true }}
+          value={startDate}
+          onChange={(e) => setStartDate(e.target.value)}
+        />
+        <TextField
+          label="Fecha de Fin"
+          type="date"
+          fullWidth
+          margin="normal"
+          InputLabelProps={{ shrink: true }}
+          value={endDate}
+          onChange={(e) => setEndDate(e.target.value)}
+        />
+        <TextField
           label="Número de Jornadas"
           type="number"
           fullWidth
           margin="normal"
-          value={numberMatch}
-          onChange={(e) => setNumberMatch(e.target.value)}
-        />
-        <TextField
-          label="Duración del Enfrentamiento (min)"
-          type="number"
-          fullWidth
-          margin="normal"
-          value={timeMatch}
-          onChange={(e) => setTimeMatch(e.target.value)}
+          value={numRounds}
+          onChange={(e) => setNumRounds(e.target.value)}
         />
         <Button
           type="submit"
           fullWidth
           variant="contained"
-          sx={{ mt: 2 }}
+          className="login-button"
         >
           Registrar Liga
         </Button>
