@@ -13,64 +13,58 @@ export default function Login() {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-  
-    const newFieldErrors: { username?: string; password?: string } = {};
+
+    const errors: { username?: string; password?: string } = {};
     const messages: string[] = [];
-  
+
     if (!username.trim()) {
-      newFieldErrors.username = "El nombre de usuario es obligatorio";
-      messages.push("El nombre de usuario es obligatorio");
+      errors.username = "El nombre de usuario es obligatorio";
+      messages.push(errors.username);
     }
-  
-    if (!password) {
-      newFieldErrors.password = "La contraseña es obligatoria";
-      messages.push("La contraseña es obligatoria");
+
+    if (!password.trim()) {
+      errors.password = "La contraseña es obligatoria";
+      messages.push(errors.password);
     }
-  
+
     if (messages.length > 0) {
-      setFieldErrors(newFieldErrors);
+      setFieldErrors(errors);
       setErrorMessages(messages);
       return;
     }
-  
-   
+
+    try {
       const response = await fetch("http://localhost:8080/users/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username,
-          password,
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
       });
-  
+
       if (response.ok) {
         const data = await response.json();
       
-        // 🔐 Guarda el token y datos del usuario
+        // Guardar token y username correctamente
         localStorage.setItem("token", data.token);
-        localStorage.setItem("user", JSON.stringify({
-          username: data.username,
-          email: data.email,
-          role: data.role
-        }));
+        localStorage.setItem("username", username); // ✅ AÑADIDA
+        localStorage.setItem("user", JSON.stringify({ username }));
       
-        console.log("Usuario autenticado:", data);
-        setErrorMessages([]);
         navigate("/dashboard");
-      }else if (response.status === 401) {
+        
+      }else if (response.status === 401 || response.status === 404) {
         setFieldErrors({
           username: "Credenciales incorrectas",
           password: "Credenciales incorrectas",
         });
         setErrorMessages(["Nombre de usuario o contraseña incorrectos"]);
       } else {
-        setErrorMessages(["Error inesperado. Intenta más tarde."]);
+        const data = await response.json();
+        setErrorMessages([data.message || "Error inesperado. Intenta más tarde."]);
       }
-  
+    } catch (error) {
+      console.error("Error de red:", error);
+      setErrorMessages(["No se pudo conectar con el servidor."]);
+    }
   };
-  
 
   return (
     <div className="auth-wrapper">
@@ -78,7 +72,7 @@ export default function Login() {
         <Typography variant="h4" className="auth-title">
           Iniciar sesión
         </Typography>
-  
+
         <TextField
           label="Nombre de usuario"
           variant="outlined"
@@ -87,8 +81,9 @@ export default function Login() {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           error={!!fieldErrors.username}
+          helperText={fieldErrors.username}
         />
-  
+
         <TextField
           label="Contraseña"
           type="password"
@@ -98,26 +93,23 @@ export default function Login() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           error={!!fieldErrors.password}
+          helperText={fieldErrors.password}
         />
-  
+
         {errorMessages.length > 0 && (
           <Box sx={{ mt: 2, mb: 2 }}>
-            {errorMessages.map((message, index) => (
-              <Typography
-                key={index}
-                color="error"
-                sx={{ marginBottom: "0.5rem", display: "block" }}
-              >
-                {message}
+            {errorMessages.map((msg, i) => (
+              <Typography key={i} color="error" sx={{ mb: 1 }}>
+                {msg}
               </Typography>
             ))}
           </Box>
         )}
-  
+
         <Button type="submit" variant="contained" fullWidth className="login-button">
           Iniciar sesión
         </Button>
-  
+
         <Typography sx={{ mt: 2, textAlign: "center" }}>
           ¿No tienes una cuenta?{" "}
           <Link to="/register" style={{ color: "cyan", textDecoration: "none" }}>
@@ -126,5 +118,5 @@ export default function Login() {
         </Typography>
       </form>
     </div>
-  );  
+  );
 }

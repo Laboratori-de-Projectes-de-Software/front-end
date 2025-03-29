@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import {
   Box,
   Button,
@@ -9,6 +9,7 @@ import {
   ListItemIcon,
   ListItemText,
   Divider,
+  CircularProgress,
 } from "@mui/material";
 import {
   Dashboard as DashboardIcon,
@@ -16,14 +17,12 @@ import {
   EmojiEvents as LeagueIcon,
   Public as AllIcon,
   Logout as LogoutIcon,
-  
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import BotRegisterForm from "./RegisterBot";
 import LeagueRegisterForm from "./RegisterLiga";
-
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-
+import BotCard from "../components/BotCard";
 
 
 type Section =
@@ -35,26 +34,50 @@ type Section =
   | "registerBot"
   | "registerLeague";
 
+interface Bot {
+  name: string;
+  description: string;
+}
 
 export default function Dashboard() {
-  
   const [section, setSection] = useState<Section>("dashboard");
+  const [userBots, setUserBots] = useState<Bot[]>([]);
+  const [loadingBots, setLoadingBots] = useState(false);
   const navigate = useNavigate();
-
-  
+  const username = localStorage.getItem("username") || "Desconocido";
 
   const handleLogout = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("token");
+    localStorage.removeItem("username");
     navigate("/");
-  };  
+  };
 
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
-  const username = user.username || "Desconocido";
+  const fetchUserBots = useCallback(async () => {
+    setLoadingBots(true);
+    try {
+      const response = await fetch(`http://localhost:8080/users/${username}/bots`);
+      if (response.ok) {
+        const data = await response.json();
+        setUserBots(data);
+      } else {
+        console.error("No se pudieron obtener los bots del usuario");
+      }
+    } catch (error) {
+      console.error("Error al obtener bots:", error);
+    } finally {
+      setLoadingBots(false);
+    }
+  }, [username]);
+
+  useEffect(() => {
+    if (section === "myBots") {
+      fetchUserBots();
+    }
+  }, [section, fetchUserBots]);
 
   return (
     <Box sx={{ display: "flex", minHeight: "100vh" }}>
-      {/* Sidebar */}
       <Box
         sx={{
           width: "250px",
@@ -62,54 +85,46 @@ export default function Dashboard() {
           color: "cyan",
           paddingTop: 2,
           boxShadow: "2px 0 10px rgba(0,255,255,0.1)",
+          borderRight: "2px solid cyan", // ← esto es la línea vertical
         }}
       >
+
         <Typography sx={{ px: 2, mb: 2 }} variant="h6">
           👤 {username}
         </Typography>
 
         <List>
           <ListItem disablePadding>
-            <ListItemButton onClick={() => setSection("dashboard")}>
-              <ListItemIcon>
-                <DashboardIcon sx={{ color: "cyan" }} />
-              </ListItemIcon>
+            <ListItemButton onClick={() => setSection("dashboard")}> 
+              <ListItemIcon><DashboardIcon sx={{ color: "cyan" }} /></ListItemIcon>
               <ListItemText primary="Dashboard" />
             </ListItemButton>
           </ListItem>
 
           <ListItem disablePadding>
-            <ListItemButton onClick={() => setSection("myBots")}>
-              <ListItemIcon>
-                <BotIcon sx={{ color: "cyan" }} />
-              </ListItemIcon>
+            <ListItemButton onClick={() => setSection("myBots")}> 
+              <ListItemIcon><BotIcon sx={{ color: "cyan" }} /></ListItemIcon>
               <ListItemText primary="Mis Bots" />
             </ListItemButton>
           </ListItem>
 
           <ListItem disablePadding>
-            <ListItemButton onClick={() => setSection("myLeagues")}>
-              <ListItemIcon>
-                <LeagueIcon sx={{ color: "cyan" }} />
-              </ListItemIcon>
+            <ListItemButton onClick={() => setSection("myLeagues")}> 
+              <ListItemIcon><LeagueIcon sx={{ color: "cyan" }} /></ListItemIcon>
               <ListItemText primary="Mis Ligas" />
             </ListItemButton>
           </ListItem>
 
           <ListItem disablePadding>
-            <ListItemButton onClick={() => setSection("allLeagues")}>
-              <ListItemIcon>
-                <AllIcon sx={{ color: "cyan" }} />
-              </ListItemIcon>
+            <ListItemButton onClick={() => setSection("allLeagues")}> 
+              <ListItemIcon><AllIcon sx={{ color: "cyan" }} /></ListItemIcon>
               <ListItemText primary="Ver todas las Ligas" />
             </ListItemButton>
           </ListItem>
 
           <ListItem disablePadding>
-            <ListItemButton onClick={() => setSection("allBots")}>
-              <ListItemIcon>
-                <BotIcon sx={{ color: "cyan" }} />
-              </ListItemIcon>
+            <ListItemButton onClick={() => setSection("allBots")}> 
+              <ListItemIcon><BotIcon sx={{ color: "cyan" }} /></ListItemIcon>
               <ListItemText primary="Ver todos los Bots" />
             </ListItemButton>
           </ListItem>
@@ -117,75 +132,70 @@ export default function Dashboard() {
           <Divider sx={{ my: 2, borderColor: "rgba(0,255,255,0.3)" }} />
 
           <ListItem disablePadding>
-            <ListItemButton onClick={handleLogout}>
-              <ListItemIcon>
-                <LogoutIcon sx={{ color: "cyan" }} />
-              </ListItemIcon>
+            <ListItemButton onClick={handleLogout}> 
+              <ListItemIcon><LogoutIcon sx={{ color: "cyan" }} /></ListItemIcon>
               <ListItemText primary="Cerrar sesión" />
             </ListItemButton>
           </ListItem>
         </List>
       </Box>
 
-      {/* Contenido dinámico */}
-      <Box
-        sx={{
-          flex: 1,
-          padding: 4,
-          background: "linear-gradient(to top, #0a0f1d, #1a2333)",
-          color: "white",
-        }}
-      >
+      <Box sx={{ flex: 1, padding: 4, background: "linear-gradient(to top, #0a0f1d, #1a2333)", color: "white" }}>
         {section === "dashboard" && (
           <>
             <Typography variant="h4" color="cyan" gutterBottom>
               Dashboard principal
             </Typography>
-            <Typography>Bienvenido a la Liga de Bots. Usa el menú para comenzar.</Typography>
+            <Typography>
+              Bienvenido a la Liga de Bots, {username}. Usa el menú para comenzar.
+            </Typography>
           </>
         )}
 
         {section === "myBots" && (
           <>
-            <Typography variant="h4" color="cyan" gutterBottom>
-              🤖 Mis Bots
-            </Typography>
-            <Button variant="contained" sx={{ mb: 2 }} onClick={() => setSection("registerBot")}>
-              + Registrar nuevo bot
-            </Button>
+            <Box sx={{ mb: 6 }}>
+              <Typography variant="h4" color="cyan" sx={{ mb: 2 }}>
+                🤖 Mis Bots
+              </Typography>
+              
+            </Box>
 
-            <Typography>📌 Aquí irán tus bots registrados (aún no implementado).</Typography>
+            <Box sx={{ mb: 6 }}>
+              <Button variant="contained" onClick={() => setSection("registerBot")}>
+                + Registrar nuevo bot
+              </Button>
+            </Box>
+
+            {loadingBots ? (
+              <CircularProgress color="inherit" />
+            ) : userBots.length > 0 ? (
+              <Box sx={{display: "flex", flexWrap: "wrap", gap: 4, }} >
+            
+                {userBots.map((bot, index) => (
+                  <BotCard
+                    key={index}
+                    name={bot.name}
+                    description={bot.description}
+                    onEdit={() => {
+                      console.log("Editar bot:", bot.name);
+                      // Aquí podrías abrir un modal o cambiar de sección para editar
+                    }}
+                  />
+                ))}
+              </Box>
+
+            ) : (
+              <Typography>Aún no tienes bots registrados.</Typography>
+            )}
           </>
         )}
 
         {section === "myLeagues" && (
           <>
-            <Typography variant="h4" color="cyan" gutterBottom>
-              🏆 Mis Ligas
-            </Typography>
-            <Button variant="contained" sx={{ mb: 2 }} onClick={() => setSection("registerLeague")}>
-              + Crear nueva liga
-            </Button>
-
+            <Typography variant="h4" color="cyan" gutterBottom>🏆 Mis Ligas</Typography>
+            <Button variant="contained" sx={{ mb: 2 }} onClick={() => setSection("registerLeague")}>+ Crear nueva liga</Button>
             <Typography>📌 Aquí irán tus ligas creadas (aún no implementado).</Typography>
-          </>
-        )}
-
-        {section === "allLeagues" && (
-          <>
-            <Typography variant="h4" color="cyan" gutterBottom>
-              📋 Todas las Ligas
-            </Typography>
-            <Typography>📌 Aquí se mostrarán todas las ligas (filtros, tarjetas...)</Typography>
-          </>
-        )}
-
-        {section === "allBots" && (
-          <>
-            <Typography variant="h4" color="cyan" gutterBottom>
-              🤖 Todos los Bots
-            </Typography>
-            <Typography>📌 Aquí se mostrarán todos los bots registrados en la plataforma.</Typography>
           </>
         )}
 
@@ -209,7 +219,6 @@ export default function Dashboard() {
             >
               <ArrowBackIcon />
             </Button>
-
             <Box
               sx={{
                 backgroundColor: "#111827",
@@ -245,7 +254,6 @@ export default function Dashboard() {
             >
               <ArrowBackIcon />
             </Button>
-
             <Box
               sx={{
                 backgroundColor: "#111827",
@@ -260,7 +268,6 @@ export default function Dashboard() {
             </Box>
           </Box>
         )}
-
       </Box>
     </Box>
   );
