@@ -1,5 +1,6 @@
 // src/components/LeagueCard.tsx
 import { Card, CardContent, Typography } from "@mui/material";
+import React from "react";
 
 interface Props {
     name: string;

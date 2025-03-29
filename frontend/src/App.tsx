@@ -9,16 +9,29 @@ import RegisterLiga from "./pages/RegisterLiga";
 
 export default function App() {
   return (
+    <div className="app-layout">
+      {!hideLayout && <Navbar />}
+      <main className="main-content">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/registerBot" element={<RegisterBot />} />
+          <Route path="/registerLiga" element={<RegisterLiga onSuccess={function (): void {
+            throw new Error("Function not implemented.");
+          } } />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+        </Routes>
+      </main>
+      {!hideLayout && <Footer />}
+    </div>
+  );
+}
+
+export default function App() {
+  return (
     <Router>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} /> 
-        <Route path="/register" element={<Register />} />
-        <Route path="/registerBot" element={<RegisterBot />} />
-        <Route path="/registerLiga" element={<RegisterLiga />} />
-      </Routes>
-      <Footer />
+      <AppContent />
     </Router>
   );
 }

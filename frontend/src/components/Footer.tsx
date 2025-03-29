@@ -1,5 +1,5 @@
-import { Typography, Box } from "@mui/material";
-import "../styles.css"; // Importamos los estilos
+import React from "react";
+import "../styles.css";
 
 export default function Footer() {
   return (

@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { TextField, Button, Box, Typography } from "@mui/material";
-import "../styles.css";
+import React from "react";
+
+interface Props {
+  onSuccess: () => void;
+}
 
 export default function LeagueRegisterForm() {
   const [name, setName] = useState("");

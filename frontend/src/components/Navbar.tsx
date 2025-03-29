@@ -2,6 +2,7 @@ import { AppBar, Toolbar, Typography, IconButton } from "@mui/material";
 import { AccountCircle } from "@mui/icons-material";
 import { Link } from "react-router-dom"; // Esto permite crear enlaces
 import "../styles.css";
+import React from "react";
 
 export default function Navbar() {
   return (
