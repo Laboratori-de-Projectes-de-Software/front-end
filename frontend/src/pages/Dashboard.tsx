@@ -256,7 +256,7 @@ export default function Dashboard() {
                 margin: "0 auto",
               }}
             >
-              <LeagueRegisterForm onSuccess={() => setSection("myLeagues")} />
+              <LeagueRegisterForm />
             </Box>
           </Box>
         )}

@@ -1,11 +1,7 @@
 import { useState } from "react";
 import { TextField, Button, Box, Typography } from "@mui/material";
 
-interface Props {
-  onSuccess: () => void;
-}
-
-export default function LeagueRegisterForm({ onSuccess }: Props) {
+export default function LeagueRegisterForm() {
   const [name, setName] = useState("");
   const [numberMatch, setNumberMatch] = useState("");
   const [timeMatch, setTimeMatch] = useState("");
@@ -41,7 +37,6 @@ export default function LeagueRegisterForm({ onSuccess }: Props) {
         setName("");
         setNumberMatch("");
         setTimeMatch("");
-        onSuccess(); // vuelve al dashboard
       } else if (response.status === 409) {
         alert("Ya existe una liga con ese nombre.");
       } else {
