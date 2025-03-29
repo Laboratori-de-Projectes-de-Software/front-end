@@ -2,11 +2,10 @@ import { useState } from "react";
 import { TextField, Button, Box, Typography } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import "../styles.css";
-import React from "react";
 
 interface FormData {
   username: string;
-  email: string;
+  mail: string;
   password: string;
   confirmPassword: string;
 }
@@ -14,7 +13,7 @@ interface FormData {
 export default function Register() {
   const [formData, setFormData] = useState<FormData>({
     username: "",
-    email: "",
+    mail: "",
     password: "",
     confirmPassword: "",
   });
@@ -43,9 +42,9 @@ export default function Register() {
       errors.push("El nombre de usuario es obligatorio");
       newFieldErrors.username = "El nombre de usuario es obligatorio";
     }
-    if (!formData.email.trim()) {
+    if (!formData.mail.trim()) {
       errors.push("El correo electrónico es obligatorio");
-      newFieldErrors.email = "El correo electrónico es obligatorio";
+      newFieldErrors.mail = "El correo electrónico es obligatorio";
     }
     if (!formData.password) {
       errors.push("La contraseña es obligatoria");
@@ -74,18 +73,42 @@ export default function Register() {
     // Si no hay errores
     setErrorMessages([]);
     setFieldErrors({});
-    alert("Cuenta creada exitosamente");
-    console.log("Registro exitoso", formData);
-    navigate("/login");
+    // Envía la petición al backend
+    fetch("http://localhost:8080/users/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: formData.username,
+        mail: formData.mail,
+        password: formData.password,
+      }),
+    })
+    .then((res) => {
+      if (res.status === 201) {
+        alert("Cuenta creada exitosamente 🎉");
+        navigate("/login");
+      } else if (res.status === 409) {
+        setErrorMessages(["El nombre de usuario o email ya existe"]);
+      } else if (res.status === 400) {
+        setErrorMessages(["Datos inválidos. Revisa el formulario."]);
+      } else {
+        setErrorMessages(["Error inesperado. Intenta más tarde."]);
+      }
+    })
+    .catch(() => {
+      setErrorMessages(["No se pudo conectar con el servidor"]);
+    });
   };
 
   return (
-    <Box className="login-container">
-      <Typography variant="h4" className="login-title">
-        Registrarse
-      </Typography>
-
-      <form onSubmit={handleSubmit} className="login-form">
+    <div className="auth-wrapper">
+      <form onSubmit={handleSubmit} className="auth-form">
+        <Typography variant="h4" className="auth-title">
+          Registrarse
+        </Typography>
+  
         <TextField
           label="Nombre de usuario"
           variant="outlined"
@@ -96,19 +119,16 @@ export default function Register() {
           onChange={handleChange}
           error={!!fieldErrors.username}
         />
-
         <TextField
           label="Correo electrónico"
           variant="outlined"
-          type="email"
           fullWidth
           margin="normal"
-          name="email"
-          value={formData.email}
+          name="mail"
+          value={formData.mail}
           onChange={handleChange}
-          error={!!fieldErrors.email}
+          error={!!fieldErrors.mail}
         />
-
         <TextField
           label="Contraseña"
           variant="outlined"
@@ -120,7 +140,6 @@ export default function Register() {
           onChange={handleChange}
           error={!!fieldErrors.password}
         />
-
         <TextField
           label="Confirmar contraseña"
           variant="outlined"
@@ -132,38 +151,28 @@ export default function Register() {
           onChange={handleChange}
           error={!!fieldErrors.confirmPassword}
         />
-
+  
         {errorMessages.length > 0 && (
           <Box sx={{ mt: 2, mb: 2 }}>
-            {errorMessages.map((message, index) => (
-              <Typography
-                key={index}
-                color="error"
-                sx={{ marginBottom: "0.5rem", display: "block" }}
-              >
-                {message}
+            {errorMessages.map((msg, i) => (
+              <Typography key={i} color="error" sx={{ mb: 1 }}>
+                {msg}
               </Typography>
             ))}
           </Box>
         )}
-
-        <Button
-          type="submit"
-          variant="contained"
-          fullWidth
-          className="login-button"
-          style={{ marginTop: "1rem" }}
-        >
-          Crear Cuenta
+  
+        <Button type="submit" variant="contained" fullWidth className="login-button">
+          Crear cuenta
         </Button>
-
-        <div style={{ marginTop: "1rem", textAlign: "center" }}>
-          <span>¿Ya tienes una cuenta? </span>
+  
+        <Typography sx={{ mt: 2, textAlign: "center" }}>
+          ¿Ya tienes una cuenta?{" "}
           <Link to="/login" style={{ color: "cyan", textDecoration: "none" }}>
             Inicia sesión
           </Link>
-        </div>
+        </Typography>
       </form>
-    </Box>
-  );
+    </div>
+  );  
 }
