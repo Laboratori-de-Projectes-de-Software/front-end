@@ -7,6 +7,7 @@ import Register from "./pages/Register";
 import RegisterBot from "./pages/RegisterBot";
 import RegisterLiga from "./pages/RegisterLiga";
 import Dashboard from "./pages/Dashboard";
+import League from "./pages/League";
 
 import "./styles.css";
 
@@ -27,6 +28,7 @@ function AppContent() {
           <Route path="/registerBot" element={<RegisterBot />} />
           <Route path="/registerLiga" element={<RegisterLiga />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/league" element={<League />} />
         </Routes>
       </main>
       {!hideLayout && <Footer />}

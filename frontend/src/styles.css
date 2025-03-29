@@ -237,3 +237,91 @@ html, body {
 .MuiInputLabel-root.Mui-error {
   color: red !important;
 }
+
+.liga-container {
+  padding-top: 20%;
+  padding-bottom: 120px;
+  }
+  
+.liga-container {
+  text-align: left; /* Asegura que el texto esté alineado a la izquierda */
+  padding-left: 20px; /* Añade un margen a la izquierda */
+  margin: 0 80px;
+}
+
+.scrollLeague {
+  display: flex;
+  overflow-x: auto;
+  gap: 16px;
+  padding: 16px;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+
+}
+
+.scrollLeague::-webkit-scrollbar {
+  height: 8px;
+}
+
+.scrollLeague::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 3px;
+}
+
+.scrollLeague-item {
+  flex: 0 0 auto;
+  width: 25%;
+  min-width: 200px;
+  scroll-snap-align: start;
+}
+
+.league-button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px; /* Espacio arriba para que no esté pegado */
+}
+
+.enfrentamiento-card {
+  background: linear-gradient(to top, #0a0f1d, #1a2333) !important;
+  color: white !important;
+  border: 1px solid cyan !important;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.5) !important;
+}
+  
+  /* Estilo para la tabla */
+.tabla-clasificacion {
+  width: 80%;
+  max-width: 1000px; /* Evita que se haga demasiado grande en pantallas grandes */
+  margin: 20px auto; /* Centra horizontalmente con margen arriba y abajo */
+  border-collapse: collapse; /* Para que las celdas no tengan espacio entre ellas */
+  background: rgba(0, 0, 0, 0.7); /* Fondo oscuro para la tabla */
+  border-radius: 8px; /* Bordes redondeados */
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.2); /* Sombra suave */
+  
+}
+/* Estilo para las celdas de la tabla */
+.tabla-clasificacion th, .tabla-clasificacion td {
+  padding: 12px;
+  text-align: center;
+  color: white; /* Texto blanco */
+}
+
+/* Encabezado de la tabla */
+.tabla-clasificacion th {
+  background-color: #333; /* Fondo oscuro para el encabezado */
+  font-weight: bold;
+}
+
+/* Fila de la tabla */
+.tabla-clasificacion tr:nth-child(even) {
+  background-color: #444; /* Fila de color alterno */
+}
+
+.tabla-clasificacion tr:nth-child(odd) {
+  background-color: #555; /* Otro color para filas alternas */
+}
+
+/* Hover para las filas de la tabla */
+.tabla-clasificacion tr:hover {
+  background-color: #00bcd4; /* Color de hover */
+}

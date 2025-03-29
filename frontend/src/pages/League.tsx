@@ -31,27 +31,11 @@ export default function Liga() {
         </Grid>
       ) : (
         // Vista con scroll horizontal (máx. 4 visibles)
-        <Box
-          sx={{
-            display: "flex",
-            overflowX: "auto",
-            gap: 2,
-            p: 2,
-            scrollSnapType: "x mandatory",
-            scrollbarWidth: "thin",
-            "&::-webkit-scrollbar": { height: 6 },
-            "&::-webkit-scrollbar-thumb": { background: "#888", borderRadius: 3 },
-          }}
-        >
+        <Box className= "scrollLeague" >
           {data.liga.enfrentamientos.map((match, index) => (
             <Box
               key={index}
-              sx={{
-                flex: "0 0 auto",
-                width: "25%",
-                minWidth: "200px",
-                scrollSnapAlign: "start",
-              }}
+              className="scrollLeague-item"
             >
               <Enfrentamiento
                 bot1={match.bot1}
@@ -63,9 +47,11 @@ export default function Liga() {
         </Box>
       )}
 
-      <Button variant="contained" sx={{ m: 2 }} onClick={toggleMatchesView}>
-        {showAllMatches ? "Ver menos" : "Ver todos"}
-      </Button>
+<Box className="league-button-container">
+  <Button variant="contained" onClick={toggleMatchesView}>
+    {showAllMatches ? "Ver menos" : "Ver todos"}
+  </Button>
+</Box>
 
       <TablaClasificacion data={data.liga.clasificacion} />
     </Box>
