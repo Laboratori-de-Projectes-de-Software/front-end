@@ -9,6 +9,7 @@ import RegisterLiga from "./pages/RegisterLiga";
 import Dashboard from "./pages/Dashboard";
 
 import "./styles.css";
+import React from "react";
 
 function AppContent() {
   const location = useLocation();
@@ -25,7 +26,9 @@ function AppContent() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/registerBot" element={<RegisterBot />} />
-          <Route path="/registerLiga" element={<RegisterLiga />} />
+          <Route path="/registerLiga" element={<RegisterLiga onSuccess={function (): void {
+            throw new Error("Function not implemented.");
+          } } />} />
           <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
       </main>

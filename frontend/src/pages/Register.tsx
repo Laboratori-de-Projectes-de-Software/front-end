@@ -2,6 +2,7 @@ import { useState } from "react";
 import { TextField, Button, Box, Typography } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import "../styles.css";
+import React from "react";
 
 interface FormData {
   username: string;
