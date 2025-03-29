@@ -9,7 +9,6 @@ import RegisterLiga from "./pages/RegisterLiga";
 import Dashboard from "./pages/Dashboard";
 
 import "./styles.css";
-import React from "react";
 
 function AppContent() {
   const location = useLocation();

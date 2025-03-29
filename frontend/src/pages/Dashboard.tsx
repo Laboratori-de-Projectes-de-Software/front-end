@@ -23,8 +23,6 @@ import BotRegisterForm from "./RegisterBot";
 import LeagueRegisterForm from "./RegisterLiga";
 
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import React from "react";
-
 
 
 type Section =

@@ -1,7 +1,6 @@
 import { Typography, Button, Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import "../styles.css";
-import React from "react";
 
 export default function Home() {
   const navigate = useNavigate();
