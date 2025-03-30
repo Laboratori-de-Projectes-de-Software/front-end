@@ -1,0 +1,118 @@
+.banner {
+    background-color: rgb(255, 255, 255);
+    background-size: contain;
+    background-position: right center;
+    background-repeat: no-repeat;
+    height: 850px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    text-align: left;
+    padding: 3em 55em;
+    position: relative; /* Necesario para posicionar correctamente la caja roja */
+}
+
+.pageContainer {
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 50vh; /* Ajusta según necesidad */
+    width: 20vw; /* Ajusta según necesidad */
+    position: absolute;
+    top: 50%; /* Ajusta según necesidad */
+    left: 10%; /* Mueve la caja más a la izquierda */
+    transform: translateY(-50%); /* Centrado vertical */
+    padding: 20px; /* Espacio interno */
+    margin-left: 100px; /* Espacio externo */
+    /*
+    border: 3px solid #4986f7;
+    border-radius: 20px;
+    */
+}
+
+.container {
+    text-align: center;
+    padding: 0 30px;
+    border-radius: 10px;
+    margin-right: 0px;
+}
+
+.inputGroup {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px; /* Espacio entre la etiqueta y el input */
+    margin-bottom: 10px;
+    padding: 10px;
+    color: #4986f7;
+    align-items: flex-start; /* Alinea todo a la izquierda */
+}
+
+.inputGroup label {
+    font-size: 14px;
+    font-weight: bold;
+    text-align: left;
+}
+
+.inputGroup input {
+    width: 100%; /* Ajusta el ancho al contenedor */
+    padding: 8px 0px;
+    border: none;
+    border-bottom: 2px solid #4986f7; /* Solo subrayado */
+    background: transparent;
+    color: #333;
+    font-size: 14px;
+    outline: none;
+    transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.inputGroup input:focus {
+    transform: scale(1.1);
+}
+
+.formContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+button {
+    margin-top: 10px;
+}
+
+p {
+    margin-top: 30px;
+}
+
+.navlink {
+    margin-top: 0px;
+    color: #4986f7;
+    font-size: 34px;
+}
+
+h1 {
+    font-size: 2em;
+    color: #4986f7;
+    margin-top: 100px;
+}
+
+.error {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.logo {
+    margin-top: 3px;
+    width: 70px;
+    height: 50px;
+}
+
+.homepage {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    width: 400px;
+}

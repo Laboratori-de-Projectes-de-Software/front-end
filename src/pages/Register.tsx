@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import NavBar from "../components/NavBar";
-import style from "./Home.module.css";
+import style from "./Register.module.css";
 import BackgroundImage from "../assets/img/saludo2.png";
+import logo from "../assets/img/logo.png";
 
 export function Register() {
     const [id, setId] = useState("");
@@ -11,6 +11,10 @@ export function Register() {
     const [error, setError] = useState("");
 
     const handleRegister = () => {
+        if (!id || !password || !confirmPassword) {
+            setError("Por favor, completa todos los campos");
+            return;
+        }
         if (password !== confirmPassword) {
             setError("Las contraseñas no coinciden");
             return;
@@ -22,16 +26,14 @@ export function Register() {
     };
 
     return (
-        <div style={{ 
-            backgroundImage: `url(${BackgroundImage})`, 
-            backgroundSize: "contain", 
-            backgroundPosition: "center", 
-            backgroundRepeat: "no-repeat",
-            backgroundAttachment: "fixed"
-        }}>
-            <NavBar />
-            <div className={style.pageContainer} style={{ marginRight: "450px" }}>
+        <div>
+            <div className={style.banner} style={{ backgroundImage: `url(${BackgroundImage})`}}>
+                <div className={style.pageContainer}>
                 <div className={style.container}>
+                <div className={style.homepage}>
+                        <img src={logo} alt="IA SuperLeague Logo" className={style.logo} />
+                        <a className={style.navlink} href={"Home"}>{"IA SUPERLEAGUE"}</a>
+                    </div>
                     <h1>Registro</h1>
                     <form className={style.formContainer}>
                         <div className={style.inputGroup}>
@@ -62,9 +64,10 @@ export function Register() {
                             />
                         </div>
                         {error && <p className={style.error}>{error}</p>}
-                        <button type="button" onClick={handleRegister}>Confirmar</button>
+                        <button type="button" onClick={handleRegister}>Registrarse</button>
                     </form>
                     <p>¿Ya tienes una cuenta? <Link to="/Login">Inicia sesión aquí</Link></p>
+                    </div>
                 </div>
             </div>
         </div>
