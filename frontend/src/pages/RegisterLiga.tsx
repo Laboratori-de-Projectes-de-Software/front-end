@@ -31,7 +31,7 @@ export default function LeagueRegisterForm() {
     };
 
     try {
-      const response = await fetch("http://localhost:8080/leagues/create", {
+      const response = await fetch("http://localhost:8080/leagues/create/league", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

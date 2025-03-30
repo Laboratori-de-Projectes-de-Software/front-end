@@ -102,7 +102,7 @@ export default function Dashboard() {
   const fetchUserLeagues = useCallback(async () => {
     setLoadingLeagues(true);
     try {
-      const res = await fetch(`http://localhost:8080/leagues/user/${username}`, {
+      const res = await fetch(`http://localhost:8080/leagues/all`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -116,7 +116,7 @@ export default function Dashboard() {
     } finally {
       setLoadingLeagues(false);
     }
-  }, [username, token]);
+  }, [token]);
 
   useEffect(() => {
     if (section === "myBots") fetchUserBots();
@@ -294,19 +294,37 @@ export default function Dashboard() {
 
         {section === "myLeagues" && (
           <>
-            <Typography variant="h4" color="cyan">🏆 Mis Ligas</Typography>
-            <Button variant="contained" sx={{ my: 2 }} onClick={() => setSection("registerLeague")}>+ Crear nueva liga</Button>
+            <Box sx={{ mb: 6 }}>
+              <Typography variant="h4" color="cyan" sx={{ mb: 2 }}>
+              🏆 Mis Ligas
+              </Typography>
+            </Box>
+
+            <Box sx={{ mb: 6 }}>
+              <Button variant="contained" sx={{ my: 2 }} onClick={() => setSection("registerLeague")}>
+                + Registrar nueva Liga 
+              </Button>
+            </Box>
+          </>
+        )}
+
+        {section === "allLeagues" && (
+          <>
+            <Typography variant="h4" color="cyan" sx={{ mb: 4 }}>Ver todas las Ligas</Typography>
+            
             {loadingLeagues ? <CircularProgress color="inherit" /> : (
               userLeagues.length > 0 ? (
                 <Box sx={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
                   {userLeagues.map((league) => (
-                    <LeagueCard key={league.id} name={league.name} creator={league.creatorUsername} />
+                    <LeagueCard key={league.id} id={league.id} name={league.name} />
                   ))}
                 </Box>
+
               ) : <Typography>No tienes ligas todavía.</Typography>
             )}
           </>
         )}
+
 
         {section === "registerLeague" && (
           <Box>
@@ -346,3 +364,4 @@ export default function Dashboard() {
     </Box>
   );
 }
+         
