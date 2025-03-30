@@ -29,6 +29,7 @@ import LeagueCard from "../components/LeagueCard";
 interface Bot {
   name: string;
   description: string;
+  endpoint?: string;
 }
 
 interface League {
@@ -54,6 +55,7 @@ export default function Dashboard() {
   const [loadingBots, setLoadingBots] = useState(false);
   const [loadingAllBots, setLoadingAllBots] = useState(false);
   const [loadingLeagues, setLoadingLeagues] = useState(false);
+  const [botToEdit, setBotToEdit] = useState<Bot | null>(null);
   const navigate = useNavigate();
   const username = localStorage.getItem("username") || "Desconocido";
   const token = localStorage.getItem("token") || "";
@@ -206,7 +208,10 @@ export default function Dashboard() {
             </Box>
 
             <Box sx={{ mb: 6 }}>
-              <Button variant="contained" onClick={() => setSection("registerBot")}>
+              <Button variant="contained" onClick={() => {
+                setBotToEdit(null);
+                setSection("registerBot");
+              }}>
                 + Registrar nuevo bot
               </Button>
             </Box>
@@ -221,7 +226,8 @@ export default function Dashboard() {
                     name={bot.name}
                     description={bot.description}
                     onEdit={() => {
-                      console.log("Editar bot:", bot.name);
+                      setBotToEdit(bot);
+                      setSection("registerBot");
                     }}
                   />
                 ))}
@@ -230,6 +236,41 @@ export default function Dashboard() {
               <Typography>Aún no tienes bots registrados.</Typography>
             )}
           </>
+        )}
+
+        {section === "registerBot" && (
+          <Box>
+            <Button
+              variant="outlined"
+              onClick={() => setSection("myBots")}
+              sx={{
+                mb: 2,
+                color: "cyan",
+                borderColor: "cyan",
+                minWidth: "40px",
+                padding: "6px",
+                borderRadius: "50%",
+                "&:hover": {
+                  backgroundColor: "rgba(0,255,255,0.1)",
+                  borderColor: "cyan",
+                },
+              }}
+            >
+              <ArrowBackIcon />
+            </Button>
+            <Box
+              sx={{
+                backgroundColor: "#111827",
+                padding: 4,
+                borderRadius: 2,
+                boxShadow: "0 0 15px rgba(0,255,255,0.2)",
+                maxWidth: 500,
+                margin: "0 auto",
+              }}
+            >
+              <BotRegisterForm botToEdit={botToEdit || undefined} onBotSaved={() => setSection("myBots")} />
+            </Box>
+          </Box>
         )}
 
         {section === "allBots" && (
@@ -265,41 +306,6 @@ export default function Dashboard() {
               ) : <Typography>No tienes ligas todavía.</Typography>
             )}
           </>
-        )}
-
-        {section === "registerBot" && (
-          <Box>
-            <Button
-              variant="outlined"
-              onClick={() => setSection("myBots")}
-              sx={{
-                mb: 2,
-                color: "cyan",
-                borderColor: "cyan",
-                minWidth: "40px",
-                padding: "6px",
-                borderRadius: "50%",
-                "&:hover": {
-                  backgroundColor: "rgba(0,255,255,0.1)",
-                  borderColor: "cyan",
-                },
-              }}
-            >
-              <ArrowBackIcon />
-            </Button>
-            <Box
-              sx={{
-                backgroundColor: "#111827",
-                padding: 4,
-                borderRadius: 2,
-                boxShadow: "0 0 15px rgba(0,255,255,0.2)",
-                maxWidth: 500,
-                margin: "0 auto",
-              }}
-            >
-              <BotRegisterForm />
-            </Box>
-          </Box>
         )}
 
         {section === "registerLeague" && (

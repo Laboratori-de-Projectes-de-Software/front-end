@@ -1,15 +1,32 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { TextField, Button, Box, Typography } from "@mui/material";
 
-export default function BotRegisterForm() {
-  const [name, setName] = useState("");
-  const [endpoint, setEndpoint] = useState("");
-  const [description, setDescription] = useState("");
+interface BotProps {
+  botToEdit?: {
+    name: string;
+    endpoint?: string;
+    description: string;
+  };
+  onBotSaved?: () => void;
+}
+
+export default function BotRegisterForm({ botToEdit, onBotSaved }: BotProps) {
+  const [name, setName] = useState(botToEdit?.name || "");
+  const [endpoint, setEndpoint] = useState(botToEdit?.endpoint || "");
+  const [description, setDescription] = useState(botToEdit?.description || "");
   const [errorMessage, setErrorMessage] = useState("");
+
+  useEffect(() => {
+    if (botToEdit) {
+      setName(botToEdit.name);
+      setEndpoint(botToEdit.endpoint || "");
+      setDescription(botToEdit.description);
+    }
+  }, [botToEdit]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setErrorMessage(""); // Limpiar errores previos
+    setErrorMessage("");
 
     if (!name.trim() || !description.trim()) {
       setErrorMessage("El nombre y la descripción son obligatorios.");
@@ -29,51 +46,53 @@ export default function BotRegisterForm() {
       name: name.trim(),
       endpoint: endpoint.trim() || null,
       description: description.trim(),
-      "user-id": username, // <- el backend espera un String como userId
+      "user-id": username,
     };
 
-    console.log("Enviando payload:", payload);
-
     try {
-      const response = await fetch("http://localhost:8080/bots/register", {
-        method: "POST",
+      const url = botToEdit
+        ? `http://localhost:8080/bots/${botToEdit.name}`
+        : "http://localhost:8080/bots/register";
+
+      const method = botToEdit ? "PUT" : "POST";
+
+      const response = await fetch(url, {
+        method,
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(payload),
       });
-    
+
       const text = await response.text();
       let data = null;
       if (text) {
-          data = JSON.parse(text);
+        data = JSON.parse(text);
       }
-    
-      if (response.status === 201) {
-        alert(data?.message || "Bot registrado correctamente.");
+
+      if (response.ok) {
+        alert(
+          data?.message ||
+            (botToEdit ? "Bot modificado correctamente." : "Bot registrado correctamente.")
+        );
         setName("");
         setEndpoint("");
         setDescription("");
-      } else if (response.status === 409) {
-        setErrorMessage("Ya existe un bot con ese endpoint.");
-      } else if (response.status === 400) {
-        setErrorMessage("Datos inválidos. Revisa los campos.");
-      } else if (response.status === 401) {
-        setErrorMessage("No autorizado. Inicia sesión nuevamente.");
+        if (onBotSaved) onBotSaved();
       } else {
-        setErrorMessage(data?.message || "Error inesperado al registrar el bot.");
+        setErrorMessage(data?.message || "Error al guardar el bot.");
       }
     } catch (error) {
       console.error("Error:", error);
       setErrorMessage("Ocurrió un error al enviar los datos.");
-    }    
+    }
   };
 
   return (
     <Box>
       <Typography variant="h4" color="cyan" gutterBottom>
-        Registrar Bot
+        {botToEdit ? "Modificar Bot" : "Registrar Bot"}
       </Typography>
 
       <form onSubmit={handleSubmit}>
@@ -85,6 +104,13 @@ export default function BotRegisterForm() {
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
+          disabled={!!botToEdit}
+          InputProps={{
+            style: { color: "white" },
+          }}
+          InputLabelProps={{
+            style: { color: "cyan" },
+          }}
         />
 
         <TextField
@@ -94,6 +120,12 @@ export default function BotRegisterForm() {
           margin="normal"
           value={endpoint}
           onChange={(e) => setEndpoint(e.target.value)}
+          InputProps={{
+            style: { color: "white" },
+          }}
+          InputLabelProps={{
+            style: { color: "cyan" },
+          }}
         />
 
         <TextField
@@ -106,6 +138,12 @@ export default function BotRegisterForm() {
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           required
+          InputProps={{
+            style: { color: "white" },
+          }}
+          InputLabelProps={{
+            style: { color: "cyan" },
+          }}
         />
 
         {errorMessage && (
@@ -115,7 +153,7 @@ export default function BotRegisterForm() {
         )}
 
         <Button type="submit" fullWidth variant="contained" sx={{ mt: 2 }}>
-          Registrar Bot
+          {botToEdit ? "Modificar Bot" : "Registrar Bot"}
         </Button>
       </form>
     </Box>
