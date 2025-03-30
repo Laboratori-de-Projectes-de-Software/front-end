@@ -96,22 +96,26 @@ export default function BotRegisterForm({ botToEdit, onBotSaved }: BotProps) {
       </Typography>
 
       <form onSubmit={handleSubmit}>
-        <TextField
-          label="Nombre del Bot"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-          disabled={!!botToEdit}
-          InputProps={{
-            style: { color: "white" },
-          }}
-          InputLabelProps={{
-            style: { color: "cyan" },
-          }}
-        />
+      <TextField
+        label="Nombre del Bot"
+        variant="outlined"
+        fullWidth
+        margin="normal"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        required
+        disabled={!!botToEdit}
+        InputLabelProps={{
+          style: { color: "cyan" },
+        }}
+        inputProps={{
+          style: {
+            color: "white",
+            WebkitTextFillColor: "white", // ¡esto es lo que arregla el color en deshabilitado!
+          },
+        }}
+      />
+
 
         <TextField
           label="Endpoint (opcional)"
