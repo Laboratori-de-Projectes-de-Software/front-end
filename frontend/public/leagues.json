@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "name": "Liga Bot Alpha",
+    "creatorUsername": "usuario1",
+    "status": "INACTIVE"
+  },
+  {
+    "id": 2,
+    "name": "Liga de Fuego",
+    "creatorUsername": "usuario1",
+    "status": "ACTIVE"
+  },
+  {
+    "id": 3,
+    "name": "Liga Legendaria",
+    "creatorUsername": "usuario1",
+    "status": "FINISHED"
+  },
+  {
+    "id": 4,
+    "name": "Liga Nova",
+    "creatorUsername": "usuario1",
+    "status": "INACTIVE"
+  },
+  {
+    "id": 5,
+    "name": "Liga Final",
+    "creatorUsername": "usuario1",
+    "status": "FINISHED"
+  }
+]

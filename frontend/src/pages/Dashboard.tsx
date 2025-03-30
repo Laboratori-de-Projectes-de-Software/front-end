@@ -10,6 +10,15 @@ import {
   ListItemText,
   Divider,
   CircularProgress,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  DialogContent,
+  DialogActions,
+  Dialog,
+  DialogTitle,
+  IconButton,
 } from "@mui/material";
 import {
   Dashboard as DashboardIcon,
@@ -17,7 +26,7 @@ import {
   EmojiEvents as LeagueIcon,
   Public as AllIcon,
   Logout as LogoutIcon,
-} from "@mui/icons-material";
+  Close as CloseIcon } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import BotRegisterForm from "./RegisterBot";
 import LeagueRegisterForm from "./RegisterLiga";
@@ -36,6 +45,7 @@ interface League {
   id: number;
   name: string;
   creatorUsername: string;
+  status: "ACTIVE" | "INACTIVE" | "FINISHED";
 }
 
 type Section =
@@ -59,6 +69,12 @@ export default function Dashboard() {
   const username = localStorage.getItem("username") || "Desconocido";
   const token = localStorage.getItem("token") || "";
   const [allLeagues, setAllLeagues] = useState<League[]>([]);
+  const [leagueFilter, setLeagueFilter] = useState<string[]>(["ALL"]);
+  const [selectedLeague, setSelectedLeague] = useState<League | null>(null);
+  const [popupOpen, setPopupOpen] = useState(false);
+
+
+
 
   const handleLogout = () => {
     localStorage.clear();
@@ -122,9 +138,27 @@ export default function Dashboard() {
   useEffect(() => {
     if (section === "myBots") fetchUserBots();
     else if (section === "allBots") fetchAllBots();
-    else if (section === "allLeagues") fetchAllLeagues(); // ✅
+    else if (section === "allLeagues") fetchAllLeagues(); 
   }, [section, fetchUserBots, fetchAllBots, fetchAllLeagues]);
+
+  useEffect(() => {
+    if (section === "myLeagues") {
+      const loadLocalLeagues = async () => {
+        setLoadingLeagues(true);
+        try {
+          const res = await fetch("/leagues.json"); // ✅ ruta relativa desde public
+          const data = await res.json();
+          setAllLeagues(data);
+        } catch (err) {
+          console.error("Error al cargar leagues.json:", err);
+        } finally {
+          setLoadingLeagues(false);
+        }
+      };
   
+      loadLocalLeagues();
+    }
+  }, [section]);
 
   return (
     <Box sx={{ display: "flex", minHeight: "100vh" }}>
@@ -302,13 +336,71 @@ export default function Dashboard() {
               </Typography>
             </Box>
 
-            <Box sx={{ mb: 6 }}>
-              <Button variant="contained" sx={{ my: 2 }} onClick={() => setSection("registerLeague")}>
-                + Registrar nueva Liga 
+            {/* Contenedor centrado con ancho fijo */}
+            <Box sx={{ display: "flex", flexDirection: "column", alignItems: "left", gap: 6, mb: 6 }}>
+              <Button
+                variant="contained"
+                onClick={() => setSection("registerLeague")}
+                sx={{ width: "300px" }}
+              >
+                + Registrar nueva Liga
               </Button>
+
+              <FormControl sx={{ width: "300px" }} variant="outlined">
+                <InputLabel id="league-filter-label" sx={{ color: "cyan" }}>
+                  Filtrar por estado
+                </InputLabel>
+                <Select
+                  labelId="league-filter-label"
+                  id="league-filter"
+                  value={leagueFilter[0]}
+                  onChange={(e) => setLeagueFilter([e.target.value])}
+                  label="Filtrar por estado"
+                  sx={{
+                    color: "white",
+                    ".MuiOutlinedInput-notchedOutline": { borderColor: "cyan" },
+                    "&.Mui-focused .MuiOutlinedInput-notchedOutline": { borderColor: "cyan" },
+                    "&:hover .MuiOutlinedInput-notchedOutline": { borderColor: "cyan" },
+                    "& .MuiSvgIcon-root": { color: "cyan" },
+                  }}
+                >
+                  <MenuItem value="ALL">Todas</MenuItem>
+                  <MenuItem value="INACTIVE">🟡 Inactivas</MenuItem>
+                  <MenuItem value="ACTIVE">🟢 Activas</MenuItem>
+                  <MenuItem value="FINISHED">🔴 Finalizadas</MenuItem>
+                </Select>
+              </FormControl>
             </Box>
+
+            {loadingLeagues ? (
+              <CircularProgress color="inherit" />
+            ) : (
+              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
+                {allLeagues
+                  .filter(
+                    (league) =>
+                      leagueFilter.includes("ALL") ||
+                      leagueFilter.includes(league.status)
+                  )
+                  .map((league) => (
+                    <LeagueCard
+                      key={league.id}
+                      id={league.id}
+                      name={league.name}
+                      status={league.status}
+                      onView={() => {
+                        setSelectedLeague(league); // 👈 capturas aquí la liga
+                        setPopupOpen(true);
+                      }}
+                    />
+                ))}
+
+              </Box>
+            )}
           </>
         )}
+
+
 
         {section === "allLeagues" && (
           <>
@@ -318,7 +410,7 @@ export default function Dashboard() {
               allLeagues.length > 0 ? (
                 <Box sx={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
                   {allLeagues.map((league) => (
-                    <LeagueCard key={league.id} id={league.id} name={league.name} />
+                    <LeagueCard key={league.id} id={league.id} name={league.name} status={"ACTIVE"} />
                   ))}
                 </Box>
               ) : <Typography>No hay ligas disponibles.</Typography>
@@ -363,7 +455,70 @@ export default function Dashboard() {
           </Box>
         )}
       </Box>
+
+      <Dialog open={popupOpen} onClose={() => setPopupOpen(false)} maxWidth="sm" fullWidth>
+        <Box
+          sx={{
+            position: "relative",
+            p: 4,
+            backgroundColor: "#0a0f1d",
+            color: "white",
+            borderRadius: 2,
+          }}
+        >
+          {/* ❌ Botón cerrar */}
+          <IconButton
+            onClick={() => setPopupOpen(false)}
+            sx={{
+              position: "absolute",
+              right: 16,
+              top: 16,
+              color: "white",
+              backgroundColor: "rgba(255,255,255,0.1)",
+              "&:hover": { backgroundColor: "rgba(255,255,255,0.2)" }
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+
+          {/* Título */}
+          <DialogTitle sx={{ fontSize: 24, fontWeight: "bold", mb: 2, color: "cyan", display: "flex", alignItems: "center", gap: 1 }}>
+            🏆 Detalles de la liga
+          </DialogTitle>
+
+          {/* Contenido */}
+          <DialogContent>
+            <Typography variant="h5" sx={{ mb: 2, fontWeight: "bold", color: "white" }}>
+              {selectedLeague?.name}
+            </Typography>
+
+            <Typography variant="subtitle1" sx={{ mb: 1, color: "lightgray" }}>
+              Participantes:
+            </Typography>
+
+            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
+              <Typography>- BotAlpha</Typography>
+              <Typography>- BotBeta</Typography>
+              <Typography>- BotGamma</Typography>
+            </Box>
+          </DialogContent>
+
+          {/* Botones */}
+          <DialogActions sx={{ mt: 4, justifyContent: "flex-end" }}>
+            <Button variant="outlined" disabled sx={{ color: "white", borderColor: "gray", opacity: 0.5 }}>
+              Editar
+            </Button>
+            <Button variant="contained" disabled sx={{ backgroundColor: "gray", color: "white", opacity: 0.5 }}>
+              Iniciar liga
+            </Button>
+          </DialogActions>
+        </Box>
+      </Dialog>
+
+
+
     </Box>
   );
 }
+
          
