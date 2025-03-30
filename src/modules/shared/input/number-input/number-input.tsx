@@ -20,7 +20,7 @@ const NumberInput: FC<Props> = ({value, setValue, text, min, max, step}) => {
           className="form-field__input"
           type="number"
           onChange={(e) => setValue(e.target.value)}
-          value={value || 0}
+          value={value || ''}
           {...(min !== undefined ? { min } : {})}
           {...(max !== undefined ? { max } : {})}
           {...(step !== undefined ? { step } : {})}
