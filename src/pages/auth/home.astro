@@ -1,17 +1,13 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import Icons from "../../components/HomeMenu.astro";
-import HomeLayout from "../../layouts/HomeLayout.astro";
 import AplicationLayout from "../../layouts/AplicationLayout.astro";
+import HistorySearcher from "../../components/search/HistorySearcher";
 
 const user = null;
 // cuando el user este autenticado y tenga img de perfil cambiar a const user = { photoUrl: "/path/to/profile.jpg" }
 ---
 
 <Layout title="Home Menu">
-  <AplicationLayout client:only>
-    <HomeLayout user={user}>
-      <Icons />
-    </HomeLayout>
-  </AplicationLayout>
+  <AplicationLayout />
 </Layout>
