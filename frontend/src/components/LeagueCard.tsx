@@ -2,18 +2,16 @@
 import { Card, CardContent, Typography } from "@mui/material";
 
 interface Props {
-    name: string;
-    username: string;
-    createdAt: string;
+  name: string;
+  creator: string; 
 }
 
-export default function LeagueCard({ name, username, createdAt }: Props) {
+export default function LeagueCard({ name, creator}: Props) {
   return (
     <Card>
       <CardContent>
         <Typography variant="h6">{name}</Typography>
-        <Typography variant="body2">Creador: {username}</Typography>
-        <Typography variant="body2">Fecha: {createdAt}</Typography>
+        {creator && <Typography variant="body2">Creador: {creator}</Typography>}
       </CardContent>
     </Card>
   );

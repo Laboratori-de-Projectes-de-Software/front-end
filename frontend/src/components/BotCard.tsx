@@ -31,18 +31,21 @@ export default function BotCard({ name, description, onEdit }: Props) {
         <Typography variant="body2">{description}</Typography>
       </CardContent>
 
-      <IconButton
-        onClick={onEdit}
-        sx={{
-          position: "absolute",
-          top: 8,
-          right: 8,
-          color: "cyan",
-          "&:hover": { color: "#00ffffaa" },
-        }}
-      >
-        <EditIcon />
-      </IconButton>
+      {onEdit && (
+        <IconButton
+          onClick={onEdit}
+          sx={{
+            position: "absolute",
+            top: 8,
+            right: 8,
+            color: "cyan",
+            "&:hover": { color: "#00ffffaa" },
+          }}
+        >
+          <EditIcon />
+        </IconButton>
+      )}
+
     </Card>
   );
 }
