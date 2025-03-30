@@ -8,11 +8,11 @@ interface Props {
   name: string;
 }
 
-export default function LeagueCard({ id, name }: Props) {
+export default function LeagueCard({ name }: Props) {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate(`/league/${id}`);
+    navigate(`/league`);
   };
 
   return (

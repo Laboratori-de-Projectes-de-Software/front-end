@@ -51,7 +51,6 @@ export default function Dashboard() {
   const [section, setSection] = useState<Section>("dashboard");
   const [userBots, setUserBots] = useState<Bot[]>([]);
   const [allBots, setAllBots] = useState<Bot[]>([]);
-  const [userLeagues, setUserLeagues] = useState<League[]>([]);
   const [loadingBots, setLoadingBots] = useState(false);
   const [loadingAllBots, setLoadingAllBots] = useState(false);
   const [loadingLeagues, setLoadingLeagues] = useState(false);
@@ -59,6 +58,7 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const username = localStorage.getItem("username") || "Desconocido";
   const token = localStorage.getItem("token") || "";
+  const [allLeagues, setAllLeagues] = useState<League[]>([]);
 
   const handleLogout = () => {
     localStorage.clear();
@@ -99,30 +99,32 @@ export default function Dashboard() {
     }
   }, [token]);
 
-  const fetchUserLeagues = useCallback(async () => {
+  const fetchAllLeagues = useCallback(async () => {
     setLoadingLeagues(true);
     try {
-      const res = await fetch(`http://localhost:8080/leagues/all`, {
+      const res = await fetch("http://localhost:8080/leagues/all", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
       if (res.ok) {
         const data = await res.json();
-        setUserLeagues(data);
+        setAllLeagues(data);
       }
     } catch (err) {
-      console.error("Error al obtener ligas del usuario", err);
+      console.error("Error al obtener todas las ligas", err);
     } finally {
       setLoadingLeagues(false);
     }
   }, [token]);
 
+
   useEffect(() => {
     if (section === "myBots") fetchUserBots();
     else if (section === "allBots") fetchAllBots();
-    else if (section === "myLeagues") fetchUserLeagues();
-  }, [section, fetchUserBots, fetchAllBots, fetchUserLeagues]);
+    else if (section === "allLeagues") fetchAllLeagues(); // ✅
+  }, [section, fetchUserBots, fetchAllBots, fetchAllLeagues]);
+  
 
   return (
     <Box sx={{ display: "flex", minHeight: "100vh" }}>
@@ -313,17 +315,17 @@ export default function Dashboard() {
             <Typography variant="h4" color="cyan" sx={{ mb: 4 }}>Ver todas las Ligas</Typography>
             
             {loadingLeagues ? <CircularProgress color="inherit" /> : (
-              userLeagues.length > 0 ? (
+              allLeagues.length > 0 ? (
                 <Box sx={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
-                  {userLeagues.map((league) => (
+                  {allLeagues.map((league) => (
                     <LeagueCard key={league.id} id={league.id} name={league.name} />
                   ))}
                 </Box>
-
-              ) : <Typography>No tienes ligas todavía.</Typography>
+              ) : <Typography>No hay ligas disponibles.</Typography>
             )}
           </>
         )}
+
 
 
         {section === "registerLeague" && (
