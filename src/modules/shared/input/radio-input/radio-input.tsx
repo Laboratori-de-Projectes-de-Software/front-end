@@ -14,9 +14,9 @@ type Props = {
   display?: 'row' | 'column';
 }
 
-const RadioInput: FC<Props> = ({value, setValue, options, text}) => {
+const RadioInput: FC<Props> = ({value, setValue, options, text, display='row'}) => {
   return (
-    <div className="league-filters-input-container">
+    <div className={`league-filters-input-container-${display}`}>
             {text ? 
                 <label
                 htmlFor="options-input"
@@ -28,7 +28,7 @@ const RadioInput: FC<Props> = ({value, setValue, options, text}) => {
                 <></>
             }
             <div className="league-filters-container-radio-options">
-                <div className="league-filters-input-container-radio">
+                <div className={`league-filters-input-container-radio-${display}`}>
                     {
                         options.map((option) => (
                             <div key={option.value} className="league-filters-radio-option">
