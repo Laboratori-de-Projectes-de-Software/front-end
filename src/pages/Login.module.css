@@ -90,6 +90,13 @@ p {
     margin-top: 0px;
     color: #4986f7;
     font-size: 34px;
+    transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.navlink:hover {
+    cursor: pointer;
+    color: #3776e4;
+    transform: scale(1.02);
 }
 
 h1 {

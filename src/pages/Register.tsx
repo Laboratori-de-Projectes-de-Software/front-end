@@ -37,7 +37,7 @@ export function Register() {
                     <h1>Registro</h1>
                     <form className={style.formContainer}>
                         <div className={style.inputGroup}>
-                            <label>ID:</label>
+                            <label>Usuario:</label>
                             <input 
                                 type="text" 
                                 value={id} 

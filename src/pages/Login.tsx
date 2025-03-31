@@ -31,7 +31,7 @@ export function Login() {
                     <h1>Iniciar Sesión</h1>
                     <form className={style.formContainer}>
                         <div className={style.inputGroup}>
-                            <label>ID:</label>
+                            <label>Usuario:</label>
                             <input 
                                 type="text" 
                                 value={id} 
