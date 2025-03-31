@@ -123,7 +123,7 @@ const NeuralBackground: React.FC = () => {
 
           if (dist < maxDistance) {
             const alpha = 1 - dist / maxDistance;
-            ctx.strokeStyle = `rgba(100, 149, 237, ${alpha * 0.4})`;
+            ctx.strokeStyle = `rgba(155, 235, 183, ${alpha * 0.4})`;
             ctx.lineWidth = 0.6;
             ctx.beginPath();
             ctx.moveTo(pointsRef.current[i].x, pointsRef.current[i].y);
@@ -137,7 +137,7 @@ const NeuralBackground: React.FC = () => {
       for (const p of pointsRef.current) {
         ctx.beginPath();
         ctx.arc(p.x, p.y, 1.5, 0, Math.PI * 2);
-        ctx.fillStyle = "#64B5F6";
+        ctx.fillStyle = "#1DB954";
         ctx.fill();
 
         // Actualizar posición (movimiento lento)
