@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Logo from "./Logo";
 import "./Navbar.css";
+import Button from "./Button";
 
 interface NavbarProps {
   username?: string;
@@ -58,9 +59,7 @@ const Navbar: React.FC<NavbarProps> = ({ username = "Usuario" }) => {
               {username.charAt(0).toUpperCase()}
             </div>
           </div>
-          <button className="logout-button" onClick={handleLogout}>
-            Salir
-          </button>
+          <Button onClick={handleLogout} label="Salir" className="logout-button"/>
         </div>
       </nav>
 
