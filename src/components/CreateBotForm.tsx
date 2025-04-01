@@ -36,16 +36,16 @@ export const CreateBotForm = ({ className }: { className?: string }) => {
   };
 
   return (
-    <div className="w-full p-2 sm:p-4">
-      <div className="bg-zinc-700 rounded-xl w-full p-3 sm:p-6 relative flex flex-col gap-4 sm:gap-6">
-        <form onSubmit={handleSubmit} className="flex flex-col lg:flex-row w-full gap-4 sm:gap-6">
-          
-          <div className="flex-1 bg-zinc-600 rounded-xl flex items-center justify-center min-h-[200px] sm:min-h-[300px]">
-            <label htmlFor="upload" className="cursor-pointer w-full h-full flex items-center justify-center p-4">
+    <div className="w-full p-4">
+      <div className="bg-slate-900 border border-gray-700 rounded-xl w-full p-6 relative flex flex-col gap-6">
+        <form onSubmit={handleSubmit} className="flex flex-col lg:flex-row gap-6">
+          {/* Imagen Upload */}
+          <div className="flex-1 bg-slate-800 rounded-xl border border-gray-700 overflow-hidden">
+            <label htmlFor="upload" className="cursor-pointer w-full h-full flex items-center justify-center min-h-[300px] relative group">
               {imagePreview ? (
-                <img src={imagePreview} alt="preview" className="w-full h-full object-cover rounded-xl" />
+                <img src={imagePreview} alt="preview" className="w-full h-full object-cover group-hover:opacity-80 transition-opacity" />
               ) : (
-                <div className="bg-[#222] hover:bg-[#333] text-white px-4 py-2 rounded-full text-sm sm:text-base">
+                <div className="bg-black/70 text-white px-4 py-2 rounded-full border border-gray-700 group-hover:bg-black/90 transition-colors">
                   Upload Image
                 </div>
               )}
@@ -60,30 +60,30 @@ export const CreateBotForm = ({ className }: { className?: string }) => {
           </div>
 
           {/* Form fields section */}
-          <div className="flex-1 flex flex-col gap-3 sm:gap-4">
+          <div className="flex-1 flex flex-col gap-4">
             {/* Prompt textarea */}
-            <div className="bg-zinc-600 rounded-xl p-3 sm:p-4 relative min-h-[120px] sm:min-h-[150px]">
-              <div className="absolute top-0 right-0 bg-zinc-800 text-white text-xs px-2 sm:px-3 py-1 rounded-bl-xl">
-                PROMPT
-              </div>
+            <div className="relative">
               <textarea 
-                className="w-full h-full bg-transparent text-white placeholder-zinc-400 focus:outline-none resize-none text-sm sm:text-base"
+                className="w-full bg-slate-800 text-white rounded-xl py-3 px-4 min-h-[200px] border border-gray-700 resize-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-20"
                 placeholder="Escribe el prompt..."
                 value={form.prompt}
                 onChange={(e) => setForm({ ...form, prompt: e.target.value })}
               />
+              <span className="absolute top-2 right-2 bg-black/70 text-white text-xs px-3 py-1 rounded-full border border-gray-700">
+                PROMPT
+              </span>
             </div>
 
             {/* Name input */}
             <div className="relative">
               <input 
                 type="text"
-                className="w-full bg-zinc-600 text-white rounded-xl py-2 px-3 sm:px-4 pr-16 sm:pr-20 text-sm sm:text-base"
+                className="w-full bg-slate-800 text-white rounded-xl py-3 px-4 pr-20 border border-gray-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-20"
                 placeholder="Nombre del bot"
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
               />
-              <span className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-zinc-800 text-white text-xs px-2 sm:px-3 py-1 rounded-full">
+              <span className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/70 text-white text-xs px-3 py-1 rounded-full border border-gray-700">
                 NAME
               </span>
             </div>
@@ -92,12 +92,12 @@ export const CreateBotForm = ({ className }: { className?: string }) => {
             <div className="relative">
               <input 
                 type="text"
-                className="w-full bg-zinc-600 text-white rounded-xl py-2 px-3 sm:px-4 pr-16 sm:pr-20 text-sm sm:text-base"
+                className="w-full bg-slate-800 text-white rounded-xl py-3 px-4 pr-20 border border-gray-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-20"
                 placeholder="URL de referencia"
                 value={form.referenceUrl}
                 onChange={(e) => setForm({ ...form, referenceUrl: e.target.value })}
               />
-              <span className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-zinc-800 text-white text-xs px-2 sm:px-3 py-1 rounded-full">
+              <span className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/70 text-white text-xs px-3 py-1 rounded-full border border-gray-700">
                 URL
               </span>
             </div>
@@ -105,7 +105,7 @@ export const CreateBotForm = ({ className }: { className?: string }) => {
             {/* Submit button */}
             <button 
               type="submit"
-              className="bg-gray-400 hover:bg-gray-300 text-black rounded-full py-2 sm:py-3 mt-2 font-bold text-sm sm:text-base"
+              className="py-2.5 px-6 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 mt-2"
             >
               Create Bot
             </button>
