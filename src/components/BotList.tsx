@@ -64,26 +64,30 @@ interface BotCardProps {
 }
 
 const BotCard: React.FC<BotCardProps> = ({ bot }) => {
+  const botUrl = bot.name.toLowerCase().replace(/\s+/g, '');
+  
   return (
-    <div className="relative bg-white rounded-xl shadow-md overflow-hidden">
-      <img
-        src={bot.image}
-        alt={bot.name}
-        className="w-full h-40 object-cover"
-      />
-      <div className="absolute top-2 left-2 bg-black text-white text-xs px-3 py-1 rounded-full">
-        {bot.emotion}
-      </div>
-      <div className="absolute bottom-2 left-2 flex items-center gap-2">
+    <a href={`/auth/bots/${botUrl}`} className="block">
+      <div className="relative bg-white rounded-xl shadow-md overflow-hidden hover:scale-105 transition-all duration-300">
         <img
-          src={bot.user}
-          alt="user"
-          className="w-6 h-6 rounded-full border-2 border-white"
+          src={bot.image}
+          alt={bot.name}
+          className="w-full h-40 object-cover"
         />
-        <span className="text-white text-xs font-bold bg-black px-2 py-1 rounded-full">
-          {bot.name}
-        </span>
+        <div className="absolute top-2 left-2 bg-black text-white text-xs px-3 py-1 rounded-full">
+          {bot.emotion}
+        </div>
+        <div className="absolute bottom-2 left-2 flex items-center gap-2">
+          <img
+            src={bot.user}
+            alt="user"
+            className="w-6 h-6 rounded-full border-2 border-white"
+          />
+          <span className="text-white text-xs font-bold bg-black px-2 py-1 rounded-full">
+            {bot.name}
+          </span>
+        </div>
       </div>
-    </div>
+    </a>
   );
 };
