@@ -2,6 +2,7 @@ import {Button, Col, Row} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBars, faHouse, faRobot, faTrophy, faUser} from "@fortawesome/free-solid-svg-icons";
 import {NavLink, useLocation} from "react-router-dom";
+import {useFetchPerfil} from "../hooks/usePerfilUsuario.tsx";
 
 type MenuProps = {
     menuExpanded: boolean;
@@ -11,6 +12,9 @@ type MenuProps = {
 function MenuComponent({menuExpanded, handleMenuExpanded}: MenuProps) {
     const location = useLocation();
 
+    //TEMPORAL
+    const id = `0`;
+    const { perfil } = useFetchPerfil(id);
     return (
         <>
             <div className="d-flex flex-column justify-content-between custom-primary py-5 px-3 pe-4" style={{ height: '100%'}}>
@@ -69,11 +73,11 @@ function MenuComponent({menuExpanded, handleMenuExpanded}: MenuProps) {
                     </NavLink>
                 </div>
                 <div className="d-flex">
-                    <NavLink to="/perfil" className={`d-flex w-100 align-items-center text-decoration-none text-white py-1 px-4 ${!menuExpanded ? "justify-content-center": ""}`}>
+                    <NavLink to={`/perfil/${id}`} className={`d-flex w-100 align-items-center text-decoration-none text-white py-1 px-4 ${!menuExpanded ? "justify-content-center": ""}`}>
                         <FontAwesomeIcon icon={faUser} size={"xl"}/>
                         {
                             menuExpanded &&
-                            <p className="fs-5 ms-4 mb-0">Manolo</p>
+                            <p className="fs-5 ms-4 mb-0">{perfil?.name}</p>
                         }
                     </NavLink>
                 </div>

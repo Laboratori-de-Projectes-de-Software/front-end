@@ -1,21 +1,39 @@
 import { useState, useEffect } from "react";
-import { User } from "../types/Usuario.tsx";
-import imagen from "../assets/img/shrekperfil.png";
+import {perfilUsuario} from "../types/perfilUsuario.tsx";
+import defaultImagen  from "../assets/img/shrekperfil.png"
+import {API_PERFIL} from "../config.tsx";
 
-export const useUsuario = () => {
-    const [usuario, setUsuario] = useState<User | null>(null);
+export const useFetchPerfil = (id: string | undefined) => {
+    const [perfil, setPerfil] = useState<perfilUsuario | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        // CAMBIAR ESTO POR UN FETCH API UNA VEZ SE CONECTE CON EL BACK
-        setUsuario({
-            id: "1",
-            name: "Adri",
-            email: "correo@example.com",
-            imagenUrl: imagen,
-            bots:2,
-            ligas:3,
-        });
+        const fetchPerfil = async () => {
+            try {
+                console.log("ejecuto el hook");
+                //TEMPORAL EL USER ID Q SE PASA
+                const response = await fetch(`${API_PERFIL}${id}`);
+                if (!response.ok) {
+                    throw new Error("Error al obtener el perfil");
+                }
+
+                const data = await response.json();
+                data.imagenUrl = data.imagenUrl != null
+                    ? data.imagenUrl
+                    : defaultImagen;
+
+                console.log(data);
+                setPerfil(data);
+            } catch (err) {
+                setError((err as Error).message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchPerfil();
     }, []);
 
-    return { usuario };
+    return { perfil, loading, error };
 };
