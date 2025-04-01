@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import NeuralBackground from "../components/NeuralBackground";
 import "./Dashboard.css";
+import Button from "../components/Button";
 
 const Dashboard: React.FC = () => {
   // Estados para almacenar datos del dashboard
@@ -106,13 +107,12 @@ const Dashboard: React.FC = () => {
                     </div>
                   ))}
                   <div className="create-new">
-                    <button
-                      className="create-button"
-                      onClick={() => (window.location.href = "/bots/new")}
-                    >
-                      + Crear nuevo bot
-                    </button>
-                  </div>
+                    <Button
+                        className={"create-new-button"}
+                        label="Crear bot"
+                        onClick={() => (window.location.href = "/bots/new")}
+                    />
+                    </div>
                 </div>
               </div>
 
