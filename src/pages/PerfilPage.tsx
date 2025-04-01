@@ -1,15 +1,22 @@
 
-import {useUsuario} from "../hooks/usePerfilUsuario.tsx";
 import { FaRobot, FaTrophy } from "react-icons/fa"; // Íconos para estadísticas
 import { FiUser } from "react-icons/fi"; // Ícono para el encabezado//
+import {useFetchPerfil} from "../hooks/usePerfilUsuario.tsx";
 import robotFoto from "../assets/img/robot.png"
 import ligaFoto from "../assets/img/liga.png"
+import {useParams} from "react-router-dom";
 
+const PerfilPage: React.FC = () => {
 
-const ProfilePage: React.FC = () => {
-    const { usuario } = useUsuario();
+    //TEMPORAL HASTA QUE ESTÉ LA AUTENTICACIÓN
+    const { id } = useParams();
+    console.log(id);
+    const { perfil, loading, error } = useFetchPerfil(id);
 
-    if (!usuario) return <p>Cargando...</p>;
+    if (loading) return <p className="text-center mt-5">Cargando perfil...</p>;
+    if (error) return <p className="text-danger text-center mt-5">Error: {error}</p>;
+    if (!perfil) return null;
+
 
     return (
         <div className="container mt-4">
@@ -19,13 +26,13 @@ const ProfilePage: React.FC = () => {
                 <h3 className="fw-bold">MI PERFIL</h3>
             </div>
 
-            {/* TARJETA DE PERFIL GRANDE */}
+            {/* TARJETA DE PERFIL*/}
             <div className="card p-5 shadow-lg bg-dark text-white rounded-4">
                 <div className="row align-items-center">
                     {/*IMAGEN PERFIL*/}
                     <div className="col-md-4 d-flex flex-column align-items-center">
                         <img
-                            src={usuario.imagenUrl}
+                            src={perfil.imagenUrl}
                             alt="Avatar"
                             className="rounded-circle mb-3"
                             style={{
@@ -39,14 +46,14 @@ const ProfilePage: React.FC = () => {
                     </div>
                     {/* Datos del usuario */}
                     <div className="col-md-8">
-                        <h2 className="fw-bold">{usuario.name}</h2>
-                        <p className="text-light fs-4 fw-semibold">{usuario.email}</p>
+                        <h2 className="fw-bold">{perfil.name}</h2>
+                        <p className="text-light fs-4 fw-semibold">{perfil.email}</p>
                         <div className="d-flex gap-4 fs-4">
                              <span className="d-flex align-items-center">
-                                <FaRobot className="me-2" size={24}/> {usuario.bots} Bots
+                                <FaRobot className="me-2" size={24}/> {perfil.bots} Bots
                             </span>
                             <span className="d-flex align-items-center">
-                                <FaTrophy className="me-2" size={24}/> {usuario.ligas} Ligas
+                                <FaTrophy className="me-2" size={24}/> {perfil.ligas} Ligas
                             </span>
                         </div>
                     </div>
@@ -89,4 +96,4 @@ const ProfilePage: React.FC = () => {
                 );
                 };
 
-export default ProfilePage;
+export default PerfilPage;

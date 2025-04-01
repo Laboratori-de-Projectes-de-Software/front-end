@@ -21,7 +21,7 @@ export function App() {
               <Route path="/" element={<Home />} />
               <Route path="/mis-bots" element={<MisBots />} />
               <Route path="/mis-ligas" element={<MisLigas />} />
-              <Route path="/perfil" element={<PerfilPage />} />
+              <Route path="/perfil/:id" element={<PerfilPage />} />
             </Routes>
           </Col>
         </Row>
