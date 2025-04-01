@@ -17,7 +17,6 @@ export function Login() {
         setError("");
         console.log("ID:", id);
         console.log("Password:", password);
-        // Aquí podrías agregar lógica para enviar los datos al backend
     };
 
     return (
