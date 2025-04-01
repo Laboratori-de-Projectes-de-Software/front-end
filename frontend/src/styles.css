@@ -238,16 +238,7 @@ html, body {
   color: red !important;
 }
 
-.liga-container {
-  padding-top: 20%;
-  padding-bottom: 120px;
-  }
-  
-.liga-container {
-  text-align: left; /* Asegura que el texto esté alineado a la izquierda */
-  padding-left: 20px; /* Añade un margen a la izquierda */
-  margin: 0 80px;
-}
+
 
 .scrollLeague {
   display: flex;

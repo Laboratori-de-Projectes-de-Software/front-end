@@ -33,6 +33,7 @@ import LeagueRegisterForm from "./RegisterLiga";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import BotCard from "../components/BotCard";
 import LeagueCard from "../components/LeagueCard";
+import League from "./League"; // Ajusta la ruta según tu estructura
 
 // Tipos
 interface Bot {
@@ -55,7 +56,8 @@ type Section =
   | "allLeagues"
   | "allBots"
   | "registerBot"
-  | "registerLeague";
+  | "registerLeague"
+  | "leagueDetails";
 
 export default function Dashboard() {
   const [section, setSection] = useState<Section>("dashboard");
@@ -402,22 +404,62 @@ export default function Dashboard() {
 
 
 
-        {section === "allLeagues" && (
-          <>
-            <Typography variant="h4" color="cyan" sx={{ mb: 4 }}>Ver todas las Ligas</Typography>
-            
-            {loadingLeagues ? <CircularProgress color="inherit" /> : (
-              allLeagues.length > 0 ? (
-                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
-                  {allLeagues.map((league) => (
-                    <LeagueCard key={league.id} id={league.id} name={league.name} status={"ACTIVE"} />
-                  ))}
-                </Box>
-              ) : <Typography>No hay ligas disponibles.</Typography>
-            )}
-          </>
-        )}
+{section === "allLeagues" && (
+  <>
+    <Typography variant="h4" color="cyan" sx={{ mb: 4 }}>
+      Ver todas las Ligas
+    </Typography>
 
+    {loadingLeagues ? (
+      <CircularProgress color="inherit" />
+    ) : (
+      allLeagues.length > 0 ? (
+        <Box sx={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
+          {allLeagues.map((league) => (
+            <LeagueCard
+              key={league.id}
+              id={league.id}
+              name={league.name}
+              status={"ACTIVE"}  // Asegúrate de que `status` esté disponible
+              onView={() => {
+                setSelectedLeague(league); // Guarda la liga seleccionada
+                setSection("leagueDetails"); // Cambia a la vista de detalles de liga
+              }}
+            />
+          ))}
+        </Box>
+      ) : (
+        <Typography>No hay ligas disponibles.</Typography>
+      )
+    )}
+  </>
+)}
+
+
+{section === "leagueDetails" && (
+  <Box>
+    <Button
+      variant="outlined"
+      onClick={() => setSection("allLeagues")}
+      sx={{
+        mb: 2,
+        color: "cyan",
+        borderColor: "cyan",
+        minWidth: "40px",
+        padding: "6px",
+        borderRadius: "50%",
+        "&:hover": {
+          backgroundColor: "rgba(0,255,255,0.1)",
+          borderColor: "cyan",
+        },
+      }}
+    >
+      <ArrowBackIcon />
+    </Button>
+    {/* Renderizamos el componente Liga */}
+    <League />
+  </Box>
+)}
 
 
         {section === "registerLeague" && (
