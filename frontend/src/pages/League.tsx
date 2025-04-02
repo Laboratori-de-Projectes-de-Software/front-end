@@ -12,7 +12,11 @@ export default function Liga() {
   };
 
   return (
-    <Box className="liga-container">
+    <Box className="liga-container" sx={{ 
+      pt: 2,
+      height: '100%',
+      overflowY: 'auto'
+    }}>
       <Typography variant="h4">{data.liga.nombre}</Typography>
       <Typography variant="h6">Jornada {data.liga.jornada_actual}</Typography>
 

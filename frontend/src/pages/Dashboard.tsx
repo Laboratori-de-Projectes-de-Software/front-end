@@ -225,7 +225,14 @@ export default function Dashboard() {
         </List>
       </Box>
 
-      <Box sx={{ flex: 1, padding: 4, background: "linear-gradient(to top, #0a0f1d, #1a2333)", color: "white" }}>
+      <Box sx={{ 
+        flex: 1, 
+        padding: 4, 
+        background: "linear-gradient(to top, #0a0f1d, #1a2333)", 
+        color: "white",
+        height: "100vh",
+        overflowY: "auto",
+        position: "relative"}}>        
         {section === "dashboard" && (
           <>
             <Typography variant="h4" color="cyan" gutterBottom>

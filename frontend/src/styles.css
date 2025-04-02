@@ -238,8 +238,6 @@ html, body {
   color: red !important;
 }
 
-
-
 .scrollLeague {
   display: flex;
   overflow-x: auto;
@@ -316,3 +314,4 @@ html, body {
 .tabla-clasificacion tr:hover {
   background-color: #00bcd4; /* Color de hover */
 }
+

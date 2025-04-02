@@ -74,7 +74,7 @@ export default function Register() {
     setErrorMessages([]);
     setFieldErrors({});
     // Envía la petición al backend
-    fetch("http://localhost:8080/users/register", {
+    fetch("http://localhost:8080/auth/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
