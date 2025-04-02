@@ -15,9 +15,10 @@ interface BotDetailsProps {
     image: string;
     stats: BotStats;
   };
+  onClose: () => void;
 }
 
-export default function BotDetails({ bot }: BotDetailsProps) {
+export default function BotDetails({ bot, onClose }: BotDetailsProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState(bot.name);
   const [prompt, setPrompt] = useState(bot.prompt);
@@ -42,13 +43,36 @@ export default function BotDetails({ bot }: BotDetailsProps) {
     if (!file) return;
     const reader = new FileReader();
     reader.onload = (event) => {
-      setImage(event.target.result as string);
+      if (event.target && event.target.result) {
+        setImage(event.target.result as string);
+      }
     };
     reader.readAsDataURL(file);
   };
 
   return (
     <div className="w-full p-4">
+      {/* Botón para volver atrás: flechita apuntando a la izquierda */}
+      <button
+        onClick={onClose}
+        className="my-4 p-4 rounded-full bg-gray-700 hover:bg-gray-600 transition-colors"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-6 w-6 text-white"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="2"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M15 19l-7-7 7-7"
+          />
+        </svg>
+      </button>
+
       <div className="bg-slate-900 border border-gray-700 rounded-xl w-full p-6 relative flex flex-col gap-6">
         {/* Header con estadísticas, emoción y botón de editar */}
         <div className="flex justify-between items-center">

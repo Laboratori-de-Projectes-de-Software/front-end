@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import BotDetails from "./BotDetails";
 
 interface Bot {
   id: number;
@@ -70,6 +71,7 @@ const initialBots: Bot[] = [
 export const BotList = () => {
   const [bots, setBots] = useState<Bot[]>(initialBots);
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const [clickedBot, setClickedBot] = useState<number | null>(null);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
@@ -78,6 +80,32 @@ export const BotList = () => {
   const filteredBots = bots.filter((bot) =>
     bot.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  function handleBotClick(botId: number) {
+    // Aquí puedes manejar la lógica para abrir el modal o redirigir a otra página
+    setClickedBot(botId);
+    console.log("Bot clicked:", botId);
+  }
+
+  function handleOnClose() {
+    // Aquí puedes manejar la lógica para cerrar el modal o volver a la lista de bots
+    setClickedBot(null);
+  }
+
+  if (clickedBot) {
+    const selectedBot = bots.find((bot) => bot.id === clickedBot);
+    if (!selectedBot) return null;
+
+    // Completamos datos que no estén presentes en BotList con valores por defecto
+    const botDetailsData = {
+      ...selectedBot,
+      prompt: "Prompt del bot", // dato por defecto; puedes reemplazarlo con el valor real
+      stats: { victoria: 0, empate: 0, derrota: 0 }, // datos de estadística por defecto
+    };
+
+    // Todo : Poder volver atras
+    return <BotDetails bot={botDetailsData} onClose={handleOnClose} />;
+  }
 
   return (
     <div className="w-full p-4">
@@ -112,7 +140,11 @@ export const BotList = () => {
         {/* Grid de Bots */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {filteredBots.map((bot) => (
-            <BotCard key={bot.id} bot={bot} />
+            <BotCard
+              key={bot.id}
+              bot={bot}
+              onClick={() => handleBotClick(bot.id)}
+            />
           ))}
         </div>
       </div>
@@ -122,14 +154,15 @@ export const BotList = () => {
 
 interface BotCardProps {
   bot: Bot;
+  onClick?: () => void;
 }
-
-const BotCard: React.FC<BotCardProps> = ({ bot }) => {
+const BotCard: React.FC<BotCardProps> = ({ bot, onClick }) => {
   const botUrl = bot.name.toLowerCase().replace(/\s+/g, "");
 
   return (
     <a
-      href={`/auth/bots/${botUrl}`}
+      // href={`/auth/bots/${botUrl}`}
+      onClick={onClick}
       className="group flex flex-col bg-slate-900 border border-gray-700 rounded-xl hover:shadow-md transition"
     >
       <div className="relative rounded-t-xl overflow-hidden">
