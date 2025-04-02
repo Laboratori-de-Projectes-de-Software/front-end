@@ -1,108 +1,31 @@
 {
-    "liga": {
-      "nombre": "Liga 1",
-      "jornada_actual": 2,
-      "enfrentamientos": [
-        {
-          "jornada": 2,
-          "bot1": "B1",
-          "bot2": "B2"
-        },
-        {
-          "jornada": 2,
-          "bot1": "B4",
-          "bot2": "B9"
-        },
-        {
-          "jornada": 2,
-          "bot1": "B7",
-          "bot2": "B3"
-        },
-        {
-          "jornada": 3,
-          "bot1": "B2",
-          "bot2": "B6"
-        },
-        {
-          "jornada": 3,
-          "bot1": "B5",
-          "bot2": "B8"
-        }
-      ],
-      "clasificacion": [
-        {
-          "posicion": 1,
-          "bot": "B1",
-          "puntos": 36,
-          "V": 12,
-          "E": 0,
-          "D": 0
-        },
-        {
-          "posicion": 2,
-          "bot": "B9",
-          "puntos": 33,
-          "V": 11,
-          "E": 1,
-          "D": 0
-        },
-        {
-          "posicion": 3,
-          "bot": "B4",
-          "puntos": 30,
-          "V": 10,
-          "E": 0,
-          "D": 2
-        },
-        {
-          "posicion": 4,
-          "bot": "B7",
-          "puntos": 28,
-          "V": 9,
-          "E": 1,
-          "D": 2
-        },
-        {
-          "posicion": 5,
-          "bot": "B3",
-          "puntos": 24,
-          "V": 8,
-          "E": 0,
-          "D": 4
-        },
-        {
-          "posicion": 6,
-          "bot": "B2",
-          "puntos": 21,
-          "V": 7,
-          "E": 0,
-          "D": 5
-        },
-        {
-          "posicion": 7,
-          "bot": "B6",
-          "puntos": 18,
-          "V": 6,
-          "E": 0,
-          "D": 6
-        },
-        {
-          "posicion": 8,
-          "bot": "B5",
-          "puntos": 15,
-          "V": 5,
-          "E": 0,
-          "D": 7
-        },
-        {
-          "posicion": 9,
-          "bot": "B8",
-          "puntos": 12,
-          "V": 4,
-          "E": 0,
-          "D": 8
-        }
-      ]
-    }
+  "liga": {
+    "nombre": "Liga 1",
+    "jornada_actual": 2,
+    "enfrentamientos": [
+      { "jornada": 1, "bot1": "B1", "bot2": "B5" },
+      { "jornada": 1, "bot1": "B2", "bot2": "B7" },
+      { "jornada": 1, "bot1": "B3", "bot2": "B8" },
+      { "jornada": 1, "bot1": "B4", "bot2": "B9" },
+      { "jornada": 2, "bot1": "B1", "bot2": "B2" },
+      { "jornada": 2, "bot1": "B4", "bot2": "B9" },
+      { "jornada": 2, "bot1": "B7", "bot2": "B3" },
+      { "jornada": 3, "bot1": "B2", "bot2": "B6" },
+      { "jornada": 3, "bot1": "B5", "bot2": "B8" },
+      { "jornada": 3, "bot1": "B1", "bot2": "B4" },
+      { "jornada": 4, "bot1": "B3", "bot2": "B6" },
+      { "jornada": 4, "bot1": "B7", "bot2": "B9" }
+    ],
+    "clasificacion": [
+      { "posicion": 1, "bot": "B1", "puntos": 36, "V": 12, "E": 0, "D": 0 },
+      { "posicion": 2, "bot": "B9", "puntos": 33, "V": 11, "E": 1, "D": 0 },
+      { "posicion": 3, "bot": "B4", "puntos": 30, "V": 10, "E": 0, "D": 2 },
+      { "posicion": 4, "bot": "B7", "puntos": 28, "V": 9, "E": 1, "D": 2 },
+      { "posicion": 5, "bot": "B3", "puntos": 24, "V": 8, "E": 0, "D": 4 },
+      { "posicion": 6, "bot": "B2", "puntos": 21, "V": 7, "E": 0, "D": 5 },
+      { "posicion": 7, "bot": "B6", "puntos": 18, "V": 6, "E": 0, "D": 6 },
+      { "posicion": 8, "bot": "B5", "puntos": 15, "V": 5, "E": 0, "D": 7 },
+      { "posicion": 9, "bot": "B8", "puntos": 12, "V": 4, "E": 0, "D": 8 }
+    ]
   }
-  
+}
