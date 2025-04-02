@@ -86,6 +86,21 @@ const CreateBotPage: React.FC = () => {
                 placeholder="URL de la imagen para personalizar tu bot"
                 className="image-url-input"
               />
+
+              {botImageUrl && (
+                <div className="image-preview">
+                  <p>Previsualización:</p>
+                  <img
+                    src={botImageUrl}
+                    alt="Vista previa del bot"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.src = ""; // puedes reemplazar por una imagen por defecto si prefieres
+                    }}
+                    className="preview-img"
+                  />
+                </div>
+              )}
             </div>
 
             <div className="bot-form-actions">
