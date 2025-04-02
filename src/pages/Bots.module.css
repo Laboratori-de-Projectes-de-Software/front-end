@@ -1,13 +1,99 @@
 .background {
   background-color: #f0f0f0;
   padding: 20px;
-  height: 810px;
+  height: auto;
 }
 
-.bots li {
+.bots ul{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 60px;
+  justify-content: left;
+}
+
+.bots h2 {
+  color: #4986f7;
+  font-size: 2em;
+  margin-bottom: 0%;
+  margin-top: 20px;
+  align-items: center;
+  text-align: center;
+}
+
+.botsHeader {
     background-color: tomato;
     margin: 20px 0;
-    width: 200px;
-    height: 200px;
+    width: 305px;
+    height: 300px;
     border-radius: 15px;
+    object-fit: cover;
+    background-position: center;
+    background-size: cover;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+}
+
+.botsHeader:hover {
+    cursor: pointer;
+    transform: scale(1.05);
+    transition: transform 0.2s ease-in-out, padding 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.botsHeader li {
+    font-size: 2em;
+    font-weight: bold;
+    margin-top: 20px;
+    margin-left: 30px;
+}
+
+.delete {
+  width: 70px;
+  height: 70px;
+  margin-top: 210px;
+  margin-left: 10px;
+  background-color: white;
+  object-fit: cover;
+  background-position: center;
+  background-size: 40px 40px;
+  background-repeat: no-repeat;
+  opacity: 0;
+  border-radius: 10px;
+}
+
+.delete:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+  background-color: white;
+  transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
+}
+
+.edit { 
+  width: 70px;
+  height: 70px;
+  margin-top: 210px;
+  margin-left: 20px;
+  background-color: white;
+  object-fit: cover;
+  background-position: center;
+  background-size: 45px 45px;
+  background-repeat: no-repeat;
+  opacity: 0;
+  border-radius: 10px;
+}
+
+.edit:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+  background-color: white;
+  transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
+}
+
+.botsHeader:hover .edit {
+  opacity: 1;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.botsHeader:hover .delete {
+  opacity: 1;
+  transition: opacity 0.2s ease-in-out;
 }
