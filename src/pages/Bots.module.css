@@ -1,0 +1,13 @@
+.background {
+  background-color: #f0f0f0;
+  padding: 20px;
+  height: 810px;
+}
+
+.bots li {
+    background-color: tomato;
+    margin: 20px 0;
+    width: 200px;
+    height: 200px;
+    border-radius: 15px;
+}
