@@ -1,9 +1,9 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./HomePage.css";
-import Logo from "./components/Logo";
-import Button from "./components/Button";
-import BackgroundCanvas from "./components/BackgroundCanvas"; // Importamos la animación
+import Logo from "../components/Logo";
+import Button from "../components/Button";
+import BackgroundCanvas from "../components/BackgroundCanvas"; // Importamos la animación
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
