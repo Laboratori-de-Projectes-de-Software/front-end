@@ -10,6 +10,8 @@ const Dashboard: React.FC = () => {
   const [activeLeagues, setActiveLeagues] = useState<any[]>([]);
   const [recentMatches, setRecentMatches] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const user = localStorage.getItem("email") ?? undefined;
+  console.log("User: " + user);
 
   // Simular carga de datos (esto se reemplazaría con llamadas API reales)
   useEffect(() => {
@@ -61,7 +63,7 @@ const Dashboard: React.FC = () => {
   return (
     <div className="dashboard">
       <NeuralBackground />
-      <Navbar username="Usuario" />
+      <Navbar username={user} />
 
       <div className="dashboard-content">
         <h1>Panel de Control</h1>

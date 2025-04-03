@@ -1,4 +1,5 @@
 import { registerUser, loginUser } from "../models/AuthModel";
+import { jwtDecode } from "jwt-decode";
 
 export const handleRegister = async (formData: any, navigate: any, setError: any) => {
     const { Nombre, Correo, Contraseña, ["Repetir Contraseña"]: RepetirContraseña } = formData;
@@ -23,6 +24,12 @@ export const handleLogin = async (formData: any, navigate: any, setError: any) =
         const data = await loginUser(Correo, Contraseña);
         console.log("Login exitoso:", data);
         localStorage.setItem("token", data.token);
+
+        // Decode the token to get the username
+        const decodedToken: any = jwtDecode(data.token);
+        const email = decodedToken.email;
+        console.log("Email: ", email)
+        localStorage.setItem("username", email);
         navigate("/dashboard");
     } catch (err: any) {
         setError(err.message || "Ocurrió un error");

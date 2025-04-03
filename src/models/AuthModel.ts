@@ -6,7 +6,7 @@ export const registerUser = async (Nombre: string, Correo: string, Contraseña: 
     });
 
     if (!response.ok) throw new Error(await response.text());
-    return response;
+    return response.json();
 };
 
 export const loginUser = async (Correo: string, Contraseña: string) => {
