@@ -2,30 +2,24 @@ import React from "react";
 import "./Form.css";
 import Logo from "../components/Logo";
 import AuthForm from "../components/AuthForm";
-import BackgroundCanvas from "../components/BackgroundCanvas"; // Importa el formulario
+import BackgroundCanvas from "../components/BackgroundCanvas";
 
 const LoginPage: React.FC = () => {
+  const CamposLogin = [
+    { nombre: "Correo", tipo: "email" },
+    { nombre: "Contraseña", tipo: "password" },
+  ];
 
-    const CamposLogin = [
-        { nombre: "Correo", tipo: "email" },
-        { nombre: "Contraseña", tipo: "password" },
-    ];
-
-    return (
-        <div className="form-container">
-            <BackgroundCanvas />
-            <div className="form-box">
-                <Logo/> {/* Ahora el logo es un componente reutilizable */}
-                <h1>Iniciar Sesión</h1>
-                <AuthForm campos={CamposLogin}/> {/* Usa el componente de formulario */}
-                <a href="/register" className="register-link">¿No tienes cuenta? Regístrate</a>
-            </div>
-        </div>
-    );
+  return (
+    <div className="form-container">
+      <BackgroundCanvas />
+      <div className="form-box">
+        <Logo />
+        <h1>Iniciar sesión</h1>
+        <AuthForm campos={CamposLogin} modo="login" />
+      </div>
+    </div>
+  );
 };
 
 export default LoginPage;
-
-
-
-
