@@ -13,52 +13,55 @@ export default function Login() {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-
+  
     const errors: { username?: string; password?: string } = {};
     const messages: string[] = [];
-
+  
     if (!username.trim()) {
       errors.username = "El nombre de usuario es obligatorio";
       messages.push(errors.username);
     }
-
+  
     if (!password.trim()) {
       errors.password = "La contraseña es obligatoria";
       messages.push(errors.password);
     }
-
+  
     if (messages.length > 0) {
       setFieldErrors(errors);
       setErrorMessages(messages);
       return;
     }
-
+  
     try {
-      const response = await fetch("http://localhost:8080/auth/login", {
+      const response = await fetch("http://localhost:8080/api/v0/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ 
+          user: username,  // Changed from username to user
+          password: password 
+        }),
       });
-
+  
       if (response.ok) {
         const data = await response.json();
       
-        // Guardar token y username correctamente
+        // Store authentication data
         localStorage.setItem("token", data.token);
-        localStorage.setItem("username", username); // ✅ AÑADIDA
+        localStorage.setItem("username", username);
         localStorage.setItem("user", JSON.stringify({ username }));
       
         navigate("/dashboard");
         
-      }else if (response.status === 401 || response.status === 404) {
+      } else if (response.status === 401 || response.status === 404) {
         setFieldErrors({
           username: "Credenciales incorrectas",
           password: "Credenciales incorrectas",
         });
         setErrorMessages(["Nombre de usuario o contraseña incorrectos"]);
       } else {
-        const data = await response.json();
-        setErrorMessages([data.message || "Error inesperado. Intenta más tarde."]);
+        const errorData = await response.json();
+        setErrorMessages([errorData.message || "Error inesperado. Intenta más tarde."]);
       }
     } catch (error) {
       console.error("Error de red:", error);
