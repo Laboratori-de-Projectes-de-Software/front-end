@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import { TextField, Button, Box, Typography } from "@mui/material";
+import { TextField, Button, Box, Typography, CircularProgress, Alert } from "@mui/material";
 
 interface BotProps {
   botToEdit?: {
+    id?: number;
     name: string;
     endpoint?: string;
     description: string;
@@ -15,6 +16,8 @@ export default function BotRegisterForm({ botToEdit, onBotSaved }: BotProps) {
   const [endpoint, setEndpoint] = useState(botToEdit?.endpoint || "");
   const [description, setDescription] = useState(botToEdit?.description || "");
   const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (botToEdit) {
@@ -24,37 +27,67 @@ export default function BotRegisterForm({ botToEdit, onBotSaved }: BotProps) {
     }
   }, [botToEdit]);
 
+  const isValidUrl = (url: string) => {
+    try {
+      new URL(url);
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage("");
+    setSuccessMessage("");
+    setIsSubmitting(true);
 
-    if (!name.trim() || !description.trim()) {
-      setErrorMessage("El nombre y la descripción son obligatorios.");
+    // Validaciones según el esquema BotDTO
+    if (!name.trim()) {
+      setErrorMessage("El nombre del bot es obligatorio");
+      setIsSubmitting(false);
+      return;
+    }
+
+    if (!description.trim()) {
+      setErrorMessage("La descripción es obligatoria");
+      setIsSubmitting(false);
+      return;
+    }
+
+    if (!endpoint.trim()) {
+      setErrorMessage("El endpoint es obligatorio según la API");
+      setIsSubmitting(false);
+      return;
+    }
+
+    if (endpoint.trim() && !isValidUrl(endpoint.trim())) {
+      setErrorMessage("El endpoint debe ser una URL válida (comienza con http:// o https://)");
+      setIsSubmitting(false);
       return;
     }
 
     const token = localStorage.getItem("token");
-    const user = JSON.parse(localStorage.getItem("user") || "{}");
-    const username = user.username;
-
-    if (!token || !username) {
-      setErrorMessage("Sesión no válida. Inicia sesión nuevamente.");
+    if (!token) {
+      setErrorMessage("No se encontró el token de autenticación");
+      setIsSubmitting(false);
       return;
     }
 
-    const payload = {
-      name: name.trim(),
-      endpoint: endpoint.trim() || null,
-      description: description.trim(),
-      "user-id": username,
-    };
-
     try {
-      const url = botToEdit
-        ? `http://localhost:8080/bots/${botToEdit.name}`
-        : "http://localhost:8080/bots/register";
+      // Estructura exacta según BotDTO
+      const payload = {
+        name: name.trim(),
+        descripcion: description.trim(), // Note la 'c' en 'descripcion'
+        endpoint: endpoint.trim(),
+        urlImagen: "" // Campo requerido pero puede ser string vacío
+      };
 
-      const method = botToEdit ? "PUT" : "POST";
+      const url = botToEdit?.id 
+        ? `http://localhost:8080/api/v0/bot/${botToEdit.id}`
+        : "http://localhost:8080/api/v0/bot";
+
+      const method = botToEdit?.id ? "PUT" : "POST";
 
       const response = await fetch(url, {
         method,
@@ -65,65 +98,112 @@ export default function BotRegisterForm({ botToEdit, onBotSaved }: BotProps) {
         body: JSON.stringify(payload),
       });
 
-      const text = await response.text();
-      let data = null;
-      if (text) {
-        data = JSON.parse(text);
+      if (!response.ok) {
+        let errorMsg = "Error al guardar el bot";
+        
+        try {
+          const errorData = await response.json();
+          errorMsg = errorData.message || errorMsg;
+          
+          // Manejo específico de códigos de error
+          if (response.status === 400) {
+            if (errorData.errors) {
+              errorMsg += `: ${errorData.errors.join(", ")}`;
+            } else {
+              errorMsg = "Datos inválidos enviados al servidor";
+            }
+          } else if (response.status === 401) {
+            errorMsg = "No autorizado - Token inválido o expirado";
+          } else if (response.status === 409) {
+            errorMsg = "Ya existe un bot con ese nombre";
+          }
+        } catch (parseError) {
+          console.error("Error al parsear respuesta de error:", parseError);
+        }
+        
+        throw new Error(errorMsg);
       }
 
-      if (response.ok) {
-        alert(
-          data?.message ||
-            (botToEdit ? "Bot modificado correctamente." : "Bot registrado correctamente.")
-        );
+      // Éxito
+      const successMsg = botToEdit?.id 
+        ? "Bot actualizado correctamente" 
+        : "Bot registrado correctamente";
+      
+      setSuccessMessage(successMsg);
+      
+      // Resetear formulario solo si es un nuevo bot
+      if (!botToEdit?.id) {
         setName("");
         setEndpoint("");
         setDescription("");
-        if (onBotSaved) onBotSaved();
-      } else {
-        setErrorMessage(data?.message || "Error al guardar el bot.");
       }
-    } catch (error) {
-      console.error("Error:", error);
-      setErrorMessage("Ocurrió un error al enviar los datos.");
+
+      if (onBotSaved) {
+        onBotSaved();
+      }
+
+    } catch (error: any) {
+      console.error("Error completo:", error);
+      setErrorMessage(error.message || "Ocurrió un error inesperado al guardar el bot");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
-    <Box>
-      <Typography variant="h4" color="cyan" gutterBottom>
-        {botToEdit ? "Modificar Bot" : "Registrar Bot"}
+    <Box sx={{ 
+      backgroundColor: "#111827", 
+      padding: 4, 
+      borderRadius: 2,
+      boxShadow: "0 0 15px rgba(0,255,255,0.2)",
+      maxWidth: 600,
+      margin: "0 auto"
+    }}>
+      <Typography variant="h4" color="cyan" gutterBottom sx={{ mb: 3 }}>
+        {botToEdit?.id ? "Modificar Bot" : "Registrar Nuevo Bot"}
       </Typography>
 
-      <form onSubmit={handleSubmit}>
-      <TextField
-        label="Nombre del Bot"
-        variant="outlined"
-        fullWidth
-        margin="normal"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        required
-        disabled={!!botToEdit}
-        InputLabelProps={{
-          style: { color: "cyan" },
-        }}
-        inputProps={{
-          style: {
-            color: "white",
-            WebkitTextFillColor: "white", // ¡esto es lo que arregla el color en deshabilitado!
-          },
-        }}
-      />
+      {errorMessage && (
+        <Alert severity="error" sx={{ mb: 3 }}>
+          {errorMessage}
+        </Alert>
+      )}
 
+      {successMessage && (
+        <Alert severity="success" sx={{ mb: 3 }}>
+          {successMessage}
+        </Alert>
+      )}
+
+      <form onSubmit={handleSubmit}>
+        <TextField
+          label="Nombre del Bot*"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+          disabled={!!botToEdit?.id}
+          sx={{ mb: 2 }}
+          InputProps={{
+            style: { color: "white" },
+          }}
+          InputLabelProps={{
+            style: { color: "cyan" },
+          }}
+        />
 
         <TextField
-          label="Endpoint (opcional)"
+          label="Endpoint*"
           variant="outlined"
           fullWidth
           margin="normal"
           value={endpoint}
           onChange={(e) => setEndpoint(e.target.value)}
+          placeholder="https://tu-endpoint.com/api"
+          required
+          sx={{ mb: 2 }}
           InputProps={{
             style: { color: "white" },
           }}
@@ -133,15 +213,16 @@ export default function BotRegisterForm({ botToEdit, onBotSaved }: BotProps) {
         />
 
         <TextField
-          label="Descripción"
+          label="Descripción*"
           variant="outlined"
           fullWidth
           multiline
-          rows={3}
+          rows={4}
           margin="normal"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           required
+          sx={{ mb: 3 }}
           InputProps={{
             style: { color: "white" },
           }}
@@ -150,14 +231,27 @@ export default function BotRegisterForm({ botToEdit, onBotSaved }: BotProps) {
           }}
         />
 
-        {errorMessage && (
-          <Typography color="error" sx={{ mt: 2 }}>
-            {errorMessage}
-          </Typography>
-        )}
-
-        <Button type="submit" fullWidth variant="contained" sx={{ mt: 2 }}>
-          {botToEdit ? "Modificar Bot" : "Registrar Bot"}
+        <Button 
+          type="submit" 
+          fullWidth 
+          variant="contained" 
+          disabled={isSubmitting}
+          sx={{
+            mt: 2,
+            backgroundColor: "cyan",
+            color: "#0a0f1d",
+            "&:hover": {
+              backgroundColor: "rgba(0, 255, 255, 0.8)",
+            },
+            height: "48px",
+            fontSize: "1rem"
+          }}
+        >
+          {isSubmitting ? (
+            <CircularProgress size={24} color="inherit" />
+          ) : (
+            botToEdit?.id ? "Actualizar Bot" : "Registrar Bot"
+          )}
         </Button>
       </form>
     </Box>
