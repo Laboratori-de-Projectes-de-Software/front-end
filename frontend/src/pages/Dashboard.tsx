@@ -83,65 +83,95 @@ export default function Dashboard() {
     navigate("/");
   };
 
+  // Obtener bots del usuario
   const fetchUserBots = useCallback(async () => {
     setLoadingBots(true);
     try {
-      const res = await fetch(`http://localhost:8080/users/${username}/bots`);
+      const res = await fetch(`http://localhost:8080/api/v0/bot/owner=${username}`, {
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
+      });
       if (res.ok) {
         const data = await res.json();
         setUserBots(data);
+      } else {
+        console.error("Error al obtener bots:", res.status);
       }
     } catch (err) {
-      console.error("Error al obtener bots del usuario", err);
+      console.error("Error de red:", err);
     } finally {
       setLoadingBots(false);
     }
-  }, [username]);
+  }, [username, token]);
 
+  // Obtener todos los bots
   const fetchAllBots = useCallback(async () => {
     setLoadingAllBots(true);
     try {
-      const res = await fetch("http://localhost:8080/bots/all", {
+      const res = await fetch("http://localhost:8080/api/v0/bot", {
         headers: {
-          Authorization: `Bearer ${token}`,
-        },
+          "Authorization": `Bearer ${token}`
+        }
       });
       if (res.ok) {
         const data = await res.json();
         setAllBots(data);
       }
     } catch (err) {
-      console.error("Error al obtener todos los bots", err);
+      console.error("Error al obtener todos los bots:", err);
     } finally {
       setLoadingAllBots(false);
     }
   }, [token]);
 
+  // Obtener todas las ligas
   const fetchAllLeagues = useCallback(async () => {
     setLoadingLeagues(true);
     try {
-      const res = await fetch("http://localhost:8080/leagues/all", {
+      const res = await fetch("http://localhost:8080/api/v0/league", {
         headers: {
-          Authorization: `Bearer ${token}`,
-        },
+          "Authorization": `Bearer ${token}`
+        }
       });
       if (res.ok) {
         const data = await res.json();
         setAllLeagues(data);
       }
     } catch (err) {
-      console.error("Error al obtener todas las ligas", err);
+      console.error("Error al obtener todas las ligas:", err);
     } finally {
       setLoadingLeagues(false);
     }
   }, [token]);
 
+  // Obtener ligas del usuario
+  const fetchUserLeagues = useCallback(async () => {
+    setLoadingLeagues(true);
+    try {
+      const res = await fetch(`http://localhost:8080/api/v0/league/owner=${username}`, {
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setAllLeagues(data);
+      }
+    } catch (err) {
+      console.error("Error al obtener ligas del usuario:", err);
+    } finally {
+      setLoadingLeagues(false);
+    }
+  }, [username, token]);
+
 
   useEffect(() => {
     if (section === "myBots") fetchUserBots();
     else if (section === "allBots") fetchAllBots();
-    else if (section === "allLeagues") fetchAllLeagues(); 
-  }, [section, fetchUserBots, fetchAllBots, fetchAllLeagues]);
+    else if (section === "allLeagues") fetchAllLeagues();
+    else if (section === "myLeagues") fetchUserLeagues();
+  }, [section, fetchUserBots, fetchAllBots, fetchAllLeagues, fetchUserLeagues]);
 
   useEffect(() => {
     if (section === "myLeagues") {
