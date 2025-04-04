@@ -1,15 +1,28 @@
 import React from "react";
-import "./Button.css"; // Agrega estilos según sea necesario
+import "./Button.css";
 
-interface ButtonProps {
+export interface ButtonProps {
+  onClick?: () => void;
   label: string;
-  onClick: () => void;
   className?: string;
+  disabled?: boolean;
+  type?: "button" | "submit" | "reset"; // Agregamos la propiedad type
 }
 
-const Button: React.FC<ButtonProps> = ({ label, onClick, className }) => {
+const Button: React.FC<ButtonProps> = ({
+  onClick,
+  label,
+  className = "",
+  disabled = false,
+  type = "button", // Valor por defecto
+}) => {
   return (
-    <button onClick={onClick} className={`button ${className}`}>
+    <button
+      type={type}
+      className={`button ${className}`}
+      onClick={onClick}
+      disabled={disabled}
+    >
       {label}
     </button>
   );

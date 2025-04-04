@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import NeuralBackground from "../components/NeuralBackground";
 import Button from "../components/Button";
+import { handleCreateBot } from "../controllers/BotController";
 import "./CreateBot.css";
 
 const CreateBotPage: React.FC = () => {
@@ -16,35 +17,23 @@ const CreateBotPage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!botName.trim()) {
-      setError("El nombre del bot es obligatorio");
-      return;
-    }
-
-    setIsSubmitting(true);
-    setError("");
-
-    try {
-      // Aquí iría la llamada a la API (cuando esté implementada)
-      // await api.post("/bots", { name: botName, description: botDescription, imageUrl: botImageUrl });
-
-      // Simulación de tiempo de espera para la demo
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // Redirigir al usuario a la página de sus bots
-      navigate("/mybots");
-    } catch (err) {
-      setError("Error al crear el bot. Inténtalo de nuevo más tarde.");
-      console.error("Error al crear bot:", err);
-    } finally {
-      setIsSubmitting(false);
-    }
+    // Usar el controlador para manejar la creación del bot
+    handleCreateBot(
+      {
+        name: botName,
+        description: botDescription,
+        imageUrl: botImageUrl,
+      },
+      navigate,
+      setError,
+      setIsSubmitting
+    );
   };
 
   return (
     <div className="create-bot-page">
       <NeuralBackground />
-      <Navbar username="Usuario" />
+      <Navbar />
 
       <div className="create-bot-content">
         <h1>Crear Nuevo Bot</h1>
@@ -110,9 +99,11 @@ const CreateBotPage: React.FC = () => {
                 className="cancel-button"
               />
               <Button
-                onClick={() => {}} // No es necesario ya que lo maneja el submit del form
+                type="submit"
+                onClick={() => navigate("/Dashboard")}
                 label={isSubmitting ? "Creando..." : "Crear Bot"}
                 className="submit-button"
+                disabled={isSubmitting}
               />
             </div>
           </form>
