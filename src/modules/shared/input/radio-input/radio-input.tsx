@@ -16,23 +16,23 @@ type Props = {
 
 const RadioInput: FC<Props> = ({value, setValue, options, text, display='row'}) => {
   return (
-    <div className={`league-filters-input-container-${display}`}>
+    <div className={`form__options-input-container-${display}`}>
             {text ? 
                 <label
                 htmlFor="options-input"
-                className="league-filters-label"
+                className="form__options-label"
                 >
                     {text}
                 </label>
             :
                 <></>
             }
-            <div className="league-filters-container-radio-options">
-                <div className={`league-filters-input-container-radio-${display}`}>
+            <div className="form__options-container-radio-options">
+                <div className={`form__options-input-container-radio-${display}`}>
                     {
                         options.map((option) => (
-                            <div key={option.value} className="league-filters-radio-option">
-                              <p className='league-filters-label-radio'>{option.text}</p>
+                            <div key={option.value} className="form__options-radio-option">
+                              <p className='form__options-label-radio'>{option.text}</p>
                               <input
                                   type="radio"
                                   name='options-input'

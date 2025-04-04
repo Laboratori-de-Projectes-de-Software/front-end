@@ -1,4 +1,4 @@
-.league-filters{
+.form__options{
     &-title{
         font-family: "Shippori Antique", sans-serif;
         font-size: 32px;
@@ -47,7 +47,7 @@
             flex-direction: row;
             justify-content: space-between;
 
-            & > .league-filters-radio-option {
+            & > .form__options-radio-option {
                 display: flex;
                 flex-direction: column;
                 gap: 5px;
@@ -60,7 +60,7 @@
             flex-direction: column;
             gap: 5px;
 
-            & > .league-filters-radio-option {
+            & > .form__options-radio-option {
                 display: flex;
                 flex-direction: row;
                 gap: 5px;
