@@ -37,3 +37,17 @@ export type MessageResponseDTO = {
   botId: number;
   time: string;
 }
+
+export type BotSumaryResponseDTO = { //TODO: Actualizar este type cuando esté definido
+  botId: number;
+  name: string;
+  description: string;
+  urlImagen: string;
+  nWins: number;
+  nLoses: number;
+  nDraws: number;
+}
+
+export type ParticipationResponseDTO = { // TODO: Actualizar este type cuando esté definido
+  participationId: number;
+}
