@@ -1,0 +1,3 @@
+
+export const API = "http://localhost:8080/"
+export const API_PERFIL = "http://localhost:8080/perfil/"
