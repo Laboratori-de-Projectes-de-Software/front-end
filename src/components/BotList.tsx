@@ -21,7 +21,7 @@ const initialBots: Bot[] = [
     id: 2,
     name: "BOT 2",
     emotion: "ASCO",
-    image: "/public/inside/asco.jpg",
+    image: "images/asco.jpg",
     user: "/users/user2.jpg",
   },
   {
@@ -42,7 +42,7 @@ const initialBots: Bot[] = [
     id: 5,
     name: "BOT 5",
     emotion: "ENVIDIA",
-    image: "/public/inside/envy.webp",
+    image: "images/envy.webp",
     user: "/users/user5.jpg",
   },
   {
@@ -63,7 +63,7 @@ const initialBots: Bot[] = [
     id: 8,
     name: "BOT 8",
     emotion: "ANSIEDAD",
-    image: "/public/inside/ansiedad.jpeg",
+    image: "images/ansiedad.jpeg",
     user: "/users/user8.jpg",
   },
 ];

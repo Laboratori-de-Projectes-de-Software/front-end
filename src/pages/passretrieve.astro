@@ -4,6 +4,8 @@ import Image from "astro/components/Image.astro";
 import EmojiBackground from "../components/EmojiBackground.astro";
 import { PasswordRetrieveForm } from "../components/auth/PasswordRetrieveForm";
 
+import foto from "../../images/ansiedad.jpeg";
+
 const emojis: string[] = ["😰"];
 ---
 
@@ -14,7 +16,7 @@ const emojis: string[] = ["😰"];
       <div class="flex flex-col md:flex-row max-w-4xl w-full">
         <div class="hidden md:block">
           <Image
-            src="/public/inside/ansiedad.jpeg"
+            src={foto}
             alt="Login"
             width={400}
             height={400}

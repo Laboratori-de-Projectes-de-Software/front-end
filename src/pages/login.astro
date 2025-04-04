@@ -4,6 +4,8 @@ import { LoginForm } from "../components/auth/LoginForm.tsx";
 import Image from "astro/components/Image.astro";
 import EmojiBackground from "../components/EmojiBackground.astro";
 
+import foto from "../../images/envy.webp";
+
 const emojis: string[] = ["😒", "🤫"];
 ---
 
@@ -20,7 +22,7 @@ const emojis: string[] = ["😒", "🤫"];
         </div>
         <div class="hidden md:block">
           <Image
-            src="/public/inside/envy.webp"
+            src={foto}
             alt="Login"
             width={400}
             height={400}

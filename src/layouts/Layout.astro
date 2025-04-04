@@ -6,6 +6,9 @@ const { title } = Astro.props;
 if (typeof title !== "string") {
   throw new Error("title is required");
 }
+
+// Tailwind CSS 4
+import "../styles/global.css";
 ---
 
 <!doctype html>
@@ -14,8 +17,6 @@ if (typeof title !== "string") {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <!-- Tailwind CSS -->
-    <link href="/src/styles/global.css" rel="stylesheet" />
     <meta name="generator" content={Astro.generator} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
