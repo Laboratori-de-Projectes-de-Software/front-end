@@ -40,7 +40,7 @@ export default function LeagueRegisterForm({ onLeagueCreated }: { onLeagueCreate
         
         if (response.ok) {
           const data = await response.json();
-          setAvailableBots(data.map((bot: any) => ({ id: bot.id.toString(), name: bot.name })));
+          setAvailableBots(data.map((bot: { id: number; name: string }) => ({ id: bot.id.toString(), name: bot.name })));
         }
       } catch (error) {
         console.error("Error al cargar bots:", error);
@@ -70,11 +70,11 @@ export default function LeagueRegisterForm({ onLeagueCreated }: { onLeagueCreate
       return;
     }
 
-    if (selectedBots.length < 2) {
-      setErrorMessage("Debes seleccionar al menos 2 bots");
-      setIsSubmitting(false);
-      return;
-    }
+    // if (selectedBots.length < 2) {
+    //   setErrorMessage("Debes seleccionar al menos 2 bots");
+    //   setIsSubmitting(false);
+    //   return;
+    // }
 
     const token = localStorage.getItem("token");
     if (!token) {
@@ -128,20 +128,24 @@ export default function LeagueRegisterForm({ onLeagueCreated }: { onLeagueCreate
         onLeagueCreated();
       }
 
-    } catch (error: any) {
-      console.error("Error al crear liga:", {
-        error,
-        message: error.message,
-        stack: error.stack
-      });
-      
-      setErrorMessage(
-        error.message || 
-        "Error inesperado al crear la liga"
-      );
+    } catch (error: unknown) {
+      let message = "Error inesperado al crear la liga";
+    
+      if (error instanceof Error) {
+        console.error("Error al crear liga:", {
+          name: error.name,
+          message: error.message,
+          stack: error.stack
+        });
+        message = error.message;
+      } else {
+        console.error("Error al crear liga:", error);
+      }
+      setErrorMessage(message);
     } finally {
       setIsSubmitting(false);
     }
+    
   };
 
   return (

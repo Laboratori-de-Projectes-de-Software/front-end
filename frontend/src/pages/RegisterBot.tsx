@@ -87,6 +87,13 @@ export default function BotRegisterForm({ botToEdit, onBotSaved }: BotProps) {
         ? `http://localhost:8080/api/v0/bot/${botToEdit.id}`
         : "http://localhost:8080/api/v0/bot";
 
+      if (botToEdit?.id && isNaN(botToEdit.id)) {
+        setErrorMessage("ID del bot no válido");
+        setIsSubmitting(false);
+        return;
+      }
+      ;
+
       const method = botToEdit?.id ? "PUT" : "POST";
 
       const response = await fetch(url, {
@@ -142,9 +149,13 @@ export default function BotRegisterForm({ botToEdit, onBotSaved }: BotProps) {
         onBotSaved();
       }
 
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Error completo:", error);
-      setErrorMessage(error.message || "Ocurrió un error inesperado al guardar el bot");
+      if (error instanceof Error) {
+        setErrorMessage(error.message || "Ocurrió un error inesperado al guardar el bot");
+      } else {
+        setErrorMessage("Ocurrió un error inesperado al guardar el bot");
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -185,7 +196,12 @@ export default function BotRegisterForm({ botToEdit, onBotSaved }: BotProps) {
           onChange={(e) => setName(e.target.value)}
           required
           disabled={!!botToEdit?.id}
-          sx={{ mb: 2 }}
+          sx={{ 
+            mb: 2,
+            "& .MuiInputBase-input.Mui-disabled": {
+              color: "white", // fuerza el color blanco en modo disabled
+            }
+          }}
           InputProps={{
             style: { color: "white" },
           }}
@@ -193,6 +209,7 @@ export default function BotRegisterForm({ botToEdit, onBotSaved }: BotProps) {
             style: { color: "cyan" },
           }}
         />
+
 
         <TextField
           label="Endpoint*"
@@ -203,7 +220,12 @@ export default function BotRegisterForm({ botToEdit, onBotSaved }: BotProps) {
           onChange={(e) => setEndpoint(e.target.value)}
           placeholder="https://tu-endpoint.com/api"
           required
-          sx={{ mb: 2 }}
+          sx={{ 
+            mb: 2,
+            "& .MuiInputBase-input.Mui-disabled": {
+              color: "white",
+            }
+          }}
           InputProps={{
             style: { color: "white" },
           }}
@@ -211,6 +233,7 @@ export default function BotRegisterForm({ botToEdit, onBotSaved }: BotProps) {
             style: { color: "cyan" },
           }}
         />
+
 
         <TextField
           label="Descripción*"

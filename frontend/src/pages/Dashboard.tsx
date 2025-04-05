@@ -47,7 +47,10 @@ interface League {
   name: string;
   creatorUsername: string;
   status: "ACTIVE" | "INACTIVE" | "FINISHED";
+  fechaInicio?: string;
+  fechaFin?: string;
 }
+
 
 type Section =
   | "dashboard"
@@ -149,21 +152,39 @@ export default function Dashboard() {
   const fetchUserLeagues = useCallback(async () => {
     setLoadingLeagues(true);
     try {
-      const res = await fetch(`http://localhost:8080/api/v0/league/owner=${username}`, {
+      const res = await fetch(`http://localhost:8080/api/v0/league?owner=${username}`, {
         headers: {
-          "Authorization": `Bearer ${token}`
-        }
+          "Authorization": `Bearer ${token}`,
+        },
       });
       if (res.ok) {
         const data = await res.json();
-        setAllLeagues(data);
+        const ligasConEstado = data.map((liga: { fechaInicio?: string; fechaFin?: string; [key: string]: unknown }) => {
+          if (typeof liga === "object" && liga !== null) {
+            return {
+              ...liga,
+              status: calcularEstadoLiga(liga.fechaInicio, liga.fechaFin),
+            };
+          }
+          console.error("Invalid league data:", liga);
+          return null;
+        }).filter(Boolean);
+        setAllLeagues(ligasConEstado);
+      } else {
+        console.error("Error al obtener ligas del usuario:", res.status);
       }
     } catch (err) {
-      console.error("Error al obtener ligas del usuario:", err);
+      console.error("Error de red:", err);
     } finally {
       setLoadingLeagues(false);
     }
   }, [username, token]);
+
+  function calcularEstadoLiga(fechaInicio?: string, fechaFin?: string): "INACTIVE" | "ACTIVE" | "FINISHED" {
+    if (!fechaInicio) return "INACTIVE";
+    if (fechaInicio && !fechaFin) return "ACTIVE";
+    return "FINISHED";
+  }  
 
 
   useEffect(() => {
@@ -335,12 +356,8 @@ export default function Dashboard() {
             </Button>
             <Box
               sx={{
-                backgroundColor: "#111827",
                 padding: 4,
                 borderRadius: 2,
-                boxShadow: "0 0 15px rgba(0,255,255,0.2)",
-                maxWidth: 500,
-                margin: "0 auto",
               }}
             >
               <BotRegisterForm botToEdit={botToEdit || undefined} onBotSaved={() => setSection("myBots")} />
@@ -499,100 +516,96 @@ export default function Dashboard() {
 )}
 
 
-        {section === "registerLeague" && (
-          <Box>
-            <Button
-              variant="outlined"
-              onClick={() => setSection("myLeagues")}
-              sx={{
-                mb: 2,
-                color: "cyan",
-                borderColor: "cyan",
-                minWidth: "40px",
-                padding: "6px",
-                borderRadius: "50%",
-                "&:hover": {
-                  backgroundColor: "rgba(0,255,255,0.1)",
-                  borderColor: "cyan",
-                },
-              }}
-            >
-              <ArrowBackIcon />
-            </Button>
-            <Box
-              sx={{
-                backgroundColor: "#111827",
-                padding: 4,
-                borderRadius: 2,
-                boxShadow: "0 0 15px rgba(0,255,255,0.2)",
-                maxWidth: 500,
-                margin: "0 auto",
-              }}
-            >
-              <LeagueRegisterForm />
-            </Box>
-          </Box>
-        )}
-      </Box>
+{section === "registerLeague" && (
+  <Box>
+    <Button
+      variant="outlined"
+      onClick={() => setSection("myLeagues")}
+      sx={{
+        mb: 2,
+        color: "cyan",
+        borderColor: "cyan",
+        minWidth: "40px",
+        padding: "6px",
+        borderRadius: "50%",
+        "&:hover": {
+          backgroundColor: "rgba(0,255,255,0.1)",
+          borderColor: "cyan",
+        },
+      }}
+    >
+      <ArrowBackIcon />
+    </Button>
+    <Box
+      sx={{
+        padding: 4,
+        borderRadius: 2
+      }}
+    >
+      <LeagueRegisterForm />
+    </Box>
+  </Box>
+      )}
+    </Box>
 
-      <Dialog open={popupOpen} onClose={() => setPopupOpen(false)} maxWidth="sm" fullWidth>
-        <Box
+    <Dialog open={popupOpen} onClose={() => setPopupOpen(false)} maxWidth="sm" fullWidth>
+      <Box
+        sx={{
+          position: "relative",
+          p: 4,
+          backgroundColor: "#0a0f1d",
+          color: "white",
+          borderRadius: 2,
+        }}
+      >
+        {/* ❌ Botón cerrar */}
+        <IconButton
+          onClick={() => setPopupOpen(false)}
           sx={{
-            position: "relative",
-            p: 4,
-            backgroundColor: "#0a0f1d",
+            position: "absolute",
+            right: 16,
+            top: 16,
             color: "white",
-            borderRadius: 2,
+            backgroundColor: "rgba(255,255,255,0.1)",
+            "&:hover": { backgroundColor: "rgba(255,255,255,0.2)" }
           }}
         >
-          {/* ❌ Botón cerrar */}
-          <IconButton
-            onClick={() => setPopupOpen(false)}
-            sx={{
-              position: "absolute",
-              right: 16,
-              top: 16,
-              color: "white",
-              backgroundColor: "rgba(255,255,255,0.1)",
-              "&:hover": { backgroundColor: "rgba(255,255,255,0.2)" }
-            }}
-          >
-            <CloseIcon />
-          </IconButton>
+          <CloseIcon />
+        </IconButton>
 
-          {/* Título */}
-          <DialogTitle sx={{ fontSize: 24, fontWeight: "bold", mb: 2, color: "cyan", display: "flex", alignItems: "center", gap: 1 }}>
-            🏆 Detalles de la liga
-          </DialogTitle>
+        {/* Título */}
+        <DialogTitle sx={{ fontSize: 24, fontWeight: "bold", mb: 2, color: "cyan", display: "flex", alignItems: "center", gap: 1 }}>
+          🏆 Detalles de la liga
+        </DialogTitle>
 
-          {/* Contenido */}
-          <DialogContent>
-            <Typography variant="h5" sx={{ mb: 2, fontWeight: "bold", color: "white" }}>
-              {selectedLeague?.name}
-            </Typography>
+        {/* Contenido */}
+        <DialogContent>
+          <Typography variant="h5" sx={{ mb: 2, fontWeight: "bold", color: "white" }}>
+            {selectedLeague?.name}
+          </Typography>
 
-            <Typography variant="subtitle1" sx={{ mb: 1, color: "lightgray" }}>
-              Participantes:
-            </Typography>
+          <Typography variant="subtitle1" sx={{ mb: 1, color: "lightgray" }}>
+            Participantes:
+          </Typography>
 
-            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
-              <Typography>- BotAlpha</Typography>
-              <Typography>- BotBeta</Typography>
-              <Typography>- BotGamma</Typography>
-            </Box>
-          </DialogContent>
+          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
+            <Typography>- BotAlpha</Typography>
+            <Typography>- BotBeta</Typography>
+            <Typography>- BotGamma</Typography>
+          </Box>
+        </DialogContent>
 
-          {/* Botones */}
-          <DialogActions sx={{ mt: 4, justifyContent: "flex-end" }}>
-            <Button variant="outlined" disabled sx={{ color: "white", borderColor: "gray", opacity: 0.5 }}>
-              Editar
-            </Button>
-            <Button variant="contained" disabled sx={{ backgroundColor: "gray", color: "white", opacity: 0.5 }}>
-              Iniciar liga
-            </Button>
-          </DialogActions>
-        </Box>
-      </Dialog>
+        {/* Botones */}
+        <DialogActions sx={{ mt: 4, justifyContent: "flex-end" }}>
+          <Button variant="outlined" disabled sx={{ color: "white", borderColor: "gray", opacity: 0.5 }}>
+            Editar
+          </Button>
+          <Button variant="contained" disabled sx={{ backgroundColor: "gray", color: "white", opacity: 0.5 }}>
+            Iniciar liga
+          </Button>
+        </DialogActions>
+      </Box>
+    </Dialog>
 
 
 
