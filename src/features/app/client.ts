@@ -28,30 +28,27 @@ export const appApi = createApi({
       }),
     }),
 
-    // TODO: Revisar como hacer lo de los query params
-    getBot: builder.query<BotSumaryResponseDTO[], undefined>({
-      query: () => ({
-        url: `${import.meta.env.VITE_REACT_APP_API_URL}/bot`,
+    getBot: builder.query<BotSumaryResponseDTO[], number | undefined>({
+      query: (owner?: number) => ({
+        url: `${import.meta.env.VITE_REACT_APP_API_URL}/bot${owner ? `?owner=${owner}` : ''}`,
         method: 'GET',
       }),
     }),
-    // TODO: Revisar como hacer lo de los query params
     getBotBotId: builder.query<BotResponseDTO, number>({
-      query: (id) => ({ // FIXME: esto no tiene pinta de estar bien
+      query: (id) => ({
         url: `${import.meta.env.VITE_REACT_APP_API_URL}/bot/${id}`,
         method: 'GET',
       }),
     }),
-    // TODO: Revisar como hacer lo de los query params
-    putBotBotId: builder.mutation<BotResponseDTO, BotDTO>({
-      query: (data) => ({ // FIXME: esto no tiene pinta de estar bien
-        url: `${import.meta.env.VITE_REACT_APP_API_URL}/bot/${data}`,
+    putBotBotId: builder.mutation<BotResponseDTO, {id: number, bot: BotDTO}>({
+      query: (data) => ({
+        url: `${import.meta.env.VITE_REACT_APP_API_URL}/bot/${data.id}`,
         method: 'PUT',
-        body: data,
+        body: data.bot,
       }),
     }),
     /*/ --- league --- /*/
-    postLeague: builder.mutation<undefined, undefined>({
+    postLeague: builder.mutation<LeagueResponseDTO, LeagueDTO>({
       query: (data) => ({
         url: `${import.meta.env.VITE_REACT_APP_API_URL}/league`,
         method: 'POST',
@@ -59,66 +56,60 @@ export const appApi = createApi({
       }),
     }),
     // TODO: Revisar como hacer lo de los query params
-    getLeague: builder.query<LeagueResponseDTO, undefined>({
-      query: () => ({
-        url: `${import.meta.env.VITE_REACT_APP_API_URL}/league`,
+    getLeague: builder.query<LeagueResponseDTO, number>({
+      query: (owner) => ({
+        url: `${import.meta.env.VITE_REACT_APP_API_URL}/league${owner ? `?owner=${owner}` : ''}`,
         method: 'GET',
       }),
     }),
-    // TODO: Revisar como hacer lo de los query params
     getLeagueLeagueId: builder.query<LeagueResponseDTO, number>({
-      query: (id) => ({ // FIXME: esto no tiene pinta de estar bien
+      query: (id) => ({
         url: `${import.meta.env.VITE_REACT_APP_API_URL}/league/${id}`,
         method: 'GET',
       }),
     }),
-    putLeagueLeagueId: builder.mutation<LeagueResponseDTO, LeagueDTO>({
-      query: (data) => ({ // FIXME: esto no tiene pinta de estar bien
-        url: `${import.meta.env.VITE_REACT_APP_API_URL}/league/${data}`,
-        method: 'PUT',
-        body: data,
-      }),
-    }),
-    postLeagueLeagueIdBot: builder.mutation<undefined, number>({
+    putLeagueLeagueId: builder.mutation<LeagueResponseDTO, {id: number, league: LeagueDTO}>({
       query: (data) => ({
-        url: `${import.meta.env.VITE_REACT_APP_API_URL}/league/${data}`,
-        method: 'POST',
-        body: data,
+        url: `${import.meta.env.VITE_REACT_APP_API_URL}/league/${data.id}`,
+        method: 'PUT',
+        body: data.league,
       }),
     }),
-    // TODO: Revisar como hacer lo de los query params
+    postLeagueLeagueIdBot: builder.mutation<undefined, {leagueId: number, botId: number}>({
+      query: (data) => ({
+        url: `${import.meta.env.VITE_REACT_APP_API_URL}/league/${data.leagueId}/bot`,
+        method: 'POST',
+        body: data.botId,
+      }),
+    }),
     getLeagueLeagueIdLeaderboard: builder.query<ParticipationResponseDTO, number>({
-      query: (id) => ({ // FIXME: esto no tiene pinta de estar bien
-        url: `${import.meta.env.VITE_REACT_APP_API_URL}/league/${id}/leaderboard`,
+      query: (leagueId) => ({
+        url: `${import.meta.env.VITE_REACT_APP_API_URL}/league/${leagueId}/leaderboard`,
         method: 'GET',
       }),
     }),
-    // TODO: Revisar como hacer lo de los query params
     deleteLeagueLeagueId: builder.mutation<undefined, number>({
-      query: (id) => ({ // FIXME: esto no tiene pinta de estar bien
-        url: `${import.meta.env.VITE_REACT_APP_API_URL}/league/${id}`,
+      query: (leagueId) => ({
+        url: `${import.meta.env.VITE_REACT_APP_API_URL}/league/${leagueId}`,
         method: 'DELETE',
       }),
     }),
-    // TODO: Revisar como hacer lo de los query params
     postLeagueLeagueIdStart: builder.mutation<undefined, number>({
-      query: (id) => ({ // FIXME: esto no tiene pinta de estar bien
-        url: `${import.meta.env.VITE_REACT_APP_API_URL}/league/${id}/start`,
+      query: (leagueId) => ({
+        url: `${import.meta.env.VITE_REACT_APP_API_URL}/league/${leagueId}/start`,
         method: 'POST',
       }),
     }),
-    // TODO: Revisar como hacer lo de los query params
     getLeagueLeagueIdMatch: builder.query<undefined, number>({
-      query: (id) => ({ // FIXME: esto no tiene pinta de estar bien
-        url: `${import.meta.env.VITE_REACT_APP_API_URL}/league/${id}/match`,
+      query: (leagueId) => ({
+        url: `${import.meta.env.VITE_REACT_APP_API_URL}/league/${leagueId}/match`,
         method: 'GET',
       }),
     }),
     /*/ --- match --- /*/
-    // TODO: Revisar como hacer lo de los query params
     getMatchMatchIdMessage: builder.query<undefined, number>({
-      query: (id) => ({ // FIXME: esto no tiene pinta de estar bien
-        url: `${import.meta.env.VITE_REACT_APP_API_URL}/match/${id}/message`,
+      query: (matchId) => ({
+        url: `${import.meta.env.VITE_REACT_APP_API_URL}/match/${matchId}/message`,
         method: 'GET',
       }),
     }),
