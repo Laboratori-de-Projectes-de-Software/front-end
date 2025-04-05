@@ -1,7 +1,13 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { LeaguesFilters } from './league-types';
 import './league-filters.scss';
 import { DateTime } from 'luxon';
+import DateInput from '../../modules/shared/input/date-input/date-input';
+import OptionsInput from '../../modules/shared/input/options-input/options-input';
+import TextInput from '../../modules/shared/input/text-input/text-input';
+import NumberInput from '../../modules/shared/input/number-input/number-input';
+import RadioInput from '../../modules/shared/input/radio-input/radio-input';
+import PasswordInput from '../../modules/shared/input/password-input/password-input';
 
 type Props = {
     filters: LeaguesFilters, 
@@ -10,48 +16,57 @@ type Props = {
 
 const LeagueFilters: FC<Props> = ({filters, setFilters}) => {
 
+    const [aux, setAux] = useState('');
+    const [auxN, setAuxN] = useState<number>();
+    const [auxRadio, setAuxRadio] = useState('1');
+    const [auxPassword, setAuxPassword] = useState('');
+
   return (
     <div className="league-filters-container">
         <h2 className="league-filters-title">Filtros</h2>
-        <div className="league-filters-input-container">
-            <p className='league-filters-label'>Nombre de la liga</p>
-            <input
-                type="text"
-                value={filters.name}
-                onChange={(e) => setFilters({ ...filters, name: e.target.value })}
-            />
-        </div>
-        <div className="league-filters-input-container">
-            <p className='league-filters-label'>Fecha de la liga</p>
-            <input
-                type="date"
-                value={filters.date ? filters.date.toFormat('yyyy-MM-dd') : ''}
-                onChange={(e) => setFilters({ ...filters, date: DateTime.fromFormat(e.target.value, 'yyyy-MM-dd') })}
-            />
-        </div>
-        <div className="league-filters-input-container">
-            <p className='league-filters-label'>Estado</p>
-            <div className="league-filters-container-radio-options">
-                <div className="league-filters-input-container-radio">
-                    <p className='league-filters-label-radio'>En juego</p>
-                    <input
-                        type="radio"
-                        name='playing'
-                        checked={filters.playing}
-                        onChange={(e) => setFilters({ ...filters, playing: e.target.checked })}
-                        />
-                </div>
-                <div className="league-filters-input-container-radio">
-                    <p className='league-filters-label-radio'>Finalizado</p>
-                    <input
-                        type="radio"
-                        name='playing'
-                        checked={!filters.playing}
-                        onChange={(e) => setFilters({ ...filters, playing: !e.target.checked })}
-                        />
-                </div>
-            </div>
-        </div>
+        <DateInput 
+            value={filters.date} 
+            text='Fecha de la liga' 
+            setDate={
+                (date: DateTime) => setFilters({ ...filters, date })
+            }
+        />
+        <OptionsInput
+            options={[
+                { value: '3', text: '3 minutos' },
+                { value: '5', text: '5 minutos' },
+                { value: '10', text: '10 minutos' },
+            ]}
+            text='Duración'
+            value={aux}
+            setValue={(value: string) => setAux(value)}
+        />
+        <TextInput
+            value={filters.name}
+            setValue={(value: string) => setFilters({ ...filters, name: value })}
+            text='Nombre de la liga'
+        />
+        <NumberInput
+            setValue={(value => setAuxN(Number(value)))}
+            value={auxN}
+            text='Cantidad de jugadores'
+        />
+        <RadioInput
+            value={auxRadio}
+            setValue={(value: string) => setAuxRadio(value)}
+            options={[
+                { value: '1', text: 'Liga' },
+                { value: '2', text: 'Eliminatoria' },
+                { value: '3', text: 'Grupo' },
+            ]}
+            text='Tipo de liga'
+            display='row'
+        />
+        <PasswordInput
+            value={auxPassword}
+            setValue={(value: string) => setAuxPassword(value)}
+            text='Contraseña de la liga'
+        />
     </div>
   );
 };
