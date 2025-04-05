@@ -5,7 +5,7 @@ export type UserDTORegister = {
 }
 
 export type UserDTOLogin = {
-  user: string;
+  mail: string;
   password: string;
 }
 

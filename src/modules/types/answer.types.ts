@@ -1,8 +1,16 @@
+import { DateTime } from "luxon";
+
 export type UserResponseDTO = {
   token: string;
-  expiresIn: number;
+  expiresIn: DateTime; // FIXME: No estoy muy a favor ni seguro de esto
   user: string;
   userId: number;
+}
+
+export type BotSumaryResponseDTO = {
+  nombre: string;
+  id: number;
+  cualidad: string;
 }
 
 export type BotResponseDTO = {
@@ -19,7 +27,7 @@ export type LeagueResponseDTO = {
   leagueId: number;
   name: string;
   urlImagen: string;
-  user: string; // Owner of the league
+  user: number; // Owner of the league
   rounds: number;
   matchTime: number;
   bots: BotResponseDTO[];
@@ -38,16 +46,9 @@ export type MessageResponseDTO = {
   time: string;
 }
 
-export type BotSumaryResponseDTO = { //TODO: Actualizar este type cuando esté definido
+export type ParticipationResponseDTO = { // TODO: Actualizar este type cuando esté definido
   botId: number;
   name: string;
-  description: string;
-  urlImagen: string;
-  nWins: number;
-  nLoses: number;
-  nDraws: number;
-}
-
-export type ParticipationResponseDTO = { // TODO: Actualizar este type cuando esté definido
-  participationId: number;
+  points: number;
+  position: number;
 }
