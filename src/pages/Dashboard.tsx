@@ -10,7 +10,6 @@ const Dashboard: React.FC = () => {
   const [activeLeagues, setActiveLeagues] = useState<any[]>([]);
   const [recentMatches, setRecentMatches] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const user = localStorage.getItem("username") ?? undefined;
 
   // Simular carga de datos (esto se reemplazaría con llamadas API reales)
   useEffect(() => {
@@ -62,7 +61,7 @@ const Dashboard: React.FC = () => {
   return (
     <div className="dashboard">
       <NeuralBackground />
-      <Navbar username={user} />
+      <Navbar />
 
       <div className="dashboard-content">
         <h1>Panel de Control</h1>
@@ -113,7 +112,7 @@ const Dashboard: React.FC = () => {
                         label="Crear bot"
                         onClick={() => (window.location.href = "/bots/new")}
                     />
-                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -129,22 +128,29 @@ const Dashboard: React.FC = () => {
                 </div>
                 <div className="section-content">
                   {activeLeagues.map((league) => (
-                    <div className="league-card" key={league.id}>
-                      <div className="league-name">{league.name}</div>
-                      <div className="league-status">
-                        Estado: {league.status}
+                      <div className="league-card" key={league.id}>
+                        <div className="league-name">{league.name}</div>
+                        <div className="league-status">
+                          Estado: {league.status}
+                        </div>
+                        <div className="progress-bar">
+                          <div
+                              className="progress-fill"
+                              style={{width: `${league.progress}%`}}
+                          ></div>
+                        </div>
+                        <div className="league-participants">
+                          {league.participants} participantes
+                        </div>
                       </div>
-                      <div className="progress-bar">
-                        <div
-                          className="progress-fill"
-                          style={{ width: `${league.progress}%` }}
-                        ></div>
-                      </div>
-                      <div className="league-participants">
-                        {league.participants} participantes
-                      </div>
-                    </div>
                   ))}
+                  <div className="create-new">
+                    <Button
+                        className={"create-new-button"}
+                        label="Crear liga"
+                        onClick={() => (window.location.href = "/leagues/new")}
+                    />
+                  </div>
                 </div>
               </div>
 
@@ -152,8 +158,8 @@ const Dashboard: React.FC = () => {
                 <div className="section-header">
                   <h2>Enfrentamientos Recientes</h2>
                   <button
-                    className="action-button"
-                    onClick={() => (window.location.href = "/matches")}
+                      className="action-button"
+                      onClick={() => (window.location.href = "/matches")}
                   >
                     Ver todos
                   </button>

@@ -7,25 +7,22 @@ import {
   handleLogout,
 } from "../controllers/UserController";
 
-interface NavbarProps {
-  username?: string;
-}
-
-const Navbar: React.FC<NavbarProps> = ({ username: propUsername }) => {
+const Navbar: React.FC = () => {
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
-  const [username, setUsername] = useState("Usuario");
+  //const [username, setUsername] = useState("Usuario");
+  const username = localStorage.getItem("user") ?? "Usuario"; // Cambiado a localStorage
   const userMenuRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    // Si no se pasa un nombre de usuario como prop, intentamos obtenerlo del API
-    if (!propUsername) {
-      fetchCurrentUserInfo(setUsername);
-    } else {
-      setUsername(propUsername);
-    }
-  }, [propUsername]);
+  // useEffect(() => {
+  //   // Si no se pasa un nombre de usuario como prop, intentamos obtenerlo del API
+  //   if (!propUsername) {
+  //     fetchCurrentUserInfo(setUsername);
+  //   } else {
+  //     setUsername(propUsername);
+  //   }
+  // }, [propUsername]);
 
   const navigateTo = (path: string) => {
     navigate(path);
