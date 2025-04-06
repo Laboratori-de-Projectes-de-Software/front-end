@@ -9,6 +9,7 @@ type Props = {
 };
 
 const LeagueFilters: FC<Props> = ({filters, setFilters}) => {
+    
   return (
     <div className="league-filters-container">
         <h2 className="league-filters-title">Filtros</h2>
