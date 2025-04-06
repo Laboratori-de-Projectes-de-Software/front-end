@@ -1,4 +1,5 @@
 import { jwtDecode } from "jwt-decode";
+import { getUserInfo } from "./UserModel";
 
 /**
  * Interfaz que define la estructura de un bot según la API
@@ -8,7 +9,7 @@ export interface Bot {
   name: string;
   descripcion?: string; // Nota: descripcion, no description
   urlImagen?: string; // Nota: urlImagen, no imageUrl
-  endpoint?: string; // Nuevo campo que veo en tu API
+  endpoint?: string; // Campo requerido por la API
   userId?: number;
   createdAt?: string;
   updatedAt?: string;
@@ -31,23 +32,41 @@ export const createBot = async (botData: {
     throw new Error("No hay token de autenticación");
   }
 
-  const response = await fetch("http://localhost:8080/api/v0/bot", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(botData),
-  });
+  try {
+    console.log("Intentando crear bot con datos:", botData);
 
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(
-      errorText || `Error ${response.status}: ${response.statusText}`
-    );
+    // Asegurar que el endpoint esté definido
+    const dataToSend = {
+      ...botData,
+      endpoint: botData.endpoint || "default",
+    };
+
+    const response = await fetch("http://localhost:8080/api/v0/bot", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(dataToSend),
+    });
+
+    console.log("Respuesta status:", response.status);
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Error del servidor:", errorText);
+      throw new Error(
+        errorText || `Error ${response.status}: ${response.statusText}`
+      );
+    }
+
+    const result = await response.json();
+    console.log("Bot creado exitosamente:", result);
+    return result;
+  } catch (error) {
+    console.error("Error completo al crear bot:", error);
+    throw error;
   }
-
-  return response.json();
 };
 
 /**
@@ -61,29 +80,50 @@ export const getUserBots = async () => {
     throw new Error("No hay token de autenticación");
   }
 
-  // Decodificar el token para obtener el ID de usuario
-  const decodedToken: any = jwtDecode(token);
-  const userEmail = decodedToken.sub; // Parece que tu API usa el email como identificador
+  try {
+    // Primero obtenemos la información del usuario para conseguir su ID
+    const userInfo = await getUserInfo();
+    console.log("Información de usuario obtenida:", userInfo);
 
-  const response = await fetch(
-    `http://localhost:8080/api/v0/bot?owner=${userEmail}`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
+    if (!userInfo || !userInfo.id) {
+      throw new Error("No se pudo obtener el ID del usuario");
     }
-  );
 
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(
-      errorText || `Error ${response.status}: ${response.statusText}`
+    const userId = userInfo.id;
+    console.log("Buscando bots para el usuario con ID:", userId);
+
+    // Ahora usamos el ID para obtener los bots
+    const response = await fetch(
+      `http://localhost:8080/api/v0/bot?owner=${userId}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
-  }
 
-  return response.json();
+    if (!response.ok) {
+      // Si es 404, podemos devolver un array vacío en lugar de lanzar un error
+      if (response.status === 404) {
+        console.log("No se encontraron bots para este usuario");
+        return [];
+      }
+
+      const errorText = await response.text();
+      throw new Error(
+        errorText || `Error ${response.status}: ${response.statusText}`
+      );
+    }
+
+    const bots = await response.json();
+    console.log("Bots obtenidos:", bots);
+    return bots;
+  } catch (error) {
+    console.error("Error al obtener los bots del usuario:", error);
+    throw error;
+  }
 };
 
 /**
@@ -98,22 +138,27 @@ export const getBotById = async (botId: number) => {
     throw new Error("No hay token de autenticación");
   }
 
-  const response = await fetch(`http://localhost:8080/api/v0/bot/${botId}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  try {
+    const response = await fetch(`http://localhost:8080/api/v0/bot/${botId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(
-      errorText || `Error ${response.status}: ${response.statusText}`
-    );
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(
+        errorText || `Error ${response.status}: ${response.statusText}`
+      );
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error(`Error al obtener el bot con ID ${botId}:`, error);
+    throw error;
   }
-
-  return response.json();
 };
 
 /**
@@ -137,21 +182,38 @@ export const updateBot = async (
     throw new Error("No hay token de autenticación");
   }
 
-  const response = await fetch(`http://localhost:8080/api/v0/bot/${botId}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(botData),
-  });
+  try {
+    // Asegurar que el endpoint esté definido
+    const dataToSend = {
+      ...botData,
+      endpoint: botData.endpoint || "default",
+    };
 
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(
-      errorText || `Error ${response.status}: ${response.statusText}`
-    );
+    const response = await fetch(`http://localhost:8080/api/v0/bot/${botId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(dataToSend),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(
+        errorText || `Error ${response.status}: ${response.statusText}`
+      );
+    }
+
+    // El backend devuelve 204 No Content, así que no hay cuerpo para parsear
+    if (response.status === 204) {
+      // En este caso, podemos devolver los datos enviados con el ID
+      return { ...dataToSend, id: botId };
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error(`Error al actualizar el bot con ID ${botId}:`, error);
+    throw error;
   }
-
-  return response.json();
 };

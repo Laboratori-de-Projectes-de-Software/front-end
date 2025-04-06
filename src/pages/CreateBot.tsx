@@ -17,6 +17,9 @@ const CreateBotPage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    // Evitamos envíos múltiples
+    if (isSubmitting) return;
+
     // Usar el controlador para manejar la creación del bot
     handleCreateBot(
       {
@@ -84,7 +87,7 @@ const CreateBotPage: React.FC = () => {
                     alt="Vista previa del bot"
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
-                      target.src = ""; // puedes reemplazar por una imagen por defecto si prefieres
+                      target.src = ""; // se puede reemplazar por una imagen por defecto
                     }}
                     className="preview-img"
                   />
@@ -100,7 +103,6 @@ const CreateBotPage: React.FC = () => {
               />
               <Button
                 type="submit"
-                onClick={() => navigate("/Dashboard")}
                 label={isSubmitting ? "Creando..." : "Crear Bot"}
                 className="submit-button"
                 disabled={isSubmitting}

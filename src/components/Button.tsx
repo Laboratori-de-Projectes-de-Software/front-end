@@ -6,7 +6,7 @@ export interface ButtonProps {
   label: string;
   className?: string;
   disabled?: boolean;
-  type?: "button" | "submit" | "reset"; // Agregamos la propiedad type
+  type?: "button" | "submit" | "reset";
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -14,7 +14,7 @@ const Button: React.FC<ButtonProps> = ({
   label,
   className = "",
   disabled = false,
-  type = "button", // Valor por defecto
+  type = "button",
 }) => {
   return (
     <button
