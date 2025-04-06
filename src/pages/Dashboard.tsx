@@ -3,6 +3,8 @@ import Navbar from "../components/Navbar";
 import NeuralBackground from "../components/NeuralBackground";
 import "./Dashboard.css";
 import Button from "../components/Button";
+import CreateLeagueModal from "../components/CreateLeagueModal";
+
 
 const Dashboard: React.FC = () => {
   // Estados para almacenar datos del dashboard
@@ -10,6 +12,9 @@ const Dashboard: React.FC = () => {
   const [activeLeagues, setActiveLeagues] = useState<any[]>([]);
   const [recentMatches, setRecentMatches] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
   // Simular carga de datos (esto se reemplazaría con llamadas API reales)
   useEffect(() => {
@@ -148,7 +153,7 @@ const Dashboard: React.FC = () => {
                     <Button
                         className={"create-new-button"}
                         label="Crear liga"
-                        onClick={() => (window.location.href = "/leagues/new")}
+                        onClick={openModal}
                     />
                   </div>
                 </div>
@@ -184,7 +189,9 @@ const Dashboard: React.FC = () => {
           </>
         )}
       </div>
+      <CreateLeagueModal isOpen={isModalOpen} onClose={closeModal} />
     </div>
+
   );
 };
 
