@@ -15,12 +15,10 @@ type Props = {
 };
 
 const LeagueFilters: FC<Props> = ({filters, setFilters}) => {
-
     const [aux, setAux] = useState('');
     const [auxN, setAuxN] = useState<number>();
     const [auxRadio, setAuxRadio] = useState('1');
     const [auxPassword, setAuxPassword] = useState('');
-
   return (
     <div className="league-filters-container">
         <h2 className="league-filters-title">Filtros</h2>
