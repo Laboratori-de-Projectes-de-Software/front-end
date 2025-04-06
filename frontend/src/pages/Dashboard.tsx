@@ -37,9 +37,11 @@ import League from "./League"; // Ajusta la ruta según tu estructura
 
 // Tipos
 interface Bot {
+  id: number;
   name: string;
   description: string;
   endpoint?: string;
+  enLigaActiva?: boolean; 
 }
 
 interface League {
@@ -75,9 +77,61 @@ export default function Dashboard() {
   const token = localStorage.getItem("token") || "";
   const [allLeagues, setAllLeagues] = useState<League[]>([]);
   const [leagueFilter, setLeagueFilter] = useState<string[]>(["ALL"]);
-  const [selectedLeague, setSelectedLeague] = useState<League | null>(null);
   const [popupOpen, setPopupOpen] = useState(false);
 
+  const [joinLeagueId, setJoinLeagueId] = useState<number | null>(null);
+  const [availableBots, setAvailableBots] = useState<Bot[]>([]);
+  const [selectedBot, setSelectedBot] = useState<number | null>(null);
+  const [joinDialogOpen, setJoinDialogOpen] = useState(false);
+  const [leagueDetails, setLeagueDetails] = useState<League | null>(null);
+
+  const handleJoinLeague = async (leagueId: number) => {
+    try {
+      const res = await fetch(`http://localhost:8080/api/v0/bot/owner=${username}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (res.ok) {
+        const bots: Bot[] = await res.json();
+        const botsDisponibles = bots.filter(bot => !bot.enLigaActiva);
+  
+        setAvailableBots(botsDisponibles);
+        setSelectedBot(null);
+        setJoinLeagueId(leagueId); // usar ID
+        setJoinDialogOpen(true);
+      }
+    } catch (err) {
+      console.error("Error al obtener bots para apuntarse:", err);
+    }
+  };
+  
+
+
+  const handleConfirmJoin = async () => {
+    console.log("👉 joinLeagueId:", joinLeagueId);
+    console.log("👉 selectedBot:", selectedBot);
+
+    if (!joinLeagueId || selectedBot === null) return;
+
+    try {
+      const res = await fetch(`http://localhost:8080/api/v0/league/${joinLeagueId}/bot`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ botId: selectedBot }),
+      });
+
+      if (res.ok) {
+        setJoinDialogOpen(false);
+        fetchAllLeagues();
+      } else {
+        console.error("❌ Error al unirse a la liga");
+      }
+    } catch (err) {
+      console.error("❌ Error de red al hacer join:", err);
+    }
+  };
 
 
 
@@ -139,7 +193,11 @@ export default function Dashboard() {
       });
       if (res.ok) {
         const data = await res.json();
-        setAllLeagues(data);
+        const ligasConEstado = data.map((liga: { id: number; name: string; creatorUsername: string; fechaInicio?: string; fechaFin?: string }) => ({
+          ...liga,
+          status: calcularEstadoLiga(liga.fechaInicio, liga.fechaFin),
+        }));
+        setAllLeagues(ligasConEstado);
       }
     } catch (err) {
       console.error("Error al obtener todas las ligas:", err);
@@ -186,7 +244,25 @@ export default function Dashboard() {
     return "FINISHED";
   }  
 
-
+  const fetchLeagueById = async (id: number) => {
+    try {
+      const res = await fetch(`http://localhost:8080/api/v0/league/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setLeagueDetails(data);
+        setPopupOpen(true);
+      } else {
+        console.error("Error al obtener liga:", res.status);
+      }
+    } catch (err) {
+      console.error("Error de red al obtener liga:", err);
+    }
+  };
+  
   useEffect(() => {
     if (section === "myBots") fetchUserBots();
     else if (section === "allBots") fetchAllBots();
@@ -444,11 +520,9 @@ export default function Dashboard() {
                       id={league.id}
                       name={league.name}
                       status={league.status}
-                      onView={() => {
-                        setSelectedLeague(league); // 👈 capturas aquí la liga
-                        setPopupOpen(true);
-                      }}
+                      onView={() => fetchLeagueById(league.id)} 
                     />
+
                 ))}
 
               </Box>
@@ -471,14 +545,16 @@ export default function Dashboard() {
         <Box sx={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
           {allLeagues.map((league) => (
             <LeagueCard
-              key={league.id}
-              id={league.id}
+              key={league.id} // usar el ID como key
+              id={league.id} // pasar el ID correcto
               name={league.name}
-              status={"ACTIVE"}  // Asegúrate de que `status` esté disponible
+              status={league.status}
               onView={() => {
-                setSelectedLeague(league); // Guarda la liga seleccionada
-                setSection("leagueDetails"); // Cambia a la vista de detalles de liga
+                fetchLeagueById(league.id);
+                setSection("leagueDetails");
               }}
+              onJoin={() => handleJoinLeague(league.id)} // pasar el ID, no el nombre
+              isAllLeaguesSection
             />
           ))}
         </Box>
@@ -581,18 +657,25 @@ export default function Dashboard() {
         {/* Contenido */}
         <DialogContent>
           <Typography variant="h5" sx={{ mb: 2, fontWeight: "bold", color: "white" }}>
-            {selectedLeague?.name}
+            {leagueDetails?.name}
           </Typography>
 
           <Typography variant="subtitle1" sx={{ mb: 1, color: "lightgray" }}>
-            Participantes:
+            Creador: {leagueDetails?.creatorUsername}
           </Typography>
 
-          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
-            <Typography>- BotAlpha</Typography>
-            <Typography>- BotBeta</Typography>
-            <Typography>- BotGamma</Typography>
-          </Box>
+          <Typography variant="body2" sx={{ mb: 1 }}>
+            Estado: {leagueDetails?.status}
+          </Typography>
+
+          <Typography variant="body2" sx={{ mb: 1 }}>
+            Fecha inicio: {leagueDetails?.fechaInicio || "No iniciada"}
+          </Typography>
+
+          <Typography variant="body2" sx={{ mb: 1 }}>
+            Fecha fin: {leagueDetails?.fechaFin || "No finalizada"}
+          </Typography>
+
         </DialogContent>
 
         {/* Botones */}
@@ -607,10 +690,67 @@ export default function Dashboard() {
       </Box>
     </Dialog>
 
+    <Dialog open={joinDialogOpen} onClose={() => setJoinDialogOpen(false)} maxWidth="sm" fullWidth>
+  <Box sx={{ p: 4, backgroundColor: "#0a0f1d", color: "white", borderRadius: 2 }}>
+    <DialogTitle sx={{ color: "cyan" }}>
+      Selecciona bots para unirte a la liga
+    </DialogTitle>
+
+    <DialogContent>
+      {availableBots.length === 0 ? (
+        <Typography>No tienes bots disponibles para unirte.</Typography>
+      ) : (
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+          {availableBots.map(bot => (
+            <Button
+            key={bot.id}
+            variant={selectedBot === bot.id ? "contained" : "outlined"}
+            onClick={() => {
+              setSelectedBot(prev => prev === bot.id ? null : bot.id);
+            }}
+            sx={{
+              justifyContent: "flex-start",
+              backgroundColor: selectedBot === bot.id ? "cyan" : "transparent",
+              color: selectedBot === bot.id ? "#0a0f1d" : "white",
+              borderColor: "cyan",
+              "&:hover": {
+                backgroundColor: selectedBot === bot.id
+                  ? "rgba(0,255,255,0.8)"
+                  : "rgba(0,255,255,0.1)",
+              },
+            }}
+          >
+            {bot.name}
+          </Button>
+          
+          ))}
+
+        </Box>
+      )}
+    </DialogContent>
+
+    <DialogActions sx={{ justifyContent: "space-between", mt: 2 }}>
+      <Button onClick={() => setJoinDialogOpen(false)} sx={{ color: "gray" }}>
+        Cancelar
+      </Button>
+      <Button
+        onClick={handleConfirmJoin}
+        disabled={!selectedBot}
+        variant="contained"
+        sx={{ backgroundColor: "cyan", color: "#0a0f1d" }}
+      >
+        Confirmar
+      </Button>
+
+    </DialogActions>
+  </Box>
+</Dialog>
+
 
 
     </Box>
   );
 }
+
 
          
