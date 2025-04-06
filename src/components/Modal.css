@@ -1,0 +1,179 @@
+/* Fondo oscuro con difuminado para el overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(3px);
+}
+
+/* Contenedor del modal */
+.modal-content {
+  background-color: #202124;
+  padding: 2rem 2.5rem;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  animation: modal-fade-in 0.4s ease;
+  color: #e8eaed;
+  position: relative;
+}
+
+/* Animación al aparecer */
+@keyframes modal-fade-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Responsive para móviles */
+@media (max-width: 480px) {
+  .modal-content {
+    padding: 1.5rem;
+    width: 95%;
+  }
+
+  .preview-img {
+    width: 100px;
+    height: 100px;
+  }
+
+  .form-actions {
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+/* Título del modal */
+.modal-content h2 {
+  margin-top: 0;
+  color: #1db954;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 0.5rem;
+}
+
+/* Centrado de los grupos del formulario */
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-group {
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 1.2rem;
+}
+
+/* Etiquetas */
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #c5c8c6;
+}
+
+/* Inputs y textarea */
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #3c4043;
+  border-radius: 6px;
+  background-color: #292a2d;
+  color: #e8eaed;
+  font-size: 1rem;
+  font-family: inherit; /* ← esta línea soluciona el problema */
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+/* Efecto al enfocar */
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: rgba(29, 185, 84, 0.5);
+  box-shadow: 0 0 0 2px rgba(29, 185, 84, 0.2);
+}
+
+/* Errores */
+.error-message {
+  color: #f28b82;
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+/* Botones de acción */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.cancel-button,
+.submit-button {
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Botón cancelar */
+.cancel-button {
+  background-color: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.cancel-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Botón crear */
+.submit-button {
+  background-color: rgba(29, 185, 84, 0.2);
+  border: 1px solid rgba(29, 185, 84, 0.5);
+  color: white;
+}
+
+.submit-button:hover {
+  background-color: rgba(29, 185, 84, 0.3);
+  border-color: rgba(29, 185, 84, 0.8);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Previsualización de la imagen */
+.image-preview {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.preview-img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}

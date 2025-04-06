@@ -35,7 +35,6 @@ export const createBot = async (botData: {
   try {
     console.log("Intentando crear bot con datos:", botData);
 
-    // Asegurar que el endpoint esté definido
     const dataToSend = {
       ...botData,
       endpoint: botData.endpoint || "default",
@@ -51,6 +50,14 @@ export const createBot = async (botData: {
     });
 
     console.log("Respuesta status:", response.status);
+
+    if (response.status === 401) {
+      // Token inválido o expirado
+      localStorage.removeItem("token"); // Eliminar el token inválido
+      throw new Error(
+        "Tu sesión ha expirado. Por favor, inicia sesión nuevamente."
+      );
+    }
 
     if (!response.ok) {
       const errorText = await response.text();

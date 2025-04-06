@@ -34,12 +34,11 @@ export const handleCreateBot = async (
   try {
     console.log("Datos del formulario:", formData);
 
-    // Adaptar los nombres de campos según la API
     const botData = {
       name: formData.name,
       descripcion: formData.description || "",
       urlImagen: formData.imageUrl || "",
-      endpoint: "default", // Valor por defecto para el endpoint
+      endpoint: "default",
     };
 
     console.log("Datos enviados a la API:", botData);
@@ -47,14 +46,21 @@ export const handleCreateBot = async (
     const newBot = await createBot(botData);
 
     console.log("Bot creado con éxito:", newBot);
-    navigate("/Dashboard"); // Redirigir al dashboard después de crear el bot
+    navigate("/Dashboard");
   } catch (err) {
     console.error("Error al crear bot:", err);
-    setError(
-      err instanceof Error
-        ? err.message
-        : "Error al crear el bot. Inténtalo de nuevo más tarde."
-    );
+
+    if (err instanceof Error && err.message.includes("sesión")) {
+      // Redirigir al login si el token ha expirado
+      alert("Tu sesión ha expirado. Serás redirigido al inicio de sesión.");
+      navigate("/login");
+    } else {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Error al crear el bot. Inténtalo de nuevo más tarde."
+      );
+    }
   } finally {
     setIsSubmitting(false);
   }

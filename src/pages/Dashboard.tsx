@@ -4,7 +4,7 @@ import NeuralBackground from "../components/NeuralBackground";
 import "./Dashboard.css";
 import Button from "../components/Button";
 import CreateLeagueModal from "../components/CreateLeagueModal";
-
+import CreateBotModal from "../components/CreateBotModal";
 
 const Dashboard: React.FC = () => {
   // Estados para almacenar datos del dashboard
@@ -12,9 +12,16 @@ const Dashboard: React.FC = () => {
   const [activeLeagues, setActiveLeagues] = useState<any[]>([]);
   const [recentMatches, setRecentMatches] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+
+  // Estados para los modales
+  const [isLeagueModalOpen, setIsLeagueModalOpen] = useState(false);
+  const [isBotModalOpen, setIsBotModalOpen] = useState(false);
+
+  // Funciones para controlar modales
+  const openLeagueModal = () => setIsLeagueModalOpen(true);
+  const closeLeagueModal = () => setIsLeagueModalOpen(false);
+  const openBotModal = () => setIsBotModalOpen(true);
+  const closeBotModal = () => setIsBotModalOpen(false);
 
   // Simular carga de datos (esto se reemplazaría con llamadas API reales)
   useEffect(() => {
@@ -113,9 +120,9 @@ const Dashboard: React.FC = () => {
                   ))}
                   <div className="create-new">
                     <Button
-                        className={"create-new-button"}
-                        label="Crear bot"
-                        onClick={() => (window.location.href = "/bots/new")}
+                      className={"create-new-button"}
+                      label="Crear bot"
+                      onClick={openBotModal}
                     />
                   </div>
                 </div>
@@ -133,27 +140,27 @@ const Dashboard: React.FC = () => {
                 </div>
                 <div className="section-content">
                   {activeLeagues.map((league) => (
-                      <div className="league-card" key={league.id}>
-                        <div className="league-name">{league.name}</div>
-                        <div className="league-status">
-                          Estado: {league.status}
-                        </div>
-                        <div className="progress-bar">
-                          <div
-                              className="progress-fill"
-                              style={{width: `${league.progress}%`}}
-                          ></div>
-                        </div>
-                        <div className="league-participants">
-                          {league.participants} participantes
-                        </div>
+                    <div className="league-card" key={league.id}>
+                      <div className="league-name">{league.name}</div>
+                      <div className="league-status">
+                        Estado: {league.status}
                       </div>
+                      <div className="progress-bar">
+                        <div
+                          className="progress-fill"
+                          style={{ width: `${league.progress}%` }}
+                        ></div>
+                      </div>
+                      <div className="league-participants">
+                        {league.participants} participantes
+                      </div>
+                    </div>
                   ))}
                   <div className="create-new">
                     <Button
-                        className={"create-new-button"}
-                        label="Crear liga"
-                        onClick={openModal}
+                      className={"create-new-button"}
+                      label="Crear liga"
+                      onClick={openLeagueModal}
                     />
                   </div>
                 </div>
@@ -163,8 +170,8 @@ const Dashboard: React.FC = () => {
                 <div className="section-header">
                   <h2>Enfrentamientos Recientes</h2>
                   <button
-                      className="action-button"
-                      onClick={() => (window.location.href = "/matches")}
+                    className="action-button"
+                    onClick={() => (window.location.href = "/matches")}
                   >
                     Ver todos
                   </button>
@@ -189,9 +196,13 @@ const Dashboard: React.FC = () => {
           </>
         )}
       </div>
-      <CreateLeagueModal isOpen={isModalOpen} onClose={closeModal} />
+      {/* Componentes de Modal */}
+      <CreateLeagueModal
+        isOpen={isLeagueModalOpen}
+        onClose={closeLeagueModal}
+      />
+      <CreateBotModal isOpen={isBotModalOpen} onClose={closeBotModal} />
     </div>
-
   );
 };
 
