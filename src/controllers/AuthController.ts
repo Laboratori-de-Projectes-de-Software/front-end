@@ -28,8 +28,8 @@ export const handleLogin = async (formData: any, navigate: any, setError: any) =
         // Decode the token to get the username
         const decodedToken: any = jwtDecode(data.token);
         const email = decodedToken.email;
-        console.log("Email: ", email)
-        localStorage.setItem("username", email);
+        console.log("Email" + email);
+        localStorage.setItem("email ", email);
         navigate("/dashboard");
     } catch (err: any) {
         setError(err.message || "Ocurrió un error");

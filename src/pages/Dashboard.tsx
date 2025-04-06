@@ -10,8 +10,7 @@ const Dashboard: React.FC = () => {
   const [activeLeagues, setActiveLeagues] = useState<any[]>([]);
   const [recentMatches, setRecentMatches] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const user = localStorage.getItem("email") ?? undefined;
-  console.log("User: " + user);
+  const user = localStorage.getItem("username") ?? undefined;
 
   // Simular carga de datos (esto se reemplazaría con llamadas API reales)
   useEffect(() => {
