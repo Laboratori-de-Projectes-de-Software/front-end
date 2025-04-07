@@ -256,7 +256,7 @@ export default function LeagueRegisterForm({ onLeagueCreated }: { onLeagueCreate
               </Box>
             )}
             disabled={loadingBots}
-            required
+            // required
             sx={{
               color: "white",
               '& .MuiOutlinedInput-notchedOutline': {

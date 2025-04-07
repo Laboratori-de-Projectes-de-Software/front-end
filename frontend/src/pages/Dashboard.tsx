@@ -45,12 +45,14 @@ interface Bot {
 }
 
 interface League {
-  id: number;
+  leagueId: number;
   name: string;
   creatorUsername: string;
   status: "ACTIVE" | "INACTIVE" | "FINISHED";
   fechaInicio?: string;
   fechaFin?: string;
+  matchTime?: number; // Added matchTime property
+  rounds?: number; // Added rounds property
 }
 
 
@@ -84,25 +86,31 @@ export default function Dashboard() {
   const [selectedBot, setSelectedBot] = useState<number | null>(null);
   const [joinDialogOpen, setJoinDialogOpen] = useState(false);
   const [leagueDetails, setLeagueDetails] = useState<League | null>(null);
+  const [leagueBots, setLeagueBots] = useState<{ id: number; name: string }[]>([]);
+
 
   const handleJoinLeague = async (leagueId: number) => {
     try {
-      const res = await fetch(`http://localhost:8080/api/v0/bot/owner=${username}`, {
+      const res = await fetch(`http://localhost:8080/api/v0/bot?owner=${username}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (res.ok) {
         const bots: Bot[] = await res.json();
         const botsDisponibles = bots.filter(bot => !bot.enLigaActiva);
   
+        // 👉 Asegúrate de establecer el ID primero
+        setJoinLeagueId(leagueId);
         setAvailableBots(botsDisponibles);
         setSelectedBot(null);
-        setJoinLeagueId(leagueId); // usar ID
+  
+        // Abrir diálogo al final
         setJoinDialogOpen(true);
       }
     } catch (err) {
       console.error("Error al obtener bots para apuntarse:", err);
     }
   };
+  
   
 
 
@@ -144,7 +152,7 @@ export default function Dashboard() {
   const fetchUserBots = useCallback(async () => {
     setLoadingBots(true);
     try {
-      const res = await fetch(`http://localhost:8080/api/v0/bot/owner=${username}`, {
+      const res = await fetch(`http://localhost:8080/api/v0/bot?owner=${username}`, {
         headers: {
           "Authorization": `Bearer ${token}`
         }
@@ -251,10 +259,31 @@ export default function Dashboard() {
           Authorization: `Bearer ${token}`,
         },
       });
+  
       if (res.ok) {
         const data = await res.json();
         setLeagueDetails(data);
         setPopupOpen(true);
+  
+        // ⚠️ Obtener los bots participantes
+        if (data.bots && data.bots.length > 0) {
+          const fetchedBots: { id: number; name: string }[] = [];
+  
+          for (const botId of data.bots) {
+            const botRes = await fetch(`http://localhost:8080/api/v0/bot/${botId}`, {
+              headers: { Authorization: `Bearer ${token}` },
+            });
+  
+            if (botRes.ok) {
+              const botData = await botRes.json();
+              fetchedBots.push({ id: botData.id, name: botData.name });
+            }
+          }
+  
+          setLeagueBots(fetchedBots);
+        } else {
+          setLeagueBots([]); // No hay bots
+        }
       } else {
         console.error("Error al obtener liga:", res.status);
       }
@@ -262,6 +291,7 @@ export default function Dashboard() {
       console.error("Error de red al obtener liga:", err);
     }
   };
+  
   
   useEffect(() => {
     if (section === "myBots") fetchUserBots();
@@ -516,11 +546,11 @@ export default function Dashboard() {
                   )
                   .map((league) => (
                     <LeagueCard
-                      key={league.id}
-                      id={league.id}
+                      key={league.leagueId}
+                      id={league.leagueId}
                       name={league.name}
                       status={league.status}
-                      onView={() => fetchLeagueById(league.id)} 
+                      onView={() => fetchLeagueById(league.leagueId)} 
                     />
 
                 ))}
@@ -545,15 +575,15 @@ export default function Dashboard() {
         <Box sx={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
           {allLeagues.map((league) => (
             <LeagueCard
-              key={league.id} // usar el ID como key
-              id={league.id} // pasar el ID correcto
+              key={league.leagueId} // usar el ID como key
+              id={league.leagueId} // pasar el ID correcto
               name={league.name}
               status={league.status}
               onView={() => {
-                fetchLeagueById(league.id);
+                fetchLeagueById(league.leagueId);
                 setSection("leagueDetails");
               }}
-              onJoin={() => handleJoinLeague(league.id)} // pasar el ID, no el nombre
+              onJoin={() => handleJoinLeague(league.leagueId)} // pasar el ID, no el nombre
               isAllLeaguesSection
             />
           ))}
@@ -660,10 +690,6 @@ export default function Dashboard() {
             {leagueDetails?.name}
           </Typography>
 
-          <Typography variant="subtitle1" sx={{ mb: 1, color: "lightgray" }}>
-            Creador: {leagueDetails?.creatorUsername}
-          </Typography>
-
           <Typography variant="body2" sx={{ mb: 1 }}>
             Estado: {leagueDetails?.status}
           </Typography>
@@ -676,7 +702,33 @@ export default function Dashboard() {
             Fecha fin: {leagueDetails?.fechaFin || "No finalizada"}
           </Typography>
 
+          <Typography variant="body2" sx={{ mb: 1 }}>
+            Duración del enfrentamiento: {leagueDetails?.matchTime} min
+          </Typography>
+
+          <Typography variant="body2" sx={{ mb: 1 }}>
+            Número de rondas: {leagueDetails?.rounds}
+          </Typography>
+
+          {leagueBots.length > 0 && (
+            <Box sx={{ mt: 3 }}>
+              <Typography variant="subtitle1" sx={{ color: "cyan", mb: 1 }}>
+                Bots participantes:
+              </Typography>
+              <ul style={{ paddingLeft: "1.5rem", margin: 0 }}>
+                {leagueBots.map(bot => (
+                  <li key={bot.id}>
+                    <Typography variant="body2" sx={{ color: "white" }}>
+                      🤖 {bot.name}
+                    </Typography>
+                  </li>
+                ))}
+              </ul>
+            </Box>
+          )}
         </DialogContent>
+
+
 
         {/* Botones */}
         <DialogActions sx={{ mt: 4, justifyContent: "flex-end" }}>

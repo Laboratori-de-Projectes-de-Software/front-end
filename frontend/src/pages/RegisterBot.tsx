@@ -78,7 +78,7 @@ export default function BotRegisterForm({ botToEdit, onBotSaved }: BotProps) {
       // Estructura exacta según BotDTO
       const payload = {
         name: name.trim(),
-        descripcion: description.trim(), // Note la 'c' en 'descripcion'
+        description: description.trim(), // Note la 'c' en 'descripcion'
         endpoint: endpoint.trim(),
         urlImagen: "" // Campo requerido pero puede ser string vacío
       };
