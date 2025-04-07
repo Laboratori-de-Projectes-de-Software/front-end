@@ -1,5 +1,8 @@
 import React from "react";
-import {loginUser, setCurrentUser} from "./AuthUtils.tsx";
+import { saveToken, sendRequest, saveUserInfo } from "../../utils/auth";
+
+const login_url = "http://localhost:8080/login";
+const redirect_url = "/auth/home";
 
 interface LoginForm {
   email: string;
@@ -12,26 +15,29 @@ export const LoginForm = ({ className }: { className?: string }) => {
     password: "",
   });
 
-  const [error, setError] = React.useState<string | null>(null);
+  const [error, setError] = React.useState<string>("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setError(null);
 
     try {
-      const response = await loginUser(form.email, form.password);
-
-      setCurrentUser(response.usuario);
-
-      window.location.href = '/home'; // TODO sería recomendable usar useNavigate pero entonces necesitaría <BrowserRouter>
+      const response = await sendRequest("POST", login_url, form);
+      if (response.status === 200) {
+        const data = await response.json();
+        saveToken(data.token);
+        saveUserInfo(data.usuario);
+        window.location.href = redirect_url;
+      } else {
+        const errorData = await response.json();
+        setError(errorData.message || "Credenciales incorrectas");
+      }
     } catch (err: any) {
       if (err.response && err.response.data) {
-        setError(err.response.data.message || 'Credenciales incorrectas');
+        setError(err.response.data.message || "Credenciales incorrectas");
       } else {
-        setError('Error de conexión con el servidor');
+        setError("Error de conexión con el servidor");
       }
     }
-    console.log(form);
   };
 
   return (

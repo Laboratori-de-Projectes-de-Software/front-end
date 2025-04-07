@@ -1,11 +1,12 @@
 import React from "react";
-import {registerUser, setCurrentUser} from "./AuthUtils.tsx";
+import { saveToken, sendRequest, saveUserInfo } from "../../utils/auth";
 
+const register_url = "http://localhost:8080/register";
+const redirect_url = "/auth/home";
 interface RegisterForm {
   email: string;
   nombre: string;
   password: string;
-  repetirPassword?: string;
 }
 
 export const RegisterForm = ({ className }: { className?: string }) => {
@@ -13,43 +14,43 @@ export const RegisterForm = ({ className }: { className?: string }) => {
     email: "",
     password: "",
     nombre: "",
-    repetirPassword: "",
   });
+
+  const [repetirPassword, setRepetirPassword] = React.useState<string>("");
 
   const [error, setError] = React.useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-
     e.preventDefault();
     setError(null);
 
     try {
-
       if (form.password.length < 8) {
         setError("La contraseña debe tener al menos 8 caracteres");
         return;
       }
 
-      if (form.password !== form.repetirPassword) {
+      if (form.password !== repetirPassword) {
         setError("Las contraseñas no coinciden");
         return;
       }
 
-      const { repetirPassword, ...dataToSend } = form;
-      const response = await registerUser(
-          dataToSend.email,
-          dataToSend.nombre,
-          dataToSend.password
-      );
-      // TODO manejar error usuario ya existe
-      setCurrentUser(response.usuario);
-      window.location.href = '/home'; // TODO sería recomendable usar useNavigate pero entonces necesitaría <BrowserRouter>
+      const response = await sendRequest("POST", register_url, form);
 
+      if (response.status === 200) {
+        const data = await response.json();
+        saveToken(data.token);
+        saveUserInfo(data.usuario);
+        window.location.href = redirect_url;
+      } else {
+        const errorData = await response.json();
+        setError(errorData.message || "Error en el registro");
+      }
     } catch (err: any) {
       if (err.response && err.response.data) {
-        setError(err.response.data.message || 'Error en el registro');
+        setError(err.response.data.message || "Error en el registro");
       } else {
-        setError('Error de conexión con el servidor');
+        setError("Error de conexión con el servidor");
       }
       console.log(err);
     }
@@ -89,10 +90,8 @@ export const RegisterForm = ({ className }: { className?: string }) => {
         <input
           type="password"
           placeholder="Repetir contraseña"
-          value={form.repetirPassword}
-          onChange={(e) =>
-            setForm({ ...form, repetirPassword: e.target.value })
-          }
+          value={repetirPassword}
+          onChange={(e) => setRepetirPassword(e.target.value)}
           className="text-black bg-white rounded-2xl placeholder-gray-700 placeholder-opacity-50 p-2"
         />
         <button
