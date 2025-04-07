@@ -1,9 +1,9 @@
-import LeagueDTO from "src/DTOClasses/LeagueDTO.ts";
-import BotDTO from "../DTOClasses/BotDTO.ts";
-import UserDTO from "src/DTOClasses/UserDTO.ts";
-import MatchDTO from "src/DTOClasses/MatchDTO.ts";
-import ParticipationDTO from "src/DTOClasses/ParticipationDTO.ts";
-import MessageDTO from "src/DTOClasses/MessageDTO.ts";
+import LeagueDTO from "@DTOClasses/LeagueDTO.ts";
+import BotDTO from "@DTOClasses/BotDTO.ts";
+import UserDTO from "@DTOClasses/UserDTO.ts";
+import MatchDTO from "@DTOClasses/MatchDTO.ts";
+import ParticipationDTO from "@DTOClasses/ParticipationDTO.ts";
+import MessageDTO from "@DTOClasses/MessageDTO.ts";
 import React, { useEffect } from "react";
 
 interface LeagueData {
