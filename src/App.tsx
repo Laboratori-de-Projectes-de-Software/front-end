@@ -6,6 +6,8 @@ import MisBots from "./pages/MisBots.tsx";
 import MisLigas from "./pages/MisLigas.tsx";
 import {useState} from "react";
 import PerfilPage from "./pages/PerfilPage.tsx";
+import CrearBot from './pages/CrearBot';
+import CrearLiga from './pages/CrearLiga';
 
 export function App() {
   const [menuExpanded, setMenuExpanded] = useState(true);
@@ -22,6 +24,8 @@ export function App() {
               <Route path="/mis-bots" element={<MisBots />} />
               <Route path="/mis-ligas" element={<MisLigas />} />
               <Route path="/perfil/:id" element={<PerfilPage />} />
+              <Route path="/crear-bot" element={<CrearBot />} />
+              <Route path="/crear-liga" element={<CrearLiga />} />
             </Routes>
           </Col>
         </Row>
