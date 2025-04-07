@@ -45,12 +45,12 @@
     width: 95%;
   }
 
-  .preview-img {
+  .modal-preview-img {
     width: 100px;
     height: 100px;
   }
 
-  .form-actions {
+  .modal-form-actions {
     justify-content: center;
     flex-direction: column;
     align-items: center;
@@ -70,20 +70,20 @@
 }
 
 /* Centrado de los grupos del formulario */
-form {
+.modal-form {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.form-group {
+.modal-form-group {
   width: 100%;
   max-width: 400px;
   margin-bottom: 1.2rem;
 }
 
 /* Etiquetas */
-.form-group label {
+.modal-form-group label {
   display: block;
   margin-bottom: 0.5rem;
   font-weight: 500;
@@ -91,8 +91,8 @@ form {
 }
 
 /* Inputs y textarea */
-.form-group input,
-.form-group textarea {
+.modal-form-group input,
+.modal-form-group textarea {
   width: 100%;
   padding: 0.75rem;
   border: 1px solid #3c4043;
@@ -100,20 +100,20 @@ form {
   background-color: #292a2d;
   color: #e8eaed;
   font-size: 1rem;
-  font-family: inherit; /* ← esta línea soluciona el problema */
+  font-family: inherit;
   transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 /* Efecto al enfocar */
-.form-group input:focus,
-.form-group textarea:focus {
+.modal-form-group input:focus,
+.modal-form-group textarea:focus {
   outline: none;
   border-color: rgba(29, 185, 84, 0.5);
   box-shadow: 0 0 0 2px rgba(29, 185, 84, 0.2);
 }
 
 /* Errores */
-.error-message {
+.modal-error-message {
   color: #f28b82;
   font-size: 0.85rem;
   margin-top: 0.25rem;
@@ -121,15 +121,15 @@ form {
 }
 
 /* Botones de acción */
-.form-actions {
+.modal-form-actions {
   display: flex;
   justify-content: flex-end;
   gap: 1rem;
   margin-top: 1.5rem;
 }
 
-.cancel-button,
-.submit-button {
+.modal-cancel-button,
+.modal-submit-button {
   padding: 0.6rem 1.2rem;
   border-radius: 6px;
   font-weight: 500;
@@ -138,24 +138,24 @@ form {
 }
 
 /* Botón cancelar */
-.cancel-button {
+.modal-cancel-button {
   background-color: transparent;
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: white;
 }
 
-.cancel-button:hover {
+.modal-cancel-button:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
 /* Botón crear */
-.submit-button {
+.modal-submit-button {
   background-color: rgba(29, 185, 84, 0.2);
   border: 1px solid rgba(29, 185, 84, 0.5);
   color: white;
 }
 
-.submit-button:hover {
+.modal-submit-button:hover {
   background-color: rgba(29, 185, 84, 0.3);
   border-color: rgba(29, 185, 84, 0.8);
   transform: translateY(-1px);
@@ -163,14 +163,14 @@ form {
 }
 
 /* Previsualización de la imagen */
-.image-preview {
+.modal-image-preview {
   margin-top: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.preview-img {
+.modal-preview-img {
   width: 120px;
   height: 120px;
   object-fit: cover;

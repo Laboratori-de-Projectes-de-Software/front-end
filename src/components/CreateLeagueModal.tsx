@@ -91,8 +91,8 @@ const CreateLeagueModal: React.FC<CreateLeagueModalProps> = ({
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <h2>Crear nueva liga</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
+        <form onSubmit={handleSubmit} className="modal-form">
+          <div className="modal-form-group">
             <label htmlFor="name">Nombre de la liga</label>
             <input
               id="name"
@@ -104,11 +104,11 @@ const CreateLeagueModal: React.FC<CreateLeagueModalProps> = ({
               required
             />
             {errors.name && (
-              <span className="error-message">{errors.name}</span>
+              <span className="modal-error-message">{errors.name}</span>
             )}
           </div>
 
-          <div className="form-group">
+          <div className="modal-form-group">
             <label htmlFor="participants">Número de participantes</label>
             <input
               id="participants"
@@ -122,11 +122,11 @@ const CreateLeagueModal: React.FC<CreateLeagueModalProps> = ({
               required
             />
             {errors.participants && (
-              <span className="error-message">{errors.participants}</span>
+              <span className="modal-error-message">{errors.participants}</span>
             )}
           </div>
 
-          <div className="form-group">
+          <div className="modal-form-group">
             <label htmlFor="description">Descripción (opcional)</label>
             <textarea
               id="description"
@@ -138,7 +138,7 @@ const CreateLeagueModal: React.FC<CreateLeagueModalProps> = ({
             />
           </div>
 
-          <div className="form-group">
+          <div className="modal-form-group">
             <label htmlFor="startDate">Fecha de inicio</label>
             <input
               id="startDate"
@@ -149,13 +149,17 @@ const CreateLeagueModal: React.FC<CreateLeagueModalProps> = ({
             />
           </div>
 
-          <div className="form-actions">
-            <button type="button" className="cancel-button" onClick={onClose}>
+          <div className="modal-form-actions">
+            <button
+              type="button"
+              className="modal-cancel-button"
+              onClick={onClose}
+            >
               Cancelar
             </button>
             <button
               type="submit"
-              className="submit-button"
+              className="modal-submit-button"
               disabled={isSubmitting}
             >
               {isSubmitting ? "Creando..." : "Crear liga"}

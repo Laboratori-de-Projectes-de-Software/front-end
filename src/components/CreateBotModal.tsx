@@ -90,8 +90,8 @@ const CreateBotModal: React.FC<CreateBotModalProps> = ({ isOpen, onClose }) => {
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <h2>Crear nuevo bot</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
+        <form onSubmit={handleSubmit} className="modal-form">
+          <div className="modal-form-group">
             <label htmlFor="name">Nombre del bot</label>
             <input
               id="name"
@@ -103,11 +103,11 @@ const CreateBotModal: React.FC<CreateBotModalProps> = ({ isOpen, onClose }) => {
               required
             />
             {errors.name && (
-              <span className="error-message">{errors.name}</span>
+              <span className="modal-error-message">{errors.name}</span>
             )}
           </div>
 
-          <div className="form-group">
+          <div className="modal-form-group">
             <label htmlFor="description">Descripción</label>
             <textarea
               id="description"
@@ -119,7 +119,7 @@ const CreateBotModal: React.FC<CreateBotModalProps> = ({ isOpen, onClose }) => {
             />
           </div>
 
-          <div className="form-group">
+          <div className="modal-form-group">
             <label htmlFor="imageUrl">Imagen del Bot</label>
             <input
               id="imageUrl"
@@ -130,7 +130,7 @@ const CreateBotModal: React.FC<CreateBotModalProps> = ({ isOpen, onClose }) => {
               placeholder="URL de la imagen para personalizar tu bot"
             />
             {botData.imageUrl && (
-              <div className="image-preview">
+              <div className="modal-image-preview">
                 <p>Previsualización:</p>
                 <img
                   src={botData.imageUrl}
@@ -139,21 +139,21 @@ const CreateBotModal: React.FC<CreateBotModalProps> = ({ isOpen, onClose }) => {
                     const target = e.target as HTMLImageElement;
                     target.src = "";
                   }}
-                  className="preview-img"
+                  className="modal-preview-img"
                 />
               </div>
             )}
           </div>
 
-          <div className="form-actions">
+          <div className="modal-form-actions">
             <Button
-              className="cancel-button"
+              className="modal-cancel-button"
               label="Cancelar"
               onClick={onClose}
             />
             <Button
               type="submit"
-              className="submit-button"
+              className="modal-submit-button"
               label={isSubmitting ? "Creando..." : "Crear bot"}
               disabled={isSubmitting}
             />
