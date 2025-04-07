@@ -304,6 +304,45 @@ export default function Dashboard() {
     }
   };
   
+  const handleStartLeague = async (leagueId: number) => {
+    try {
+      const league = allLeagues.find(l => l.leagueId === leagueId);
+      if (!league) {
+        console.error("Liga no encontrada");
+        return;
+      }
+  
+      const updatedLeague = {
+        name: league.name,
+        rounds: league.rounds,
+        matchTime: league.matchTime,
+        bots: leagueBots.map(bot => bot.id), // O usa league.bots si ya vienen los IDs
+        fechaInicio: new Date().toISOString(), // Fecha de inicio actual
+      };
+  
+      const res = await fetch(`http://localhost:8080/api/v0/league/${leagueId}`, {
+        method: "PUT", // Asegúrate de usar PUT
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(updatedLeague),
+      });
+  
+      if (res.ok) {
+        console.log("✅ Liga iniciada correctamente");
+        fetchUserLeagues();
+        fetchAllLeagues();
+        setJoinSuccess(true);
+      } else {
+        console.error("❌ Error al iniciar la liga:", res.status);
+        setJoinError(true);
+      }
+    } catch (err) {
+      console.error("❌ Error de red al iniciar la liga:", err);
+      setJoinError(true);
+    }
+  };  
   
   useEffect(() => {
     if (section === "myBots") fetchUserBots();
@@ -311,25 +350,6 @@ export default function Dashboard() {
     else if (section === "allLeagues") fetchAllLeagues();
     else if (section === "myLeagues") fetchUserLeagues();
   }, [section, fetchUserBots, fetchAllBots, fetchAllLeagues, fetchUserLeagues]);
-
-  useEffect(() => {
-    if (section === "myLeagues") {
-      const loadLocalLeagues = async () => {
-        setLoadingLeagues(true);
-        try {
-          const res = await fetch("/leagues.json"); // ✅ ruta relativa desde public
-          const data = await res.json();
-          setAllLeagues(data);
-        } catch (err) {
-          console.error("Error al cargar leagues.json:", err);
-        } finally {
-          setLoadingLeagues(false);
-        }
-      };
-  
-      loadLocalLeagues();
-    }
-  }, [section]);
 
   return (
     <Box sx={{ display: "flex", minHeight: "100vh" }}>
@@ -567,7 +587,7 @@ export default function Dashboard() {
                       name={league.name}
                       status={league.status}
                       onView={() => fetchLeagueById(league.leagueId)}
-                      //onStart={(id) => handleStartLeague(id)} // tu lógica real aquí
+                      onStart={(id) => handleStartLeague(id)}
                       onEdit={(id) => {
                         const liga = allLeagues.find((l) => l.leagueId === id);
                         if (liga) {

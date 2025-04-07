@@ -110,7 +110,7 @@ export default function LeagueRegisterForm({
         name: name.trim(),
         rounds: parseInt(rounds),
         matchTime: parseInt(matchTime),
-        bots: selectedBots
+        bots: selectedBots.map((id) => parseInt(id))
       };
 
       const response = await fetch(
