@@ -1,5 +1,6 @@
 import { jwtDecode } from "jwt-decode";
 import { getUserInfo } from "./UserModel";
+import { getAuthToken } from "../api/AuthUtils";
 
 /**
  * Interfaz que define la estructura de un bot según la API
@@ -81,10 +82,9 @@ export const createBot = async (botData: {
  * @returns Lista de bots del usuario
  */
 export const getUserBots = async () => {
-  const token = localStorage.getItem("token");
-
+  const token = getAuthToken();
   if (!token) {
-    throw new Error("No hay token de autenticación");
+    throw new Error("No hay token válido");
   }
 
   try {
@@ -111,11 +111,17 @@ export const getUserBots = async () => {
       }
     );
 
+    // Manejo mejorado de errores
     if (!response.ok) {
-      // Si es 404, podemos devolver un array vacío en lugar de lanzar un error
+      if (response.status === 401) {
+        localStorage.removeItem("token");
+        throw new Error(
+          "Sesión expirada. Por favor, inicia sesión nuevamente."
+        );
+      }
+
       if (response.status === 404) {
-        console.log("No se encontraron bots para este usuario");
-        return [];
+        return []; // Devolver array vacío si no hay bots
       }
 
       const errorText = await response.text();

@@ -3,6 +3,7 @@ import {
   getUserBots,
   getBotById,
   updateBot,
+  Bot,
 } from "../models/BotModel";
 import { jwtDecode } from "jwt-decode";
 
@@ -63,5 +64,25 @@ export const handleCreateBot = async (
     }
   } finally {
     setIsSubmitting(false);
+  }
+};
+
+/**
+ * Obtiene todos los bots del usuario actual
+ * @param setBots Función para establecer los bots en el componente
+ * @param setError Función opcional para manejar errores
+ */
+export const fetchUserBots = async (
+  setBots: (bots: Bot[]) => void,
+  setError?: (error: string) => void
+) => {
+  try {
+    const bots = await getUserBots();
+    setBots(bots);
+  } catch (error) {
+    console.error("Error al obtener los bots del usuario:", error);
+    if (setError) {
+      setError(error instanceof Error ? error.message : "Error desconocido");
+    }
   }
 };
