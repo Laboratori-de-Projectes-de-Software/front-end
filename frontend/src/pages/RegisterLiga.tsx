@@ -15,18 +15,31 @@ import {
   Alert
 } from "@mui/material";
 
-export default function LeagueRegisterForm({ onLeagueCreated }: { onLeagueCreated?: () => void }) {
+interface League {
+  leagueId: number;
+  name: string;
+  rounds?: number;
+  matchTime?: number;
+  bots?: (string | number)[];
+}
+
+export default function LeagueRegisterForm({
+  onLeagueCreated,
+  leagueToEdit
+}: {
+  onLeagueCreated?: () => void;
+  leagueToEdit?: League | null;
+}) {
   const [name, setName] = useState("");
   const [rounds, setRounds] = useState("");
   const [matchTime, setMatchTime] = useState("");
   const [selectedBots, setSelectedBots] = useState<string[]>([]);
-  const [availableBots, setAvailableBots] = useState<{id: string, name: string}[]>([]);
+  const [availableBots, setAvailableBots] = useState<{ id: string; name: string }[]>([]);
   const [loadingBots, setLoadingBots] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
-  // Cargar bots disponibles al montar el componente
   useEffect(() => {
     const fetchAvailableBots = async () => {
       setLoadingBots(true);
@@ -37,10 +50,14 @@ export default function LeagueRegisterForm({ onLeagueCreated }: { onLeagueCreate
             Authorization: `Bearer ${token}`,
           },
         });
-        
+
         if (response.ok) {
           const data = await response.json();
-          setAvailableBots(data.map((bot: { id: number; name: string }) => ({ id: bot.id.toString(), name: bot.name })));
+          const bots = data.map((bot: { id: number; name: string }) => ({
+            id: bot.id.toString(),
+            name: bot.name
+          }));
+          setAvailableBots(bots);
         }
       } catch (error) {
         console.error("Error al cargar bots:", error);
@@ -52,9 +69,19 @@ export default function LeagueRegisterForm({ onLeagueCreated }: { onLeagueCreate
     fetchAvailableBots();
   }, []);
 
+  // Sincroniza los datos solo después de tener los bots disponibles
+  useEffect(() => {
+    if (leagueToEdit && availableBots.length > 0) {
+      setName(leagueToEdit.name);
+      setRounds(leagueToEdit.rounds?.toString() || "");
+      setMatchTime(leagueToEdit.matchTime?.toString() || "");
+      setSelectedBots((leagueToEdit.bots || []).map(b => b.toString()));
+    }
+  }, [leagueToEdit, availableBots]);
+
   const handleBotSelection = (event: SelectChangeEvent<string[]>) => {
     const value = event.target.value;
-    setSelectedBots(typeof value === 'string' ? value.split(',') : value);
+    setSelectedBots(typeof value === "string" ? value.split(",") : value);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -63,18 +90,11 @@ export default function LeagueRegisterForm({ onLeagueCreated }: { onLeagueCreate
     setSuccessMessage("");
     setIsSubmitting(true);
 
-    // Validaciones
     if (!name.trim() || !rounds || !matchTime) {
       setErrorMessage("Completa todos los campos requeridos");
       setIsSubmitting(false);
       return;
     }
-
-    // if (selectedBots.length < 2) {
-    //   setErrorMessage("Debes seleccionar al menos 2 bots");
-    //   setIsSubmitting(false);
-    //   return;
-    // }
 
     const token = localStorage.getItem("token");
     if (!token) {
@@ -82,6 +102,8 @@ export default function LeagueRegisterForm({ onLeagueCreated }: { onLeagueCreate
       setIsSubmitting(false);
       return;
     }
+
+    const isEditMode = !!leagueToEdit;
 
     try {
       const payload = {
@@ -91,87 +113,67 @@ export default function LeagueRegisterForm({ onLeagueCreated }: { onLeagueCreate
         bots: selectedBots
       };
 
-      const response = await fetch("http://localhost:8080/api/v0/league", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(payload),
-      });
+      const response = await fetch(
+        isEditMode
+          ? `http://localhost:8080/api/v0/league/${leagueToEdit?.leagueId}`
+          : "http://localhost:8080/api/v0/league",
+        {
+          method: isEditMode ? "PUT" : "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(payload),
+        }
+      );
 
-      // Manejar respuesta vacía
       if (response.status === 204) {
-        setSuccessMessage("Liga creada exitosamente");
+        setSuccessMessage("Liga guardada exitosamente");
         if (onLeagueCreated) onLeagueCreated();
         return;
       }
 
-      // Intentar parsear JSON solo si hay contenido
       const text = await response.text();
       const data = text ? JSON.parse(text) : null;
 
       if (!response.ok) {
         throw new Error(
-          data?.message || 
-          `Error ${response.status}: ${response.statusText}`
+          data?.message || `Error ${response.status}: ${response.statusText}`
         );
       }
 
-      setSuccessMessage(data?.message || "Liga creada exitosamente");
+      setSuccessMessage(data?.message || "Liga guardada exitosamente");
       setName("");
       setRounds("");
       setMatchTime("");
       setSelectedBots([]);
-      
+
       if (onLeagueCreated) {
         onLeagueCreated();
       }
-
     } catch (error: unknown) {
-      let message = "Error inesperado al crear la liga";
-    
+      let message = "Error inesperado al guardar la liga";
+
       if (error instanceof Error) {
-        console.error("Error al crear liga:", {
-          name: error.name,
-          message: error.message,
-          stack: error.stack
-        });
+        console.error("Error al guardar liga:", error);
         message = error.message;
       } else {
-        console.error("Error al crear liga:", error);
+        console.error("Error al guardar liga:", error);
       }
       setErrorMessage(message);
     } finally {
       setIsSubmitting(false);
     }
-    
   };
 
   return (
-    <Box sx={{ 
-      maxWidth: 600, 
-      mx: 'auto',
-      backgroundColor: "#111827",
-      padding: 4,
-      borderRadius: 2,
-      boxShadow: "0 0 15px rgba(0,255,255,0.2)"
-    }}>
+    <Box sx={{ maxWidth: 600, mx: "auto", backgroundColor: "#111827", padding: 4, borderRadius: 2, boxShadow: "0 0 15px rgba(0,255,255,0.2)" }}>
       <Typography variant="h4" color="cyan" gutterBottom sx={{ mb: 3 }}>
-        Registrar Nueva Liga
+        {leagueToEdit ? "Modificar Liga" : "Registrar Liga"}
       </Typography>
 
-      {errorMessage && (
-        <Alert severity="error" sx={{ mb: 3 }}>
-          {errorMessage}
-        </Alert>
-      )}
-
-      {successMessage && (
-        <Alert severity="success" sx={{ mb: 3 }}>
-          {successMessage}
-        </Alert>
-      )}
+      {errorMessage && <Alert severity="error" sx={{ mb: 3 }}>{errorMessage}</Alert>}
+      {successMessage && <Alert severity="success" sx={{ mb: 3 }}>{successMessage}</Alert>}
 
       <form onSubmit={handleSubmit}>
         <TextField
@@ -183,14 +185,10 @@ export default function LeagueRegisterForm({ onLeagueCreated }: { onLeagueCreate
           onChange={(e) => setName(e.target.value)}
           required
           sx={{ mb: 2 }}
-          InputProps={{
-            style: { color: "white" },
-          }}
-          InputLabelProps={{
-            style: { color: "cyan" },
-          }}
+          InputProps={{ style: { color: "white" } }}
+          InputLabelProps={{ style: { color: "cyan" } }}
         />
-        
+
         <TextField
           label="Número de Rondas*"
           type="number"
@@ -201,14 +199,10 @@ export default function LeagueRegisterForm({ onLeagueCreated }: { onLeagueCreate
           inputProps={{ min: 1 }}
           required
           sx={{ mb: 2 }}
-          InputProps={{
-            style: { color: "white" },
-          }}
-          InputLabelProps={{
-            style: { color: "cyan" },
-          }}
+          InputProps={{ style: { color: "white" } }}
+          InputLabelProps={{ style: { color: "cyan" } }}
         />
-        
+
         <TextField
           label="Duración del Enfrentamiento (minutos)*"
           type="number"
@@ -219,14 +213,10 @@ export default function LeagueRegisterForm({ onLeagueCreated }: { onLeagueCreate
           inputProps={{ min: 1 }}
           required
           sx={{ mb: 2 }}
-          InputProps={{
-            style: { color: "white" },
-          }}
-          InputLabelProps={{
-            style: { color: "cyan" },
-          }}
+          InputProps={{ style: { color: "white" } }}
+          InputLabelProps={{ style: { color: "cyan" } }}
         />
-        
+
         <FormControl fullWidth sx={{ mb: 3 }}>
           <InputLabel id="bots-select-label" sx={{ color: "cyan" }}>
             Seleccionar Bots*
@@ -239,32 +229,25 @@ export default function LeagueRegisterForm({ onLeagueCreated }: { onLeagueCreate
             onChange={handleBotSelection}
             input={<OutlinedInput label="Seleccionar Bots*" />}
             renderValue={(selected) => (
-              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                {selected.map((value) => (
-                  <Chip 
-                    key={value} 
-                    label={availableBots.find(b => b.id === value)?.name || value} 
-                    sx={{ 
-                      backgroundColor: 'cyan', 
-                      color: '#0a0f1d',
-                      '& .MuiChip-deleteIcon': {
-                        color: '#0a0f1d'
-                      }
-                    }}
-                  />
-                ))}
+              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                {selected.map((value) => {
+                  const botName = availableBots.find((b) => b.id === value)?.name || value;
+                  return (
+                    <Chip
+                      key={value}
+                      label={botName}
+                      sx={{ backgroundColor: "cyan", color: "#0a0f1d" }}
+                    />
+                  );
+                })}
               </Box>
             )}
             disabled={loadingBots}
-            // required
             sx={{
               color: "white",
-              '& .MuiOutlinedInput-notchedOutline': {
-                borderColor: 'cyan'
-              },
-              '&:hover .MuiOutlinedInput-notchedOutline': {
-                borderColor: 'cyan'
-              }
+              ".MuiOutlinedInput-notchedOutline": { borderColor: "cyan" },
+              "&:hover .MuiOutlinedInput-notchedOutline": { borderColor: "cyan" },
+              "& .MuiSvgIcon-root": { color: "cyan" }
             }}
           >
             {loadingBots ? (
@@ -279,26 +262,26 @@ export default function LeagueRegisterForm({ onLeagueCreated }: { onLeagueCreate
           </Select>
         </FormControl>
 
-        <Button 
-          type="submit" 
-          fullWidth 
-          variant="contained" 
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
           disabled={isSubmitting || loadingBots}
           sx={{
             mt: 2,
-            backgroundColor: 'cyan',
-            color: '#0a0f1d',
-            '&:hover': {
-              backgroundColor: 'rgba(0, 255, 255, 0.8)',
+            backgroundColor: "cyan",
+            color: "#0a0f1d",
+            "&:hover": {
+              backgroundColor: "rgba(0, 255, 255, 0.8)",
             },
-            height: '48px',
-            fontSize: '1rem'
+            height: "48px",
+            fontSize: "1rem"
           }}
         >
           {isSubmitting ? (
             <CircularProgress size={24} color="inherit" />
           ) : (
-            "Crear Liga"
+            leagueToEdit ? "Guardar cambios" : "Crear Liga"
           )}
         </Button>
       </form>

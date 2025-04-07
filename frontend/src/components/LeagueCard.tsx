@@ -1,6 +1,16 @@
-import { Card, CardContent, Typography, IconButton, Button, Box } from "@mui/material";
+import {
+  Card,
+  CardContent,
+  Typography,
+  IconButton,
+  Box,
+  Tooltip
+} from "@mui/material";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import EditIcon from "@mui/icons-material/Edit";
+import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
+import GroupAddIcon from "@mui/icons-material/GroupAdd";
 
 interface Props {
   id: number;
@@ -8,15 +18,28 @@ interface Props {
   status: "ACTIVE" | "INACTIVE" | "FINISHED";
   onView?: () => void;
   onJoin?: () => void;
+  onStart?: (id: number) => void;
+  onEdit?: (id: number) => void;
   isAllLeaguesSection?: boolean;
+  isMyLeaguesSection?: boolean;
 }
 
-export default function LeagueCard({ name, status, onView, onJoin, isAllLeaguesSection }: Props) {
+export default function LeagueCard({
+  id,
+  name,
+  status,
+  onView,
+  onJoin,
+  onStart,
+  onEdit,
+  isAllLeaguesSection,
+  isMyLeaguesSection,
+}: Props) {
   return (
     <Card
       sx={{
         width: 260,
-        minHeight: 150,
+        minHeight: 180,
         backgroundColor: "#1f2937",
         border: "2px solid cyan",
         borderRadius: 3,
@@ -68,38 +91,72 @@ export default function LeagueCard({ name, status, onView, onJoin, isAllLeaguesS
         </Typography>
       </CardContent>
 
-      {/* Zona de botones */}
       <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
-        <IconButton
-          onClick={onView}
-          sx={{
-            color: "cyan",
-            backgroundColor: "#0a0f1d",
-            "&:hover": {
-              backgroundColor: "rgba(0,255,255,0.1)",
-            },
-          }}
-        >
-          <VisibilityIcon />
-        </IconButton>
-
-        {status === "INACTIVE" && isAllLeaguesSection && onJoin && (
-          <Button
-            onClick={onJoin}
-            variant="outlined"
-            size="small"
+        <Tooltip title="Ver detalles">
+          <IconButton
+            onClick={onView}
             sx={{
-              borderColor: "cyan",
               color: "cyan",
-              textTransform: "none",
+              backgroundColor: "#0a0f1d",
               "&:hover": {
                 backgroundColor: "rgba(0,255,255,0.1)",
-                borderColor: "cyan",
               },
             }}
           >
-            Apuntarse
-          </Button>
+            <VisibilityIcon />
+          </IconButton>
+        </Tooltip>
+
+        {status === "INACTIVE" && isAllLeaguesSection && onJoin && (
+          <Tooltip title="Apuntarse a la liga">
+            <IconButton
+              onClick={onJoin}
+              sx={{
+                color: "cyan",
+                backgroundColor: "#0a0f1d",
+                "&:hover": {
+                  backgroundColor: "rgba(0,255,255,0.1)",
+                },
+              }}
+            >
+              <GroupAddIcon />
+            </IconButton>
+          </Tooltip>
+        )}
+
+
+        {status === "INACTIVE" && isMyLeaguesSection && onStart && (
+          <Tooltip title="Iniciar liga">
+            <IconButton
+              onClick={() => onStart(id)}
+              sx={{
+                color: "cyan",
+                backgroundColor: "#0a0f1d",
+                "&:hover": {
+                  backgroundColor: "rgba(0,255,255,0.1)",
+                },
+              }}
+            >
+              <RocketLaunchIcon />
+            </IconButton>
+          </Tooltip>
+        )}
+
+        {isMyLeaguesSection && onEdit && (
+          <Tooltip title="Editar liga">
+            <IconButton
+              onClick={() => onEdit(id)}
+              sx={{
+                color: "cyan",
+                backgroundColor: "#0a0f1d",
+                "&:hover": {
+                  backgroundColor: "rgbargba(0,255,255,0.1)",
+                },
+              }}
+            >
+              <EditIcon />
+            </IconButton>
+          </Tooltip>
         )}
       </Box>
     </Card>

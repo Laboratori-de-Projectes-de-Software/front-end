@@ -19,6 +19,7 @@ import {
   Dialog,
   DialogTitle,
   IconButton,
+  Snackbar,
 } from "@mui/material";
 import {
   Dashboard as DashboardIcon,
@@ -88,6 +89,13 @@ export default function Dashboard() {
   const [leagueDetails, setLeagueDetails] = useState<League | null>(null);
   const [leagueBots, setLeagueBots] = useState<{ id: number; name: string }[]>([]);
 
+  const [joinSuccess, setJoinSuccess] = useState(false);
+  const [joinError, setJoinError] = useState(false);
+
+  const [leagueToEdit, setLeagueToEdit] = useState<League | null>(null);
+
+
+
 
   const handleJoinLeague = async (leagueId: number) => {
     try {
@@ -132,9 +140,11 @@ export default function Dashboard() {
 
       if (res.ok) {
         setJoinDialogOpen(false);
+        setJoinSuccess(true); 
         fetchAllLeagues();
       } else {
         console.error("❌ Error al unirse a la liga");
+        setJoinError(true); 
       }
     } catch (err) {
       console.error("❌ Error de red al hacer join:", err);
@@ -262,9 +272,11 @@ export default function Dashboard() {
   
       if (res.ok) {
         const data = await res.json();
-        setLeagueDetails(data);
-        setPopupOpen(true);
-  
+        const status = calcularEstadoLiga(data.fechaInicio, data.fechaFin);
+        setLeagueDetails({ ...data, status });
+        setPopupOpen(true); // ✅ Esto abre el Dialog con los detalles
+
+        
         // ⚠️ Obtener los bots participantes
         if (data.bots && data.bots.length > 0) {
           const fetchedBots: { id: number; name: string }[] = [];
@@ -500,13 +512,17 @@ export default function Dashboard() {
 
             {/* Contenedor centrado con ancho fijo */}
             <Box sx={{ display: "flex", flexDirection: "column", alignItems: "left", gap: 6, mb: 6 }}>
-              <Button
-                variant="contained"
-                onClick={() => setSection("registerLeague")}
-                sx={{ width: "300px" }}
-              >
-                + Registrar nueva Liga
-              </Button>
+            <Button
+              variant="contained"
+              onClick={() => {
+                setLeagueToEdit(null); 
+                setSection("registerLeague");
+              }}
+              sx={{ width: "300px" }}
+            >
+              + Registrar nueva Liga
+            </Button>
+
 
               <FormControl sx={{ width: "300px" }} variant="outlined">
                 <InputLabel id="league-filter-label" sx={{ color: "cyan" }}>
@@ -550,8 +566,18 @@ export default function Dashboard() {
                       id={league.leagueId}
                       name={league.name}
                       status={league.status}
-                      onView={() => fetchLeagueById(league.leagueId)} 
+                      onView={() => fetchLeagueById(league.leagueId)}
+                      //onStart={(id) => handleStartLeague(id)} // tu lógica real aquí
+                      onEdit={(id) => {
+                        const liga = allLeagues.find((l) => l.leagueId === id);
+                        if (liga) {
+                          setLeagueToEdit(liga);  // cargar datos en el formulario
+                          setSection("registerLeague");
+                        }
+                      }}
+                      isMyLeaguesSection
                     />
+
 
                 ))}
 
@@ -642,16 +668,19 @@ export default function Dashboard() {
     >
       <ArrowBackIcon />
     </Button>
-    <Box
-      sx={{
-        padding: 4,
-        borderRadius: 2
-      }}
-    >
-      <LeagueRegisterForm />
+    <Box sx={{ padding: 4, borderRadius: 2 }}>
+      <LeagueRegisterForm
+        leagueToEdit={leagueToEdit}
+        onLeagueCreated={() => {
+          setSection("myLeagues");
+          setLeagueToEdit(null); // limpiar después de editar
+          fetchUserLeagues(); // refrescar
+        }}
+      />
     </Box>
   </Box>
-      )}
+  )}
+    
     </Box>
 
     <Dialog open={popupOpen} onClose={() => setPopupOpen(false)} maxWidth="sm" fullWidth>
@@ -727,77 +756,78 @@ export default function Dashboard() {
             </Box>
           )}
         </DialogContent>
-
-
-
-        {/* Botones */}
-        <DialogActions sx={{ mt: 4, justifyContent: "flex-end" }}>
-          <Button variant="outlined" disabled sx={{ color: "white", borderColor: "gray", opacity: 0.5 }}>
-            Editar
-          </Button>
-          <Button variant="contained" disabled sx={{ backgroundColor: "gray", color: "white", opacity: 0.5 }}>
-            Iniciar liga
-          </Button>
-        </DialogActions>
       </Box>
     </Dialog>
 
     <Dialog open={joinDialogOpen} onClose={() => setJoinDialogOpen(false)} maxWidth="sm" fullWidth>
-  <Box sx={{ p: 4, backgroundColor: "#0a0f1d", color: "white", borderRadius: 2 }}>
-    <DialogTitle sx={{ color: "cyan" }}>
-      Selecciona bots para unirte a la liga
-    </DialogTitle>
+      <Box sx={{ p: 4, backgroundColor: "#0a0f1d", color: "white", borderRadius: 2 }}>
+        <DialogTitle sx={{ color: "cyan" }}>
+          Selecciona bots para unirte a la liga
+        </DialogTitle>
 
-    <DialogContent>
-      {availableBots.length === 0 ? (
-        <Typography>No tienes bots disponibles para unirte.</Typography>
-      ) : (
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-          {availableBots.map(bot => (
-            <Button
-            key={bot.id}
-            variant={selectedBot === bot.id ? "contained" : "outlined"}
-            onClick={() => {
-              setSelectedBot(prev => prev === bot.id ? null : bot.id);
-            }}
-            sx={{
-              justifyContent: "flex-start",
-              backgroundColor: selectedBot === bot.id ? "cyan" : "transparent",
-              color: selectedBot === bot.id ? "#0a0f1d" : "white",
-              borderColor: "cyan",
-              "&:hover": {
-                backgroundColor: selectedBot === bot.id
-                  ? "rgba(0,255,255,0.8)"
-                  : "rgba(0,255,255,0.1)",
-              },
-            }}
-          >
-            {bot.name}
+        <DialogContent>
+          {availableBots.length === 0 ? (
+            <Typography>No tienes bots disponibles para unirte.</Typography>
+          ) : (
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+              {availableBots.map(bot => (
+                <Button
+                key={bot.id}
+                variant={selectedBot === bot.id ? "contained" : "outlined"}
+                onClick={() => {
+                  setSelectedBot(prev => prev === bot.id ? null : bot.id);
+                }}
+                sx={{
+                  justifyContent: "flex-start",
+                  backgroundColor: selectedBot === bot.id ? "cyan" : "transparent",
+                  color: selectedBot === bot.id ? "#0a0f1d" : "white",
+                  borderColor: "cyan",
+                  "&:hover": {
+                    backgroundColor: selectedBot === bot.id
+                      ? "rgba(0,255,255,0.8)"
+                      : "rgba(0,255,255,0.1)",
+                  },
+                }}
+              >
+                {bot.name}
+              </Button>
+              
+              ))}
+
+            </Box>
+          )}
+        </DialogContent>
+
+        <DialogActions sx={{ justifyContent: "space-between", mt: 2 }}>
+          <Button onClick={() => setJoinDialogOpen(false)} sx={{ color: "gray" }}>
+            Cancelar
           </Button>
-          
-          ))}
+          <Button
+            onClick={handleConfirmJoin}
+            disabled={!selectedBot}
+            variant="contained"
+            sx={{ backgroundColor: "cyan", color: "#0a0f1d" }}
+          >
+            Confirmar
+          </Button>
 
-        </Box>
-      )}
-    </DialogContent>
+        </DialogActions>
+      </Box>
+    </Dialog>
 
-    <DialogActions sx={{ justifyContent: "space-between", mt: 2 }}>
-      <Button onClick={() => setJoinDialogOpen(false)} sx={{ color: "gray" }}>
-        Cancelar
-      </Button>
-      <Button
-        onClick={handleConfirmJoin}
-        disabled={!selectedBot}
-        variant="contained"
-        sx={{ backgroundColor: "cyan", color: "#0a0f1d" }}
-      >
-        Confirmar
-      </Button>
+    <Snackbar
+      open={joinSuccess}
+      autoHideDuration={3000}
+      onClose={() => setJoinSuccess(false)}
+      message="✅ Te has unido correctamente a la liga"
+    />
 
-    </DialogActions>
-  </Box>
-</Dialog>
-
+    <Snackbar
+      open={joinError}
+      autoHideDuration={3000}
+      onClose={() => setJoinError(false)}
+      message="❌ Hubo un error al unirse a la liga"
+/>
 
 
     </Box>
