@@ -1,0 +1,70 @@
+import React, { useState, useEffect } from "react";
+import Navbar from "../components/Navbar";
+import NeuralBackground from "../components/NeuralBackground";
+import Button from "../components/Button";
+import CreateLeagueModal from "../components/CreateLeagueModal";
+import { fetchUserLeagues } from "../controllers/LeaguesController";
+import "./LeaguesPage.css";
+
+const LeaguesPage: React.FC = () => {
+    const [leagues, setLeagues] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [username, setUsername] = useState<string | undefined>(undefined);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    useEffect(() => {
+        fetchUserLeagues(setLeagues, (error) => {
+            console.error("Error fetching leagues:", error);
+        }).finally(() => setLoading(false));
+    }, []);
+
+    const handleCreateLeague = () => {
+        setIsModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+    };
+
+    return (
+        <div className="leagues-page">
+            <NeuralBackground />
+            <Navbar />
+
+            <div className="leagues-content">
+                <h1>Mis Ligas</h1>
+
+                {loading ? (
+                    <div className="loading">Cargando datos...</div>
+                ) : (
+                    <div className="leagues-grid">
+                        {leagues.map((league) => (
+                            <div className="league-card" key={league.id}>
+                                <div className="league-name">{league.name}</div>
+                                <div className="league-status">Estado: {league.status}</div>
+                                <div className="progress-bar">
+                                    <div
+                                        className="progress-fill"
+                                        style={{ width: `${league.progress}%` }}
+                                    ></div>
+                                </div>
+                                <div className="league-participants">
+                                    {league.participants} participantes
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                )}
+                <Button
+                    className="create-league-button"
+                    label="Crear nueva liga"
+                    onClick={handleCreateLeague}
+                />
+            </div>
+
+            <CreateLeagueModal isOpen={isModalOpen} onClose={handleCloseModal} />
+        </div>
+    );
+};
+
+export default LeaguesPage;

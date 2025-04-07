@@ -23,10 +23,10 @@ export const handleLogin = async (formData: any, navigate: any, setError: any) =
     try {
         const data = await loginUser(Correo, Contraseña);
         console.log("Login exitoso:", data);
-        localStorage.setItem("token", data.token);
 
         // Decode the token to get the username
         const decodedToken: any = jwtDecode(data.token);
+        localStorage.setItem("token", decodedToken);
         const email = decodedToken.username;
         console.log("user: " + email);
         localStorage.setItem("user", email);
