@@ -1,9 +1,10 @@
-import LeagueDTO from "src/DTOClasses/LeagueDTO.ts";
-import BotDTO from "../DTOClasses/BotDTO.ts";
-import UserDTO from "src/DTOClasses/UserDTO.ts";
-import MatchDTO from "src/DTOClasses/MatchDTO.ts";
-import ParticipationDTO from "src/DTOClasses/ParticipationDTO.ts";
-import MessageDTO from "src/DTOClasses/MessageDTO.ts";
+import LeagueDTO from "@DTOClasses/LeagueDTO.ts";
+import BotDTO from "@DTOClasses/BotDTO.ts";
+import UserDTO from "@DTOClasses/UserDTO.ts";
+import MatchDTO from "@DTOClasses/MatchDTO.ts";
+import ParticipationDTO from "@DTOClasses/ParticipationDTO.ts";
+import MessageDTO from "@DTOClasses/MessageDTO.ts";
+import React, { useEffect } from "react";
 
 interface LeagueData {
     leagueId: string
@@ -72,4 +73,25 @@ export function getLeagueMatches(league: LeagueDTO): MatchDTO[] | any {
 
 export function getMatchMessages(match: MatchDTO): MessageDTO[] | null {
     return null;
+}
+
+export function getBots(): BotDTO[] | null {
+    const [participants, setParticipants] = React.useState<BotDTO[]>([]);
+
+    useEffect(() => {
+        const fetchParticipants = async () => {
+        try {
+            const response = await fetch('http://localhost:8080/bot');
+            if (!response.ok) throw new Error('Error loading participants');
+            const data: BotDTO[] = await response.json();
+            setParticipants(data);
+        } catch (err) {
+            console.error('Error loading participants:', err);
+        }
+        };
+
+        fetchParticipants();
+    }); // opció de filtrar per equip ??
+
+    return participants;
 }
