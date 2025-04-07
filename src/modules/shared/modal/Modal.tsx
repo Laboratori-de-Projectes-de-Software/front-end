@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { createPortal } from "react-dom";
 import "./Modal.scss";
 
 interface ModalProps {
@@ -9,6 +10,7 @@ interface ModalProps {
 
 const Modal: React.FC<ModalProps> = ({ children, isOpen, onClose }) => {
   const modalRef = React.useRef<HTMLDialogElement>(null);
+  const modalWrapper = document.querySelector(".modal-wrapper") as HTMLElement;
 
   useEffect(() => {
     const modalElement = modalRef.current;
@@ -32,7 +34,7 @@ const Modal: React.FC<ModalProps> = ({ children, isOpen, onClose }) => {
     }
   };
 
-  return (
+  return createPortal(
     <dialog className="modal" ref={modalRef} onKeyDown={handleKeyDown}>
       <button
         className="modal__close-button"
@@ -42,7 +44,7 @@ const Modal: React.FC<ModalProps> = ({ children, isOpen, onClose }) => {
         <img src="close-button.svg" alt="" width={30} />
       </button>
       {children}
-    </dialog>
+    </dialog>, modalWrapper
   );
 };
 

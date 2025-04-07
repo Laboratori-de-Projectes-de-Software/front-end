@@ -3,7 +3,7 @@ import { DateTime } from 'luxon';
 
 import LeagueElement from './league-element';
 import axios from 'axios';
-import { LeaguesFilters, LeagueType } from './league-types';
+import { LeaguesFilters, LeagueType } from '../../interfaces/shared/league.interface';
 import './leagues-page.scss';
 import LeagueFilters from './league-filters';
 import Modal from '../../modules/shared/modal/Modal';

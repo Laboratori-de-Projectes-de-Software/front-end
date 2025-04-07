@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { LeaguesFilters } from './league-types';
+import { LeaguesFilters } from '../../interfaces/shared/league.interface';
 import './league-filters.scss';
 import { DateTime } from 'luxon';
 import DateInput from '../../modules/shared/input/date-input/date-input';

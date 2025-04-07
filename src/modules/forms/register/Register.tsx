@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Input from "../../shared/input/Input";
 import type { InputConfig } from "@interfaces/shared/Input-config";
+import { useModal } from "../../modalManager/ModalProvider";
 import "./Register.scss";
 import axios from "axios";
 
@@ -8,6 +9,7 @@ const Register: React.FC = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { openModal } = useModal();
   const apiUrl = "http://localhost:8081/api/register"; // TODO: Cambiar la url de la api
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -48,7 +50,7 @@ const Register: React.FC = () => {
       </button>
       <p className="register-form__sign-in-reminder">
         Ya tienes una cuenta?{" "}
-        <span className="register-form__sign-in-link">Inicia sesión</span>
+        <span onClick={() => openModal("login")} className="register-form__sign-in-link">Inicia sesión</span>
       </p>
     </form>
   );
