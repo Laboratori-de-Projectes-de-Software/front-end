@@ -4,22 +4,26 @@ import AuthProvider from "./auth/AuthProvider.tsx";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import PrivateRoute from "./auth/PrivateRoute.tsx";
 import LeaguesPage from "./pages/league-page/leagues-page.tsx";
+import ModalManager from "./modules/modalManager/ModalManager.tsx";
+import { ModalProvider } from "./modules/modalManager/ModalProvider.tsx";
 
 function App() {
   return (
     <>
       <BrowserRouter>
         <AuthProvider>
-          <Header />
-          <Routes>
-            // TODO: Añadir la home
-            <Route path="/" element={<h1>Home</h1>} />
-            <Route element={<PrivateRoute />}>
-            </Route>
-              <Route path="/league" element={<LeaguesPage />} />
-          </Routes>
+          <ModalProvider>
+            <Header />
+            <Routes>
+              <Route path="/" element={<h1>Home</h1>} />
+              <Route element={<PrivateRoute />}>
+                <Route path="/league" element={<LeaguesPage />} />
+              </Route>
+            </Routes>
+            <ModalManager />
+          </ModalProvider>
         </AuthProvider>
-      </BrowserRouter>
+      </BrowserRouter >
     </>
   );
 }

@@ -35,7 +35,7 @@
     &:focus,
     &:valid {
       & ~ .form-field__label {
-        transform: translateX(-25px) translateY(-20px) scale(0.7);
+        transform: translateX(-100px) translateY(-20px) scale(0.7);
         transition: all 0.3s ease;
         color: gray;
       }
