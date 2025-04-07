@@ -128,10 +128,14 @@ const MatchPage: React.FC = () => {
         >
           {messages.map((msg) => (
             <div
-              className={` p-4 rounded-2xl max-w-[70%] shadow-lg break-words ${
+              className={`p-3 rounded-xl max-w-[70%] text-white shadow-md ${
                 msg.sender === bot1Info.name ? 
-                "self-start bg-(--chat1-bkg) text-white" : "self-end bg-(--chat2-bkg) text-black"
+                "self-start bg-[--chat1-bkg]" : "self-end bg-[--chat2-bkg]"
               }`}
+              //XAPUSA A ERRGLAR----------------------------------------------------------------------------------
+              style={{
+                backgroundColor: msg.sender === bot1Info.name ? "var(--chat1-bkg)" : "var(--chat2-bkg)"
+              }}
             >
               <div className="flex justify-between text-sm mb-1 font-bold">
                 <span>{msg.sender === bot1Info.name ? bot1Info.name : bot2Info.name}</span>
