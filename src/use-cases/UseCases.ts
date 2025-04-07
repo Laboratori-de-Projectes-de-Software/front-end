@@ -1,42 +1,76 @@
-import LeagueDTO from "@DTOClasses/LeagueDTO.ts";
-import BotDTO from "@DTOClasses/BotDTO.ts";
-import UserDTO from "@DTOClasses/UserDTO.ts";
-import MatchDTO from "@DTOClasses/MatchDTO.ts";
-import ParticipationDTO from "@DTOClasses/ParticipationDTO.ts";
-import MessageDTO from "@DTOClasses/MessageDTO.ts";
+import { BotDTO, BotResponseDTO, BotSummaryResponseDTO } from "../DTOClasses/BotDTO";
+import { LeagueDTO, LeagueResponseDTO } from "../DTOClasses/LeagueDTO";
+import { MatchDTO } from "../DTOClasses/MatchDTO";
+import { MessageDTO } from "../DTOClasses/MessageDTO";
+import { ParticipationDTO } from "../DTOClasses/ParticipationDTO";
+import { UserDTOLogin, UserDTORegister, UserResponseDTO } from "../DTOClasses/UserDTO";
+
 import React, { useEffect } from "react";
 
 interface LeagueData {
-    leagueId: string
-}
-
-interface UserData {
-    name: string
-}
-
+    leagueId: string;
+  }
+  
 interface BotData {
-    name: string
-    APILink: string
-
+name: string;
+apiUrl: string;
+team: string;
 }
+  
+const BASE_URL = "http://localhost:8080";
 
 type UserToken = string | null;
 
-export function userSignUp(userData: UserData): UserDTO | null{
-    return null
-}
+export async function userSignUp(userData: UserDTORegister): Promise<UserResponseDTO | null> {
+    try {
+        const response = await fetch(`${BASE_URL}/auth/register`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(userData),
+        });
+        if (!response.ok) return null;
 
-export function userLoggin(): UserToken {
-    return null;
-}
+        //Per fer proves
+        const result: UserResponseDTO = await response.json();
+        console.log("Usuari registrat:", result);
+        return result;
+
+
+        return await response.json();
+    } catch (err) {
+            console.error("Signup error:", err);
+            return null;
+    }
+  }
+  
+
+  export async function userLoggin(email: string, password: string): Promise<UserToken> {
+    try {
+      const response = await fetch(`${BASE_URL}/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+      if (!response.ok) return null;
+      const data: UserResponseDTO = await response.json();
+      localStorage.setItem("token", data.token);
+      
+      console.log("Login correcte, token:", data.token);
+      return data.token;
+    } catch (err) {
+      console.error("Login error:", err);
+      return null;
+    }
+  }
 
 /**
  * 
  * @returns If the loggout was succesful
  */
 export function userLoggout(): boolean {
-    return false;
-}
+    localStorage.removeItem("token");
+    return true;
+  }
 
 export function registerBot(botData: BotData): BotDTO | null {
     return null;
