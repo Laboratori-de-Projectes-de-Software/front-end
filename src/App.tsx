@@ -4,7 +4,7 @@ import AuthProvider from "./auth/AuthProvider.tsx";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import PrivateRoute from "./auth/PrivateRoute.tsx";
 import Home from "./pages/home/Home.tsx";
-import LeaguesPage from "./pages/league-page/leagues-page.tsx";
+import LeaguesPage from "./pages/leagues-page/leaguesPage.tsx";
 import ModalManager from "./modules/modalManager/ModalManager.tsx";
 import { ModalProvider } from "./modules/modalManager/ModalProvider.tsx";
 import NotFound from "./pages/NotFound/NotFound.tsx";

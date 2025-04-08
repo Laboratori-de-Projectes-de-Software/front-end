@@ -1,11 +1,11 @@
 import { FC, useEffect, useState } from 'react';
 import { DateTime } from 'luxon';
 
-import LeagueElement from './league-element';
+import LeagueElement from '../../modules/leagues-page/leagueElement';
 import axios from 'axios';
-import { LeaguesFilters, LeagueType } from '../../interfaces/shared/league.interface';
+import { LeaguesFilters, LeagueType } from '../../interfaces/league.interface';
 import './leagues-page.scss';
-import LeagueFilters from './league-filters';
+import LeagueFilters from '../../modules/leagues-page/leagueFilters';
 import Modal from '../../modules/shared/modal/Modal';
 import NewLeague from '../../modules/forms/new-league/NewLeague';
 
