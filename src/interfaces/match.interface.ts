@@ -1,6 +1,7 @@
 export interface MatchResponseDTO {
-  state: string;
-  result: number;
+  matchId: number;
+  state: string;  // TODO: cambiar a enum
+  result: number; // TODO: cambiar a enum
   fighters: string[];
   roundNumber: number;
 }

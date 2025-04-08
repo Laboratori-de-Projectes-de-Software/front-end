@@ -1,14 +1,12 @@
-import { BotResponseDTO } from "./bot.interface";
-import { DateTime } from "luxon";
-
 export interface LeagueResponseDTO {
   leagueId: number;
+  state: string; // TODO: Cambiar a enum
   name: string;
   urlImagen: string;
   user: number; // Owner of the league
   rounds: number;
   matchTime: number;
-  bots: BotResponseDTO[];
+  bots: number[];
 }
 
 export interface LeagueDTO {
@@ -17,21 +15,24 @@ export interface LeagueDTO {
   rounds: number;
   matchTime: number;
   bots: number[];
+  userId: number;
 }
 
-export interface LeaguesFilters {
-  name?: string;
-  date?: DateTime;
-  numRounds?: number;
-  playTime?: number;
-  playing?: boolean;
-}
+// /* Interface propio */
+// export interface LeaguesFilters {
+//   name?: string;
+//   date?: string;
+//   numRounds?: number;
+//   playTime?: number;
+//   playing?: boolean;
+// }
 
-export interface LeagueType {
-  id: number;
-  name: string;
-  date: string;
-  numRounds: number;
-  playTime: number;
-  playing: boolean;
-}
+// /* Interface propio */
+// export interface LeagueType {
+//   id: number;
+//   name: string;
+//   date: string;
+//   numRounds: number;
+//   playTime: number;
+//   playing: boolean;
+// }
