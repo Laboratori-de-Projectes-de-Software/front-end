@@ -5,13 +5,13 @@ const login_url = "http://localhost:8080/login";
 const redirect_url = "/auth/home";
 
 interface LoginForm {
-  email: string;
+  mail: string;
   password: string;
 }
 
 export const LoginForm = ({ className }: { className?: string }) => {
   const [form, setForm] = React.useState<LoginForm>({
-    email: "",
+    mail: "",
     password: "",
   });
 
@@ -25,7 +25,7 @@ export const LoginForm = ({ className }: { className?: string }) => {
       if (response.status === 200) {
         const data = await response.json();
         saveToken(data.token);
-        saveUserInfo(data.usuario);
+        saveUserInfo({ name: data.usuario, id: data.userId });
         window.location.href = redirect_url;
       } else {
         const errorData = await response.json();
@@ -52,8 +52,8 @@ export const LoginForm = ({ className }: { className?: string }) => {
         <input
           type="email"
           placeholder="Email"
-          value={form.email}
-          onChange={(e) => setForm({ ...form, email: e.target.value })}
+          value={form.mail}
+          onChange={(e) => setForm({ ...form, mail: e.target.value })}
           className="text-black bg-white rounded-2xl placeholder-gray-700 placeholder-opacity-50 p-2"
         />
         <input

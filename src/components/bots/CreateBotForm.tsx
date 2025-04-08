@@ -1,21 +1,26 @@
 import React, { useState } from "react";
+import { sendAuthedRequest, getUserInfo } from "../../utils/auth";
+
+const url_create_bot = "http://localhost:8080/bot";
 
 interface CreateBotForm {
   name: string;
-  prompt: string;
-  referenceUrl: string;
-  image: string | null;
+  userId: number;
+  description: string;
+  urlImagen: string;
+  endpoint: string;
 }
 
 export const CreateBotForm = ({ className }: { className?: string }) => {
   const [form, setForm] = useState<CreateBotForm>({
     name: "",
-    prompt: "",
-    referenceUrl: "",
-    image: null,
+    description: "",
+    urlImagen: "",
+    endpoint: "",
+    userId: getUserInfo().id,
   });
 
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [imagePreview, setImagePreview] = useState<string>("");
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -23,36 +28,56 @@ export const CreateBotForm = ({ className }: { className?: string }) => {
       const reader = new FileReader();
       reader.onloadend = () => {
         setImagePreview(reader.result as string);
-        setForm({ ...form, image: reader.result as string });
+        setForm({ ...form, urlImagen: reader.result as string });
       };
       reader.readAsDataURL(file);
     }
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(form);
 
+    const promise = await sendAuthedRequest("POST", url_create_bot, form);
+
+    if (promise.status === 201) {
+      const data = await promise.json();
+      console.log("Bot creado con éxito:", data);
+      // Aquí puedes manejar la respuesta después de crear el bot
+    } else {
+      const errorData = await promise.json();
+      console.error("Error al crear el bot:", errorData);
+      // Aquí puedes manejar el error
+    }
   };
 
   return (
     <div className="w-full p-4">
       <div className="bg-slate-900 border border-gray-700 rounded-xl w-full p-6 relative flex flex-col gap-6">
-        <form onSubmit={handleSubmit} className="flex flex-col lg:flex-row gap-6">
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col lg:flex-row gap-6"
+        >
           {/* Imagen Upload */}
           <div className="flex-1 bg-slate-800 rounded-xl border border-gray-700 overflow-hidden">
-            <label htmlFor="upload" className="cursor-pointer w-full h-full flex items-center justify-center min-h-[300px] relative group">
+            <label
+              htmlFor="upload"
+              className="cursor-pointer w-full h-full flex items-center justify-center min-h-[300px] relative group"
+            >
               {imagePreview ? (
-                <img src={imagePreview} alt="preview" className="w-full h-full object-cover group-hover:opacity-80 transition-opacity" />
+                <img
+                  src={imagePreview}
+                  alt="preview"
+                  className="w-full h-full object-cover group-hover:opacity-80 transition-opacity"
+                />
               ) : (
                 <div className="bg-black/70 text-white px-4 py-2 rounded-full border border-gray-700 group-hover:bg-black/90 transition-colors">
                   Upload Image
                 </div>
               )}
-              <input 
-                type="file" 
-                id="upload" 
-                className="hidden" 
+              <input
+                type="file"
+                id="upload"
+                className="hidden"
                 onChange={handleImageUpload}
                 accept="image/*"
               />
@@ -63,11 +88,13 @@ export const CreateBotForm = ({ className }: { className?: string }) => {
           <div className="flex-1 flex flex-col gap-4">
             {/* Prompt textarea */}
             <div className="relative">
-              <textarea 
+              <textarea
                 className="w-full bg-slate-800 text-white rounded-xl py-3 px-4 min-h-[200px] border border-gray-700 resize-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-20"
                 placeholder="Escribe el prompt..."
-                value={form.prompt}
-                onChange={(e) => setForm({ ...form, prompt: e.target.value })}
+                value={form.description}
+                onChange={(e) =>
+                  setForm({ ...form, description: e.target.value })
+                }
               />
               <span className="absolute top-2 right-2 bg-black/70 text-white text-xs px-3 py-1 rounded-full border border-gray-700">
                 PROMPT
@@ -76,7 +103,7 @@ export const CreateBotForm = ({ className }: { className?: string }) => {
 
             {/* Name input */}
             <div className="relative">
-              <input 
+              <input
                 type="text"
                 className="w-full bg-slate-800 text-white rounded-xl py-3 px-4 pr-20 border border-gray-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-20"
                 placeholder="Nombre del bot"
@@ -90,12 +117,12 @@ export const CreateBotForm = ({ className }: { className?: string }) => {
 
             {/* URL input */}
             <div className="relative">
-              <input 
+              <input
                 type="text"
                 className="w-full bg-slate-800 text-white rounded-xl py-3 px-4 pr-20 border border-gray-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-20"
                 placeholder="URL de referencia"
-                value={form.referenceUrl}
-                onChange={(e) => setForm({ ...form, referenceUrl: e.target.value })}
+                value={form.endpoint}
+                onChange={(e) => setForm({ ...form, endpoint: e.target.value })}
               />
               <span className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/70 text-white text-xs px-3 py-1 rounded-full border border-gray-700">
                 URL
@@ -103,12 +130,14 @@ export const CreateBotForm = ({ className }: { className?: string }) => {
             </div>
 
             {/* Submit button */}
-            <button 
+            <button
               type="submit"
               className="py-2.5 px-6 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 mt-2"
             >
               Create Bot
             </button>
+
+            {/* Error handling will go here  */}
           </div>
         </form>
       </div>

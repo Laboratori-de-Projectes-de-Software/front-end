@@ -2,10 +2,10 @@ import React from "react";
 import { saveToken, sendRequest, saveUserInfo } from "../../utils/auth";
 
 const register_url = "http://localhost:8080/register";
-const redirect_url = "/auth/home";
+const redirect_url = "/login";
 interface RegisterForm {
+  user: string;
   email: string;
-  nombre: string;
   password: string;
 }
 
@@ -13,7 +13,7 @@ export const RegisterForm = ({ className }: { className?: string }) => {
   const [form, setForm] = React.useState<RegisterForm>({
     email: "",
     password: "",
-    nombre: "",
+    user: "",
   });
 
   const [repetirPassword, setRepetirPassword] = React.useState<string>("");
@@ -38,9 +38,6 @@ export const RegisterForm = ({ className }: { className?: string }) => {
       const response = await sendRequest("POST", register_url, form);
 
       if (response.status === 200) {
-        const data = await response.json();
-        saveToken(data.token);
-        saveUserInfo(data.usuario);
         window.location.href = redirect_url;
       } else {
         const errorData = await response.json();
@@ -76,8 +73,8 @@ export const RegisterForm = ({ className }: { className?: string }) => {
         <input
           type="text"
           placeholder="Nombre"
-          value={form.nombre}
-          onChange={(e) => setForm({ ...form, nombre: e.target.value })}
+          value={form.user}
+          onChange={(e) => setForm({ ...form, user: e.target.value })}
           className="text-black bg-white rounded-2xl placeholder-gray-700 placeholder-opacity-50 p-2"
         />
         <input
