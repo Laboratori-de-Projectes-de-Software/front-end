@@ -2,16 +2,10 @@ import React, { useEffect, useState } from "react";
 import LeagueBar from "@components/LeagueBar";
 import { getAllLeagues, getLeagueClassification } from "../use-cases/UseCases";
 import { ParticipationDTO } from "../DTOClasses/ParticipationDTO";
-import { LeagueResponseDTO } from "../DTOClasses/LeagueDTO";
-
-interface League {
-  id: number;
-  name: string;
-  ownerId: number;
-}
+import { LeagueResponseDTO } from "@DTOClasses/LeagueDTO";
 
 const LeagueTable: React.FC = () => {
-  const [leagues, setLeagues] = useState<League[]>([]);
+  const [leagues, setLeagues] = useState<LeagueResponseDTO[]>([]);
   const [selectedLeagueId, setSelectedLeagueId] = useState<number | null>(null);
   const [selectedLeagueName, setSelectedLeagueName] = useState<string>("");
   const [participants, setParticipants] = useState<ParticipationDTO[]>([]);
@@ -31,15 +25,9 @@ const LeagueTable: React.FC = () => {
 
       const data = await getAllLeagues(userData.userId);
       if (data && data.length > 0) {
-        const mappedLeagues: League[] = data.map(dto => ({
-          id: dto.leagueId,
-          name: dto.name,
-          ownerId: dto.ownerId,
-        }));
-
-        setLeagues(mappedLeagues);
-        setSelectedLeagueId(mappedLeagues[0].id);
-        setSelectedLeagueName(mappedLeagues[0].name);
+        setLeagues(data);
+        setSelectedLeagueId(data[0].leagueId);
+        setSelectedLeagueName(data[0].name);
       }
     };
 
@@ -64,8 +52,8 @@ const LeagueTable: React.FC = () => {
       <LeagueBar
           leagues={leagues}
           selectedLeagueId={selectedLeagueId}
-          onSelectLeague={(league: League) => {
-            setSelectedLeagueId(league.id);
+          onSelectLeague={(league: LeagueResponseDTO) => {
+            setSelectedLeagueId(league.leagueId);
             setSelectedLeagueName(league.name);
           }}
         />

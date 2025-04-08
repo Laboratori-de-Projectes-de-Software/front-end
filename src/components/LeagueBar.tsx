@@ -1,16 +1,12 @@
+import { LeagueResponseDTO } from "@DTOClasses/LeagueDTO";
 import React from "react";
 import { useNavigate } from "react-router-dom"; 
 
-interface League {
-  id: number;
-  name: string;
-  ownerId: number;
-}
 
 interface LeagueBarProps {
-  leagues: League[];
+  leagues: LeagueResponseDTO[];
   selectedLeagueId: number | null;
-  onSelectLeague: (league: League) => void;  
+  onSelectLeague: (league: LeagueResponseDTO) => void;  
 }
 
 const LeagueBar: React.FC<LeagueBarProps> = ({ leagues, selectedLeagueId, onSelectLeague }) => {
@@ -26,9 +22,9 @@ const LeagueBar: React.FC<LeagueBarProps> = ({ leagues, selectedLeagueId, onSele
       </button>
       {leagues.map((league) => (
         <button
-        key={league.id}
+        key={league.leagueId}
         className={`w-full py-2 mb-2 rounded-lg font-medium text-md ${
-          selectedLeagueId === league.id ? "bg-(--lliga-btn-sel)" : "bg-(--lliga-btn)"
+          selectedLeagueId === league.leagueId ? "bg-(--lliga-btn-sel)" : "bg-(--lliga-btn)"
         }`}
         onClick={() => onSelectLeague(league)}
       >

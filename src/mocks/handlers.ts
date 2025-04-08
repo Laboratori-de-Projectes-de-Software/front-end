@@ -8,8 +8,6 @@ export const handlers = [
     const url = new URL(request.url);
     const owner = url.searchParams.get('owner');
   
-    console.log("MOCK ACTIVAT -> /league?owner=", owner);
-  
     const leagues = [
       {
         id: 1,
@@ -64,26 +62,34 @@ export const handlers = [
     return HttpResponse.json(leagues);
   }),
 
-  // 🔸 GET /leagues/:leagueId/classification
+
   http.get('/leagues/:leagueId/leaderboard', ({ params }) => {
-    const dataPerId: Record<string, any[]> = {
-      '1': [
-        { name: 'BotA', points: 15, debates: 5, wins: 5, draws: 0, losses: 0 },
-        { name: 'BotB', points: 12, debates: 5, wins: 4, draws: 0, losses: 1 },
+    const { leagueId } = params;
+  
+    const data: Record<string, any[]> = {
+      "1": [
+        { name: "Bot Alpha", points: 10, debates: 4, wins: 3, draws: 1, losses: 0 },
+        { name: "Bot Omega", points: 7, debates: 4, wins: 2, draws: 1, losses: 1 },
       ],
-      '2': [
-        { name: 'BotX', points: 9, debates: 4, wins: 3, draws: 0, losses: 1 },
-        { name: 'BotY', points: 6, debates: 4, wins: 2, draws: 0, losses: 2 },
+      "2": [
+        { name: "Bot X", points: 12, debates: 5, wins: 4, draws: 0, losses: 1 },
+        { name: "Bot Y", points: 9, debates: 5, wins: 3, draws: 0, losses: 2 },
       ],
-      '3': [
-        { name: 'BotZ', points: 3, debates: 3, wins: 1, draws: 0, losses: 2 },
+      "3": [
+        { name: "Bot Gamma", points: 6, debates: 3, wins: 2, draws: 0, losses: 1 },
+      ],
+      "4": [
+        { name: "Bot Zeta", points: 14, debates: 5, wins: 4, draws: 2, losses: 0 },
+        { name: "Bot Eta", points: 11, debates: 5, wins: 3, draws: 2, losses: 0 },
+      ],
+      "5": [
+        { name: "Bot Nova", points: 3, debates: 3, wins: 1, draws: 0, losses: 2 },
+        { name: "Bot Quark", points: 1, debates: 3, wins: 0, draws: 1, losses: 2 },
       ],
     };
-
-    const classificacio = dataPerId[params.leagueId as string] || [];
-    return HttpResponse.json(classificacio);
+  
+    return HttpResponse.json(data[leagueId as string] || []);
   }),
-
     http.post('/auth/login', () => {
       return HttpResponse.json({
         userId: 1,
