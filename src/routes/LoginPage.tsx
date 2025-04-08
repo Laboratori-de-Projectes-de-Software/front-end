@@ -9,7 +9,7 @@ const LoginPage: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token =  JSON.parse(localStorage.getItem("user") || "{}").token;
     if (token) {
       navigate("/classification/1");
     }
@@ -23,7 +23,7 @@ const LoginPage: React.FC = () => {
     if (res && res.token) {
       alert("Sessió iniciada correctament");
       
-      localStorage.setItem("token", res.token);
+      localStorage.setItem("user", JSON.stringify(res));
       navigate("/classification/1");
     } else {
       alert("Error iniciant sessió. Comprova les credencials.");
