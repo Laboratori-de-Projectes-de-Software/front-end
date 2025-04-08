@@ -4,6 +4,8 @@ import NeuralBackground from "../components/NeuralBackground";
 import Button from "../components/Button";
 import CreateLeagueModal from "../components/CreateLeagueModal";
 import { fetchUserLeagues } from "../controllers/LeaguesController";
+import LeagueModal from "../components/LeagueModal";
+
 import "./LeaguesPage.css";
 
 const LeaguesPage: React.FC = () => {
@@ -11,6 +13,18 @@ const LeaguesPage: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [username, setUsername] = useState<string | undefined>(undefined);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedLeague, setSelectedLeague] = useState<any | null>(null);
+    const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
+
+    const handleLeagueClick = (league: any) => {
+        setSelectedLeague(league);
+        setIsDetailsModalOpen(true);
+    };
+
+    const handleCloseDetailsModal = () => {
+        setIsDetailsModalOpen(false);
+        setSelectedLeague(null);
+    };
 
     useEffect(() => {
         fetchUserLeagues(setLeagues, (error) => {
@@ -39,7 +53,11 @@ const LeaguesPage: React.FC = () => {
                 ) : (
                     <div className="leagues-grid">
                         {leagues.map((league) => (
-                            <div className="league-card" key={league.id}>
+                            <div
+                                className="league-card"
+                                key={league.id}
+                                onClick={() => handleLeagueClick(league)}
+                            >
                                 <div className="league-name">{league.name}</div>
                                 <img
                                     className="league-image"
@@ -60,6 +78,11 @@ const LeaguesPage: React.FC = () => {
             </div>
 
             <CreateLeagueModal isOpen={isModalOpen} onClose={handleCloseModal} />
+            <LeagueModal
+                isOpen={isDetailsModalOpen}
+                onClose={handleCloseDetailsModal}
+                league={selectedLeague}
+            />
         </div>
     );
 };
