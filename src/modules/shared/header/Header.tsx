@@ -1,18 +1,20 @@
 import { useAuth } from "../../../auth/AuthProvider";
 import { useModal } from "../../modalManager/ModalProvider";
+import { useNavigate } from "react-router-dom";
 import "./Header.scss";
 
 const Header: React.FC = () => {
 
   const { openModal } = useModal();
   const auth = useAuth();
+  const navigate = useNavigate();
 
   return (
     <>
       <header className="top-level-header">
         <nav>
           <ul className="top-level-header__item-list">
-            {auth?.isUserLoggedIn ? (
+            {!auth?.isUserLoggedIn() ? (
               <>
                 <li>
                   <button className="top-level-header__login" onClick={() => openModal("login")}>Iniciar sesión</button>
@@ -24,6 +26,14 @@ const Header: React.FC = () => {
               </>
             ) : (
               <>
+                <li>
+                  <button className="top-level-header__login" onClick={() => navigate("league")}>Ligas</button>
+                  <div className="top-level-header__login-decoration"></div>
+                </li>
+                <li>
+                  <button className="top-level-header__login" onClick={() => auth?.logout()}>Clasificación</button>
+                  <div className="top-level-header__login-decoration"></div>
+                </li>
                 <li>
                   <button className="top-level-header__login" onClick={() => auth?.logout()}>Cerrar sesión</button>
                   <div className="top-level-header__login-decoration"></div>

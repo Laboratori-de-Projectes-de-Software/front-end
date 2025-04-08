@@ -13,8 +13,9 @@ const Login: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     auth!.handleLogin({ mail, password });
+    closeModal();
   };
-  const { openModal } = useModal();
+  const { openModal, closeModal } = useModal();
 
 
   return (
