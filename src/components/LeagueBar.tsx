@@ -1,13 +1,19 @@
 import React from "react";
 import { useNavigate } from "react-router-dom"; 
 
-interface LeagueBarProps {
-  leagues: string[];  
-  selectedLeague: string;    
-  onSelectLeague: (league: string) => void;  
+interface League {
+  id: number;
+  name: string;
+  ownerId: number;
 }
 
-const LeagueBar: React.FC<LeagueBarProps> = ({ leagues, selectedLeague, onSelectLeague }) => {
+interface LeagueBarProps {
+  leagues: League[];
+  selectedLeagueId: number | null;
+  onSelectLeague: (league: League) => void;  
+}
+
+const LeagueBar: React.FC<LeagueBarProps> = ({ leagues, selectedLeagueId, onSelectLeague }) => {
   const navigate = useNavigate();
 
   return (
@@ -20,14 +26,14 @@ const LeagueBar: React.FC<LeagueBarProps> = ({ leagues, selectedLeague, onSelect
       </button>
       {leagues.map((league) => (
         <button
-          key={league}
-          className={`w-full py-2 mb-2 rounded-lg font-medium text-md ${
-            selectedLeague === league ? "bg-(--lliga-btn-sel)" : "bg-(--lliga-btn)"
-          }`}
-          onClick={() => onSelectLeague(league)}
-        >
-          {league}
-        </button>
+        key={league.id}
+        className={`w-full py-2 mb-2 rounded-lg font-medium text-md ${
+          selectedLeagueId === league.id ? "bg-(--lliga-btn-sel)" : "bg-(--lliga-btn)"
+        }`}
+        onClick={() => onSelectLeague(league)}
+      >
+        {league.name}
+      </button>
       ))}
     </aside>
   );

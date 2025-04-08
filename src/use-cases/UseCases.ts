@@ -19,9 +19,7 @@ team: string;
   
 //const BASE_URL = "http://localhost:8080";
 
-const BASE_URL = "/api/v0"
-
-type UserToken = string | null;
+const BASE_URL = ""
 
 export async function userSignUp(userData: UserDTORegister): Promise<UserResponseDTO | null> {
     try {
@@ -32,38 +30,32 @@ export async function userSignUp(userData: UserDTORegister): Promise<UserRespons
         });
         if (!response.ok) return null;
 
-        //Per fer proves
-        const result: UserResponseDTO = await response.json();
-        console.log("Usuari registrat:", result);
-        return result;
-
-
         return await response.json();
     } catch (err) {
-            console.error("Signup error:", err);
-            return null;
+        console.error("Signup error:", err);
+        return null;
     }
   }
   
 
   export async function userLoggin(email: string, password: string):  Promise<UserResponseDTO | null> {
     try {
-      const response = await fetch(`${BASE_URL}/auth/login`, {
+        const response = await fetch(`${BASE_URL}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
 
-      if (!response.ok) return null;
+        if (!response.ok) return null;
 
-      const data: UserResponseDTO = await response.json();
+        const data: UserResponseDTO = await response.json();
       
-      console.log("Resposta del backend:", data);      
-      return data;
+        console.log("Resposta del backend:", data);      
+        return data;
 
     } catch (err) {
-      console.error("Login error:", err);
-      return null;
+        console.error("Login error:", err);
+        return null;
     }
   }
 
@@ -101,9 +93,61 @@ function createMatches(league: LeagueDTO): MatchDTO[] | null {
     return null;
 }
 
-export function getLeagueClassification(league: LeagueDTO): ParticipationDTO[] | null {
-    return null;
-}
+export async function getAllLeagues(userId: number): Promise<LeagueResponseDTO[] | null> {
+    const token = localStorage.getItem("token");
+  
+    try {
+      const response = await fetch(`/league?owner=${userId}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      if (!response.ok) {
+        console.error("Error HTTP carregant lligues:", response.status);
+        return null;
+      }
+  
+      let data: LeagueResponseDTO[];
+      try {
+        data = await response.json();
+      } catch (err) {
+        console.error("Error parsejant JSON de lligues:", err);
+        return null;
+      }
+  
+      console.log("Lligues rebudes:", data);
+      return data;
+    } catch (err) {
+      console.error("Error de connexió a getAllLeagues:", err);
+      return null;
+    }
+  }
+
+export async function getLeagueClassification(leagueId: number): Promise<ParticipationDTO[] | null> {
+    try {
+        const token = localStorage.getItem("token");
+        const response = await fetch(`${BASE_URL}/league/${leagueId}/leaderboard`, {
+            headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+            }
+        });
+  
+      if (!response.ok) {
+        console.error("Error carregant classificació:", response.status);
+        return null;
+      }
+  
+      const data: ParticipationDTO[] = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error durant la petició de classificació:", error);
+      return null;
+    }
+  }
 
 export function getLeagueMatches(league: LeagueDTO): MatchDTO[] | any {
     return null;

@@ -11,7 +11,7 @@ const LoginPage: React.FC = () => {
   useEffect(() => {
     const token =  JSON.parse(localStorage.getItem("user") || "{}").token;
     if (token) {
-      navigate("/classification/1");
+      navigate("/");
     }
   }, [navigate]);
 
@@ -24,7 +24,7 @@ const LoginPage: React.FC = () => {
       alert("Sessió iniciada correctament");
       
       localStorage.setItem("user", JSON.stringify(res));
-      navigate("/classification/1");
+      navigate("/");
     } else {
       alert("Error iniciant sessió. Comprova les credencials.");
     }

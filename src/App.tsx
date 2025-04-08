@@ -23,8 +23,8 @@ function App() {
           <Route path="/participants/user/:userId" element={<ParticipantsPage />} />
           <Route path="/participants/league/:leagueId" element={<ParticipantsPage />} />
           <Route path="/participants" element={<ParticipantsPage />} />
-          <Route path="/classification/:leagueId" element={<ClassificationPage />} />
-          <Route path="/confrontations/:leagueId" element={<ConfrontationsPage />} />
+          <Route path="/classification" element={<ClassificationPage />} />
+          <Route path="/confrontations" element={<ConfrontationsPage />} />
           <Route path="/add-league" element={<AddLeaguePage />} />
           <Route path="/add-bot" element={<AddParticipantPage />} />
           <Route path="/match/:matchId" element={<Match />} />
