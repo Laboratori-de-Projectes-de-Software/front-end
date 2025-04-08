@@ -21,6 +21,10 @@ function App() {
               <Route element={<PrivateRoute />}>
                 <Route path="/league" element={<LeaguesPage />} />
               </Route>
+              <Route element={<PrivateRoute />}>
+                {/* TODO: Hay que cambiar esto porq habrá que añadir recupere el id de la liga por queryParam */}
+                <Route path="/leaguePage" element={<LeaguesPage />} />
+              </Route>
               <Route path="*" element={<NotFound />} />
             </Routes>
             <ModalManager />
