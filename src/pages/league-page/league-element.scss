@@ -1,0 +1,64 @@
+.league-element {
+    margin: 10px;
+    width: 270px;
+    height: 320px;
+    display: grid;
+    grid-template-columns: 1;
+
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+    padding: 10px;
+
+    &-info {
+        padding: 10px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    &-name {
+        padding: 10px;
+        grid-column: -1 / 1;
+        font-size: 24px;
+        font-weight: bold;
+        font-family: "Shippori Antique", sans-serif;
+    }
+
+    &-date, &-play-time, &-num-rounds, &-playing {
+        font-size: 18px;
+        font-family: "Shippori Antique", sans-serif;
+    }
+
+    &-playing {
+        
+        &-g {
+            font-size: 18px;
+            font-family: "Shippori Antique", sans-serif;
+            color: green;
+        }
+
+        &-r {
+            font-size: 18px;
+            font-family: "Shippori Antique", sans-serif;
+            color: red;
+        }
+    }
+
+    &-button {
+        grid-column: -1 / 1;
+        padding: 5px;
+        border-radius: 5px;
+        font-size: 14px;
+        font-family: "Shippori Antique", sans-serif;
+        color: white;
+        background-color: #6b00bd;
+        margin: 10px;
+        transition: all 0.15s;
+    
+        &:hover {
+            cursor: pointer;
+            background-color: #8E23DF;
+        }
+    }
+}

@@ -1,0 +1,51 @@
+.form__options {
+  margin: 15px 0;
+  border-bottom: 2px solid black;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+
+  &:has(.form__options-input:focus) {
+    border-bottom-color: #6b00bd;
+  }
+
+  &:focus-within,
+  &:valid,
+  &:has(select:valid) {
+    .form__text-label {
+      transform: translateX(-20px) translateY(-20px) scale(0.7);
+      transition: all 0.3s ease;
+      color: gray;
+    }
+  }
+}
+
+.form__options-input {
+  width: 100%;
+  height: 40px;
+  border: none;
+  text-align: left;
+  font-family: "Shippori Antique", sans-serif;
+  font-size: 16px;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.form__text-label {
+  display: block;
+  position: absolute;
+  margin-bottom: 5px;
+  font-family: "Shippori Antique", sans-serif;
+  font-size: 16px;
+  text-align: center;
+  transition: all 0.3s ease;
+  margin-left: 20px;
+}
+
+.form__text {
+  position: relative;
+}
+
+
