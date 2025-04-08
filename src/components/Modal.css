@@ -181,3 +181,111 @@
   border-radius: 8px;
   border: 1px solid #ccc;
 }
+
+.bot-selection-container {
+  max-height: 200px;
+  overflow-y: auto;
+  background-color: #292a2d; /* Fondo más oscuro acorde con el modal */
+  border: 1px solid #3c4043; /* Borde sutil */
+  border-radius: 6px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+/* Mejorar cada item de la lista */
+.bot-selection-item {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  border-bottom: 1px solid #3c4043;
+  transition: background-color 0.2s;
+}
+.bot-selection-item:last-child {
+  border-bottom: none;
+}
+
+/* Efecto hover para cada item (opcional) */
+.bot-selection-item:hover {
+  background-color: rgba(29, 185, 84, 0.1);
+}
+
+/* Estilizar el texto informativo */
+.modal-helper-text {
+  font-size: 0.875rem;
+  color: #b3b3b3;
+  margin-top: 4px;
+  text-align: center; /* Puedes centrar el texto si lo prefieres */
+}
+
+/* Contenedor de la selección de bots */
+.bot-selection-container {
+  max-height: 200px;
+  overflow-y: auto;
+  background-color: #292a2d; /* Fondo oscuro a juego con el modal */
+  border: 1px solid #3c4043;
+  border-radius: 6px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+/* Cada ítem de la lista de bots */
+.bot-selection-item {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Espacio entre el checkbox y el label */
+  padding: 6px 0;
+  transition: background-color 0.2s ease;
+}
+
+.bot-selection-item:hover {
+  background-color: rgba(255, 255, 255, 0.05); /* Un ligero hover */
+}
+
+/* Estilos del label de cada bot */
+.bot-selection-item label {
+  margin: 0;
+  cursor: pointer;
+  color: #e8eaed; /* Texto claro */
+  flex: 1; /* Para que el label ocupe todo el espacio sobrante */
+}
+
+/* ---- Checkboxes personalizados ---- */
+
+/* Ocultamos la apariencia por defecto */
+.bot-selection-item input[type="checkbox"] {
+  -webkit-appearance: none; /* Safari / WebKit */
+  appearance: none; /* Estándar */
+  width: 18px;
+  height: 18px;
+  border: 2px solid #3c4043;
+  border-radius: 4px;
+  outline: none;
+  background-color: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Hover sobre el checkbox */
+.bot-selection-item input[type="checkbox"]:hover {
+  border-color: #1db954;
+}
+
+/* Checkbox marcado */
+.bot-selection-item input[type="checkbox"]:checked {
+  background-color: #1db954;
+  border-color: #1db954;
+}
+
+/* Check visual al marcar */
+.bot-selection-item input[type="checkbox"]:checked::after {
+  content: "";
+  display: block;
+  position: relative;
+  left: 4px;
+  top: 0;
+  width: 3px;
+  height: 8px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
