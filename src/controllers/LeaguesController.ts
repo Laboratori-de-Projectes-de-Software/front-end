@@ -8,15 +8,22 @@ import { isValidToken } from "../api/AuthUtils";
  * @param setError Función opcional para manejar errores
  */
 export const fetchUserLeagues = async (
-  setLeagues: (leagues: any[]) => void,
-  setError?: (error: string) => void
+    setLeagues: (leagues: any[]) => void,
+    setError?: (error: string) => void
 ) => {
   try {
     const token = localStorage.getItem("token");
     if (!token) throw new Error("No token found");
 
-    const decodedToken: any = jwtDecode(token);
-    const userId = decodedToken.id;
+    let decodedToken: any;
+    try {
+      decodedToken = jwtDecode(token);
+      console.log("Decoded token:", decodedToken);
+    } catch (error) {
+      throw new Error("Invalid token format");
+    }
+
+    const userId = decodedToken?.sub;
     if (!userId) throw new Error("User ID not found in token");
 
     const leagues = await getLeaguesByUser(userId);

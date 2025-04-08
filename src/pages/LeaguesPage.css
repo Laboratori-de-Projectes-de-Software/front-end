@@ -40,6 +40,15 @@
     font-weight: bold;
 }
 
+.league-image {
+    width: 100%;
+    max-width: 120px;
+    height: auto;
+    border-radius: 8px;
+    margin: 20px 0;
+    object-fit: cover;
+}
+
 .league-page-status,
 .league-page-participants {
     margin-top: 10px;

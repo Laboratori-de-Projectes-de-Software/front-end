@@ -41,21 +41,18 @@ const LeaguesPage: React.FC = () => {
                         {leagues.map((league) => (
                             <div className="league-card" key={league.id}>
                                 <div className="league-name">{league.name}</div>
-                                <div className="league-status">Estado: {league.status}</div>
-                                <div className="progress-bar">
-                                    <div
-                                        className="progress-fill"
-                                        style={{ width: `${league.progress}%` }}
-                                    ></div>
-                                </div>
-                                <div className="league-participants">
-                                    {league.participants} participantes
-                                </div>
+                                <img
+                                    className="league-image"
+                                    src={league.urlImagen || "default-image-url.jpg"} // Default image if none is provided
+                                    alt={`Imagen de ${league.name}`}
+                                />
+                                <div className="league-status">Estado: {league.state}</div>
                             </div>
                         ))}
                     </div>
                 )}
                 <Button
+                    isTransparent={false}
                     className="create-league-button"
                     label="Crear nueva liga"
                     onClick={handleCreateLeague}

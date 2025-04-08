@@ -1,22 +1,32 @@
 .button {
-    background-color: transparent;
+    background-color: #0d111795; /* Default color */
     color: white;
     padding: 12px 20px;
     font-size: 16px;
     border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s;
+}
+
+.button-transparent {
+    background-color: transparent; /* Default color */
+    color: white;
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: none;
     cursor: pointer;
     transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s;
 }
 
 .button:hover {
-    background-color: rgba(29, 185, 84, 0.3); /* Verde */
+    background-color: rgba(29, 185, 84, 0.3); /* Hover effect */
     color: white;
-    border-color: rgba(29, 185, 84, 0.9);
     transform: scale(1.05);
 }
 
 .button:active {
     background-color: rgba(29, 185, 84, 0.7);
-    border-color: #3e8e41;
     transform: scale(0.95);
 }

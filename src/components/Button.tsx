@@ -7,19 +7,21 @@ export interface ButtonProps {
   className?: string;
   disabled?: boolean;
   type?: "button" | "submit" | "reset";
+  isTransparent?: boolean;
 }
 
 const Button: React.FC<ButtonProps> = ({
-  onClick,
-  label,
-  className = "",
-  disabled = false,
-  type = "button",
+    onClick,
+    label,
+    className = "",
+    disabled = false,
+    type = "button",
+    isTransparent = false,
 }) => {
   return (
     <button
       type={type}
-      className={`button ${className}`}
+      className={`button ${isTransparent ? "button-transparent" : ""} ${className}`}
       onClick={onClick}
       disabled={disabled}
     >
