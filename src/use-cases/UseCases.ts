@@ -117,8 +117,6 @@ export async function getAllLeagues(userId: number): Promise<LeagueResponseDTO[]
         console.error("Error parsejant JSON de lligues:", err);
         return null;
       }
-  
-      console.log("Lligues rebudes:", data);
       return data;
     } catch (err) {
       console.error("Error de connexió a getAllLeagues:", err);
@@ -129,7 +127,6 @@ export async function getAllLeagues(userId: number): Promise<LeagueResponseDTO[]
 export async function getLeagueClassification(leagueId: number): Promise<ParticipationDTO[] | null> {
   try {
     const token = localStorage.getItem("token");
-    console.log("📡 GET /leagues/:leagueId/classification → leagueId =", leagueId);
     const response = await fetch(`/leagues/${leagueId}/leaderboard`, {
       method: "GET",
       headers: {
@@ -145,7 +142,6 @@ export async function getLeagueClassification(leagueId: number): Promise<Partici
 
     try {
       const data: ParticipationDTO[] = await response.json();
-      console.log("Classificació rebuda:", data);
       return data;
     } catch (parseError) {
       console.error("Error parsejant JSON de classificació:", parseError);

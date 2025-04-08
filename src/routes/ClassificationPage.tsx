@@ -53,7 +53,7 @@ const LeagueTable: React.FC = () => {
           leagues={leagues}
           selectedLeagueId={selectedLeagueId}
           onSelectLeague={(league: LeagueResponseDTO) => {
-            setSelectedLeagueId(league.leagueId);
+            setSelectedLeagueId(league.id);
             setSelectedLeagueName(league.name);
           }}
         />
