@@ -1,6 +1,5 @@
-/* Fondo oscuro con difuminado para el overlay */
 .modal-overlay {
-  position: fixed;
+  position: fixed; /* Ensures the modal stays fixed on the screen */
   top: 0;
   left: 0;
   right: 0;
@@ -8,22 +7,27 @@
   background-color: rgba(0, 0, 0, 0.7);
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start; /* Aligns the modal to the top */
   z-index: 1000;
-  backdrop-filter: blur(3px);
+  padding: 20px; /* Adds spacing around the modal */
+  box-sizing: border-box;
+  overflow-y: auto; /* Allows scrolling for the entire overlay */
 }
 
-/* Contenedor del modal */
 .modal-content {
-  background-color: #202124;
-  padding: 2rem 2.5rem;
-  border-radius: 12px;
-  width: 90%;
-  max-width: 500px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-  animation: modal-fade-in 0.4s ease;
-  color: #e8eaed;
+  background: rgba(30, 30, 30, 0.9); /* Semi-transparent background */
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8);
+  width: 100%;
+  max-width: 500px; /* Limits the modal width */
+  text-align: center;
   position: relative;
+  z-index: 1;
+  margin: 20px 0; /* Adds spacing between the modal and the edges */
+  max-height: none; /* Removes height restrictions */
+  color: white;
+  box-sizing: border-box;
 }
 
 /* Animación al aparecer */
