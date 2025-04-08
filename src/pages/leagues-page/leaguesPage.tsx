@@ -4,7 +4,7 @@ import { DateTime } from 'luxon';
 import LeagueElement from '../../modules/leagues-page/leagueElement';
 import axios from 'axios';
 import { LeaguesFilters, LeagueType } from '../../interfaces/league.interface';
-import './leagues-page.scss';
+import './leaguesPage.scss';
 import LeagueFilters from '../../modules/leagues-page/leagueFilters';
 import Modal from '../../modules/shared/modal/Modal';
 import NewLeague from '../../modules/forms/new-league/NewLeague';
