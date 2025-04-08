@@ -46,19 +46,21 @@ export async function userSignUp(userData: UserDTORegister): Promise<UserRespons
   }
   
 
-  export async function userLoggin(email: string, password: string): Promise<UserToken> {
+  export async function userLoggin(email: string, password: string):  Promise<UserResponseDTO | null> {
     try {
       const response = await fetch(`${BASE_URL}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
+
       if (!response.ok) return null;
+
       const data: UserResponseDTO = await response.json();
-      localStorage.setItem("token", data.token);
       
-      console.log("Login correcte, token:", data.token);
-      return data.token;
+      console.log("Resposta del backend:", data);      
+      return data;
+
     } catch (err) {
       console.error("Login error:", err);
       return null;

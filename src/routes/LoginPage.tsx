@@ -1,11 +1,41 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { userLoggin } from '../use-cases/UseCases';
 
 const LoginPage: React.FC = () => {
+ 
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/classification/1");
+    }
+  }, [navigate]);
+
+  const enviar = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    const res = await userLoggin(email, password);
+    
+    if (res && res.token) {
+      alert("Sessió iniciada correctament");
+      
+      localStorage.setItem("token", res.token);
+      navigate("/classification/1");
+    } else {
+      alert("Error iniciant sessió. Comprova les credencials.");
+    }
+  };
+ 
+ 
   return (
     <div className="flex items-center justify-center min-h-screen bg-(--secondary)">
       <div className="bg-(--primary) text-white p-8 rounded-2xl shadow-lg max-w-sm w-full">
         <h1 className="text-2xl font-bold text-center mb-6">Log In</h1>
-        <form>
+        <form onSubmit={enviar}>
           <div className="mb-4">
             <label className="block text-sm font-medium mb-2" htmlFor="email">
               Email:
@@ -13,6 +43,8 @@ const LoginPage: React.FC = () => {
             <input
               type="email"
               id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="w-full p-3 rounded-lg bg-(--input-bkg) border-none"
             />
           </div>
@@ -23,6 +55,8 @@ const LoginPage: React.FC = () => {
             <input
               type="password"
               id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               className="w-full p-3 rounded-lg bg-(--input-bkg) border-none"
             />
           </div>
