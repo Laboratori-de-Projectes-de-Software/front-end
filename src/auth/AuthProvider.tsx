@@ -8,15 +8,19 @@ const AuthContext = createContext<AuthContextType | null>(null);
 
 const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [login] = appApi.usePostAuthLoginMutation();
-  const [user, setUser] = useState<UserDTOLogin | null>(() => {
+  const [user, setUser] = useState<UserResponseDTO | null>(() => {
     const storedUser = localStorage.getItem("user");
     return storedUser ? JSON.parse(storedUser) : null;
   });
 
   const handleLogin = (userData: UserDTOLogin) => {
-    setUser(userData);
     login(userData).unwrap().then((response: UserResponseDTO) => {
-      localStorage.setItem("user", response.token);
+      // TODO: Almacenar solo el token no todo el usuario. 
+      // TODO: Hay que esperar a que se haga el endpoint que 
+      // TODO: devuelva la informacion del usuario a partir del token
+
+      localStorage.setItem("user", JSON.stringify(response));
+      setUser(response);
     }).catch((error) => {
       console.error("Login error:", error);
     });
