@@ -2,7 +2,7 @@ import React, { useState, useRef, FormEvent } from 'react';
 import { FiUpload, FiClock } from "react-icons/fi";
 import { FaTrophy } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
-import { API, API_LEAGUE } from '../config';
+import { API_LEAGUE } from '../config';
 
 const CrearLiga: React.FC = () => {
   const navigate = useNavigate();
@@ -76,9 +76,10 @@ const CrearLiga: React.FC = () => {
 
       const formData = new FormData();
             formData.append("nombreLiga", nombreLiga);
+            formData.append("urlImagen", String(imagePreview));
             formData.append("numJornadas", String(numJornadas));
+            formData.append("matchTime", minutes);
             formData.append("numBots", String(numParticipantes));
-            formData.append("estado", "open");
             formData.append("id", userId);
             
       const response = await fetch(API_LEAGUE, {
