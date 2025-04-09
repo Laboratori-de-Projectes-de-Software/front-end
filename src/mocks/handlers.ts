@@ -3,11 +3,14 @@
 import { http, HttpResponse } from 'msw';
 
 export const handlers = [
-  http.post('/api/v0/auth/login', () => {
+  http.post("/api/v0/auth/login", async ({ request }) => {
+    const body = await request.json();
+    console.log("MSW ha rebut login:", body);
+
     return HttpResponse.json({
-      userId: 1,
-      email: 'test@mock.com',
-      token: 'mocked_token_123',
+      userId: 99,
+      email: "fsf@csd.com",
+      token: 'mocked_token_456',
     });
   }),
 
@@ -15,9 +18,7 @@ export const handlers = [
     const body = await request.json();
   
     return HttpResponse.json({
-      userId: 2,
-      body: body,
-      token: 'mocked_token_456',
+      body: body, 
     });
   }),
 ];

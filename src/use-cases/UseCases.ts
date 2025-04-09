@@ -46,12 +46,12 @@ export async function userSignUp(userData: UserDTORegister): Promise<UserRespons
         body: JSON.stringify({ email, password }),
       });
 
-      if (!response.ok) return null;
+        if (!response.ok) return null;
 
-      const data: UserResponseDTO = await response.json();
+        const data: UserResponseDTO = await response.json();
       
-      console.log("Resposta del backend:", data);      
-      return data;
+        console.log("Resposta del backend:", data);      
+        return data;
 
     } catch (err) {
         console.error("Login error:", err);
@@ -203,7 +203,66 @@ function createMatches(league: LeagueDTO): MatchResponseDTO[] | null {
     return null;
 }
 
+<<<<<<< HEAD
 export function getLeagueClassification(league: LeagueDTO): ParticipationResponseDTO[] | null {
+=======
+export async function getAllLeagues(userId: number): Promise<LeagueResponseDTO[] | null> {
+    const token = localStorage.getItem("token");
+  
+    try {
+      const response = await fetch(`/league?owner=${userId}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      if (!response.ok) {
+        console.error("Error HTTP carregant lligues:", response.status);
+        return null;
+      }
+  
+      let data: LeagueResponseDTO[];
+      try {
+        data = await response.json();
+      } catch (err) {
+        console.error("Error parsejant JSON de lligues:", err);
+        return null;
+      }
+      return data;
+    } catch (err) {
+      console.error("Error de connexió a getAllLeagues:", err);
+      return null;
+    }
+  }
+
+export async function getLeagueClassification(leagueId: number): Promise<ParticipationDTO[] | null> {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await fetch(`/leagues/${leagueId}/leaderboard`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      console.error("Error HTTP carregant classificació:", response.status);
+      return null;
+    }
+
+    try {
+      const data: ParticipationDTO[] = await response.json();
+      return data;
+    } catch (parseError) {
+      console.error("Error parsejant JSON de classificació:", parseError);
+      return null;
+    }
+  } catch (error) {
+    console.error("Error durant la petició de classificació:", error);
+>>>>>>> origin/login_i_classification
     return null;
   }
 }
