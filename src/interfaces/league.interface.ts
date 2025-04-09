@@ -1,6 +1,6 @@
 export interface LeagueResponseDTO {
   leagueId: number;
-  state: string; // TODO: Cambiar a enum
+  state: "pendiente" | "en curso" | "finalizado";
   name: string;
   urlImagen: string;
   user: number; // Owner of the league
