@@ -1,0 +1,56 @@
+.league-info {
+  &-container {
+    font-family: "Shippori Antique", sans-serif;
+    height: 100%;
+    width: 50%;
+    padding: 10px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    &-top{
+      height: 40%;
+      margin-bottom: 10rem;
+
+      & > img {
+        width: 30%;
+        -webkit-box-shadow: 10px 10px 5px 0px rgba(107,0,189,0.29);
+        -moz-box-shadow: 10px 10px 5px 0px rgba(107,0,189,0.29);
+        box-shadow: 10px 10px 5px 0px rgba(107,0,189,0.29);
+
+        border-radius: 10px 10px 10px 10px;
+        -moz-border-radius: 10px 10px 10px 10px;
+        -webkit-border-radius: 10px 10px 10px 10px;
+      }
+    }
+
+    &-bottom{
+      height: 60%
+    }
+  }
+
+  &-title{
+    font-size: 3rem;
+    font-weight: 700;
+    color: #000;
+    margin-bottom: 1.5rem;
+  }
+
+  &-state, &-rounds, &-match-time {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #000;
+  }
+
+  &-state{
+    & > .p {
+      color: #6b00bd;
+    }
+    & > .e {
+      color: green;
+    }
+    & > .f {
+      color: red;
+    }
+  }
+}
