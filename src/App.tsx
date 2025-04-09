@@ -9,7 +9,6 @@ import Navbar from '@components/Navbar'
 import AddLeaguePage from '@routes/AddLeaguePage'
 import AddParticipantPage from '@routes/AddParticipantPage'
 import Match from '@routes/MatchPage'
-import LogOutPage from '@routes/LogOutPage'
 
 function App() {
   return (
@@ -28,7 +27,6 @@ function App() {
           <Route path="/add-league" element={<AddLeaguePage />} />
           <Route path="/add-bot" element={<AddParticipantPage />} />
           <Route path="/match/:matchId" element={<Match />} />
-          <Route path="/logout" element={<LogOutPage />} />
         </Routes>
       </Router>
     </>
