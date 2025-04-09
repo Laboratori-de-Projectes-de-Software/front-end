@@ -69,7 +69,7 @@ const CrearBot: React.FC = () => {
     setLoading(true);
     setError(null);
     
-    const userId = localStorage.getItem('userId') || '1';
+    const userId = localStorage.getItem('userId') || '0';
     try {
       // Build form data matching the controller's parameters.
       const formData = new FormData();
@@ -81,7 +81,7 @@ const CrearBot: React.FC = () => {
       formData.append("API", apiKey);
       formData.append("id", userId);
       
-      const response = await fetch(API + 'Bot', {
+      const response = await fetch(API + '/bot', {
         method: 'POST',
         // Don't set Content-Type header manually; the browser will set it correctly for FormData
         body: formData
