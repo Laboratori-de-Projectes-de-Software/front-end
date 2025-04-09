@@ -194,18 +194,6 @@ export async function createLeague(leagueData: LeagueDTO): Promise<LeagueRespons
       }
 }
 
-
-export function initLeague(league: LeagueDTO): boolean {
-    return false;
-}
-
-function createMatches(league: LeagueDTO): MatchResponseDTO[] | null {
-    return null;
-}
-
-<<<<<<< HEAD
-export function getLeagueClassification(league: LeagueDTO): ParticipationResponseDTO[] | null {
-=======
 export async function getAllLeagues(userId: number): Promise<LeagueResponseDTO[] | null> {
     const token = localStorage.getItem("token");
   
@@ -237,7 +225,7 @@ export async function getAllLeagues(userId: number): Promise<LeagueResponseDTO[]
     }
   }
 
-export async function getLeagueClassification(leagueId: number): Promise<ParticipationDTO[] | null> {
+export async function getLeagueClassification(leagueId: number): Promise<ParticipationResponseDTO[] | null> {
   try {
     const token = localStorage.getItem("token");
     const response = await fetch(`/leagues/${leagueId}/leaderboard`, {
@@ -254,7 +242,7 @@ export async function getLeagueClassification(leagueId: number): Promise<Partici
     }
 
     try {
-      const data: ParticipationDTO[] = await response.json();
+      const data: ParticipationResponseDTO[] = await response.json();
       return data;
     } catch (parseError) {
       console.error("Error parsejant JSON de classificació:", parseError);
@@ -262,7 +250,6 @@ export async function getLeagueClassification(leagueId: number): Promise<Partici
     }
   } catch (error) {
     console.error("Error durant la petició de classificació:", error);
->>>>>>> origin/login_i_classification
     return null;
   }
 }
