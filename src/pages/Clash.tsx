@@ -7,7 +7,9 @@ export function Clash(){
         <div>
             <NavBar/>
             <div className = {style.background}>
-                
+                <div>
+                    
+                </div>
             </div>
         </div>
     );
