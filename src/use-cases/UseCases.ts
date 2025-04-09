@@ -271,12 +271,3 @@ export async function startLeague(leagueId: number): Promise<boolean> {
     return false;
   }
 }
-
-
-export function getLeagueMatches(league: LeagueDTO): MatchDTO[] | any {
-    return null;
-}
-
-export function getMatchMessages(match: MatchDTO): MessageDTO[] | null {
-    return null;
-}
