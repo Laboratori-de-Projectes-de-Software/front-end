@@ -6,6 +6,9 @@ import MisBots from "./pages/MisBots.tsx";
 import MisLigas from "./pages/MisLigas.tsx";
 import {useState} from "react";
 import PerfilPage from "./pages/PerfilPage.tsx";
+import CrearBot from './pages/CrearBot';
+import CrearLiga from './pages/CrearLiga';
+
 import LeaderBoardPage from "./pages/LeaderBoardPage.tsx";
 import LeagueOverviewPage from "./pages/LeagueOverviewPage.tsx";
 
@@ -21,11 +24,16 @@ export function App() {
           <Col xs={menuExpanded ? 10 : 11} className="custom-secondary rounded-3 p-5" style={{transition: "width  .3s ease-in-out"}}>
             <Routes>
               <Route path="/" element={<Home />} />
+
+              <Route path="/crear-bot" element={<CrearBot />} />
+              <Route path="/crear-liga" element={<CrearLiga />} />
+
               <Route path="/api/v0/mis-bots" element={<MisBots />} />
               <Route path="/api/v0/mis-ligas" element={<MisLigas />} />
               <Route path="/api/v0/perfil/:id" element={<PerfilPage />} />
               <Route path="/api/v0/league/:leagueId" element={<LeagueOverviewPage leagueId={1}/>} />
               <Route path="/api/v0/league/:leagueId/*" element={<LeaderBoardPage />} />
+
             </Routes>
           </Col>
         </Row>
