@@ -18,6 +18,11 @@ team: string;
 }
   
 //const BASE_URL = "http://localhost:8080";
+<<<<<<< HEAD
+=======
+
+const BASE_URL = "/api/v0"
+>>>>>>> 22b10f4e536ea975a9f11fe2ef755b47c0195dbb
 
 const BASE_URL = ""
 
@@ -30,21 +35,41 @@ export async function userSignUp(userData: UserDTORegister): Promise<UserRespons
         });
         if (!response.ok) return null;
 
+<<<<<<< HEAD
         return await response.json();
     } catch (err) {
         console.error("Signup error:", err);
         return null;
+=======
+        //Per fer proves
+        const result: UserResponseDTO = await response.json();
+        console.log("Usuari registrat:", result);
+        return result;
+
+
+        return await response.json();
+    } catch (err) {
+            console.error("Signup error:", err);
+            return null;
+>>>>>>> 22b10f4e536ea975a9f11fe2ef755b47c0195dbb
     }
   }
   
 
+<<<<<<< HEAD
   export async function userLoggin(email: string, password: string):  Promise<UserResponseDTO | null> {
     try {
         const response = await fetch(`${BASE_URL}/auth/login`, {
+=======
+  export async function userLoggin(email: string, password: string): Promise<UserToken> {
+    try {
+      const response = await fetch(`${BASE_URL}/auth/login`, {
+>>>>>>> 22b10f4e536ea975a9f11fe2ef755b47c0195dbb
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
+<<<<<<< HEAD
 
         if (!response.ok) return null;
 
@@ -56,6 +81,17 @@ export async function userSignUp(userData: UserDTORegister): Promise<UserRespons
     } catch (err) {
         console.error("Login error:", err);
         return null;
+=======
+      if (!response.ok) return null;
+      const data: UserResponseDTO = await response.json();
+      localStorage.setItem("token", data.token);
+      
+      console.log("Login correcte, token:", data.token);
+      return data.token;
+    } catch (err) {
+      console.error("Login error:", err);
+      return null;
+>>>>>>> 22b10f4e536ea975a9f11fe2ef755b47c0195dbb
     }
   }
 

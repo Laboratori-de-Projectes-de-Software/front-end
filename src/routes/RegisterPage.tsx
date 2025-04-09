@@ -1,11 +1,49 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { userSignUp } from '../use-cases/UseCases';
 
 const RegisterPage: React.FC = () => {
+  const [user, setUser] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [rPassword, setRPassword] = useState('');
+  const navigate = useNavigate();
+
+  const enviar = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (password !== rPassword) {
+      alert("Les contrasenyes no coincideixen");
+      return;
+    }
+
+    const r = await userSignUp({user, email, password });
+    if (r) {
+      alert("Registre completat correctament");
+      navigate("/login");
+    } else {
+      alert("Error durant el registre");
+    }
+  };
+
+  
   return (
     <div className="flex items-center justify-center min-h-screen bg-(--secondary)">
       <div className="bg-(--primary) text-white p-8 rounded-2xl shadow-lg max-w-sm w-full">
         <h1 className="text-2xl font-bold text-center mb-6">Register</h1>
-        <form>
+        <form onSubmit={enviar}>
+        <div className="mb-4">
+            <label className="block text-sm font-medium mb-2" htmlFor="email">
+              Name:
+            </label>
+            <input
+              type="Name"
+              id="Name"
+              value={user}
+              onChange={(e) => setUser(e.target.value)}
+              className="w-full p-3 rounded-lg bg-(--input-bkg) border-none"
+            />
+          </div>
+          
           <div className="mb-4">
             <label className="block text-sm font-medium mb-2" htmlFor="email">
               Email:
@@ -13,6 +51,8 @@ const RegisterPage: React.FC = () => {
             <input
               type="email"
               id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="w-full p-3 rounded-lg bg-(--input-bkg) border-none"
             />
           </div>
@@ -23,6 +63,8 @@ const RegisterPage: React.FC = () => {
             <input
               type="password"
               id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               className="w-full p-3 rounded-lg bg-(--input-bkg) border-none"
             />
           </div>
@@ -33,6 +75,8 @@ const RegisterPage: React.FC = () => {
             <input
               type="password"
               id="password"
+              value={rPassword}
+              onChange={(e) => setRPassword(e.target.value)}
               className="w-full p-3 rounded-lg bg-(--input-bkg) border-none"
             />
           </div>
