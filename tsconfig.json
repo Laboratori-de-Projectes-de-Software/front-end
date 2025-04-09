@@ -10,6 +10,7 @@
       "@components/*": ["src/components/*"],
       "@routes/*": ["src/routes/*"],
       "@use-cases/*": ["src/use-cases/*"],
+      "@DTOClasses/*": ["src/DTOClasses/*"],
     }
   },
 }

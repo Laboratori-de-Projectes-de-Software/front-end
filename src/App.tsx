@@ -9,6 +9,7 @@ import Navbar from '@components/Navbar'
 import AddLeaguePage from '@routes/AddLeaguePage'
 import AddParticipantPage from '@routes/AddParticipantPage'
 import Match from '@routes/MatchPage'
+import LogOutPage from '@routes/LogOutPage'
 
 function App() {
   return (
@@ -19,12 +20,15 @@ function App() {
           <Route path="/" element={<WelcomePage />} />
           <Route path='/login' element={<LoginPage />} />
           <Route path='/register' element={<RegisterPage />} />
+          <Route path="/participants/user/:userId" element={<ParticipantsPage />} />
+          <Route path="/participants/league/:leagueId" element={<ParticipantsPage />} />
           <Route path="/participants" element={<ParticipantsPage />} />
           <Route path="/classification" element={<ClassificationPage />} />
           <Route path="/confrontations" element={<ConfrontationsPage />} />
           <Route path="/add-league" element={<AddLeaguePage />} />
           <Route path="/add-bot" element={<AddParticipantPage />} />
           <Route path="/match/:matchId" element={<Match />} />
+          <Route path="/logout" element={<LogOutPage />} />
         </Routes>
       </Router>
     </>
