@@ -68,23 +68,6 @@ export function userLoggout(): boolean {
     return true;
   }
 
-export function registerBot(botData: BotData): BotDTO | null {
-    return null;
-}
-
-export function createLeague(leagueData: LeagueData): LeagueDTO | null {
-    return null;
-}
-
-
-export function initLeague(league: LeagueDTO): boolean {
-    return false;
-}
-
-function createMatches(league: LeagueDTO): MatchDTO[] | null {
-    return null;
-}
-
 export async function getAllLeagues(userId: number): Promise<LeagueResponseDTO[] | null> {
     const token = localStorage.getItem("token");
   
