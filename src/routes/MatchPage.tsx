@@ -1,3 +1,4 @@
+import BotSidebar from "@components/BotSidebar";
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 
