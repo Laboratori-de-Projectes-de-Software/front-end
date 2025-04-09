@@ -269,7 +269,7 @@ export default function Register() {
 
         <Typography sx={{ mt: 2, textAlign: "center" }}>
           ¿Ya tienes una cuenta?{" "}
-          <Link to="/login" style={{ color: "inherit", textDecoration: "none" }}>
+          <Link to="/login" style={{ color: "cyan", textDecoration: "none" }}>
             Inicia sesión
           </Link>
         </Typography>
