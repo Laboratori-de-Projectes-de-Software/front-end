@@ -195,34 +195,34 @@ export async function getAllLeagues(userId: number): Promise<LeagueResponseDTO[]
     }
   }
 
-export async function getLeagueClassification(leagueId: number): Promise<ParticipationDTO[] | null> {
-  try {
-    const token = localStorage.getItem("token");
-    const response = await fetch(`/leagues/${leagueId}/leaderboard`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    if (!response.ok) {
-      console.error("Error HTTP carregant classificació:", response.status);
-      return null;
-    }
-
+  export async function getLeagueClassification(leagueId: number): Promise<ParticipationDTO[] | null> {
     try {
-      const data: ParticipationDTO[] = await response.json();
-      return data;
-    } catch (parseError) {
-      console.error("Error parsejant JSON de classificació:", parseError);
+      const token = localStorage.getItem("token");
+      const response = await fetch(`/leagues/${leagueId}/leaderboard`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      if (!response.ok) {
+        console.error("Error HTTP carregant classificació:", response.status);
+        return null;
+      }
+  
+      try {
+        const data: ParticipationDTO[] = await response.json();
+        return data;
+      } catch (parseError) {
+        console.error("Error parsejant JSON de classificació:", parseError);
+        return null;
+      }
+    } catch (error) {
+      console.error("Error durant la petició de classificació:", error);
       return null;
     }
-  } catch (error) {
-    console.error("Error durant la petició de classificació:", error);
-    return null;
   }
-}
 
 export async function deleteLeague(leagueId: number): Promise<boolean> {
   try {
