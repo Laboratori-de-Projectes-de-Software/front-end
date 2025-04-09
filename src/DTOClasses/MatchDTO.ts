@@ -1,12 +1,7 @@
-export interface MatchDTO {
-    matchId: number;
-    bot_local: {
-      nom: string;
-      topic: string;
-    };
-    bot_visitant: {
-      nom: string;
-      topic: string;
-    };
-    duracio: number;
-  }
+export interface MatchResponseDTO {
+  matchId: number;
+  state: string;
+  result: number;
+  fighters: string[];
+  roundNumber: number;
+}

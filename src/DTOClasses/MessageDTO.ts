@@ -1,7 +1,6 @@
-export interface MessageDTO {
-    id: number;
-    sender: string;
-    text: string;
-    timestamp: string;
-  }
+export interface MessageResponseDTO {
+  text: string;
+  botId: number;
+  time: string;
+}
   

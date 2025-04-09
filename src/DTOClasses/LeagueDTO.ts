@@ -1,17 +1,19 @@
-import { BotSummaryResponseDTO } from "./BotDTO";
-
 export interface LeagueDTO {
-    name: string;
-    bots: string[]; // IDs o noms dels bots
-    maxRounds: number;
-    maxTime: number;
-  }
+  name: string;
+  urlImage: string;
+  rounds: number;
+  matchTime: number;
+  bots: number[];
+  userId: number;  
+}
 
-  export interface LeagueResponseDTO {
-    leagueId: number;
-    name: string;
-    ownerId: number;
-    bots: BotSummaryResponseDTO[];
-    maxRounds: number;
-    maxTime: number;
-  }
+export interface LeagueResponseDTO {
+  leagueId: number;
+  state: string;
+  name: string;
+  urlImage: string;
+  user: number;
+  rounds: number;
+  matchTime: number;
+  bots: number[];
+}
