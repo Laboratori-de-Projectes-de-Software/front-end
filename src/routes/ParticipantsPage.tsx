@@ -1,6 +1,6 @@
 import React from 'react';
 import ParticipantCard from '@components/ParticipantCard';
-import { getBots } from '@use-cases/UseCases';
+import { getAllBots } from '@use-cases/UseCases';
 // import BotDTO from '@DTOClasses/BotDTO';
 
 /*
@@ -17,7 +17,7 @@ const participants = [
 let participants; 
 
 const ParticipantsPage: React.FC = () => {
-  participants = getBots();
+  participants = getAllBots();
   if (!participants) {
     return <div className="min-h-screen"><h1 className="text-3xl font-bold mb-8">Error loading participants</h1></div>;
   }

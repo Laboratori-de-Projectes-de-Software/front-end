@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { createLeague } from "@use-cases/UseCases";  // Importa la funció createLeague
-import { getBots, getLeagues } from "@use-cases/UseCases";  // Importa la funció getBots i getLeagues
+import { getAllBots, getLeagues } from "@use-cases/UseCases";  // Importa la funció getBots i getLeagues
 import LeagueBar from "@components/LeagueBar";
 import { LeagueDTO } from "../DTOClasses/LeagueDTO";
 
@@ -11,7 +11,7 @@ const AddLeaguePage: React.FC = () => {
   const [maxRounds, setMaxRounds] = useState("");
   const [maxTime, setMaxTime] = useState("");
   const [errorMessage, setErrorMessage] = useState(""); // Per gestionar els missatges d'error
-  const bots = getBots() ?? [];  // Si `getBots` retorna null, utilitzem una llista buida
+  const bots = getAllBots() ?? [];  // Si `getBots` retorna null, utilitzem una llista buida
 
   // Obtenir les lligues existents
   useEffect(() => {

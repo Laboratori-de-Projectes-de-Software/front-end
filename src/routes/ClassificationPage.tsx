@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import LeagueBar from "@components/LeagueBar";
 import { getAllLeagues, getLeagueClassification } from "../use-cases/UseCases";
-import { ParticipationDTO } from "../DTOClasses/ParticipationDTO";
+import { ParticipationResponseDTO } from "../DTOClasses/ParticipationDTO";
 import { LeagueResponseDTO } from "@DTOClasses/LeagueDTO";
 
 const LeagueTable: React.FC = () => {
   const [leagues, setLeagues] = useState<LeagueResponseDTO[]>([]);
   const [selectedLeagueId, setSelectedLeagueId] = useState<number | null>(null);
   const [selectedLeagueName, setSelectedLeagueName] = useState<string>("");
-  const [participants, setParticipants] = useState<ParticipationDTO[]>([]);
+  const [participants, setParticipants] = useState<ParticipationResponseDTO[]>([]);
 
   useEffect(() => {
     const fetchLeagues = async () => {
@@ -38,7 +38,7 @@ const LeagueTable: React.FC = () => {
     if (selectedLeagueId === null) return;
 
     const fetchClassification = async () => {
-      const data: ParticipationDTO[] | null = await getLeagueClassification(selectedLeagueId);
+      const data: ParticipationResponseDTO[] | null = await getLeagueClassification(selectedLeagueId);
       if (data) setParticipants(data);
     };
 
@@ -69,23 +69,17 @@ const LeagueTable: React.FC = () => {
             <table className="w-full border border-(--table-border)">
               <thead className="bg-(--table-index) text-white">
                 <tr className="border border-(--table-border)">
+                  <th className="p-2 border-r border-(--table-border)">Position</th>
                   <th className="p-2 border-r border-(--table-border)">Bot</th>
                   <th className="p-2 border-r border-(--table-border)">Points</th>
-                  <th className="p-2 border-r border-(--table-border)">Debates</th>
-                  <th className="p-2 border-r border-(--table-border)">Wins</th>
-                  <th className="p-2 border-r border-(--table-border)">Draws</th>
-                  <th className="p-2 border-r border-(--table-border)">Losses</th>
                 </tr>
               </thead>
               <tbody>
                 {participants.map((bot) => (
                   <tr key={bot.name} className="bg-(--secondary) text-center">
+                    <td className="p-2 border-r border-(--table-border)">{bot.position}</td>
                     <td className="p-2 border-r border-(--table-border)">{bot.name}</td>
                     <td className="p-2 border-r border-(--table-border)">{bot.points}</td>
-                    <td className="p-2 border-r border-(--table-border)">{bot.debates}</td>
-                    <td className="p-2 border-r border-(--table-border)">{bot.wins}</td>
-                    <td className="p-2 border-r border-(--table-border)">{bot.draws}</td>
-                    <td className="p-2 border-r border-(--table-border)">{bot.losses}</td>
                   </tr>
                 ))}
               </tbody>
