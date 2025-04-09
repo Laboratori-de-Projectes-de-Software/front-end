@@ -10,16 +10,18 @@ import {
   ListItemText,
   Divider,
   CircularProgress,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
   DialogContent,
   DialogActions,
   Dialog,
   DialogTitle,
   IconButton,
   Snackbar,
+  Tabs,
+  Tab,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import {
   Dashboard as DashboardIcon,
@@ -52,10 +54,10 @@ interface League {
   status: "ACTIVE" | "INACTIVE" | "FINISHED";
   fechaInicio?: string;
   fechaFin?: string;
-  matchTime?: number; // Added matchTime property
-  rounds?: number; // Added rounds property
+  matchTime?: number;
+  rounds?: number;
+  bots?: number[];  // O la estructura que uses
 }
-
 
 type Section =
   | "dashboard"
@@ -79,7 +81,6 @@ export default function Dashboard() {
   const username = localStorage.getItem("username") || "Desconocido";
   const token = localStorage.getItem("token") || "";
   const [allLeagues, setAllLeagues] = useState<League[]>([]);
-  const [leagueFilter, setLeagueFilter] = useState<string[]>(["ALL"]);
   const [popupOpen, setPopupOpen] = useState(false);
 
   const [joinLeagueId, setJoinLeagueId] = useState<number | null>(null);
@@ -93,6 +94,15 @@ export default function Dashboard() {
   const [joinError, setJoinError] = useState(false);
 
   const [leagueToEdit, setLeagueToEdit] = useState<League | null>(null);
+
+  const [joinedLeagues, setJoinedLeagues] = useState<League[]>([]);
+  const [createdLeagues, setCreatedLeagues] = useState<League[]>([]);
+
+  // Para tabs o secciones
+  const [subSection, setSubSection] = useState<"joined"|"created">("joined");
+  // Para el filtro
+  const [selectedFilter, setSelectedFilter] = useState<"ALL"|"ACTIVE"|"INACTIVE"|"FINISHED">("ALL");
+
 
 
 
@@ -351,6 +361,38 @@ export default function Dashboard() {
     else if (section === "myLeagues") fetchUserLeagues();
   }, [section, fetchUserBots, fetchAllBots, fetchAllLeagues, fetchUserLeagues]);
 
+  useEffect(() => {
+    if (section === "myLeagues") {
+      // Al cargar la sección "myLeagues", obtengo todas las ligas y mis bots
+      fetchAllLeagues();
+      fetchUserBots();
+    }
+  }, [section, fetchAllLeagues, fetchUserBots]);
+  
+  useEffect(() => {
+    if (section === "myLeagues") {
+      // IDs de los bots del usuario
+      const userBotIds = userBots.map((bot) => bot.id);
+  
+      // Ligas que has creado:
+      const created = allLeagues.filter(
+        (league) => league.creatorUsername === username
+      );
+  
+      // Ligas en las que participas (al menos un bot tuyo está inscrito)
+      const joined = allLeagues.filter(
+        (league) =>
+          league.creatorUsername !== username &&
+          league.bots &&
+          league.bots.some((botId) => userBotIds.includes(botId))
+      );
+  
+      setCreatedLeagues(created);
+      setJoinedLeagues(joined);
+    }
+  }, [allLeagues, userBots, section, username]);
+  
+
   return (
     <Box sx={{ display: "flex", minHeight: "100vh" }}>
       <Box
@@ -433,6 +475,7 @@ export default function Dashboard() {
           </>
         )}
 
+        {/* Mis bots */}
         {section === "myBots" && (
           <>
             <Box sx={{ mb: 6 }}>
@@ -472,6 +515,7 @@ export default function Dashboard() {
           </>
         )}
 
+        {/* Registrar nuevo bot */}
         {section === "registerBot" && (
           <Box>
             <Button
@@ -503,6 +547,7 @@ export default function Dashboard() {
           </Box>
         )}
 
+        {/* Ver todos los bots */}
         {section === "allBots" && (
           <>
             <Typography variant="h4" color="cyan" sx={{ mb: 4 }}>
@@ -523,149 +568,244 @@ export default function Dashboard() {
         )}
 
         {section === "myLeagues" && (
-          <>
-            <Box sx={{ mb: 6 }}>
-              <Typography variant="h4" color="cyan" sx={{ mb: 2 }}>
-              🏆 Mis Ligas
-              </Typography>
-            </Box>
+          <Box>
+            {/* Título principal */}
+            <Typography variant="h4" sx={{ color: "cyan", mb: 3 }}>
+              Mis Ligas
+            </Typography>
 
-            {/* Contenedor centrado con ancho fijo */}
-            <Box sx={{ display: "flex", flexDirection: "column", alignItems: "left", gap: 6, mb: 6 }}>
-            <Button
-              variant="contained"
-              onClick={() => {
-                setLeagueToEdit(null); 
-                setSection("registerLeague");
-              }}
-              sx={{ width: "300px" }}
+            {/* Tabs (sub-menú) para cambiar entre "joined" y "created" */}
+            <Tabs
+              value={subSection}
+              onChange={(event, newValue) => setSubSection(newValue)}
+              textColor="inherit"
             >
-              + Registrar nueva Liga
-            </Button>
+              <Tab label="LIGAS EN LAS QUE PARTICIPAS" value="joined" />
+              <Tab label="LIGAS QUE HAS CREADO" value="created" />
+            </Tabs>
 
-
-              <FormControl sx={{ width: "300px" }} variant="outlined">
-                <InputLabel id="league-filter-label" sx={{ color: "cyan" }}>
-                  Filtrar por estado
-                </InputLabel>
-                <Select
-                  labelId="league-filter-label"
-                  id="league-filter"
-                  value={leagueFilter[0]}
-                  onChange={(e) => setLeagueFilter([e.target.value])}
-                  label="Filtrar por estado"
+            {/* Sección para "Ligas en las que participas" */}
+            {subSection === "joined" && (
+              <Box>
+                {/* Filtro por estado (solo filtro para esta sección) */}
+                <Box
                   sx={{
-                    color: "white",
-                    ".MuiOutlinedInput-notchedOutline": { borderColor: "cyan" },
-                    "&.Mui-focused .MuiOutlinedInput-notchedOutline": { borderColor: "cyan" },
-                    "&:hover .MuiOutlinedInput-notchedOutline": { borderColor: "cyan" },
-                    "& .MuiSvgIcon-root": { color: "cyan" },
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "flex-start",
+                    mt: 3,
+                    mb: 3,
                   }}
                 >
-                  <MenuItem value="ALL">Todas</MenuItem>
-                  <MenuItem value="INACTIVE">🟡 Inactivas</MenuItem>
-                  <MenuItem value="ACTIVE">🟢 Activas</MenuItem>
-                  <MenuItem value="FINISHED">🔴 Finalizadas</MenuItem>
-                </Select>
-              </FormControl>
-            </Box>
-
-            {loadingLeagues ? (
-              <CircularProgress color="inherit" />
-            ) : (
-              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
-                {allLeagues
-                  .filter(
-                    (league) =>
-                      leagueFilter.includes("ALL") ||
-                      leagueFilter.includes(league.status)
-                  )
-                  .map((league) => (
-                    <LeagueCard
-                      key={league.leagueId}
-                      id={league.leagueId}
-                      name={league.name}
-                      status={league.status}
-                      onView={() => fetchLeagueById(league.leagueId)}
-                      onStart={(id) => handleStartLeague(id)}
-                      onEdit={(id) => {
-                        const liga = allLeagues.find((l) => l.leagueId === id);
-                        if (liga) {
-                          setLeagueToEdit(liga);  // cargar datos en el formulario
-                          setSection("registerLeague");
-                        }
+                  <FormControl fullWidth variant="outlined" sx={{ maxWidth: "300px" }}>
+                    <InputLabel id="filter-label-joined" sx={{ color: "cyan" }}>
+                      Filtrar por estado
+                    </InputLabel>
+                    <Select
+                      labelId="filter-label-joined"
+                      value={selectedFilter}
+                      onChange={(e) =>
+                        setSelectedFilter(e.target.value as typeof selectedFilter)
+                      }
+                      label="Filtrar por estado"
+                      sx={{
+                        color: "white",
+                        ".MuiOutlinedInput-notchedOutline": { borderColor: "cyan" },
+                        "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                          borderColor: "cyan",
+                        },
+                        "&:hover .MuiOutlinedInput-notchedOutline": {
+                          borderColor: "cyan",
+                        },
+                        "& .MuiSvgIcon-root": { color: "cyan" },
                       }}
-                      isMyLeaguesSection
-                    />
+                    >
+                      <MenuItem value="ALL">Todas</MenuItem>
+                      <MenuItem value="INACTIVE">🟡 Inactivas</MenuItem>
+                      <MenuItem value="ACTIVE">🟢 Activas</MenuItem>
+                      <MenuItem value="FINISHED">🔴 Finalizadas</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Box>
 
-
-                ))}
-
+                {/* Contenedor de tarjetas en forma de filas/rejilla */}
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    gap: 2,
+                  }}
+                >
+                  {joinedLeagues
+                    .filter((league) =>
+                      selectedFilter === "ALL" ? true : league.status === selectedFilter
+                    )
+                    .map((league) => (
+                      <LeagueCard
+                        key={league.leagueId}
+                        id={league.leagueId}
+                        name={league.name}
+                        status={league.status}
+                        onView={() => fetchLeagueById(league.leagueId)}
+                      />
+                    ))}
+                </Box>
               </Box>
             )}
-          </>
+
+            {/* Sección para "Ligas que has creado" */}
+            {subSection === "created" && (
+              <Box>
+                {/* Fila que contiene el filtro y el botón "Registrar nueva Liga" */}
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    mt: 3,
+                    mb: 3,
+                  }}
+                >
+                  {/* Filtro por estado */}
+                  <FormControl fullWidth variant="outlined" sx={{ maxWidth: "300px" }}>
+                    <InputLabel id="filter-label-created" sx={{ color: "cyan" }}>
+                      Filtrar por estado
+                    </InputLabel>
+                    <Select
+                      labelId="filter-label-created"
+                      value={selectedFilter}
+                      onChange={(e) =>
+                        setSelectedFilter(e.target.value as typeof selectedFilter)
+                      }
+                      label="Filtrar por estado"
+                      sx={{
+                        color: "white",
+                        ".MuiOutlinedInput-notchedOutline": { borderColor: "cyan" },
+                        "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                          borderColor: "cyan",
+                        },
+                        "&:hover .MuiOutlinedInput-notchedOutline": {
+                          borderColor: "cyan",
+                        },
+                        "& .MuiSvgIcon-root": { color: "cyan" },
+                      }}
+                    >
+                      <MenuItem value="ALL">Todas</MenuItem>
+                      <MenuItem value="INACTIVE">🟡 Inactivas</MenuItem>
+                      <MenuItem value="ACTIVE">🟢 Activas</MenuItem>
+                      <MenuItem value="FINISHED">🔴 Finalizadas</MenuItem>
+                    </Select>
+                  </FormControl>
+
+                  {/* Botón para registrar una nueva liga */}
+                  <Button
+                    variant="contained"
+                    onClick={() => {
+                      setLeagueToEdit(null);
+                      setSection("registerLeague");
+                    }}
+                    sx={{ ml: 2 }}
+                  >
+                    + Registrar nueva Liga
+                  </Button>
+                </Box>
+
+                {/* Tarjetas de ligas creadas en formato grid/flex */}
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    gap: 2,
+                  }}
+                >
+                  {createdLeagues
+                    .filter((league) =>
+                      selectedFilter === "ALL" ? true : league.status === selectedFilter
+                    )
+                    .map((league) => (
+                      <LeagueCard
+                        key={league.leagueId}
+                        id={league.leagueId}
+                        name={league.name}
+                        status={league.status}
+                        onView={() => fetchLeagueById(league.leagueId)}
+                        onStart={(id) => handleStartLeague(id)}
+                        onEdit={(id) => {
+                          const liga = createdLeagues.find((l) => l.leagueId === id);
+                          if (liga) {
+                            setLeagueToEdit(liga);
+                            setSection("registerLeague");
+                          }
+                        }}
+                        isMyLeaguesSection
+                      />
+                    ))}
+                </Box>
+              </Box>
+            )}
+          </Box>
         )}
 
 
 
-{section === "allLeagues" && (
-  <>
-    <Typography variant="h4" color="cyan" sx={{ mb: 4 }}>
-      Ver todas las Ligas
-    </Typography>
+        {/* Ver todas las ligas */}
+        {section === "allLeagues" && (
+          <>
+            <Typography variant="h4" color="cyan" sx={{ mb: 4 }}>
+              Ver todas las Ligas
+            </Typography>
 
-    {loadingLeagues ? (
-      <CircularProgress color="inherit" />
-    ) : (
-      allLeagues.length > 0 ? (
-        <Box sx={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
-          {allLeagues.map((league) => (
-            <LeagueCard
-              key={league.leagueId} // usar el ID como key
-              id={league.leagueId} // pasar el ID correcto
-              name={league.name}
-              status={league.status}
-              onView={() => {
-                fetchLeagueById(league.leagueId);
-                setSection("leagueDetails");
+            {loadingLeagues ? (
+              <CircularProgress color="inherit" />
+            ) : (
+              allLeagues.length > 0 ? (
+                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
+                  {allLeagues.map((league) => (
+                    <LeagueCard
+                      key={league.leagueId} // usar el ID como key
+                      id={league.leagueId} // pasar el ID correcto
+                      name={league.name}
+                      status={league.status}
+                      onView={() => {
+                        fetchLeagueById(league.leagueId);
+                        setSection("leagueDetails");
+                      }}
+                      onJoin={() => handleJoinLeague(league.leagueId)} // pasar el ID, no el nombre
+                      isAllLeaguesSection
+                    />
+                  ))}
+                </Box>
+              ) : (
+                <Typography>No hay ligas disponibles.</Typography>
+              )
+            )}
+          </>
+        )}
+  
+        {/* Detalles de la liga */}
+        {section === "leagueDetails" && (
+          <Box>
+            <Button
+              variant="outlined"
+              onClick={() => setSection("allLeagues")}
+              sx={{
+                mb: 2,
+                color: "cyan",
+                borderColor: "cyan",
+                minWidth: "40px",
+                padding: "6px",
+                borderRadius: "50%",
+                "&:hover": {
+                  backgroundColor: "rgba(0,255,255,0.1)",
+                  borderColor: "cyan",
+                },
               }}
-              onJoin={() => handleJoinLeague(league.leagueId)} // pasar el ID, no el nombre
-              isAllLeaguesSection
-            />
-          ))}
-        </Box>
-      ) : (
-        <Typography>No hay ligas disponibles.</Typography>
-      )
-    )}
-  </>
-)}
-
-
-{section === "leagueDetails" && (
-  <Box>
-    <Button
-      variant="outlined"
-      onClick={() => setSection("allLeagues")}
-      sx={{
-        mb: 2,
-        color: "cyan",
-        borderColor: "cyan",
-        minWidth: "40px",
-        padding: "6px",
-        borderRadius: "50%",
-        "&:hover": {
-          backgroundColor: "rgba(0,255,255,0.1)",
-          borderColor: "cyan",
-        },
-      }}
-    >
-      <ArrowBackIcon />
-    </Button>
-    {/* Renderizamos el componente Liga */}
-    <League />
-  </Box>
-)}
+            >
+              <ArrowBackIcon />
+            </Button>
+            {/* Renderizamos el componente Liga */}
+            <League />
+          </Box>
+        )}
 
 
 {section === "registerLeague" && (
