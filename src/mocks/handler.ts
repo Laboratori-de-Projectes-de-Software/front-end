@@ -75,19 +75,17 @@ export const handlers = [
     );
   }),
   http.get(`${basePath}/league/1`, () => {
-    return HttpResponse.json<LeagueResponseDTO[]>(
-      [
-        {
-          leagueId: 1,
-          name: "Copa Melón",
-          urlImagen: "",
-          user: 2,
-          rounds: 3,
-          matchTime: 10,
-          state: "pendiente",
-          bots: [],
-        }
-      ],
+    return HttpResponse.json<LeagueResponseDTO>(
+      {
+        leagueId: 1,
+        name: "Copa Melón",
+        urlImagen: "https://static.vecteezy.com/system/resources/previews/002/703/018/non_2x/soccer-ball-sport-cartoon-in-black-and-white-free-vector.jpg",
+        user: 2,
+        rounds: 3,
+        matchTime: 10,
+        state: "pendiente",
+        bots: [],
+      },
       { status: 200 }
     );
   }),
@@ -133,6 +131,12 @@ export const handlers = [
           points: 0,
           name: "Bot 3",
           position: 3,
+        },
+        {
+          botId: 4,
+          points: 0,
+          name: "Bot 4",
+          position: 4,
         }
       ],
       { status: 200 }
