@@ -82,8 +82,8 @@
 
 .slide {
     background-color: white;
+    
     font-weight: bold;
-    color: #666666;
     margin-top: 10px;
     margin-bottom: 10px;
     display: flex;
@@ -98,6 +98,15 @@
     color: white;
     cursor: pointer;
     transform: scale(1.1);
+}
+
+.slide pre {
+    color: #666666;
+}
+
+.slide pre:hover {
+    color: white;
+    cursor: pointer;
 }
 
 .clasification {

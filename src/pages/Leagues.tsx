@@ -4,6 +4,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
+import {Link} from "react-router-dom";
 
 export function Leagues() {
 
@@ -82,7 +83,9 @@ export function Leagues() {
                         >
                             {aprilDates.map((date, index) => (
                             <SwiperSlide key={index} className={style.slide}>
-                                <pre>{date}</pre>
+                                <Link to = "/Match">
+                                    <pre>{date}</pre>
+                                </Link>
                             </SwiperSlide>
                         ))}
                         </Swiper>

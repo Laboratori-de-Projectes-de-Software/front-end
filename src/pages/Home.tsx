@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import NavBar from "../components/NavBar";
 import Banner from "../assets/img/robot.png";
 import style from "./Home.module.css";
