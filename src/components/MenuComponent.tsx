@@ -73,7 +73,7 @@ function MenuComponent({menuExpanded, handleMenuExpanded}: MenuProps) {
                     </NavLink>
                 </div>
                 <div className="d-flex">
-                    <NavLink to={`/perfil/${id}`} className={`d-flex w-100 align-items-center text-decoration-none text-white py-1 px-4 ${!menuExpanded ? "justify-content-center": ""}`}>
+                    <NavLink to={`api/v0/perfil/${id}`} className={`d-flex w-100 align-items-center text-decoration-none text-white py-1 px-4 ${!menuExpanded ? "justify-content-center": ""}`}>
                         <FontAwesomeIcon icon={faUser} size={"xl"}/>
                         {
                             menuExpanded &&

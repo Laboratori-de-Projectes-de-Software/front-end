@@ -5,6 +5,8 @@ import {useFetchPerfil} from "../hooks/usePerfilUsuario.tsx";
 import robotFoto from "../assets/img/robot.png"
 import ligaFoto from "../assets/img/liga.png"
 import {useParams} from "react-router-dom";
+import {Link} from "react-router-dom";
+
 
 const PerfilPage: React.FC = () => {
 
@@ -76,7 +78,7 @@ const PerfilPage: React.FC = () => {
                                 />
                                 <div className="card-body text-center">
                                     <h5 className="card-title">Crea tu propio bot</h5>
-                                    <button className="btn btn-primary">Crear Bot</button>
+                                    <Link to="/crear-bot" className="btn btn-primary">Crear Bot</Link>
                                 </div>
                             </div>
                     </div>
@@ -87,7 +89,7 @@ const PerfilPage: React.FC = () => {
                                      className="card-img-top"/>
                                 <div className="card-body text-center">
                                     <h5 className="card-title">Crea tu propia liga</h5>
-                                    <button className="btn btn-primary">Crear Liga</button>
+                                    <Link to="/crear-liga" className="btn btn-primary">Crear Liga</Link>
                                 </div>
                             </div>
                     </div>
