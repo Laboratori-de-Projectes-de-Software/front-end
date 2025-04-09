@@ -50,7 +50,7 @@ interface Bot {
 interface League {
   leagueId: number;
   name: string;
-  creatorUsername: string;
+  owner: string;
   status: "ACTIVE" | "INACTIVE" | "FINISHED";
   fechaInicio?: string;
   fechaFin?: string;
@@ -376,13 +376,13 @@ export default function Dashboard() {
   
       // Ligas que has creado:
       const created = allLeagues.filter(
-        (league) => league.creatorUsername === username
+        (league) => league.owner === username // Cambiar a "owner"
       );
   
       // Ligas en las que participas (al menos un bot tuyo está inscrito)
       const joined = allLeagues.filter(
         (league) =>
-          league.creatorUsername !== username &&
+          // Cambiar a "owner"
           league.bots &&
           league.bots.some((botId) => userBotIds.includes(botId))
       );
@@ -391,7 +391,6 @@ export default function Dashboard() {
       setJoinedLeagues(joined);
     }
   }, [allLeagues, userBots, section, username]);
-  
 
   return (
     <Box sx={{ display: "flex", minHeight: "100vh" }}>
