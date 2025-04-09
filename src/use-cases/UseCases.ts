@@ -19,9 +19,7 @@ team: string;
   
 //const BASE_URL = "http://localhost:8080";
 
-const BASE_URL = "/api/v0"
-
-type UserToken = string | null;
+const BASE_URL = ""
 
 export async function userSignUp(userData: UserDTORegister): Promise<UserResponseDTO | null> {
     try {
@@ -32,23 +30,17 @@ export async function userSignUp(userData: UserDTORegister): Promise<UserRespons
         });
         if (!response.ok) return null;
 
-        //Per fer proves
-        const result: UserResponseDTO = await response.json();
-        console.log("Usuari registrat:", result);
-        return result;
-
-
         return await response.json();
     } catch (err) {
-            console.error("Signup error:", err);
-            return null;
+        console.error("Signup error:", err);
+        return null;
     }
   }
   
 
   export async function userLoggin(email: string, password: string):  Promise<UserResponseDTO | null> {
     try {
-      const response = await fetch(`${BASE_URL}/auth/login`, {
+        const response = await fetch(`${BASE_URL}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -62,8 +54,8 @@ export async function userSignUp(userData: UserDTORegister): Promise<UserRespons
       return data;
 
     } catch (err) {
-      console.error("Login error:", err);
-      return null;
+        console.error("Login error:", err);
+        return null;
     }
   }
 
@@ -202,14 +194,6 @@ export async function createLeague(leagueData: LeagueDTO): Promise<LeagueRespons
       }
 }
 
-export function updateLeague(league: LeagueDTO) {
-    return league
-}
-
-
-export function addBotToLeague(bot: BotDTO, league: LeagueDTO) {
-    return {bot, league};
-}
 
 export function initLeague(league: LeagueDTO): boolean {
     return false;
@@ -221,34 +205,53 @@ function createMatches(league: LeagueDTO): MatchResponseDTO[] | null {
 
 export function getLeagueClassification(league: LeagueDTO): ParticipationResponseDTO[] | null {
     return null;
+  }
 }
 
-export function getLeagueMatches(league: LeagueDTO): MatchResponseDTO[] | any {
-    return null;
+export async function deleteLeague(leagueId: number): Promise<boolean> {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await fetch(`${BASE_URL}/league/${leagueId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (response.status === 200) {
+      console.log("Lliga eliminada correctament.");
+      return true;
+    } else {
+      console.error(`Error HTTP eliminant la lliga: ${response.status}`);
+      return false;
+    }
+  } catch (error) {
+    console.error("Error eliminant la lliga:", error);
+    return false;
+  }
 }
 
-export function getMatchMessages(): MessageResponseDTO[] | null {
-    return null;
+export async function startLeague(leagueId: number): Promise<boolean> {
+  const token = localStorage.getItem("token");
+  try {
+    const response = await fetch(`${BASE_URL}/league/${leagueId}/start`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (response.status === 201) {
+      console.log("Lliga iniciada i enfrontaments creats correctament.");
+      return true;
+    } else {
+      console.error(`Error HTTP iniciant la lliga: ${response.status}`);
+      return false;
+    }
+  } catch (error) {
+    console.error("Error iniciant la lliga:", error);
+    return false;
+  }
 }
-
-export function getBots(): BotDTO[] | null {
-    const [participants, setParticipants] = React.useState<BotDTO[]>([]);
-
-    useEffect(() => {
-        const fetchParticipants = async () => {
-        try {
-            const response = await fetch('http://localhost:8080/bot');
-            if (!response.ok) throw new Error('Error loading participants');
-            const data: BotDTO[] = await response.json();
-            setParticipants(data);
-        } catch (err) {
-            console.error('Error loading participants:', err);
-        }
-        };
-
-        fetchParticipants();
-    }); // opció de filtrar per equip ??
-
-    return participants;
-}
-
