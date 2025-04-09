@@ -1,7 +1,7 @@
-import { BotDTO, BotResponseDTO, BotSummaryResponseDTO } from "../DTOClasses/BotDTO";
-import { LeagueDTO, LeagueResponseDTO } from "../DTOClasses/LeagueDTO";
-import { ParticipationResponseDTO } from "../DTOClasses/ParticipationDTO";
-import {UserDTORegister, UserResponseDTO } from "../DTOClasses/UserDTO";
+import { BotDTO, BotResponseDTO, BotSummaryResponseDTO } from "@DTOClasses/BotDTO";
+import { LeagueDTO, LeagueResponseDTO } from "@DTOClasses/LeagueDTO";
+import { ParticipationResponseDTO } from "@DTOClasses/ParticipationDTO";
+import {UserDTORegister, UserResponseDTO } from "@DTOClasses/UserDTO";
 
 
   
