@@ -1,19 +1,23 @@
 export interface BotDTO {
-    name: string;
-    team: string;
-    apiUrl: string;
-  }
+  name: string;
+  description: string;
+  urlImage: string;
+  endpoint: string;
+  userId: number;
+}
   
-  export interface BotResponseDTO {
-    id: number;
-    name: string;
-    team: string;
-    apiUrl: string;
-    ownerId: number;
-  }
+export interface BotResponseDTO {
+  botId: number;
+  name: string;
+  description: string;
+  urlImage: string;
+  nWins: number;
+  nLosses: number;
+  nDraws: number;
+}
   
-  export interface BotSummaryResponseDTO {
-    id: number;
-    name: string;
-    team: string;
-  }
+export interface BotSummaryResponseDTO {
+  name: string;
+  id: number;
+  description: string;
+}

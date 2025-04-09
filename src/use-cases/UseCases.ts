@@ -1,21 +1,9 @@
 import { BotDTO, BotResponseDTO, BotSummaryResponseDTO } from "../DTOClasses/BotDTO";
 import { LeagueDTO, LeagueResponseDTO } from "../DTOClasses/LeagueDTO";
-import { MatchDTO } from "../DTOClasses/MatchDTO";
-import { MessageDTO } from "../DTOClasses/MessageDTO";
-import { ParticipationDTO } from "../DTOClasses/ParticipationDTO";
-import { UserDTOLogin, UserDTORegister, UserResponseDTO } from "../DTOClasses/UserDTO";
+import { ParticipationResponseDTO } from "../DTOClasses/ParticipationDTO";
+import {UserDTORegister, UserResponseDTO } from "../DTOClasses/UserDTO";
 
-import React, { useEffect } from "react";
 
-interface LeagueData {
-    leagueId: string;
-  }
-  
-interface BotData {
-name: string;
-apiUrl: string;
-team: string;
-}
   
 //const BASE_URL = "http://localhost:8080";
 
@@ -67,6 +55,132 @@ export function userLoggout(): boolean {
     localStorage.removeItem("token");
     return true;
   }
+
+export async function registerBot(botData: BotDTO): Promise<BotResponseDTO | null> {
+    try {
+      // Realitzem la petició POST per registrar el bot
+      const response = await fetch(`${BASE_URL}/bot`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json", // Indiquem que enviem un JSON
+        },
+        body: JSON.stringify(botData), // Convertim `botData` en un JSON per enviar-lo
+      });
+  
+      // Si la resposta no és satisfactòria (no OK), retornem null
+      if (!response.ok) {
+        console.error("Error al registrar el bot:", response.statusText);
+        return null;
+      }
+  
+      // Parsegem la resposta com a JSON i la convertim en un objecte `BotResponseDTO`
+      const result: BotResponseDTO = await response.json();
+  
+      // Per fer proves, podem mostrar el resultat a la consola
+      console.log("Bot registrat amb èxit:", result);
+  
+      return result; // Retornem la resposta amb les dades del bot registrat
+    } catch (err) {
+      console.error("Error al registrar el bot:", err);
+      return null; // En cas d'error, retornem null
+    }
+}
+
+export async function getAllBots(userId?: number): Promise<BotSummaryResponseDTO[] | null> {
+    try {
+        // Construcció dinàmica de l'URL amb o sense paràmetre `owner`
+        const url = userId ? `${BASE_URL}/bot?owner=${userId}` : `${BASE_URL}/bot`;
+  
+        const response = await fetch(url, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+  
+        if (!response.ok) {
+            console.error("Error al obtenir els bots:", response.statusText);
+            return null;
+        }
+  
+        const bots: BotSummaryResponseDTO[] = await response.json();
+        return bots;
+    } catch (error) {
+        console.error("Error inesperat al obtenir els bots:", error);
+        return null;
+    }
+}
+
+export async function getBot(botId: number): Promise<BotResponseDTO | null> {
+    try {
+        const response = await fetch(`${BASE_URL}/bot/${botId}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+  
+        if (!response.ok) {
+            console.error(`Error en obtenir el bot amb ID ${botId}:`, response.statusText);
+            return null;
+        }
+  
+        const bot: BotResponseDTO = await response.json();
+        return bot;
+    } catch (error) {
+        console.error(`Error inesperat en obtenir el bot amb ID ${botId}:`, error);
+        return null;
+    }
+}
+
+export async function updateBot(botId: number, botData: BotDTO): Promise<BotResponseDTO | null> {
+    try {
+        const response = await fetch(`${BASE_URL}/bot/${botId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(botData),
+        });
+  
+          if (!response.ok) {
+            console.error(`Error al actualitzar el bot amb ID ${botId}:`, response.statusText);
+            return null;
+        }
+  
+        const updatedBot: BotResponseDTO = await response.json();
+        return updatedBot;
+    } catch (error) {
+        console.error(`Error inesperat al actualitzar el bot amb ID ${botId}:`, error);
+        return null;
+    }
+}
+
+export async function createLeague(leagueData: LeagueDTO): Promise<LeagueResponseDTO | null> {
+    try {
+        const response = await fetch(`${BASE_URL}/league`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json", 
+          },
+          body: JSON.stringify(leagueData), 
+        });
+    
+        if (!response.ok) {
+          console.error("Error al crear la lliga:", response.statusText);
+          return null;
+        }
+    
+        const result: LeagueResponseDTO = await response.json();
+    
+        console.log("Lliga creada amb èxit:", result);
+    
+        return result; 
+      } catch (err) {
+        console.error("Error al crear la lliga:", err);
+        return null; // En cas d'error, retornem null
+      }
+}
 
 export async function getAllLeagues(userId: number): Promise<LeagueResponseDTO[] | null> {
     const token = localStorage.getItem("token");
@@ -178,7 +292,7 @@ export async function getAllLeagues(userId: number): Promise<LeagueResponseDTO[]
     }
   }
 
-  export async function getLeagueClassification(leagueId: number): Promise<ParticipationDTO[] | null> {
+  export async function getLeagueClassification(leagueId: number): Promise<ParticipationResponseDTO[] | null> {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(`/leagues/${leagueId}/leaderboard`, {
@@ -195,7 +309,7 @@ export async function getAllLeagues(userId: number): Promise<LeagueResponseDTO[]
       }
   
       try {
-        const data: ParticipationDTO[] = await response.json();
+        const data: ParticipationResponseDTO[] = await response.json();
         return data;
       } catch (parseError) {
         console.error("Error parsejant JSON de classificació:", parseError);

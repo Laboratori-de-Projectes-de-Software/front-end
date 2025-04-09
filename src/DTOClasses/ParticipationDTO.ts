@@ -1,9 +1,7 @@
-export interface ParticipationDTO {
-    name: string;
-    points: number;
-    debates: number;
-    wins: number;
-    draws: number;
-    losses: number;
-  }
+export interface ParticipationResponseDTO {
+  botId: number;
+  name: string;
+  points: number;
+  position: number;
+}
   
