@@ -76,8 +76,6 @@ const CrearBot: React.FC = () => {
       formData.append("nombre", nombreBot);
       formData.append("descripcion", descripcion);
       formData.append("foto", imagePreview || "");
-      formData.append("victorias", "0");
-      formData.append("numJornadas", "0");
       formData.append("API", apiKey);
       formData.append("id", userId);
       
