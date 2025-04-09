@@ -1,8 +1,8 @@
 import { BotDTO, BotResponseDTO, BotSummaryResponseDTO } from "../DTOClasses/BotDTO";
 import { LeagueDTO, LeagueResponseDTO } from "../DTOClasses/LeagueDTO";
-import { MatchDTO } from "../DTOClasses/MatchDTO";
-import { MessageDTO } from "../DTOClasses/MessageDTO";
-import { ParticipationDTO } from "../DTOClasses/ParticipationDTO";
+import { MatchResponseDTO } from "../DTOClasses/MatchDTO";
+import { MessageResponseDTO } from "../DTOClasses/MessageDTO";
+import { ParticipationResponseDTO } from "../DTOClasses/ParticipationDTO";
 import { UserDTOLogin, UserDTORegister, UserResponseDTO } from "../DTOClasses/UserDTO";
 
 import React, { useEffect } from "react";
@@ -215,19 +215,19 @@ export function initLeague(league: LeagueDTO): boolean {
     return false;
 }
 
-function createMatches(league: LeagueDTO): MatchDTO[] | null {
+function createMatches(league: LeagueDTO): MatchResponseDTO[] | null {
     return null;
 }
 
-export function getLeagueClassification(league: LeagueDTO): ParticipationDTO[] | null {
+export function getLeagueClassification(league: LeagueDTO): ParticipationResponseDTO[] | null {
     return null;
 }
 
-export function getLeagueMatches(league: LeagueDTO): MatchDTO[] | any {
+export function getLeagueMatches(league: LeagueDTO): MatchResponseDTO[] | any {
     return null;
 }
 
-export function getMatchMessages(match: MatchDTO): MessageDTO[] | null {
+export function getMatchMessages(): MessageResponseDTO[] | null {
     return null;
 }
 
