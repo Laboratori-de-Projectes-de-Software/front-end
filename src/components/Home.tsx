@@ -15,7 +15,7 @@ export default function Home() {
                         
                         > Log In</button>
                     </Link>
-                    <button className="button-round button-grey">Leatherboard</button>
+                    <button className="button-round button-grey">Leaderboard</button>
                 </div>
             </div >
 

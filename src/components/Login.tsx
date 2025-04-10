@@ -2,7 +2,6 @@ import Footer from "./Footer";
 import { Link } from "react-router-dom";
 import {UserDTORegister} from "./ConAPI";
 export default function Login(){
-    const bar: UserDTORegister = {user: "Katze", mail: "tragbare@viratge.com", password: "miau123$"};
     return (
       <>
       <div className="general_container">
