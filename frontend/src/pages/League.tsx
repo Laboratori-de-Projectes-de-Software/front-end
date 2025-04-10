@@ -23,18 +23,23 @@ interface Match {
   roundNumber: number;
 }
 
+interface BotInfo {
+  id: number;
+  name: string;
+}
 
 export default function Liga() {
   const location = useLocation();
   const leagueId = location.state?.leagueId;
 
   const [leagueData, setLeagueData] = useState<any>(null);
-  const [matches, setMatches] = useState<any[]>([]);
+  const [matches, setMatches] = useState<Match[]>([]);
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [roundMap, setRoundMap] = useState<number[]>([]);
+  const [botNames, setBotNames] = useState<Record<number, string>>({});
+  const [leaderboard, setLeaderboard] = useState<any[]>([]);
   const pageSize = 4;
-
-  const [roundMap, setRoundMap] = useState<number[]>([]); // índice → roundNumber real
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -51,12 +56,33 @@ export default function Liga() {
         const resMatches = await fetch(`http://localhost:8080/api/v0/league/${leagueId}/match`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        const dataMatches = await resMatches.json();
+        const dataMatches: Match[] = await resMatches.json();
         setMatches(dataMatches);
 
-        const rounds = [...new Set(dataMatches.map((m: any) => m.roundNumber))].sort((a, b) => a - b);
+        const rounds: number[] = [...new Set(dataMatches.map((m) => m.roundNumber))].sort((a, b) => a - b);
         setRoundMap(rounds);
         setSelectedIndex(0);
+
+        // Obtener nombres de bots
+        const botIds = new Set<number>();
+        dataMatches.forEach((m) => m.fighters.forEach((id) => botIds.add(id)));
+
+        const names: Record<number, string> = {};
+        for (const id of botIds) {
+          const resBot = await fetch(`http://localhost:8080/api/v0/bot/${id}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          const bot = await resBot.json();
+          names[id] = bot.name;
+        }
+        setBotNames(names);
+
+        // Obtener clasificación
+        const resLeaderboard = await fetch(`http://localhost:8080/api/v0/league/${leagueId}/leaderboard`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const dataLeaderboard = await resLeaderboard.json();
+        setLeaderboard(dataLeaderboard);
       } catch (error) {
         console.error("Error cargando datos de la liga:", error);
       }
@@ -76,10 +102,7 @@ export default function Liga() {
     return matches.filter((match) => match.roundNumber === roundNumberActual);
   }, [roundNumberActual, matches]);
 
-  const visibleMatches = enfrentamientosFiltrados.slice(
-    currentIndex,
-    currentIndex + pageSize
-  );
+  const visibleMatches = enfrentamientosFiltrados.slice(currentIndex, currentIndex + pageSize);
 
   const handlePrevious = () => {
     if (currentIndex - pageSize >= 0) {
@@ -110,14 +133,7 @@ export default function Liga() {
 
       <FormControl
         variant="outlined"
-        sx={{
-          width: "250px",
-          mb: 3,
-          ".MuiOutlinedInput-notchedOutline": { borderColor: "cyan" },
-          "&.Mui-focused .MuiOutlinedInput-notchedOutline": { borderColor: "cyan" },
-          "&:hover .MuiOutlinedInput-notchedOutline": { borderColor: "cyan" },
-          "& .MuiSvgIcon-root": { color: "cyan" },
-        }}
+        sx={{ width: "250px", mb: 3, ".MuiOutlinedInput-notchedOutline": { borderColor: "cyan" }, "&.Mui-focused .MuiOutlinedInput-notchedOutline": { borderColor: "cyan" }, "&:hover .MuiOutlinedInput-notchedOutline": { borderColor: "cyan" }, "& .MuiSvgIcon-root": { color: "cyan" } }}
       >
         <InputLabel id="jornada-label" sx={{ color: "cyan" }}>Seleccionar Jornada</InputLabel>
         <Select
@@ -146,8 +162,8 @@ export default function Liga() {
           {visibleMatches.map((match, index) => (
             <Enfrentamiento
               key={index}
-              bot1={match.fighters[0]}
-              bot2={match.fighters[1]}
+              bot1={botNames[match.fighters[0]] || match.fighters[0].toString()}
+              bot2={botNames[match.fighters[1]] || match.fighters[1].toString()}
               jornada={selectedIndex}
             />
           ))}
@@ -162,14 +178,11 @@ export default function Liga() {
         </IconButton>
       </Box>
 
-      <Typography
-        variant="h5"
-        sx={{ mb: 2, color: "cyan", fontWeight: "bold", textAlign: "center" }}
-      >
+      <Typography variant="h5" sx={{ mb: 2, color: "cyan", fontWeight: "bold", textAlign: "center" }}>
         Clasificación
       </Typography>
 
-      <TablaClasificacion data={leagueData.clasificacion || []} />
+      <TablaClasificacion data={leaderboard} />
     </Box>
   );
 }
