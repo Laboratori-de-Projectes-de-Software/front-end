@@ -7,6 +7,7 @@ import {Leagues} from "../pages/Leagues";
 import {Bots} from "../pages/Bots";
 import {Match} from "../pages/Match";
 import {Clash} from "../pages/Clash";
+import {Upload} from "../pages/Upload";
 
 export function Ruta(){
     return(
@@ -20,6 +21,7 @@ export function Ruta(){
                 <Route path="/Leagues" element={<Leagues/>} />
                 <Route path="/Match" element={<Match/>} />
                 <Route path="/Clash" element={<Clash/>} />
+                <Route path="/Upload" element={<Upload/>} />
             </Routes>
         </BrowserRouter>
     );
