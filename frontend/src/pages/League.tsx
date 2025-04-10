@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import {
   Box,
   Typography,
@@ -8,91 +8,106 @@ import {
   InputLabel,
   Select,
   SelectChangeEvent,
+  CircularProgress,
 } from "@mui/material";
 import Enfrentamiento from "../components/Confrontation";
 import TablaClasificacion from "../components/ClassificationTable";
-import data from "../data/liga.json";
-
-// Importa íconos de Material UI para las flechas
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import { useLocation } from "react-router-dom";
+
+interface Match {
+  state: string;
+  result: number;
+  fighters: number[];
+  roundNumber: number;
+}
+
 
 export default function Liga() {
-  // Estado para la jornada seleccionada
-  const [selectedJornada, setSelectedJornada] = useState<number>(
-    data.liga.jornada_actual
-  );
+  const location = useLocation();
+  const leagueId = location.state?.leagueId;
 
-  // Estado para la paginación
+  const [leagueData, setLeagueData] = useState<any>(null);
+  const [matches, setMatches] = useState<any[]>([]);
+  const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const [currentIndex, setCurrentIndex] = useState(0);
-
-  // Cantidad de enfrentamientos a mostrar por “página”
   const pageSize = 4;
 
-  // Todas las jornadas disponibles
-  const jornadasDisponibles = useMemo(() => {
-    return [...new Set(data.liga.enfrentamientos.map((m) => m.jornada))].sort(
-      (a, b) => a - b
-    );
-  }, []);
+  const [roundMap, setRoundMap] = useState<number[]>([]); // índice → roundNumber real
 
-  // Manejar el cambio de la jornada en el dropdown
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!leagueId || !token) return;
+
+    const fetchLeagueData = async () => {
+      try {
+        const resLeague = await fetch(`http://localhost:8080/api/v0/league/${leagueId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const dataLeague = await resLeague.json();
+        setLeagueData(dataLeague);
+
+        const resMatches = await fetch(`http://localhost:8080/api/v0/league/${leagueId}/match`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const dataMatches = await resMatches.json();
+        setMatches(dataMatches);
+
+        const rounds = [...new Set(dataMatches.map((m: any) => m.roundNumber))].sort((a, b) => a - b);
+        setRoundMap(rounds);
+        setSelectedIndex(0);
+      } catch (error) {
+        console.error("Error cargando datos de la liga:", error);
+      }
+    };
+
+    fetchLeagueData();
+  }, [leagueId]);
+
   const handleJornadaChange = (event: SelectChangeEvent<string>) => {
-    setSelectedJornada(Number(event.target.value));
-    setCurrentIndex(0); // Reiniciar la paginación al cambiar de jornada
+    setSelectedIndex(Number(event.target.value));
+    setCurrentIndex(0);
   };
 
-  // Filtramos por jornada seleccionada
-  const enfrentamientosFiltrados = useMemo(() => {
-    return data.liga.enfrentamientos.filter(
-      (match) => match.jornada === selectedJornada
-    );
-  }, [selectedJornada]);
+  const roundNumberActual = roundMap[selectedIndex];
 
-  // Sub-array de enfrentamientos que se ven en la “página actual”
+  const enfrentamientosFiltrados = useMemo(() => {
+    return matches.filter((match) => match.roundNumber === roundNumberActual);
+  }, [roundNumberActual, matches]);
+
   const visibleMatches = enfrentamientosFiltrados.slice(
     currentIndex,
     currentIndex + pageSize
   );
 
-  // Navegar hacia la página anterior
   const handlePrevious = () => {
     if (currentIndex - pageSize >= 0) {
       setCurrentIndex(currentIndex - pageSize);
     }
   };
 
-  // Navegar hacia la página siguiente
   const handleNext = () => {
     if (currentIndex + pageSize < enfrentamientosFiltrados.length) {
       setCurrentIndex(currentIndex + pageSize);
     }
   };
 
+  if (!leagueData || roundMap.length === 0) {
+    return (
+      <Box sx={{ color: "white", textAlign: "center", mt: 4 }}>
+        <CircularProgress color="inherit" />
+        <Typography>Cargando liga...</Typography>
+      </Box>
+    );
+  }
+
   return (
-    <Box
-      sx={{
-        pt: 3,
-        px: 3,
-        height: "100%",
-        overflowY: "auto",
-        color: "white",
-      }}
-    >
-      {/* Título grande de la liga */}
-      <Typography
-        variant="h4"
-        sx={{
-          mb: 3,
-          color: "cyan",
-          fontWeight: "bold",
-          textAlign: "center",
-        }}
-      >
-        {data.liga.nombre}
+    <Box sx={{ pt: 3, px: 3, height: "100%", overflowY: "auto", color: "white" }}>
+      <Typography variant="h4" sx={{ mb: 3, color: "cyan", fontWeight: "bold", textAlign: "center" }}>
+        {leagueData.name}
       </Typography>
 
-      {/* Selector de jornada con estilo similar a tus dropdowns "Filtrar por estado" */}
       <FormControl
         variant="outlined"
         sx={{
@@ -104,88 +119,49 @@ export default function Liga() {
           "& .MuiSvgIcon-root": { color: "cyan" },
         }}
       >
-        <InputLabel id="jornada-label" sx={{ color: "cyan" }}>
-          Seleccionar Jornada
-        </InputLabel>
+        <InputLabel id="jornada-label" sx={{ color: "cyan" }}>Seleccionar Jornada</InputLabel>
         <Select
           labelId="jornada-label"
-          value={selectedJornada.toString()}
+          value={selectedIndex.toString()}
           onChange={handleJornadaChange}
           label="Seleccionar Jornada"
-          sx={{
-            color: "white",
-          }}
+          sx={{ color: "white" }}
         >
-          {jornadasDisponibles.map((jornada) => (
-            <MenuItem key={jornada} value={jornada}>
-              Jornada {jornada}
-            </MenuItem>
+          {roundMap.map((_, index) => (
+            <MenuItem key={index} value={index}>Jornada {index}</MenuItem>
           ))}
         </Select>
       </FormControl>
 
-      {/* Sección de enfrentamientos, centrada con flechas para “paginación” */}
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          mb: 3,
-          gap: 2,
-        }}
-      >
-        {/* Flecha izquierda */}
+      <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", mb: 3, gap: 2 }}>
         <IconButton
           onClick={handlePrevious}
           disabled={currentIndex === 0}
-          sx={{
-            color: "white",
-            border: "1px solid cyan",
-            ":hover": {
-              backgroundColor: "rgba(0,255,255,0.2)",
-            },
-          }}
+          sx={{ color: "white", border: "1px solid cyan", ":hover": { backgroundColor: "rgba(0,255,255,0.2)" } }}
         >
           <ArrowBackIosNewIcon sx={{ color: "white" }} />
         </IconButton>
 
-        {/* Contenedor de los 3/4 enfrentamientos que se muestran */}
-        <Box
-          sx={{
-            display: "flex",
-            gap: 2,
-            flexWrap: "wrap",
-            justifyContent: "center",
-            maxWidth: "1000px", // ajusta según tu diseño
-          }}
-        >
+        <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap", justifyContent: "center", maxWidth: "1000px" }}>
           {visibleMatches.map((match, index) => (
             <Enfrentamiento
               key={index}
-              bot1={match.bot1}
-              bot2={match.bot2}
-              jornada={match.jornada}
+              bot1={match.fighters[0]}
+              bot2={match.fighters[1]}
+              jornada={selectedIndex}
             />
           ))}
         </Box>
 
-        {/* Flecha derecha */}
         <IconButton
           onClick={handleNext}
           disabled={currentIndex + pageSize >= enfrentamientosFiltrados.length}
-          sx={{
-            color: "white",
-            border: "1px solid cyan",
-            ":hover": {
-              backgroundColor: "rgba(255,255,255,0.2)",
-            },
-          }}
+          sx={{ color: "white", border: "1px solid cyan", ":hover": { backgroundColor: "rgba(255,255,255,0.2)" } }}
         >
           <ArrowForwardIosIcon sx={{ color: "white" }} />
         </IconButton>
       </Box>
 
-      {/* Título para la Clasificación */}
       <Typography
         variant="h5"
         sx={{ mb: 2, color: "cyan", fontWeight: "bold", textAlign: "center" }}
@@ -193,8 +169,7 @@ export default function Liga() {
         Clasificación
       </Typography>
 
-      {/* Tabla de clasificación */}
-      <TablaClasificacion data={data.liga.clasificacion} />
+      <TablaClasificacion data={leagueData.clasificacion || []} />
     </Box>
   );
 }

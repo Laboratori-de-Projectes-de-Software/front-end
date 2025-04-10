@@ -8,6 +8,7 @@ import RegisterBot from "./pages/RegisterBot";
 import RegisterLiga from "./pages/RegisterLiga";
 import Dashboard from "./pages/Dashboard";
 import League from "./pages/League";
+import Chat from "./pages/chat";
 
 import "./styles.css";
 
@@ -30,6 +31,7 @@ const hideLayout = ["/login", "/register", "/dashboard"].includes(location.pathn
           <Route path="/registerLiga" element={<RegisterLiga />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/league" element={<League />} />
+          <Route path="/chat" element={<Chat />} />
         </Routes>
       </main>
       {!hideLayout && <Footer />}

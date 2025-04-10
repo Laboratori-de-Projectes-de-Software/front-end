@@ -7,11 +7,14 @@ import {
   CircularProgress,
   Alert,
   InputAdornment,
-  IconButton 
+  IconButton,
+  SxProps,
+  Theme 
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import "../styles.css";
+import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 
 interface FormData {
   username: string;
@@ -19,6 +22,54 @@ interface FormData {
   password: string;
   confirmPassword: string;
 }
+
+// Componente auxiliar para mostrar requisitos de contraseña
+const PasswordRequirements = ({ 
+  password, 
+  sx 
+}: { 
+  password: string; 
+  sx?: SxProps<Theme>; 
+}) => {
+  const requirements = [
+    {
+      label: "Al menos 8 caracteres",
+      test: (pw: string) => pw.length >= 8,
+    },
+    {
+      label: "Una mayúscula",
+      test: (pw: string) => /[A-Z]/.test(pw),
+    },
+    {
+      label: "Una minúscula",
+      test: (pw: string) => /[a-z]/.test(pw),
+    },
+    {
+      label: "Un número",
+      test: (pw: string) => /\d/.test(pw),
+    },
+  ];
+
+  return (
+    <Box sx={{ mt: -1, mb: 1, ml: 1, ...sx }}>
+      <Typography variant="caption" display="block">
+        La contraseña debe contener:
+      </Typography>
+      {requirements.map((req, index) => {
+        const passed = req.test(password);
+        return (
+          <Box key={index} display="flex" alignItems="center" ml={1}>
+            <FiberManualRecordIcon
+              fontSize="small"
+              sx={{ color: passed ? "green" : "red", mr: 1 }}
+            />
+            <Typography variant="caption">{req.label}</Typography>
+          </Box>
+        );
+      })}
+    </Box>
+  );
+};
 
 export default function Register() {
   const [formData, setFormData] = useState<FormData>({
@@ -199,6 +250,7 @@ export default function Register() {
           onChange={handleChange}
           error={!!fieldErrors.password}
           helperText={fieldErrors.password}
+          sx={{ mb: 2 }}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -213,9 +265,7 @@ export default function Register() {
           }}
         />
 
-        <Typography variant="caption" display="block" sx={{ mt: -1, mb: 1 }}>
-          La contraseña debe contener al menos 8 caracteres, una mayúscula, una minúscula y un número
-        </Typography>
+        <PasswordRequirements password={formData.password} sx={{ mt: 1 }} /> {/* Añadido margen superior */}
 
         <TextField
           label="Confirmar contraseña"

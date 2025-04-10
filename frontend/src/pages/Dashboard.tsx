@@ -56,7 +56,13 @@ interface League {
   fechaFin?: string;
   matchTime?: number;
   rounds?: number;
-  bots?: number[];  // O la estructura que uses
+  bots?: number[]; // O la estructura que uses
+  matches?: {
+    state: string;
+    result: number;
+    fighters: number[];
+    roundNumber: number;
+  }[]; // Agrega esta propiedad
 }
 
 type Section =
@@ -316,44 +322,50 @@ export default function Dashboard() {
   
   const handleStartLeague = async (leagueId: number) => {
     try {
-      const league = allLeagues.find(l => l.leagueId === leagueId);
-      if (!league) {
-        console.error("Liga no encontrada");
-        return;
-      }
-  
-      const updatedLeague = {
-        name: league.name,
-        rounds: league.rounds,
-        matchTime: league.matchTime,
-        bots: leagueBots.map(bot => bot.id), // O usa league.bots si ya vienen los IDs
-        fechaInicio: new Date().toISOString(), // Fecha de inicio actual
-      };
-  
-      const res = await fetch(`http://localhost:8080/api/v0/league/${leagueId}`, {
-        method: "PUT", // Asegúrate de usar PUT
+      // Llamada para iniciar la liga
+      const startRes = await fetch(`http://localhost:8080/api/v0/league/${leagueId}/start`, {
+        method: "POST",
         headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          "Authorization": `Bearer ${token}`,
         },
-        body: JSON.stringify(updatedLeague),
       });
   
-      if (res.ok) {
+      if (startRes.ok) {
         console.log("✅ Liga iniciada correctamente");
-        fetchUserLeagues();
-        fetchAllLeagues();
-        setJoinSuccess(true);
+  
+        // Llamada para obtener los matches de la liga
+        const matchesRes = await fetch(`http://localhost:8080/api/v0/league/${leagueId}/match`, {
+          method: "GET",
+          headers: {
+            "Authorization": `Bearer ${token}`,
+          },
+        });
+  
+        if (matchesRes.ok) {
+          const matches = await matchesRes.json();
+          console.log("✅ Matches obtenidos correctamente:", matches);
+  
+          // Guardar los matches en el estado leagueDetails
+          navigate("/league", {
+            state: { leagueId }
+          });          
+          
+
+        } else {
+          console.error("❌ Error al obtener los matches:", matchesRes.status);
+        }
+  
+        setJoinSuccess(true); // Muestra un mensaje de éxito
       } else {
-        console.error("❌ Error al iniciar la liga:", res.status);
-        setJoinError(true);
+        console.error("❌ Error al iniciar la liga:", startRes.status);
+        setJoinError(true); // Muestra un mensaje de error
       }
     } catch (err) {
-      console.error("❌ Error de red al iniciar la liga:", err);
-      setJoinError(true);
+      console.error("❌ Error de red al iniciar la liga o al obtener los matches:", err);
+      setJoinError(true); // Muestra un mensaje de error
     }
-  };  
-  
+  };
+
   useEffect(() => {
     if (section === "myBots") fetchUserBots();
     else if (section === "allBots") fetchAllBots();
