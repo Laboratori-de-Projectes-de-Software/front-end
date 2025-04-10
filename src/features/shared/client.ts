@@ -12,6 +12,7 @@ import type {
   UserDTORegister,
 } from "../../interfaces/user.interface";
 import type { UserResponseDTO } from "../../interfaces/user.interface";
+import { MatchResponseDTO } from "@interfaces/match.interface";
 
 export const appApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "/api" }),
@@ -69,7 +70,6 @@ export const appApi = createApi({
         body: data,
       }),
     }),
-    // TODO: Revisar como hacer lo de los query params
     getLeague: builder.query<LeagueResponseDTO, number>({
       query: (owner) => ({
         url: `${import.meta.env.VITE_REACT_APP_API_URL}/league${
@@ -107,7 +107,7 @@ export const appApi = createApi({
       }),
     }),
     getLeagueLeagueIdLeaderboard: builder.query<
-      ParticipationResponseDTO,
+      ParticipationResponseDTO[],
       number
     >({
       query: (leagueId) => ({
@@ -131,7 +131,7 @@ export const appApi = createApi({
         method: "POST",
       }),
     }),
-    getLeagueLeagueIdMatch: builder.query<undefined, number>({
+    getLeagueLeagueIdMatch: builder.query<MatchResponseDTO[], number>({
       query: (leagueId) => ({
         url: `${
           import.meta.env.VITE_REACT_APP_API_URL

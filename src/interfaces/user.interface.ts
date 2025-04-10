@@ -1,7 +1,6 @@
-import { DateTime } from "luxon";
 export interface UserResponseDTO {
   token: string;
-  expiresIn: DateTime; // FIXME: No estoy muy a favor ni seguro de esto
+  expiresIn: string;
   user: string;
   userId: number;
   mail?: string;
@@ -15,6 +14,6 @@ export interface UserDTORegister {
 }
 
 export interface UserDTOLogin {
-  mail: string;
+  user: string;
   password: string;
 }

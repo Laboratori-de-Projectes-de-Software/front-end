@@ -4,12 +4,13 @@ import AuthProvider from "./auth/AuthProvider.tsx";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import PrivateRoute from "./auth/PrivateRoute.tsx";
 import Home from "./pages/home/Home.tsx";
-import LeaguesPage from "./pages/league-page/leagues-page.tsx";
+import LeaguesPage from "./pages/leagues-page/leaguesPage.tsx";
 import ModalManager from "./modules/modalManager/ModalManager.tsx";
 import { ModalProvider } from "./modules/modalManager/ModalProvider.tsx";
 import NotFound from "./pages/not-found/NotFound.tsx";
 import UserInfo from "./pages/user-info/UserInfo.tsx";
 import NewBot from "./pages/new-bot/NewBot.tsx";
+import LeaguePage from "./pages/league/leaguePage.tsx";
 
 function App() {
   return (
@@ -26,6 +27,9 @@ function App() {
                 </Route>
                 <Route element={<PrivateRoute />}>
                   <Route path="/user" element={<UserInfo />} />
+                </Route>
+                <Route element={<PrivateRoute />}>
+                  <Route path="/leaguePage/:id" element={<LeaguePage />} />
                 </Route>
                 <Route element={<PrivateRoute />}>
                   <Route path="/new-bot" element={<NewBot />} />

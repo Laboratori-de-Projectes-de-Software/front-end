@@ -1,7 +1,7 @@
 export interface BotSummaryResponseDTO {
   nombre: string;
   id: number;
-  cualidad: string;
+  description: string;
 }
 
 export interface BotResponseDTO {
@@ -10,7 +10,7 @@ export interface BotResponseDTO {
   description: string;
   urlImagen: string;
   nWins: number;
-  nLoses: number;
+  nLosses: number;
   nDraws: number;
 }
 
@@ -19,4 +19,5 @@ export interface BotDTO {
   description: string;
   urlImagen: string;
   endpoint: string;
+  userId: number;
 }
