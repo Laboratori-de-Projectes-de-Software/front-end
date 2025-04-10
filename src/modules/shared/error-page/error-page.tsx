@@ -1,5 +1,5 @@
 import { useState } from "react"
-import "./error-page.css"
+import "./error-page.scss"
 
 interface ErrorPageProps {
   title?: string
