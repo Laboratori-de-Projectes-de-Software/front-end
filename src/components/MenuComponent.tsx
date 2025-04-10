@@ -95,7 +95,7 @@ function MenuComponent({menuExpanded, handleMenuExpanded}: MenuProps) {
                     {
                         localStorage.getItem("token") ?
                         <>
-                            <NavLink to={`/perfil`} className={`d-flex w-100 align-items-center text-decoration-none text-white py-1 px-4 ${!menuExpanded ? "justify-content-center": ""}`}>
+                            <NavLink to={`/perfil/${localStorage.getItem("userId")}`} className={`d-flex w-100 align-items-center text-decoration-none text-white py-1 px-4 ${!menuExpanded ? "justify-content-center": ""}`}>
                                 <FontAwesomeIcon icon={faUser} size={"xl"}/>
                                 {
                                     menuExpanded &&
