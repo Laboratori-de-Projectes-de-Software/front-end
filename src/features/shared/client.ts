@@ -38,6 +38,11 @@ export const appApi = createApi({
         url: `${import.meta.env.VITE_REACT_APP_API_URL}/bot`,
         method: "POST",
         body: data,
+        headers: {
+          Authorization:
+            "Bearer " +
+            JSON.parse(localStorage.getItem("user") ?? "{}").body.token,
+        },
       }),
     }),
 
@@ -47,6 +52,11 @@ export const appApi = createApi({
           owner ? `?owner=${owner}` : ""
         }`,
         method: "GET",
+        headers: {
+          Authorization:
+            "Bearer " +
+            JSON.parse(localStorage.getItem("user") ?? "{}").body.token,
+        },
       }),
     }),
     getBotBotId: builder.query<BotResponseDTO, number>({
@@ -68,6 +78,11 @@ export const appApi = createApi({
         url: `${import.meta.env.VITE_REACT_APP_API_URL}/league`,
         method: "POST",
         body: data,
+        headers: {
+          Authorization:
+            "Bearer " +
+            JSON.parse(localStorage.getItem("user") ?? "{}").body.token,
+        },
       }),
     }),
     getLeague: builder.query<LeagueResponseDTO, number>({
@@ -76,12 +91,22 @@ export const appApi = createApi({
           owner ? `?owner=${owner}` : ""
         }`,
         method: "GET",
+        headers: {
+          Authorization:
+            "Bearer " +
+            JSON.parse(localStorage.getItem("user") ?? "{}").body.token,
+        },
       }),
     }),
     getLeagueLeagueId: builder.query<LeagueResponseDTO, number>({
       query: (id) => ({
         url: `${import.meta.env.VITE_REACT_APP_API_URL}/league/${id}`,
         method: "GET",
+        headers: {
+          Authorization:
+            "Bearer " +
+            JSON.parse(localStorage.getItem("user") ?? "{}").body.token,
+        },
       }),
     }),
     putLeagueLeagueId: builder.mutation<

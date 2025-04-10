@@ -161,7 +161,8 @@ const StarField = ({ blurAmount = 0 }: StarFieldProps) => {
         height: `100vh`, 
         backgroundColor: "black",
         zIndex: -1, 
-        position: "fixed"
+        position: "absolute",
+        top: 0
       }}
       aria-hidden="true"
     />

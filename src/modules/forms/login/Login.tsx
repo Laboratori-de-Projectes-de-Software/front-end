@@ -6,13 +6,13 @@ import TextInput from "../../shared/input/text-input/text-input";
 import PasswordInput from "../../shared/input/password-input/password-input";
 
 const Login: React.FC = () => {
-  const [mail, setMail] = useState("");
+  const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const auth = useAuth();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    auth!.handleLogin({ mail, password });
+    auth!.handleLogin({ user, password });
     closeModal();
   };
   const { openModal, closeModal } = useModal();
@@ -22,7 +22,7 @@ const Login: React.FC = () => {
     <form className="login-form" onSubmit={handleSubmit}>
       <h1>BIENVENIDO</h1>
       <h3>Inicia sesión para continuar con tu cuenta</h3>
-      <TextInput value={mail} setValue={setMail} text="Email"/>
+      <TextInput value={user} setValue={setUser} text="Usuario"/>
       <PasswordInput value={password} setValue={setPassword} text="Contraseña"/>
       <button className="login-form__submit" type="submit">
         Iniciar Sesión

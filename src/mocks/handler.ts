@@ -178,4 +178,22 @@ export const handlers = [
 
   /*/ --- match --- /*/
   // TODO: Completar mocks de llamadas al match
+
+  http.get(`${basePath}/bot?owner=1`, () => {
+    return HttpResponse.json(
+      [
+        {
+          nombre: "Bot 1",
+          id: 1,
+          cualidad: "Cualidad 1",
+        },
+        {
+          nombre: "Bot 2",
+          id: 2,
+          cualidad: "Cualidad 2",
+        },
+      ],
+      { status: 200 }
+    );
+  }),
 ];

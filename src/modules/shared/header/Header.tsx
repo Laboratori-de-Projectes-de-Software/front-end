@@ -27,7 +27,7 @@ const Header: React.FC = () => {
             ) : (
               <>
                 <li>
-                  <button className="top-level-header__login" onClick={() => navigate("league")}>Ligas</button>
+                  <button className="top-level-header__login" onClick={() => navigate("leagues")}>Ligas</button>
                   <div className="top-level-header__login-decoration"></div>
                 </li>
                 <li>

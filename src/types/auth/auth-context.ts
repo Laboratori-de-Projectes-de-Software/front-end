@@ -1,3 +1,4 @@
+import { UserResponseDTO } from "@interfaces/user.interface";
 import { UserDTOLogin } from "../../interfaces/shared/request.interfaces";
 
 export type AuthContextType = {
@@ -5,4 +6,5 @@ export type AuthContextType = {
     handleLogin: (userData: UserDTOLogin) => void;
     logout: () => void;
     isUserLoggedIn: () => boolean;
+    getUser: () => UserResponseDTO | null;
 }
