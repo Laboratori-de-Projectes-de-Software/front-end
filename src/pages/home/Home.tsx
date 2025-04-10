@@ -29,7 +29,7 @@ const Home: React.FC = () => {
 
   const redirectToLeague = () => {
     if (auth?.isUserLoggedIn()) {
-      navigate("/league")
+      navigate("/leagues")
     } else {
       openModal("login")
     }

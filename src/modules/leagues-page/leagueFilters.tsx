@@ -1,13 +1,13 @@
 import { FC, useState } from 'react';
-import { LeaguesFilters } from '../../interfaces/shared/league.interface';
-import './league-filters.scss';
+import { LeaguesFilters } from '../../interfaces/league.interface';
+import './leagueFilters.scss';
 import { DateTime } from 'luxon';
-import DateInput from '../../modules/shared/input/date-input/date-input';
-import OptionsInput from '../../modules/shared/input/options-input/options-input';
-import TextInput from '../../modules/shared/input/text-input/text-input';
-import NumberInput from '../../modules/shared/input/number-input/number-input';
-import RadioInput from '../../modules/shared/input/radio-input/radio-input';
-import PasswordInput from '../../modules/shared/input/password-input/password-input';
+import DateInput from '../shared/input/date-input/date-input';
+import OptionsInput from '../shared/input/options-input/options-input';
+import TextInput from '../shared/input/text-input/text-input';
+import NumberInput from '../shared/input/number-input/number-input';
+import RadioInput from '../shared/input/radio-input/radio-input';
+import PasswordInput from '../shared/input/password-input/password-input';
 
 type Props = {
     filters: LeaguesFilters, 

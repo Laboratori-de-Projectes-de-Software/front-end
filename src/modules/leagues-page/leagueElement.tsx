@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { DateTime } from "luxon";
-import "./league-element.scss";
+import "./leagueElement.scss";
 import { Navigate } from "react-router-dom";
 
 
