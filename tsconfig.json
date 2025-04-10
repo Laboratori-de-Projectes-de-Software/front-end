@@ -11,5 +11,5 @@
       "@modules/*": ["src/modules/*"],
       "@types/*": ["src/types/*"],
     }
-  }
+  },
 }

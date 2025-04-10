@@ -4,6 +4,8 @@ export interface UserResponseDTO {
   expiresIn: DateTime; // FIXME: No estoy muy a favor ni seguro de esto
   user: string;
   userId: number;
+  mail?: string;
+  phone?: string;
 }
 
 export interface UserDTORegister {

@@ -9,6 +9,7 @@ if (import.meta.env.MODE === 'development') {
   const { worker } = await import('./mocks/browser.ts')
   worker.start()
 }
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Provider store={store}>

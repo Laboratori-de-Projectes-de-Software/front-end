@@ -5,14 +5,15 @@
 }
 
 body {
-  background-color: rgba(253, 251, 247, 0.747);
+  background-color: rgb(13, 6, 32);
+  color: #e2e8f0;
+  background-color: #121212;
 }
 
 main {
   width: 100%;
-
-  @media (min-width: 980px) {
-    width: 980px;
+  @media (min-width: 768px) {
+    width: 768px;
     margin: 0 auto;
   }
 }

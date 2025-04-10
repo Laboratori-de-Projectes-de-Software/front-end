@@ -1,4 +1,4 @@
-export interface BotSumaryResponseDTO {
+export interface BotSummaryResponseDTO {
   nombre: string;
   id: number;
   cualidad: string;
