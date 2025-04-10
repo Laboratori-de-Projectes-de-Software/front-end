@@ -1,6 +1,8 @@
 import { BotDTO, BotResponseDTO, BotSummaryResponseDTO } from "@DTOClasses/BotDTO";
 import { LeagueDTO, LeagueResponseDTO } from "@DTOClasses/LeagueDTO";
 import { ParticipationResponseDTO } from "@DTOClasses/ParticipationDTO";
+import { MatchResponseDTO } from "@DTOClasses/MatchDTO";
+import { MessageResponseDTO } from "@DTOClasses/MessageDTO";
 import {UserDTORegister, UserResponseDTO } from "@DTOClasses/UserDTO";
 
 
@@ -366,5 +368,63 @@ export async function startLeague(leagueId: number): Promise<boolean> {
   } catch (error) {
     console.error("Error iniciant la lliga:", error);
     return false;
+  }
+}
+
+export async function getMatchesFromLeague(leagueId: number): Promise<MatchResponseDTO[] | null> {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await fetch(`${BASE_URL}/league/${leagueId}/match`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      console.error("Error HTTP carregant enfrontaments de la lliga:", response.status);
+      return null;
+    }
+
+    try {
+      const matches: MatchResponseDTO[] = await response.json();
+      return matches;
+    } catch (parseError) {
+      console.error("Error parsejant JSON dels enfrontaments:", parseError);
+      return null;
+    }
+  } catch (error) {
+    console.error("Error durant la petició d'enfrontaments de la lliga:", error);
+    return null;
+  }
+}
+
+export async function getMessagesFromMatch(matchId: number): Promise<MessageResponseDTO[] | null> {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await fetch(`${BASE_URL}/match/${matchId}/message`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      console.error("Error HTTP carregant missatges de l'enfrontament:", response.status);
+      return null;
+    }
+
+    try {
+      const messages: MessageResponseDTO[] = await response.json();
+      return messages;
+    } catch (parseError) {
+      console.error("Error parsejant JSON dels missatges:", parseError);
+      return null;
+    }
+  } catch (error) {
+    console.error("Error durant la petició de missatges de l'enfrontament:", error);
+    return null;
   }
 }
