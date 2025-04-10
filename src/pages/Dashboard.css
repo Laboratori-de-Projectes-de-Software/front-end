@@ -24,10 +24,10 @@
   text-align: center;
 }
 
-.loading {
+.loading-dashboard {
   text-align: center;
   padding: 40px;
-  font-size: 18px;
+  font-size: 20px;
   color: rgba(255, 255, 255, 0.8);
   background: rgba(0, 0, 0, 0.2);
   border-radius: 8px;
@@ -42,7 +42,7 @@
 }
 
 .summary-card {
-  background: #1316172A;
+  background: #1316172a;
   border-radius: 8px;
   padding: 20px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
@@ -66,7 +66,7 @@
 .summary-value {
   font-size: 32px;
   font-weight: 600;
-  color: #6BDB92;
+  color: #6bdb92;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
@@ -75,23 +75,28 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: 25px;
+  margin-bottom: 40px;
 }
 
 .dashboard-section {
   background: #13161794;
-  border-radius: 8px;
+  border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   overflow: hidden;
   backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.1);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .section-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 20px;
+  padding: 16px 20px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.02);
 }
 
 .section-header h2 {
@@ -103,56 +108,90 @@
 .action-button {
   background: none;
   border: none;
-  color: #1DB954;
+  color: #1db954;
   font-size: 14px;
   cursor: pointer;
   transition: color 0.2s;
 }
 
 .action-button:hover {
-  color: #1DB954;
+  color: #1db954;
   text-decoration: underline;
 }
 
 .section-content {
-  padding: 15px;
+  padding: 16px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Tarjetas de bots */
-.bot-card {
+.bots-cards {
   display: flex;
-  justify-content: space-between;
-  padding: 12px 15px;
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.05);
-  margin-bottom: 10px;
-  transition: transform 0.2s, box-shadow 0.2s;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  flex-direction: column; /* Asegura que los elementos estén en columna */
+  justify-content: space-between; /* Distribuye el contenido uniformemente */
+  align-items: center; /* Centra los elementos horizontalmente */
+  padding: 20px; /* Aumenta el padding para mayor separación */
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.07);
+  margin-bottom: 12px;
+  transition: all 0.2s ease;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
+  overflow: hidden;
+  height: 120px; /* Fija la altura para que todas las tarjetas sean iguales */
+  box-sizing: border-box; /* Incluye el padding en el tamaño total */
 }
 
-.bot-card:hover {
+.bots-cards:hover {
   transform: translateY(-2px);
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
-  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+  background: rgba(255, 255, 255, 0.12);
 }
 
-.bot-name {
-  font-weight: 500;
+.bots-cards::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 4px;
+  background: #1db954;
+  opacity: 0.7;
+}
+
+.bots-name {
+  font-weight: 600;
   color: #ffffff;
+  font-size: 15px;
+  letter-spacing: 0.3px;
 }
 
 .bot-stats {
-  font-size: 14px;
+  display: flex;
+  justify-content: center; /* Centra las estadísticas horizontalmente */
+  align-items: center;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 6px 12px; /* Aumenta el padding para mayor separación */
+  border-radius: 20px;
+  font-size: 14px; /* Ajusta el tamaño de la fuente */
+  gap: 8px; /* Aumenta la separación entre los elementos */
+}
+
+.stats-divider {
+  color: rgba(255, 255, 255, 0.3);
+  margin: 0 2px;
 }
 
 .wins {
-  color: #4caf50;
-  font-weight: 500;
+  color: #6bdb92;
+  font-weight: 600;
 }
 
 .losses {
-  color: #f44336;
-  font-weight: 500;
+  color: #ff7e79;
+  font-weight: 600;
 }
 
 .create-new {
@@ -202,7 +241,7 @@
 
 .progress-fill {
   height: 100%;
-  background-color: #6BDB92;
+  background-color: #6bdb92;
 }
 
 /* Tarjetas de enfrentamientos */

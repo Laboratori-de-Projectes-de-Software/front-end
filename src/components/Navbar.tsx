@@ -60,7 +60,7 @@ const Navbar: React.FC = () => {
         <div className="navbar-left">
           <ul className="navbar-menu">
             <li onClick={() => navigate("/dashboard")}>Inicio</li>
-            <li onClick={() => navigate("/mybots")}>Mis Bots</li>
+            <li onClick={() => navigate("/bots")}>Mis Bots</li>
             <li onClick={() => navigate("/leagues")}>Ligas</li>
             <li onClick={() => navigate("/matches")}>Enfrentamientos</li>
           </ul>

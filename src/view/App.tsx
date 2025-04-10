@@ -5,6 +5,7 @@ import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
 import Dashboard from "../pages/Dashboard";
 import LeaguesPage from "../pages/LeaguesPage";
+import BotsPage from "../pages/BotsPage";
 
 const App: React.FC = () => {
   return (
@@ -15,6 +16,7 @@ const App: React.FC = () => {
         <Route path="/register" element={<RegisterPage />} />{" "}
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/leagues" element={<LeaguesPage />} />
+        <Route path="/bots" element={<BotsPage />} />
       </Routes>
     </Router>
   );

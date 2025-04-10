@@ -5,6 +5,7 @@ import "./Dashboard.css";
 import Button from "../components/Button";
 import CreateLeagueModal from "../components/CreateLeagueModal";
 import CreateBotModal from "../components/CreateBotModal";
+import { fetchUserBots } from "../controllers/BotController";
 
 const Dashboard: React.FC = () => {
   // Estados para almacenar datos del dashboard
@@ -23,15 +24,16 @@ const Dashboard: React.FC = () => {
   const openBotModal = () => setIsBotModalOpen(true);
   const closeBotModal = () => setIsBotModalOpen(false);
 
-  // Simular carga de datos (esto se reemplazaría con llamadas API reales)
+  // Cargar datos del usuario
   useEffect(() => {
-    // Simulación de carga de datos
-    setTimeout(() => {
-      setMyBots([
-        { id: 1, name: "ArgumentBot", wins: 5, losses: 2 },
-        { id: 2, name: "DebateKing", wins: 3, losses: 1 },
-      ]);
+    // Cargar bots del usuario usando el controlador
+    fetchUserBots(
+      (botData) => setMyBots(botData),
+      (error) => console.error("Error fetching bots:", error)
+    );
 
+    // Simulación de carga para otros datos
+    setTimeout(() => {
       setActiveLeagues([
         {
           id: 1,
@@ -79,7 +81,7 @@ const Dashboard: React.FC = () => {
         <h1>Panel de Control</h1>
 
         {loading ? (
-          <div className="loading">Cargando datos...</div>
+          <div className="loading-dashboard">Cargando datos...</div>
         ) : (
           <>
             <div className="dashboard-summary">
@@ -103,24 +105,31 @@ const Dashboard: React.FC = () => {
                   <h2>Mis Bots</h2>
                   <button
                     className="action-button"
-                    onClick={() => (window.location.href = "/mybots")}
+                    onClick={() => (window.location.href = "/bots")}
                   >
                     Ver todos
                   </button>
                 </div>
                 <div className="section-content">
-                  {myBots.map((bot) => (
-                    <div className="bot-card" key={bot.id}>
-                      <div className="bot-name">{bot.name}</div>
-                      <div className="bot-stats">
-                        <span className="wins">{bot.wins}V</span> /{" "}
-                        <span className="losses">{bot.losses}D</span>
+                  {myBots.length > 0 ? (
+                    myBots.map((bot) => (
+                      <div className="bots-cards" key={bot.id}>
+                        <div className="bots-info">
+                          <div className="bots-name">{bot.name}</div>
+                        </div>
+                        <div className="bot-stats">
+                          <span className="wins">{bot.wins || 0}W</span>
+                          <span className="stats-divider">/</span>
+                          <span className="losses">{bot.losses || 0}L</span>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))
+                  ) : (
+                    <p>No tienes bots creados aún.</p>
+                  )}
                   <div className="create-new">
                     <Button
-                      className={"create-new-button"}
+                      className={"create-bot-button"}
                       label="Crear bot"
                       onClick={openBotModal}
                     />
