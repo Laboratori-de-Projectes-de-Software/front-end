@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from 'react';
+import { home } from "../services/apiCalls.ts";
 
 const TodasLasLigas = () => {
   const [ligas, setLigas] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:8080/api/League')
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Error en la respuesta del servidor');
-        }
-        return response.json();
-      })
-      .then((data) => setLigas(data))
-      .catch((error) => console.error('Error al obtener las ligas:', error));
+    const fetchLigas = async () => {
+      try {
+        const response = await home();
+        setLigas(response.data);
+      } catch (error) {
+        console.error("Error al obtener las ligas:", error);
+      }
+    };
+
+    fetchLigas();
   }, []);
 
   return (
