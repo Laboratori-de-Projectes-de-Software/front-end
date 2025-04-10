@@ -79,9 +79,8 @@ const CrearBot: React.FC = () => {
       formData.append("API", apiKey);
       formData.append("id", userId);
       
-      const response = await fetch(API + 'Bot', {
+      const response = await fetch(API + '/bot', {
         method: 'POST',
-        // Don't set Content-Type header manually; the browser will set it correctly for FormData
         body: formData
       });
 
