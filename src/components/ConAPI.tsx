@@ -1,4 +1,4 @@
-interface ConAPI {
+export interface ConAPI {
     createUser: (user: UserDTORegister) => void;
     loginUser: (user: UserDTOLogin) => UserResponseDTO;
     postBot: (bot: BotDTO) => BotResponseDTO;
@@ -17,44 +17,45 @@ interface ConAPI {
     getAllMessagesMatch: (matchId: BigInteger) => Array<MessageResponseDTO>;
 }
 
-interface UserDTORegister {
+export interface UserDTORegister {
     user: string; mail: string; password: string;
 }
-interface UserDTOLogin {
+export interface UserDTOLogin {
     user: string; password: string;
 }
 
-interface BotDTO{
+export interface BotDTO{
     name: string; description: string; urlImage: string; endpoint: string; userId: BigInteger
 }
 
-interface LeagueDTO{
+export interface LeagueDTO{
     name: string; urlImagen: string; rounds: BigInteger; matchTime: BigInteger; bots: Int32Array; userId:BigInteger;
 }
 
-interface UserResponseDTO{
+export interface UserResponseDTO{
     token: string; expiresIn: Date; user: string, userId: BigInteger;
 }
 
-interface BotSummaryResponseDTO{
+export interface BotSummaryResponseDTO{
     name: string; id: BigInteger; description: string;
 }
 
-interface BotResponseDTO{
+export interface BotResponseDTO{
     botId: BigInteger; name: string; description: string; urlImage:string; nWins: BigInteger; nLosses: BigInteger; nDraws: BigInteger;
 }
 
-interface LeagueResponseDTO{
+export interface LeagueResponseDTO{
     leagueId: BigInteger; state: string; name: string; urlImage: string; user: BigInteger; rounds: BigInteger; matchTime: BigInteger; bots: Array<BigInteger>;
 }
 
-interface MatchResponseDTO{
+export interface MatchResponseDTO{
     matchId: BigInteger; state: string; result: BigInteger; fighters: Array<BigInteger>;roundNumber: BigInteger;
 }
 
-interface ParticipationResponseDTO{
+export interface ParticipationResponseDTO{
     botId: BigInteger; name: string; points: BigInteger; postition: BigInteger;
 }
-interface MessageResponseDTO{
+export interface MessageResponseDTO{
     text:string; botId: BigInteger;time:string;
 }
+
