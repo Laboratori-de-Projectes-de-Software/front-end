@@ -19,9 +19,19 @@ import {
 
 // The ConBack class implements the ConAPI interface and provides placeholder HTTP requests using Axios.
 export class ConBack implements ConAPI {
+    private CREATE_USER_ROUTE: string = "/api/v0/auth/register";
+    private POST_BOT_ROUTE: string = "/api/v0/bot";
+    private GET_LEAGUE_ROUTE: string = "/api/v0/league/";
     // Create a new user.
     createUser(user: UserDTORegister): void {
         // Method returns void, so no empty return type needed
+        axios.post(this.CREATE_USER_ROUTE, user)
+            .then(_ => { })
+            .catch(error => {
+                console.error('Error in loginUser:', error);
+            });
+
+
     }
 
     // Login a user and return the user response data.
@@ -30,8 +40,19 @@ export class ConBack implements ConAPI {
     }
 
     // Post a new bot and return its response data.
+    // It is return as empty is an error is detected
     postBot(bot: BotDTO): BotResponseDTO {
-        return {} as BotResponseDTO;
+        let botResponse: BotResponseDTO = {} as BotResponseDTO;
+
+        axios.post(this.POST_BOT_ROUTE, bot)
+            .then(response => {
+                botResponse = response.data as BotResponseDTO;
+            })
+            .catch(error => {
+                console.error('Error in postBot:', error);
+            });
+
+        return botResponse;
     }
 
     // Retrieve all bot summaries associated with a given user.
@@ -61,7 +82,16 @@ export class ConBack implements ConAPI {
 
     // Retrieve a specific league by its id.
     getLeague(leagueId: BigInteger): LeagueResponseDTO {
-        return {} as LeagueResponseDTO;
+        let leagueResponse: LeagueResponseDTO = {} as LeagueResponseDTO;
+
+        axios.get(`${this.GET_LEAGUE_ROUTE}${leagueId}`).then(response => {
+            leagueResponse = response.data as LeagueResponseDTO;
+        })
+            .catch(error => {
+                console.error('Error in postBot:', error);
+            });
+
+        return leagueResponse;
     }
 
     // Update an existing league.
