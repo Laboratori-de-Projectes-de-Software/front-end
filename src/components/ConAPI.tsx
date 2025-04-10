@@ -9,7 +9,7 @@ export interface ConAPI {
     getAllLeaguesUser: (userId: BigInteger) => Array<LeagueResponseDTO>;
     getLeague: (leagueId: BigInteger) => LeagueResponseDTO;
     updateLeague: (league: LeagueDTO) => LeagueResponseDTO;
-    registerBotToLeague: (botId: BigInteger) => void;
+    registerBotToLeague: (leagueId: BigInteger, botId: BigInteger) => void;
     getClassLeague: () => Array<ParticipationResponseDTO>;
     deleteLeague: (leagueId: BigInteger) => LeagueResponseDTO;
     startLeague: (leagueId: BigInteger) => void;
@@ -24,38 +24,38 @@ export interface UserDTOLogin {
     user: string; password: string;
 }
 
-export interface BotDTO{
+export interface BotDTO {
     name: string; description: string; urlImage: string; endpoint: string; userId: BigInteger
 }
 
-export interface LeagueDTO{
-    name: string; urlImagen: string; rounds: BigInteger; matchTime: BigInteger; bots: Int32Array; userId:BigInteger;
+export interface LeagueDTO {
+    name: string; urlImagen: string; rounds: BigInteger; matchTime: BigInteger; bots: Int32Array; userId: BigInteger;
 }
 
-export interface UserResponseDTO{
+export interface UserResponseDTO {
     token: string; expiresIn: Date; user: string, userId: BigInteger;
 }
 
-export interface BotSummaryResponseDTO{
+export interface BotSummaryResponseDTO {
     name: string; id: BigInteger; description: string;
 }
 
-export interface BotResponseDTO{
-    botId: BigInteger; name: string; description: string; urlImage:string; nWins: BigInteger; nLosses: BigInteger; nDraws: BigInteger;
+export interface BotResponseDTO {
+    botId: BigInteger; name: string; description: string; urlImage: string; nWins: BigInteger; nLosses: BigInteger; nDraws: BigInteger;
 }
 
-export interface LeagueResponseDTO{
+export interface LeagueResponseDTO {
     leagueId: BigInteger; state: string; name: string; urlImage: string; user: BigInteger; rounds: BigInteger; matchTime: BigInteger; bots: Array<BigInteger>;
 }
 
-export interface MatchResponseDTO{
-    matchId: BigInteger; state: string; result: BigInteger; fighters: Array<BigInteger>;roundNumber: BigInteger;
+export interface MatchResponseDTO {
+    matchId: BigInteger; state: string; result: BigInteger; fighters: Array<BigInteger>; roundNumber: BigInteger;
 }
 
-export interface ParticipationResponseDTO{
+export interface ParticipationResponseDTO {
     botId: BigInteger; name: string; points: BigInteger; postition: BigInteger;
 }
-export interface MessageResponseDTO{
-    text:string; botId: BigInteger;time:string;
+export interface MessageResponseDTO {
+    text: string; botId: BigInteger; time: string;
 }
 

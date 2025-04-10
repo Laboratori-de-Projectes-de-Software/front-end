@@ -23,11 +23,13 @@ export class ConBack implements ConAPI {
     private POST_BOT_ROUTE: string = "/api/v0/bot";
     private GET_LEAGUE_ROUTE: string = "/api/v0/league/";
     private GET_BOT_ROUTE: string = this.POST_BOT_ROUTE;
-    private POST_LEAGUE_ROUTE: string ="";
+    private POST_LEAGUE_ROUTE: string = "/api/v0/league";
+    private REGISTER_BOT_TO_LEAGUE_ROUTE: string = "/api/v0/league/";
+    private DELETE_LEAGUE_ROUTE: string = "/api/v0/league/";
     // Create a new user.
     createUser(user: UserDTORegister): void {
         // Method returns void, so no empty return type needed
-        this.generalPost<void>(this.CREATE_USER_ROUTE,user,(_=>{}));
+        this.generalPost<void>(this.CREATE_USER_ROUTE, user, (_ => { }));
     }
 
     // Login a user and return the user response data.
@@ -38,7 +40,7 @@ export class ConBack implements ConAPI {
     // Post a new bot and return its response data.
     // It is return as empty is an error is detected
     postBot(bot: BotDTO): BotResponseDTO {
-        return this.generalPost<BotResponseDTO>(this.POST_BOT_ROUTE,bot,(_=>{}));
+        return this.generalPost<BotResponseDTO>(this.POST_BOT_ROUTE, bot, (_ => { }));
     }
 
     // Retrieve all bot summaries associated with a given user.
@@ -48,7 +50,7 @@ export class ConBack implements ConAPI {
 
     // Retrieve a single bot (the interface takes userId as a parameter here as a placeholder).
     getBot(botId: BigInteger): BotResponseDTO {
-        return this.generalEnRouteGetter<BotResponseDTO>(`${this.GET_BOT_ROUTE}${botId}`,(_=>{}));
+        return this.generalEnRouteGetter<BotResponseDTO>(`${this.GET_BOT_ROUTE}${botId}`, (_ => { }));
     }
 
     // Update a bot. (Note: Since BotDTO doesn't have an id in its structure, we use a placeholder endpoint.)
@@ -58,7 +60,7 @@ export class ConBack implements ConAPI {
 
     // Create a new league.
     postLeague(league: LeagueDTO): LeagueResponseDTO {
-        return this.generalPost(this.POST_LEAGUE_ROUTE,league,(_=>{}));
+        return this.generalPost(this.POST_LEAGUE_ROUTE, league, (_ => { }));
     }
 
     // Retrieve all leagues associated with a specific user.
@@ -68,7 +70,7 @@ export class ConBack implements ConAPI {
 
     // Retrieve a specific league by its id.
     getLeague(leagueId: BigInteger): LeagueResponseDTO {
-        return this.generalEnRouteGetter<LeagueResponseDTO>(`${this.GET_LEAGUE_ROUTE}${leagueId}`,(_=>{}));
+        return this.generalEnRouteGetter<LeagueResponseDTO>(`${this.GET_LEAGUE_ROUTE}${leagueId}`, (_ => { }));
     }
 
     // Update an existing league.
@@ -77,8 +79,9 @@ export class ConBack implements ConAPI {
     }
 
     // Registers a bot to a league.
-    registerBotToLeague(botId: BigInteger): void {
+    registerBotToLeague(leagueId: BigInteger, botId: BigInteger): void {
         // Method returns void, so no empty return type needed
+        this.generalPost<void>(`${this.REGISTER_BOT_TO_LEAGUE_ROUTE}${leagueId}/bot`, botId, (_ => { }));
     }
 
     // Retrieves league class standings or participation info.
@@ -88,7 +91,13 @@ export class ConBack implements ConAPI {
 
     // Deletes a league and returns the deleted league data.
     deleteLeague(leagueId: BigInteger): LeagueResponseDTO {
-        return {} as LeagueResponseDTO;
+        let leagueResponse: LeagueResponseDTO = {} as LeagueResponseDTO;
+        axios.delete(`${this.DELETE_LEAGUE_ROUTE}${leagueId}`).then(response => {
+            leagueResponse = response.data as LeagueResponseDTO;
+        }).catch(_ => {
+
+        });
+        return leagueResponse;
     }
 
     // Starts a league by its id.
@@ -106,7 +115,7 @@ export class ConBack implements ConAPI {
         return [] as MessageResponseDTO[];
     }
 
-    private generalEnRouteGetter<T>(route: string, errorHandler: (error: Error) => void): T{
+    private generalEnRouteGetter<T>(route: string, errorHandler: (error: Error) => void): T {
         let responseT: T = {} as T;
 
         axios.get(route).then(response => {
@@ -118,7 +127,7 @@ export class ConBack implements ConAPI {
         return responseT;
     }
 
-    private generalPost<T>(route: string, paramStructure: any,errorHandler: (error: Error) => void): T{
+    private generalPost<T>(route: string, paramStructure: any, errorHandler: (error: Error) => void): T {
         let responseT: T = {} as T;
 
         axios.post(route, paramStructure)
