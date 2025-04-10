@@ -15,17 +15,17 @@ const MyBots: React.FC<MyBotsProps> = ({ bots }) => {
         <section className="user-bots">
             <button className="user-bots__add-bot" onClick={() => { navigate("/new-bot") }}>Añadir bot</button>
             {
-                bots.map((bot) => {
+                bots.length > 0 && bots.map((bot) => {
                     return (
-                        <div className="user-bots__card">
+                        <div className="user-bots__card" key={bot.id}>
                             <p className="user-bots__card-name">
-                                {bot.nombre}
+                                {bot.name}
                             </p>
                             <p className="user-bots__card-property">
-                                {bot.cualidad}
+                                {bot.description}
                             </p>
 
-                            <img src="svg/edit.svg" alt="" width={25}/>
+                            <img src="svg/edit.svg" alt="" width={25} />
                         </div>
                     )
                 })

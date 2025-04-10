@@ -23,13 +23,13 @@ function App() {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route element={<PrivateRoute />}>
-                  <Route path="/league" element={<LeaguesPage />} />
+                  <Route path="/leagues" element={<LeaguesPage />} />
                 </Route>
                 <Route element={<PrivateRoute />}>
                   <Route path="/user" element={<UserInfo />} />
                 </Route>
                 <Route element={<PrivateRoute />}>
-                  <Route path="/leaguePage/:id" element={<LeaguePage />} />
+                  <Route path="/league/:id" element={<LeaguePage />} />
                 </Route>
                 <Route element={<PrivateRoute />}>
                   <Route path="/new-bot" element={<NewBot />} />

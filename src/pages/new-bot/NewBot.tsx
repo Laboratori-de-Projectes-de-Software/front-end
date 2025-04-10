@@ -1,6 +1,8 @@
 import { useState } from "react"
 import "./NewBot.scss"
 import { appApi } from "../../features/shared/index";
+import { BotDTO } from "@interfaces/bot.interface";
+import { useAuth } from "../../auth/AuthProvider";
 
 const NewBot = () => {
 
@@ -9,15 +11,18 @@ const NewBot = () => {
     const [endpoint, setEndpoint] = useState("");
     const [description, setDescription] = useState("");
     const [postBot] = appApi.usePostBotMutation();
+    const auth = useAuth();
 
     const submitForm = (e: any) => {
         e.preventDefault();
+        console.log(auth?.getUser());
         postBot({
             name,
             description,
             urlImagen,
             endpoint,
-        }).unwrap().then((response) => {
+            userId: auth!.getUser()!.userId,
+        } as BotDTO).unwrap().then((response) => {
             console.log("Bot creado correctamente", response);
         });
     }

@@ -46,7 +46,7 @@ const UserInfo = () => {
                     </Tab>
 
                     <Tab active={activeTab === "bots"}>
-                        <MyBots bots={BotData ?? []} />
+                        <MyBots bots={BotData?.body ?? []} />
                     </Tab>
 
                     <Tab active={activeTab === "ajustes"}>

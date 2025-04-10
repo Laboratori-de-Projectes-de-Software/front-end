@@ -11,7 +11,7 @@ const Summary: React.FC<SummaryProps> = ({ user }) => {
     return (
         <section className="profile-card">
             <div className="avatar">
-                <div className="avatar-fallback">{user?.user.charAt(0).toUpperCase()}</div>
+                <div className="avatar-fallback">{"Sergio"}</div>
             </div>
             <div className="user-info">
                 <h2 className="user-name">{user?.user}</h2>

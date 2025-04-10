@@ -1,5 +1,5 @@
 export interface BotSummaryResponseDTO {
-  nombre: string;
+  name: string;
   id: number;
   description: string;
 }
