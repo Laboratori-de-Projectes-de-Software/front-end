@@ -22,16 +22,12 @@ export class ConBack implements ConAPI {
     private CREATE_USER_ROUTE: string = "/api/v0/auth/register";
     private POST_BOT_ROUTE: string = "/api/v0/bot";
     private GET_LEAGUE_ROUTE: string = "/api/v0/league/";
+    private GET_BOT_ROUTE: string = this.POST_BOT_ROUTE;
+    private POST_LEAGUE_ROUTE: string ="";
     // Create a new user.
     createUser(user: UserDTORegister): void {
         // Method returns void, so no empty return type needed
-        axios.post(this.CREATE_USER_ROUTE, user)
-            .then(_ => { })
-            .catch(error => {
-                console.error('Error in loginUser:', error);
-            });
-
-
+        this.generalPost<void>(this.CREATE_USER_ROUTE,user,(_=>{}));
     }
 
     // Login a user and return the user response data.
@@ -42,17 +38,7 @@ export class ConBack implements ConAPI {
     // Post a new bot and return its response data.
     // It is return as empty is an error is detected
     postBot(bot: BotDTO): BotResponseDTO {
-        let botResponse: BotResponseDTO = {} as BotResponseDTO;
-
-        axios.post(this.POST_BOT_ROUTE, bot)
-            .then(response => {
-                botResponse = response.data as BotResponseDTO;
-            })
-            .catch(error => {
-                console.error('Error in postBot:', error);
-            });
-
-        return botResponse;
+        return this.generalPost<BotResponseDTO>(this.POST_BOT_ROUTE,bot,(_=>{}));
     }
 
     // Retrieve all bot summaries associated with a given user.
@@ -61,8 +47,8 @@ export class ConBack implements ConAPI {
     }
 
     // Retrieve a single bot (the interface takes userId as a parameter here as a placeholder).
-    getBot(userId: BigInteger): BotResponseDTO {
-        return {} as BotResponseDTO;
+    getBot(botId: BigInteger): BotResponseDTO {
+        return this.generalEnRouteGetter<BotResponseDTO>(`${this.GET_BOT_ROUTE}${botId}`,(_=>{}));
     }
 
     // Update a bot. (Note: Since BotDTO doesn't have an id in its structure, we use a placeholder endpoint.)
@@ -72,7 +58,7 @@ export class ConBack implements ConAPI {
 
     // Create a new league.
     postLeague(league: LeagueDTO): LeagueResponseDTO {
-        return {} as LeagueResponseDTO;
+        return this.generalPost(this.POST_LEAGUE_ROUTE,league,(_=>{}));
     }
 
     // Retrieve all leagues associated with a specific user.
@@ -82,16 +68,7 @@ export class ConBack implements ConAPI {
 
     // Retrieve a specific league by its id.
     getLeague(leagueId: BigInteger): LeagueResponseDTO {
-        let leagueResponse: LeagueResponseDTO = {} as LeagueResponseDTO;
-
-        axios.get(`${this.GET_LEAGUE_ROUTE}${leagueId}`).then(response => {
-            leagueResponse = response.data as LeagueResponseDTO;
-        })
-            .catch(error => {
-                console.error('Error in postBot:', error);
-            });
-
-        return leagueResponse;
+        return this.generalEnRouteGetter<LeagueResponseDTO>(`${this.GET_LEAGUE_ROUTE}${leagueId}`,(_=>{}));
     }
 
     // Update an existing league.
@@ -128,4 +105,33 @@ export class ConBack implements ConAPI {
     getAllMessagesMatch(matchId: BigInteger): MessageResponseDTO[] {
         return [] as MessageResponseDTO[];
     }
+
+    private generalEnRouteGetter<T>(route: string, errorHandler: (error: Error) => void): T{
+        let responseT: T = {} as T;
+
+        axios.get(route).then(response => {
+            responseT = response.data as T;
+        })
+            .catch(error => {
+                errorHandler(error);
+            });
+        return responseT;
+    }
+
+    private generalPost<T>(route: string, paramStructure: any,errorHandler: (error: Error) => void): T{
+        let responseT: T = {} as T;
+
+        axios.post(route, paramStructure)
+            .then(response => {
+                responseT = response.data as T;
+            })
+            .catch(error => {
+                errorHandler(error);
+            });
+
+        return responseT;
+    }
+
+
+
 }

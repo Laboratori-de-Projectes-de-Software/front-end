@@ -3,7 +3,7 @@ export interface ConAPI {
     loginUser: (user: UserDTOLogin) => UserResponseDTO;
     postBot: (bot: BotDTO) => BotResponseDTO;
     getAllBotsUser: (userId: BigInteger) => Array<BotSummaryResponseDTO>;
-    getBot: (userId: BigInteger) => BotResponseDTO;
+    getBot: (botId: BigInteger) => BotResponseDTO;
     updateBot: (bot: BotDTO) => BotResponseDTO;
     postLeague: (league: LeagueDTO) => LeagueResponseDTO;
     getAllLeaguesUser: (userId: BigInteger) => Array<LeagueResponseDTO>;
