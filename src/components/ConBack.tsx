@@ -26,6 +26,7 @@ export class ConBack implements ConAPI {
     private POST_LEAGUE_ROUTE: string = "/api/v0/league";
     private REGISTER_BOT_TO_LEAGUE_ROUTE: string = "/api/v0/league/";
     private DELETE_LEAGUE_ROUTE: string = "/api/v0/league/";
+    private GET_MATCHES_LEAGUE_ROUTE: string = "/api/v0/league/";
     // Create a new user.
     createUser(user: UserDTORegister): void {
         // Method returns void, so no empty return type needed
@@ -107,7 +108,7 @@ export class ConBack implements ConAPI {
 
     // Retrieve all matches in a given league.
     getAllMatchesLeague(leagueId: BigInteger): MatchResponseDTO[] {
-        return [] as MatchResponseDTO[];
+        return this.generalEnRouteGetter<MatchResponseDTO[]>(`${this.GET_MATCHES_LEAGUE_ROUTE}${leagueId}/match`,(_=>{}));
     }
 
     // Retrieve all messages for a specific match.
