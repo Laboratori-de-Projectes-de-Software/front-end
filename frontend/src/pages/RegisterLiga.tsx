@@ -113,9 +113,6 @@ export default function LeagueRegisterForm({
         bots: selectedBots.map((id) => parseInt(id))
       };
 
-      
-      console.log("📤 Payload enviado al servidor:", payload); 
-
       const response = await fetch(
         isEditMode
           ? `http://localhost:8080/api/v0/league/${leagueToEdit?.leagueId}`
@@ -228,13 +225,13 @@ export default function LeagueRegisterForm({
             labelId="bots-select-label"
             id="bots-select"
             multiple
-            value={selectedBots.map(String)} 
+            value={selectedBots}
             onChange={handleBotSelection}
             input={<OutlinedInput label="Seleccionar Bots*" />}
             renderValue={(selected) => (
               <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
                 {selected.map((value) => {
-                  const botName = availableBots.find((b) => b.id === String(value))?.name || value;
+                  const botName = availableBots.find((b) => b.id === value)?.name || value;
                   return (
                     <Chip
                       key={value}
@@ -257,7 +254,7 @@ export default function LeagueRegisterForm({
               <MenuItem disabled>Cargando bots...</MenuItem>
             ) : (
               availableBots.map((bot) => (
-                <MenuItem key={bot.id} value={bot.id.toString()}>
+                <MenuItem key={bot.id} value={bot.id}>
                   {bot.name}
                 </MenuItem>
               ))
