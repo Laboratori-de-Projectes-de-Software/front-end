@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import style from "./Management.module.css";
 import BackgroundImage from "../assets/img/saludo2.png";
 import logo from "../assets/img/logo.png";
