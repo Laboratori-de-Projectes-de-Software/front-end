@@ -147,13 +147,11 @@ const CreateBotModal: React.FC<CreateBotModalProps> = ({ isOpen, onClose }) => {
 
           <div className="modal-form-actions">
             <Button
-              className="modal-cancel-button"
               label="Cancelar"
               onClick={onClose}
             />
             <Button
               type="submit"
-              className="modal-submit-button"
               label={isSubmitting ? "Creando..." : "Crear bot"}
               disabled={isSubmitting}
             />

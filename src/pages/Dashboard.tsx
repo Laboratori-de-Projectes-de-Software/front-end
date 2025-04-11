@@ -5,6 +5,9 @@ import "./Dashboard.css";
 import Button from "../components/Button";
 import CreateLeagueModal from "../components/CreateLeagueModal";
 import CreateBotModal from "../components/CreateBotModal";
+import { fetchUserBots } from "../controllers/BotController";
+import ButtonCreate from "../components/ButtonCreate";
+import {fetchUserLeagues} from "../controllers/LeaguesController";
 
 const Dashboard: React.FC = () => {
   // Estados para almacenar datos del dashboard
@@ -23,31 +26,21 @@ const Dashboard: React.FC = () => {
   const openBotModal = () => setIsBotModalOpen(true);
   const closeBotModal = () => setIsBotModalOpen(false);
 
-  // Simular carga de datos (esto se reemplazaría con llamadas API reales)
+  // Cargar datos del usuario
   useEffect(() => {
-    // Simulación de carga de datos
-    setTimeout(() => {
-      setMyBots([
-        { id: 1, name: "ArgumentBot", wins: 5, losses: 2 },
-        { id: 2, name: "DebateKing", wins: 3, losses: 1 },
-      ]);
+    // Cargar bots del usuario usando el controlador
+    fetchUserBots(
+      (botData) => setMyBots(botData),
+      (error) => console.error("Error fetching bots:", error)
+    );
 
-      setActiveLeagues([
-        {
-          id: 1,
-          name: "Liga Profesional",
-          participants: 8,
-          status: "En curso",
-          progress: 75,
-        },
-        {
-          id: 2,
-          name: "Torneo Novatos",
-          participants: 6,
-          status: "Inscripción",
-          progress: 0,
-        },
-      ]);
+    fetchUserLeagues(
+        (leagueData) => setActiveLeagues(leagueData),
+        (error) => console.error("Error fetching leagues:", error)
+    )
+
+    // Simulación de carga para otros datos
+    setTimeout(() => {
 
       setRecentMatches([
         {
@@ -79,7 +72,7 @@ const Dashboard: React.FC = () => {
         <h1>Panel de Control</h1>
 
         {loading ? (
-          <div className="loading">Cargando datos...</div>
+          <div className="loading-dashboard">Cargando datos...</div>
         ) : (
           <>
             <div className="dashboard-summary">
@@ -103,24 +96,28 @@ const Dashboard: React.FC = () => {
                   <h2>Mis Bots</h2>
                   <button
                     className="action-button"
-                    onClick={() => (window.location.href = "/mybots")}
+                    onClick={() => (window.location.href = "/bots")}
                   >
                     Ver todos
                   </button>
                 </div>
                 <div className="section-content">
-                  {myBots.map((bot) => (
-                    <div className="bot-card" key={bot.id}>
-                      <div className="bot-name">{bot.name}</div>
-                      <div className="bot-stats">
-                        <span className="wins">{bot.wins}V</span> /{" "}
-                        <span className="losses">{bot.losses}D</span>
+                  {myBots.slice(0,3).map((bot) => (
+                      <div className="cards" key={bot.id}>
+                        <div className="bots-info">
+                          <div className="bots-name">{bot.name}</div>
+                        </div>
+                        <div className="bot-stats">
+                          <span className="wins">{bot.wins || 0}W</span>
+                          <span className="stats-divider">/</span>
+                          <span className="losses">{bot.losses || 0}L</span>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    )
+                  )
+                  }
                   <div className="create-new">
-                    <Button
-                      className={"create-new-button"}
+                    <ButtonCreate
                       label="Crear bot"
                       onClick={openBotModal}
                     />
@@ -139,7 +136,7 @@ const Dashboard: React.FC = () => {
                   </button>
                 </div>
                 <div className="section-content">
-                  {activeLeagues.map((league) => (
+                  {activeLeagues.slice(0,3).map((league) => (
                     <div className="league-card" key={league.id}>
                       <div className="league-name">{league.name}</div>
                       <div className="league-status">
@@ -157,8 +154,7 @@ const Dashboard: React.FC = () => {
                     </div>
                   ))}
                   <div className="create-new">
-                    <Button
-                      className={"create-new-button"}
+                    <ButtonCreate
                       label="Crear liga"
                       onClick={openLeagueModal}
                     />

@@ -1,5 +1,5 @@
 import React from "react";
-import "./Button.css";
+import "./ButtonCreate.css";
 
 export interface ButtonProps {
     onClick?: () => void;
@@ -9,7 +9,7 @@ export interface ButtonProps {
     type?: "button" | "submit" | "reset";
 }
 
-const Button: React.FC<ButtonProps> = ({
+const ButtonCreate: React.FC<ButtonProps> = ({
                                            onClick,
                                            label,
                                            className = "",
@@ -19,7 +19,7 @@ const Button: React.FC<ButtonProps> = ({
     return (
         <button
             type={type}
-            className={`button ${className}`}
+            className={`button-create ${className}`}
             onClick={onClick}
             disabled={disabled}
         >
@@ -28,4 +28,4 @@ const Button: React.FC<ButtonProps> = ({
     );
 };
 
-export default Button;
+export default ButtonCreate;

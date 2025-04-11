@@ -18,20 +18,14 @@ const HomePage: React.FC = () => {
         <Button
           onClick={() => navigate("/login")}
           label="Iniciar sesión"
-          className="auth-link"
-          isTransparent={true}
         />
         <Button
           onClick={() => navigate("/register")}
           label="Registrar"
-          className="auth-link"
-          isTransparent={true}
         />
         <Button
           onClick={() => navigate("/dashboard")}
           label="Dashboard"
-          className="auth-link"
-          isTransparent={true}
         />
       </div>
     </div>
