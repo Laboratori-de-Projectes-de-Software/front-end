@@ -125,22 +125,25 @@ export default function LeagueCard({
         )}
 
 
-        {status === "INACTIVE" && isMyLeaguesSection && onStart && (
+        {isMyLeaguesSection && onStart && (
           <Tooltip title="Iniciar liga">
             <IconButton
               onClick={() => onStart(id)}
+              disabled={status !== "INACTIVE"}
               sx={{
                 color: "cyan",
                 backgroundColor: "#0a0f1d",
-                "&:hover": {
+                // Solo mostrar efecto hover si está habilitado
+                "&:hover": status === "INACTIVE" ? {
                   backgroundColor: "rgba(0,255,255,0.1)",
-                },
+                } : {},
               }}
             >
               <RocketLaunchIcon />
             </IconButton>
           </Tooltip>
         )}
+
 
         {isMyLeaguesSection && onEdit && (
           <Tooltip title="Editar liga">

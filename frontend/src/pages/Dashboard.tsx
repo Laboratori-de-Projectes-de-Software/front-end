@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback } from "react"; 
 import {
   Box,
   Button,
@@ -29,7 +29,8 @@ import {
   EmojiEvents as LeagueIcon,
   Public as AllIcon,
   Logout as LogoutIcon,
-  Close as CloseIcon } from "@mui/icons-material";
+  Close as CloseIcon
+} from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import BotRegisterForm from "./RegisterBot";
 import LeagueRegisterForm from "./RegisterLiga";
@@ -52,8 +53,7 @@ interface League {
   name: string;
   owner: string;
   status: "ACTIVE" | "INACTIVE" | "FINISHED";
-  fechaInicio?: string;
-  fechaFin?: string;
+  state?: string; // Se utiliza para calcular el estado
   matchTime?: number;
   rounds?: number;
   bots?: number[]; // O la estructura que uses
@@ -62,7 +62,7 @@ interface League {
     result: number;
     fighters: number[];
     roundNumber: number;
-  }[]; // Agrega esta propiedad
+  }[];
 }
 
 type Section =
@@ -105,13 +105,21 @@ export default function Dashboard() {
   const [createdLeagues, setCreatedLeagues] = useState<League[]>([]);
 
   // Para tabs o secciones
-  const [subSection, setSubSection] = useState<"joined"|"created">("joined");
+  const [subSection, setSubSection] = useState<"joined" | "created">("joined");
   // Para el filtro
-  const [selectedFilter, setSelectedFilter] = useState<"ALL"|"ACTIVE"|"INACTIVE"|"FINISHED">("ALL");
+  const [selectedFilter, setSelectedFilter] = useState<"ALL" | "ACTIVE" | "INACTIVE" | "FINISHED">("ALL");
 
-
-
-
+  // Función que calcula el estado basado únicamente en el campo state.
+  function calcularEstadoLiga(state?: string): "INACTIVE" | "ACTIVE" | "FINISHED" {
+    if (state) {
+      const stateLower = state.toLowerCase();
+      if (stateLower === "espera") return "INACTIVE";   // Liga en espera = inactiva
+      if (stateLower === "iniciado") return "ACTIVE";    // Consideramos "Iniciado" como activa
+      if (stateLower === "activo") return "ACTIVE";
+      if (stateLower === "finalizada") return "FINISHED";
+    }
+    return "INACTIVE"; // Valor por defecto
+  }
 
   const handleJoinLeague = async (leagueId: number) => {
     try {
@@ -122,21 +130,18 @@ export default function Dashboard() {
         const bots: Bot[] = await res.json();
         const botsDisponibles = bots.filter(bot => !bot.enLigaActiva);
   
-        // 👉 Asegúrate de establecer el ID primero
+        // Establecer el ID y los bots disponibles
         setJoinLeagueId(leagueId);
         setAvailableBots(botsDisponibles);
         setSelectedBot(null);
   
-        // Abrir diálogo al final
+        // Abrir diálogo
         setJoinDialogOpen(true);
       }
     } catch (err) {
       console.error("Error al obtener bots para apuntarse:", err);
     }
   };
-  
-  
-
 
   const handleConfirmJoin = async () => {
     console.log("👉 joinLeagueId:", joinLeagueId);
@@ -167,8 +172,6 @@ export default function Dashboard() {
     }
   };
 
-
-
   const handleLogout = () => {
     localStorage.clear();
     navigate("/");
@@ -179,9 +182,7 @@ export default function Dashboard() {
     setLoadingBots(true);
     try {
       const res = await fetch(`http://localhost:8080/api/v0/bot?owner=${username}`, {
-        headers: {
-          "Authorization": `Bearer ${token}`
-        }
+        headers: { Authorization: `Bearer ${token}` }
       });
       if (res.ok) {
         const data = await res.json();
@@ -201,9 +202,7 @@ export default function Dashboard() {
     setLoadingAllBots(true);
     try {
       const res = await fetch("http://localhost:8080/api/v0/bot", {
-        headers: {
-          "Authorization": `Bearer ${token}`
-        }
+        headers: { Authorization: `Bearer ${token}` }
       });
       if (res.ok) {
         const data = await res.json();
@@ -221,15 +220,13 @@ export default function Dashboard() {
     setLoadingLeagues(true);
     try {
       const res = await fetch("http://localhost:8080/api/v0/league", {
-        headers: {
-          "Authorization": `Bearer ${token}`
-        }
+        headers: { Authorization: `Bearer ${token}` }
       });
       if (res.ok) {
         const data = await res.json();
-        const ligasConEstado = data.map((liga: { id: number; name: string; creatorUsername: string; fechaInicio?: string; fechaFin?: string }) => ({
+        const ligasConEstado = data.map((liga: { id: number; name: string; creatorUsername: string; state?: string }) => ({
           ...liga,
-          status: calcularEstadoLiga(liga.fechaInicio, liga.fechaFin),
+          status: calcularEstadoLiga(liga.state),
         }));
         setAllLeagues(ligasConEstado);
       }
@@ -245,17 +242,15 @@ export default function Dashboard() {
     setLoadingLeagues(true);
     try {
       const res = await fetch(`http://localhost:8080/api/v0/league?owner=${username}`, {
-        headers: {
-          "Authorization": `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
       if (res.ok) {
         const data = await res.json();
-        const ligasConEstado = data.map((liga: { fechaInicio?: string; fechaFin?: string; [key: string]: unknown }) => {
+        const ligasConEstado = data.map((liga: { state?: string; [key: string]: unknown }) => {
           if (typeof liga === "object" && liga !== null) {
             return {
               ...liga,
-              status: calcularEstadoLiga(liga.fechaInicio, liga.fechaFin),
+              status: calcularEstadoLiga(liga.state as string | undefined),
             };
           }
           console.error("Invalid league data:", liga);
@@ -272,45 +267,33 @@ export default function Dashboard() {
     }
   }, [username, token]);
 
-  function calcularEstadoLiga(fechaInicio?: string, fechaFin?: string): "INACTIVE" | "ACTIVE" | "FINISHED" {
-    if (!fechaInicio) return "INACTIVE";
-    if (fechaInicio && !fechaFin) return "ACTIVE";
-    return "FINISHED";
-  }  
-
   const fetchLeagueById = async (id: number) => {
     try {
       const res = await fetch(`http://localhost:8080/api/v0/league/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
   
       if (res.ok) {
         const data = await res.json();
-        const status = calcularEstadoLiga(data.fechaInicio, data.fechaFin);
+        const status = calcularEstadoLiga(data.state);
         setLeagueDetails({ ...data, status });
-        setPopupOpen(true); // ✅ Esto abre el Dialog con los detalles
+        setPopupOpen(true);
 
-        
-        // ⚠️ Obtener los bots participantes
+        // Obtener los bots participantes
         if (data.bots && data.bots.length > 0) {
           const fetchedBots: { id: number; name: string }[] = [];
-  
           for (const botId of data.bots) {
             const botRes = await fetch(`http://localhost:8080/api/v0/bot/${botId}`, {
               headers: { Authorization: `Bearer ${token}` },
             });
-  
             if (botRes.ok) {
               const botData = await botRes.json();
               fetchedBots.push({ id: botData.id, name: botData.name });
             }
           }
-  
           setLeagueBots(fetchedBots);
         } else {
-          setLeagueBots([]); // No hay bots
+          setLeagueBots([]);
         }
       } else {
         console.error("Error al obtener liga:", res.status);
@@ -319,50 +302,40 @@ export default function Dashboard() {
       console.error("Error de red al obtener liga:", err);
     }
   };
-  
+
   const handleStartLeague = async (leagueId: number) => {
     try {
-      // Llamada para iniciar la liga
+      // Iniciar la liga
       const startRes = await fetch(`http://localhost:8080/api/v0/league/${leagueId}/start`, {
         method: "POST",
-        headers: {
-          "Authorization": `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
   
       if (startRes.ok) {
         console.log("✅ Liga iniciada correctamente");
   
-        // Llamada para obtener los matches de la liga
+        // Obtener los matches de la liga
         const matchesRes = await fetch(`http://localhost:8080/api/v0/league/${leagueId}/match`, {
           method: "GET",
-          headers: {
-            "Authorization": `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         });
   
         if (matchesRes.ok) {
           const matches = await matchesRes.json();
           console.log("✅ Matches obtenidos correctamente:", matches);
-  
-          // Guardar los matches en el estado leagueDetails
-          navigate("/league", {
-            state: { leagueId }
-          });          
-          
-
+          // Redirigir al componente League si la liga ya se inició
+          navigate("/league", { state: { leagueId } });
         } else {
           console.error("❌ Error al obtener los matches:", matchesRes.status);
         }
-  
-        setJoinSuccess(true); // Muestra un mensaje de éxito
+        setJoinSuccess(true);
       } else {
         console.error("❌ Error al iniciar la liga:", startRes.status);
-        setJoinError(true); // Muestra un mensaje de error
+        setJoinError(true);
       }
     } catch (err) {
       console.error("❌ Error de red al iniciar la liga o al obtener los matches:", err);
-      setJoinError(true); // Muestra un mensaje de error
+      setJoinError(true);
     }
   };
 
@@ -375,7 +348,6 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (section === "myLeagues") {
-      // Al cargar la sección "myLeagues", obtengo todas las ligas y mis bots
       fetchAllLeagues();
       fetchUserBots();
     }
@@ -383,22 +355,12 @@ export default function Dashboard() {
   
   useEffect(() => {
     if (section === "myLeagues") {
-      // IDs de los bots del usuario
-      const userBotIds = userBots.map((bot) => bot.id);
-  
-      // Ligas que has creado:
-      const created = allLeagues.filter(
-        (league) => league.owner === username // Cambiar a "owner"
-      );
-  
-      // Ligas en las que participas (al menos un bot tuyo está inscrito)
+      const userBotIds = userBots.map(bot => bot.id);
+      const created = allLeagues.filter(league => league.owner === username);
       const joined = allLeagues.filter(
-        (league) =>
-          // Cambiar a "owner"
-          league.bots &&
-          league.bots.some((botId) => userBotIds.includes(botId))
+        league =>
+          league.bots && league.bots.some((botId: number) => userBotIds.includes(botId))
       );
-  
       setCreatedLeagues(created);
       setJoinedLeagues(joined);
     }
@@ -419,7 +381,6 @@ export default function Dashboard() {
         <Typography sx={{ px: 2, mb: 2 }} variant="h6">
           👤 {username}
         </Typography>
-
         <List>
           <ListItem disablePadding>
             <ListItemButton onClick={() => setSection("dashboard")}>
@@ -427,37 +388,31 @@ export default function Dashboard() {
               <ListItemText primary="Dashboard" />
             </ListItemButton>
           </ListItem>
-
           <ListItem disablePadding>
             <ListItemButton onClick={() => setSection("myBots")}>
               <ListItemIcon><BotIcon sx={{ color: "cyan" }} /></ListItemIcon>
               <ListItemText primary="Mis Bots" />
             </ListItemButton>
           </ListItem>
-
           <ListItem disablePadding>
             <ListItemButton onClick={() => setSection("myLeagues")}>
               <ListItemIcon><LeagueIcon sx={{ color: "cyan" }} /></ListItemIcon>
               <ListItemText primary="Mis Ligas" />
             </ListItemButton>
           </ListItem>
-
           <ListItem disablePadding>
             <ListItemButton onClick={() => setSection("allBots")}>
               <ListItemIcon><BotIcon sx={{ color: "cyan" }} /></ListItemIcon>
               <ListItemText primary="Ver todos los Bots" />
             </ListItemButton>
           </ListItem>
-
           <ListItem disablePadding>
             <ListItemButton onClick={() => setSection("allLeagues")}>
               <ListItemIcon><AllIcon sx={{ color: "cyan" }} /></ListItemIcon>
               <ListItemText primary="Ver todas las Ligas" />
             </ListItemButton>
           </ListItem>
-
           <Divider sx={{ my: 2, borderColor: "rgba(0,255,255,0.3)" }} />
-
           <ListItem disablePadding>
             <ListItemButton onClick={handleLogout}>
               <ListItemIcon><LogoutIcon sx={{ color: "cyan" }} /></ListItemIcon>
@@ -474,7 +429,8 @@ export default function Dashboard() {
         color: "white",
         height: "100vh",
         overflowY: "auto",
-        position: "relative"}}>        
+        position: "relative"
+      }}>        
         {section === "dashboard" && (
           <>
             <Typography variant="h4" color="cyan" gutterBottom>
@@ -494,7 +450,6 @@ export default function Dashboard() {
                 🤖 Mis Bots
               </Typography>
             </Box>
-
             <Box sx={{ mb: 6 }}>
               <Button variant="contained" onClick={() => {
                 setBotToEdit(null);
@@ -503,7 +458,6 @@ export default function Dashboard() {
                 + Registrar nuevo bot
               </Button>
             </Box>
-
             {loadingBots ? (
               <CircularProgress color="inherit" />
             ) : userBots.length > 0 ? (
@@ -547,12 +501,7 @@ export default function Dashboard() {
             >
               <ArrowBackIcon />
             </Button>
-            <Box
-              sx={{
-                padding: 4,
-                borderRadius: 2,
-              }}
-            >
+            <Box sx={{ padding: 4, borderRadius: 2 }}>
               <BotRegisterForm botToEdit={botToEdit || undefined} onBotSaved={() => setSection("myBots")} />
             </Box>
           </Box>
@@ -580,25 +529,21 @@ export default function Dashboard() {
 
         {section === "myLeagues" && (
           <Box>
-            {/* Título principal */}
             <Typography variant="h4" sx={{ color: "cyan", mb: 3 }}>
               Mis Ligas
             </Typography>
-
-            {/* Tabs (sub-menú) para cambiar entre "joined" y "created" */}
             <Tabs
               value={subSection}
-              onChange={(event, newValue) => setSubSection(newValue)}
+              onChange={(_event, newValue) => setSubSection(newValue)}
               textColor="inherit"
             >
               <Tab label="LIGAS EN LAS QUE PARTICIPAS" value="joined" />
               <Tab label="LIGAS QUE HAS CREADO" value="created" />
             </Tabs>
 
-            {/* Sección para "Ligas en las que participas" */}
+            {/* Ligas en las que participas */}
             {subSection === "joined" && (
               <Box>
-                {/* Filtro por estado (solo filtro para esta sección) */}
                 <Box
                   sx={{
                     display: "flex",
@@ -615,19 +560,13 @@ export default function Dashboard() {
                     <Select
                       labelId="filter-label-joined"
                       value={selectedFilter}
-                      onChange={(e) =>
-                        setSelectedFilter(e.target.value as typeof selectedFilter)
-                      }
+                      onChange={(e) => setSelectedFilter(e.target.value as typeof selectedFilter)}
                       label="Filtrar por estado"
                       sx={{
                         color: "white",
                         ".MuiOutlinedInput-notchedOutline": { borderColor: "cyan" },
-                        "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                          borderColor: "cyan",
-                        },
-                        "&:hover .MuiOutlinedInput-notchedOutline": {
-                          borderColor: "cyan",
-                        },
+                        "&.Mui-focused .MuiOutlinedInput-notchedOutline": { borderColor: "cyan" },
+                        "&:hover .MuiOutlinedInput-notchedOutline": { borderColor: "cyan" },
                         "& .MuiSvgIcon-root": { color: "cyan" },
                       }}
                     >
@@ -638,15 +577,7 @@ export default function Dashboard() {
                     </Select>
                   </FormControl>
                 </Box>
-
-                {/* Contenedor de tarjetas en forma de filas/rejilla */}
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexWrap: "wrap",
-                    gap: 2,
-                  }}
-                >
+                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
                   {joinedLeagues
                     .filter((league) =>
                       selectedFilter === "ALL" ? true : league.status === selectedFilter
@@ -657,17 +588,22 @@ export default function Dashboard() {
                         id={league.leagueId}
                         name={league.name}
                         status={league.status}
-                        onView={() => fetchLeagueById(league.leagueId)}
+                        onView={() => {
+                          if (league.status === "ACTIVE" || league.status === "FINISHED") {
+                            navigate("/league", { state: { leagueId: league.leagueId } });
+                          } else {
+                            fetchLeagueById(league.leagueId);
+                          }
+                        }}                        
                       />
                     ))}
                 </Box>
               </Box>
             )}
 
-            {/* Sección para "Ligas que has creado" */}
+            {/* Ligas que has creado */}
             {subSection === "created" && (
               <Box>
-                {/* Fila que contiene el filtro y el botón "Registrar nueva Liga" */}
                 <Box
                   sx={{
                     display: "flex",
@@ -676,7 +612,6 @@ export default function Dashboard() {
                     mb: 3,
                   }}
                 >
-                  {/* Filtro por estado */}
                   <FormControl fullWidth variant="outlined" sx={{ maxWidth: "300px" }}>
                     <InputLabel id="filter-label-created" sx={{ color: "cyan" }}>
                       Filtrar por estado
@@ -684,19 +619,13 @@ export default function Dashboard() {
                     <Select
                       labelId="filter-label-created"
                       value={selectedFilter}
-                      onChange={(e) =>
-                        setSelectedFilter(e.target.value as typeof selectedFilter)
-                      }
+                      onChange={(e) => setSelectedFilter(e.target.value as typeof selectedFilter)}
                       label="Filtrar por estado"
                       sx={{
                         color: "white",
                         ".MuiOutlinedInput-notchedOutline": { borderColor: "cyan" },
-                        "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                          borderColor: "cyan",
-                        },
-                        "&:hover .MuiOutlinedInput-notchedOutline": {
-                          borderColor: "cyan",
-                        },
+                        "&.Mui-focused .MuiOutlinedInput-notchedOutline": { borderColor: "cyan" },
+                        "&:hover .MuiOutlinedInput-notchedOutline": { borderColor: "cyan" },
                         "& .MuiSvgIcon-root": { color: "cyan" },
                       }}
                     >
@@ -706,8 +635,6 @@ export default function Dashboard() {
                       <MenuItem value="FINISHED">🔴 Finalizadas</MenuItem>
                     </Select>
                   </FormControl>
-
-                  {/* Botón para registrar una nueva liga */}
                   <Button
                     variant="contained"
                     onClick={() => {
@@ -719,15 +646,7 @@ export default function Dashboard() {
                     + Registrar nueva Liga
                   </Button>
                 </Box>
-
-                {/* Tarjetas de ligas creadas en formato grid/flex */}
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexWrap: "wrap",
-                    gap: 2,
-                  }}
-                >
+                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
                   {createdLeagues
                     .filter((league) =>
                       selectedFilter === "ALL" ? true : league.status === selectedFilter
@@ -738,7 +657,13 @@ export default function Dashboard() {
                         id={league.leagueId}
                         name={league.name}
                         status={league.status}
-                        onView={() => fetchLeagueById(league.leagueId)}
+                        onView={() => {
+                          if (league.status === "ACTIVE" || league.status === "FINISHED") {
+                            navigate("/league", { state: { leagueId: league.leagueId } });
+                          } else {
+                            fetchLeagueById(league.leagueId);
+                          }
+                        }}                        
                         onStart={(id) => handleStartLeague(id)}
                         onEdit={(id) => {
                           const liga = createdLeagues.find((l) => l.leagueId === id);
@@ -756,15 +681,12 @@ export default function Dashboard() {
           </Box>
         )}
 
-
-
         {/* Ver todas las ligas */}
         {section === "allLeagues" && (
           <>
             <Typography variant="h4" color="cyan" sx={{ mb: 4 }}>
               Ver todas las Ligas
             </Typography>
-
             {loadingLeagues ? (
               <CircularProgress color="inherit" />
             ) : (
@@ -772,15 +694,18 @@ export default function Dashboard() {
                 <Box sx={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
                   {allLeagues.map((league) => (
                     <LeagueCard
-                      key={league.leagueId} // usar el ID como key
-                      id={league.leagueId} // pasar el ID correcto
+                      key={league.leagueId}
+                      id={league.leagueId}
                       name={league.name}
                       status={league.status}
                       onView={() => {
-                        fetchLeagueById(league.leagueId);
-                        setSection("leagueDetails");
-                      }}
-                      onJoin={() => handleJoinLeague(league.leagueId)} // pasar el ID, no el nombre
+                        if (league.status === "ACTIVE" || league.status === "FINISHED") {
+                          navigate("/league", { state: { leagueId: league.leagueId } });
+                        } else {
+                          fetchLeagueById(league.leagueId);
+                        }
+                      }}                      
+                      onJoin={() => handleJoinLeague(league.leagueId)}
                       isAllLeaguesSection
                     />
                   ))}
@@ -813,197 +738,178 @@ export default function Dashboard() {
             >
               <ArrowBackIcon />
             </Button>
-            {/* Renderizamos el componente Liga */}
-            <League />
+
+            {/*  Eliminado <League />, para que NO muestre "Cargando liga..."  */}
+            
+            {/* Podrías dejar algún contenido de texto aquí, o simplemente nada */}
           </Box>
         )}
 
 
-{section === "registerLeague" && (
-  <Box>
-    <Button
-      variant="outlined"
-      onClick={() => setSection("myLeagues")}
-      sx={{
-        mb: 2,
-        color: "cyan",
-        borderColor: "cyan",
-        minWidth: "40px",
-        padding: "6px",
-        borderRadius: "50%",
-        "&:hover": {
-          backgroundColor: "rgba(0,255,255,0.1)",
-          borderColor: "cyan",
-        },
-      }}
-    >
-      <ArrowBackIcon />
-    </Button>
-    <Box sx={{ padding: 4, borderRadius: 2 }}>
-      <LeagueRegisterForm
-        leagueToEdit={leagueToEdit}
-        onLeagueCreated={() => {
-          setSection("myLeagues");
-          setLeagueToEdit(null); // limpiar después de editar
-          fetchUserLeagues(); // refrescar
-        }}
-      />
-    </Box>
-  </Box>
-  )}
-    
-    </Box>
+        {section === "registerLeague" && (
+          <Box>
+            <Button
+              variant="outlined"
+              onClick={() => setSection("myLeagues")}
+              sx={{
+                mb: 2,
+                color: "cyan",
+                borderColor: "cyan",
+                minWidth: "40px",
+                padding: "6px",
+                borderRadius: "50%",
+                "&:hover": {
+                  backgroundColor: "rgba(0,255,255,0.1)",
+                  borderColor: "cyan",
+                },
+              }}
+            >
+              <ArrowBackIcon />
+            </Button>
+            <Box sx={{ padding: 4, borderRadius: 2 }}>
+              <LeagueRegisterForm
+                leagueToEdit={leagueToEdit}
+                onLeagueCreated={() => {
+                  setSection("myLeagues");
+                  setLeagueToEdit(null);
+                  fetchUserLeagues();
+                }}
+              />
+            </Box>
+          </Box>
+        )}
+      </Box>
 
-    <Dialog open={popupOpen} onClose={() => setPopupOpen(false)} maxWidth="sm" fullWidth>
-      <Box
-        sx={{
-          position: "relative",
-          p: 4,
-          backgroundColor: "#0a0f1d",
-          color: "white",
-          borderRadius: 2,
-        }}
-      >
-        {/* ❌ Botón cerrar */}
-        <IconButton
-          onClick={() => setPopupOpen(false)}
+      <Dialog open={popupOpen} onClose={() => setPopupOpen(false)} maxWidth="sm" fullWidth>
+        <Box
           sx={{
-            position: "absolute",
-            right: 16,
-            top: 16,
+            position: "relative",
+            p: 4,
+            backgroundColor: "#0a0f1d",
             color: "white",
-            backgroundColor: "rgba(255,255,255,0.1)",
-            "&:hover": { backgroundColor: "rgba(255,255,255,0.2)" }
+            borderRadius: 2,
           }}
         >
-          <CloseIcon />
-        </IconButton>
-
-        {/* Título */}
-        <DialogTitle sx={{ fontSize: 24, fontWeight: "bold", mb: 2, color: "cyan", display: "flex", alignItems: "center", gap: 1 }}>
-          🏆 Detalles de la liga
-        </DialogTitle>
-
-        {/* Contenido */}
-        <DialogContent>
-          <Typography variant="h5" sx={{ mb: 2, fontWeight: "bold", color: "white" }}>
-            {leagueDetails?.name}
-          </Typography>
-
-          <Typography variant="body2" sx={{ mb: 1 }}>
-            Estado: {leagueDetails?.status}
-          </Typography>
-
-          <Typography variant="body2" sx={{ mb: 1 }}>
-            Fecha inicio: {leagueDetails?.fechaInicio || "No iniciada"}
-          </Typography>
-
-          <Typography variant="body2" sx={{ mb: 1 }}>
-            Fecha fin: {leagueDetails?.fechaFin || "No finalizada"}
-          </Typography>
-
-          <Typography variant="body2" sx={{ mb: 1 }}>
-            Duración del enfrentamiento: {leagueDetails?.matchTime} min
-          </Typography>
-
-          <Typography variant="body2" sx={{ mb: 1 }}>
-            Número de rondas: {leagueDetails?.rounds}
-          </Typography>
-
-          {leagueBots.length > 0 && (
-            <Box sx={{ mt: 3 }}>
-              <Typography variant="subtitle1" sx={{ color: "cyan", mb: 1 }}>
-                Bots participantes:
-              </Typography>
-              <ul style={{ paddingLeft: "1.5rem", margin: 0 }}>
-                {leagueBots.map(bot => (
-                  <li key={bot.id}>
-                    <Typography variant="body2" sx={{ color: "white" }}>
-                      🤖 {bot.name}
-                    </Typography>
-                  </li>
-                ))}
-              </ul>
-            </Box>
-          )}
-        </DialogContent>
-      </Box>
-    </Dialog>
-
-    <Dialog open={joinDialogOpen} onClose={() => setJoinDialogOpen(false)} maxWidth="sm" fullWidth>
-      <Box sx={{ p: 4, backgroundColor: "#0a0f1d", color: "white", borderRadius: 2 }}>
-        <DialogTitle sx={{ color: "cyan" }}>
-          Selecciona bots para unirte a la liga
-        </DialogTitle>
-
-        <DialogContent>
-          {availableBots.length === 0 ? (
-            <Typography>No tienes bots disponibles para unirte.</Typography>
-          ) : (
-            <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-              {availableBots.map(bot => (
-                <Button
-                key={bot.id}
-                variant={selectedBot === bot.id ? "contained" : "outlined"}
-                onClick={() => {
-                  setSelectedBot(prev => prev === bot.id ? null : bot.id);
-                }}
-                sx={{
-                  justifyContent: "flex-start",
-                  backgroundColor: selectedBot === bot.id ? "cyan" : "transparent",
-                  color: selectedBot === bot.id ? "#0a0f1d" : "white",
-                  borderColor: "cyan",
-                  "&:hover": {
-                    backgroundColor: selectedBot === bot.id
-                      ? "rgba(0,255,255,0.8)"
-                      : "rgba(0,255,255,0.1)",
-                  },
-                }}
-              >
-                {bot.name}
-              </Button>
-              
-              ))}
-
-            </Box>
-          )}
-        </DialogContent>
-
-        <DialogActions sx={{ justifyContent: "space-between", mt: 2 }}>
-          <Button onClick={() => setJoinDialogOpen(false)} sx={{ color: "gray" }}>
-            Cancelar
-          </Button>
-          <Button
-            onClick={handleConfirmJoin}
-            disabled={!selectedBot}
-            variant="contained"
-            sx={{ backgroundColor: "cyan", color: "#0a0f1d" }}
+          <IconButton
+            onClick={() => setPopupOpen(false)}
+            sx={{
+              position: "absolute",
+              right: 16,
+              top: 16,
+              color: "white",
+              backgroundColor: "rgba(255,255,255,0.1)",
+              "&:hover": { backgroundColor: "rgba(255,255,255,0.2)" }
+            }}
           >
-            Confirmar
-          </Button>
+            <CloseIcon />
+          </IconButton>
+          <DialogTitle
+            sx={{
+              fontSize: 24,
+              fontWeight: "bold",
+              mb: 2,
+              color: "cyan",
+              display: "flex",
+              alignItems: "center",
+              gap: 1
+            }}
+          >
+            🏆 Detalles de la liga
+          </DialogTitle>
+          <DialogContent>
+            <Typography variant="h5" sx={{ mb: 2, fontWeight: "bold", color: "white" }}>
+              {leagueDetails?.name}
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 1 }}>
+              Estado: {leagueDetails?.status}
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 1 }}>
+              Duración del enfrentamiento: {leagueDetails?.matchTime} min
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 1 }}>
+              Número de rondas: {leagueDetails?.rounds}
+            </Typography>
+            {leagueBots.length > 0 && (
+              <Box sx={{ mt: 3 }}>
+                <Typography variant="subtitle1" sx={{ color: "cyan", mb: 1 }}>
+                  Bots participantes:
+                </Typography>
+                <ul style={{ paddingLeft: "1.5rem", margin: 0 }}>
+                  {leagueBots.map(bot => (
+                    <li key={bot.id}>
+                      <Typography variant="body2" sx={{ color: "white" }}>
+                        🤖 {bot.name}
+                      </Typography>
+                    </li>
+                  ))}
+                </ul>
+              </Box>
+            )}
+          </DialogContent>
+        </Box>
+      </Dialog>
 
-        </DialogActions>
-      </Box>
-    </Dialog>
+      <Dialog open={joinDialogOpen} onClose={() => setJoinDialogOpen(false)} maxWidth="sm" fullWidth>
+        <Box sx={{ p: 4, backgroundColor: "#0a0f1d", color: "white", borderRadius: 2 }}>
+          <DialogTitle sx={{ color: "cyan" }}>
+            Selecciona bots para unirte a la liga
+          </DialogTitle>
+          <DialogContent>
+            {availableBots.length === 0 ? (
+              <Typography>No tienes bots disponibles para unirte.</Typography>
+            ) : (
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+                {availableBots.map(bot => (
+                  <Button
+                    key={bot.id}
+                    variant={selectedBot === bot.id ? "contained" : "outlined"}
+                    onClick={() => setSelectedBot(prev => prev === bot.id ? null : bot.id)}
+                    sx={{
+                      justifyContent: "flex-start",
+                      backgroundColor: selectedBot === bot.id ? "cyan" : "transparent",
+                      color: selectedBot === bot.id ? "#0a0f1d" : "white",
+                      borderColor: "cyan",
+                      "&:hover": {
+                        backgroundColor: selectedBot === bot.id
+                          ? "rgba(0,255,255,0.8)"
+                          : "rgba(0,255,255,0.1)",
+                      },
+                    }}
+                  >
+                    {bot.name}
+                  </Button>
+                ))}
+              </Box>
+            )}
+          </DialogContent>
+          <DialogActions sx={{ justifyContent: "space-between", mt: 2 }}>
+            <Button onClick={() => setJoinDialogOpen(false)} sx={{ color: "gray" }}>
+              Cancelar
+            </Button>
+            <Button
+              onClick={handleConfirmJoin}
+              disabled={!selectedBot}
+              variant="contained"
+              sx={{ backgroundColor: "cyan", color: "#0a0f1d" }}
+            >
+              Confirmar
+            </Button>
+          </DialogActions>
+        </Box>
+      </Dialog>
 
-    <Snackbar
-      open={joinSuccess}
-      autoHideDuration={3000}
-      onClose={() => setJoinSuccess(false)}
-      message="✅ Te has unido correctamente a la liga"
-    />
-
-    <Snackbar
-      open={joinError}
-      autoHideDuration={3000}
-      onClose={() => setJoinError(false)}
-      message="❌ Hubo un error al unirse a la liga"
-/>
-
-
+      <Snackbar
+        open={joinSuccess}
+        autoHideDuration={3000}
+        onClose={() => setJoinSuccess(false)}
+        message="✅ Te has unido correctamente a la liga"
+      />
+      <Snackbar
+        open={joinError}
+        autoHideDuration={3000}
+        onClose={() => setJoinError(false)}
+        message="❌ Hubo un error al unirse a la liga"
+      />
     </Box>
   );
 }
-
-
-         

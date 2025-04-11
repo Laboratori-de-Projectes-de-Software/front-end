@@ -17,7 +17,7 @@ function AppContent() {
 
   // Rutas donde no queremos mostrar Navbar ni Footer
   // Ocultar navbar/footer en /login, /register y /dashboard
-const hideLayout = ["/login", "/register", "/dashboard"].includes(location.pathname);
+const hideLayout = ["/login", "/register", "/dashboard", "/league"].includes(location.pathname);
 
   return (
     <div className="app-layout">
