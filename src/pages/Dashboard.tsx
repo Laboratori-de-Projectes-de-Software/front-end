@@ -102,8 +102,7 @@ const Dashboard: React.FC = () => {
                   </button>
                 </div>
                 <div className="section-content">
-                  {myBots.length > 0 ? (
-                    myBots.map((bot) => (
+                  {myBots.slice(0,3).map((bot) => (
                       <div className="cards" key={bot.id}>
                         <div className="bots-info">
                           <div className="bots-name">{bot.name}</div>
@@ -114,12 +113,11 @@ const Dashboard: React.FC = () => {
                           <span className="losses">{bot.losses || 0}L</span>
                         </div>
                       </div>
-                    ))
-                  ) : (
-                    <p>No tienes bots creados aún.</p>
-                  )}
+                    )
+                  )
+                  }
                   <div className="create-new">
-                    <Button
+                    <ButtonCreate
                       label="Crear bot"
                       onClick={openBotModal}
                     />
@@ -138,7 +136,7 @@ const Dashboard: React.FC = () => {
                   </button>
                 </div>
                 <div className="section-content">
-                  {activeLeagues.map((league) => (
+                  {activeLeagues.slice(0,3).map((league) => (
                     <div className="league-card" key={league.id}>
                       <div className="league-name">{league.name}</div>
                       <div className="league-status">

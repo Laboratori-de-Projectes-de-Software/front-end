@@ -1,4 +1,4 @@
-.button {
+.button-create {
     margin: 30px auto; /* Centrado horizontal */
     display: block; /* Mejora el centrado */
     background: linear-gradient(135deg, #1DB954, #326a41, #131617);
@@ -6,10 +6,12 @@
     padding: 12px 25px;
     border-radius: 25px;
     font-weight: bold;
+    cursor: pointer;
     transition: all 0.3s ease;
+    color: white; /* Color del texto */
 }
 
-.button:hover {
+.button-create:hover {
     transform: scale(1.05);
     box-shadow: 0 0 15px rgba(4, 243, 36, 0.5);
 }
