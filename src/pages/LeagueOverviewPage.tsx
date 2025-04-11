@@ -2,7 +2,10 @@ import { useEffect, useState } from "react";
 import { Button, Card } from "react-bootstrap";
 import foto from "../assets/img/ligabanner.jpg";
 import { leagueResponse } from "../types/LeagueResponse.tsx";
-import {API_LEAGUE} from "../config.tsx"; // Ajusta la ruta según tu estructura
+import {useNavigate} from "react-router-dom";
+import {deleteLeague, getLeague} from "../services/apiCalls.ts"; // Ajusta la ruta según tu estructura
+
+
 
 export const getStatusColor = (status: string): string => {
     switch (status) {
@@ -20,26 +23,14 @@ export const getStatusColor = (status: string): string => {
 
 export default function LeagueOverviewPage({ leagueId }: { leagueId: number }) {
     const [league, setLeague] = useState<leagueResponse | null>(null);
-    const [loading, setLoading] = useState(true);
-
-
-
+    const navigate = useNavigate();
 
 
     useEffect(() => {
         const fetchLeague = async () => {
-            try {
-                const response = await fetch(`${API_LEAGUE}/${leagueId}`);
-                const data = await response.json();
-                console.log("league", data);
-                setLeague(data);
-            } catch (err) {
-                console.error("Error al cargar la liga:", err);
-            } finally {
-                setLoading(false);
-            }
+            const res = await getLeague(leagueId, {});
+            setLeague(res.data);
         };
-
         fetchLeague();
     }, [leagueId]);
 
@@ -47,8 +38,23 @@ export default function LeagueOverviewPage({ leagueId }: { leagueId: number }) {
         alert("Registro de bot no implementado");
     };
 
-    if (loading) return <div className="text-light p-4">Cargando datos de la liga...</div>;
+    const handleViewLeague = () => {
+        //CAMBIAR POR EL ID DE LA LIGA
+        navigate(`/league/0/leaderboard`);
+    };
+
+    const handleDeleteLeague = async() => {
+        const response = await deleteLeague(leagueId, {});
+        if (response) {
+            alert("LIGA ELIMINADA")
+            navigate(`/home`);
+        }
+
+    };
+
     if (!league) return <div className="text-light p-4">No se encontró la liga.</div>;
+
+    const isOwner = localStorage.getItem("username") === league.user;
 
     return (
         <div className="container my-4">
@@ -69,22 +75,60 @@ export default function LeagueOverviewPage({ leagueId }: { leagueId: number }) {
                     <p className="mb-1"><strong>Bots registrados:</strong> {league.bots.length}</p>
                     <p className="mb-3"><strong>Creador :</strong> {league.user}</p>
 
-                    <Button
-                            variant="outline-light"
-                            size="lg"
-                            onClick={handleRegisterBot}
-                            disabled={league.status === "CERRADA"}>
-                        Registrar un bot
-                    </Button>
-                    <Button
-                        variant="outline-light"
-                        size="lg"
-                        disabled={league.status === "CERRADA"}
-                    >
-                        Iniciar Liga
-                    </Button>
+                    {/* Condición para los botones según el estado de la liga */}
+                    <div className="d-flex flex-column gap-3">
+                        {league.status === "ABIERTA" && (
+                            <>
+                                <Button
+                                    variant="outline-light"
+                                    size="lg"
+                                    onClick={handleRegisterBot}
+                                    //disabled={league.status === "CERRADA"}
+                                    >
+                                    Registrar un bot
+                                </Button>
+                                { isOwner && (<Button
+                                    variant="outline-light"
+                                    size="lg"
+                                    //onClick={handleStartLeague}
+                                    //disabled={league.status === "CERRADA"}
+                                    >
+                                    Iniciar Liga
+                                </Button>)}
+                            </>
+                        )}
+
+                        {league.status === "EN CURSO" && (
+                            <Button
+                                variant="outline-light"
+                                size="lg"
+                                onClick={handleViewLeague}
+                                disabled={false}>
+                                Ver Liga
+                            </Button>
+                        )}
+
+                        {league.status === "CERRADA" && (
+                            <>
+                                <Button
+                                    variant="outline-light"
+                                    size="lg"
+                                    onClick={handleViewLeague}
+                                    disabled={false}>
+                                    Ver Liga
+                                </Button>
+                                {isOwner && (<Button
+                                    variant="outline-danger"
+                                    size="lg"
+                                    onClick={handleDeleteLeague}
+                                    disabled={false}>
+                                    Borrar Liga
+                                </Button>)}
+                            </>
+                        )}
+                    </div>
                 </Card.Body>
             </Card>
         </div>
-    );
+);
 }

@@ -1,8 +1,8 @@
 import {Button, Col, Row} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faBars, faHouse, faRobot, faTrophy, faUser} from "@fortawesome/free-solid-svg-icons";
+import {faBars, faHouse, faRobot, faTrophy, faUser, faRightFromBracket} from "@fortawesome/free-solid-svg-icons";
 import {NavLink, useLocation} from "react-router-dom";
-import {useFetchPerfil} from "../hooks/usePerfilUsuario.tsx";
+import {useEffect} from "react";
 
 type MenuProps = {
     menuExpanded: boolean;
@@ -12,18 +12,37 @@ type MenuProps = {
 function MenuComponent({menuExpanded, handleMenuExpanded}: MenuProps) {
     const location = useLocation();
 
-    //TEMPORAL
-    const id = `0`;
-    const { perfil } = useFetchPerfil(id);
+    useEffect(() => {
+        const observer = new ResizeObserver((entries) => {
+            for(let entry of entries){
+                if(entry.contentRect.width < 1375){
+                    handleMenuExpanded(false);
+                }else{
+                    handleMenuExpanded(true);
+                }
+            }
+        })
+
+        observer.observe(document.body);
+
+        return () => {
+            observer.disconnect();
+        }
+
+    }, []);
+
     return (
         <>
             <div className="d-flex flex-column justify-content-between custom-primary py-5 px-3 pe-4" style={{ height: '100%'}}>
                 <div className="w-100">
                     <Row className="d-flex align-items-center mb-5">
-                        <Col xs={10}>
-                            <h1 className="text-white fw-bold fs-3 mb-0">CYBER ARENA</h1>
-                        </Col>
-                        <Col xs={2} className="d-flex justify-content-end">
+                            {
+                                menuExpanded &&
+                                <Col xs={10}>
+                                    <h1 className="text-white fw-bold fs-3 mb-0">CYBER ARENA</h1>
+                                </Col>
+                            }
+                        <Col xs={menuExpanded ? 2 : 12} className={`d-flex ${menuExpanded ? "justify-content-end" : "justify-content-center"}`}>
                             <Button
                                 className="bg-transparent border-0"
                                 onClick={() => handleMenuExpanded(!menuExpanded)}
@@ -72,14 +91,38 @@ function MenuComponent({menuExpanded, handleMenuExpanded}: MenuProps) {
                         </Button>
                     </NavLink>
                 </div>
-                <div className="d-flex">
-                    <NavLink to={`api/v0/perfil/${id}`} className={`d-flex w-100 align-items-center text-decoration-none text-white py-1 px-4 ${!menuExpanded ? "justify-content-center": ""}`}>
-                        <FontAwesomeIcon icon={faUser} size={"xl"}/>
-                        {
-                            menuExpanded &&
-                            <p className="fs-5 ms-4 mb-0">{perfil?.name}</p>
-                        }
-                    </NavLink>
+                <div className={`d-flex justify-content-between ${!menuExpanded ? "flex-column" : ""}`}>
+                    {
+                        localStorage.getItem("token") ?
+                        <>
+                            <NavLink to={`/perfil/${localStorage.getItem("userId")}`} className={`d-flex w-100 align-items-center text-decoration-none text-white py-1 px-4 ${!menuExpanded ? "justify-content-center": ""}`}>
+                                <FontAwesomeIcon icon={faUser} size={"xl"}/>
+                                {
+                                    menuExpanded &&
+                                    <p className="fs-5 ms-3 mb-0">{localStorage.getItem("username")}</p>
+                                }
+                            </NavLink>
+                            <NavLink
+                                to="/login"
+                                className={`d-flex w-100 align-items-center text-decoration-none text-white py-1 px-4 ${!menuExpanded ? "justify-content-center mt-4": "justify-content-end"}`}
+                                onClick={() => {
+                                    localStorage.removeItem("token");
+                                    localStorage.removeItem("username");
+                                    localStorage.removeItem("userId");
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faRightFromBracket} size={"xl"}/>
+                            </NavLink>
+                        </>
+                        :
+                        <>
+                            <NavLink to="/login" className="text-decoration-none w-100">
+                                <Button className="w-100 custom-action">
+                                    Iniciar sesión
+                                </Button>
+                            </NavLink>
+                        </>
+                    }
                 </div>
             </div>
         </>

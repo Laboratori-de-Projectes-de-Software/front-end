@@ -36,4 +36,5 @@ body{
 
 .custom-action {
   background-color: var(--custom-action);
+  border-color: var(--custom-action);
 }
