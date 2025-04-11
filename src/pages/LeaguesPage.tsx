@@ -39,6 +39,11 @@ const LeaguesPage: React.FC = () => {
 
     const handleCloseModal = () => {
         setIsModalOpen(false);
+        // Recargar las ligas desde la base de datos
+        setLoading(true);
+        fetchUserLeagues(setLeagues, (error) => {
+            console.error("Error fetching leagues:", error);
+        }).finally(() => setLoading(false));
     };
 
     return (
