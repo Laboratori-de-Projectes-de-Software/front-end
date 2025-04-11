@@ -2,6 +2,7 @@ import React, { useState, useRef, FormEvent } from 'react';
 import { FiUpload } from "react-icons/fi";
 import { FaRobot } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import { API } from '../config';
 
 const CrearBot: React.FC = () => {
   const navigate = useNavigate();
@@ -75,22 +76,20 @@ const CrearBot: React.FC = () => {
       formData.append("nombre", nombreBot);
       formData.append("descripcion", descripcion);
       formData.append("foto", imagePreview || "");
-      formData.append("victorias", "0");
-      formData.append("numJornadas", "0");
       formData.append("API", apiKey);
       formData.append("id", userId);
       
-      const response = await fetch('/Bot/Registrar', {
+      const response = await fetch(API + '/bot', {
         method: 'POST',
-        // Don't set Content-Type header manually; the browser will set it correctly for FormData
         body: formData
       });
+
+      const message = await response.text();
       
       if (!response.ok) {
-        throw new Error(`Error: ${response.status}`);
+        throw new Error(`Error: ${message}`);
       }
       
-      await response.json();
       navigate('/mis-bots');
     } catch (err) {
       console.error('Error:', err);
