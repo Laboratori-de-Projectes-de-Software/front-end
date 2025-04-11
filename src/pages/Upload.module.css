@@ -1,0 +1,135 @@
+.background {
+    background-color: white;
+    height: 945px;
+    width: 1920px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: row;
+}
+
+.create {
+    margin-top: 150px;
+    background-color: white;
+    width: 40%;
+    height: 70%;
+    text-align: center;
+    
+}
+
+.create h2 {
+    color: #4986f7;
+    font-size: 2em;
+    margin-top: 50px;
+}
+
+.upload {
+    width: 40%;
+    height: 70%;
+    text-align: center;
+}
+
+.box {
+    margin-top: 10px;
+    width: 600px;
+    height: 600px;
+    border: #4986f7 solid 5px;
+}
+
+.previewBox {
+    margin-top: 10px;
+    width: 600px;
+    height: 600px;
+    border: #4986f7 solid 5px;
+}
+
+.previewImage {
+    width: 100%;
+    height: 100%;
+}
+
+.uploadBox {
+    margin-right: 130px;
+    color: #4986f7;
+}
+
+.logo {
+    margin-top: 3px;
+    width: 70px;
+    height: 50px;
+}
+
+.homepage {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    width: 400px;
+    padding: 0 175px;
+}
+
+
+.navlink {
+    margin-top: 0px;
+    color: #4986f7;
+    font-size: 34px;
+    transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.navlink:hover {
+    cursor: pointer;
+    color: #3776e4;
+    transform: scale(1.02);
+}
+
+.error {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.inputGroup {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px; /* Espacio entre la etiqueta y el input */
+    margin-bottom: 10px;
+    padding: 10px;
+    color: #4986f7;
+    align-items: flex-start; /* Alinea todo a la izquierda */
+}
+
+.inputGroup label {
+    font-size: 14px;
+    font-weight: bold;
+    text-align: left;
+}
+
+.inputGroup input {
+    width: 100%; /* Ajusta el ancho al contenedor */
+    padding: 8px 0px;
+    border: none;
+    border-bottom: 2px solid #4986f7; /* Solo subrayado */
+    background: transparent;
+    color: #333;
+    font-size: 14px;
+    outline: none;
+    transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.inputGroup input:focus {
+    transform: scale(1.1);
+}
+
+.formContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+button {
+    margin-top: 10px;
+}
+
+p {
+    margin-top: 30px;
+}
