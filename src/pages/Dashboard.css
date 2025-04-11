@@ -127,7 +127,7 @@
 }
 
 /* Tarjetas de bots */
-.bots-cards {
+.cards {
   display: flex;
   flex-direction: column; /* Asegura que los elementos estén en columna */
   justify-content: space-between; /* Distribuye el contenido uniformemente */
@@ -144,13 +144,13 @@
   box-sizing: border-box; /* Incluye el padding en el tamaño total */
 }
 
-.bots-cards:hover {
+.cards:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
   background: rgba(255, 255, 255, 0.12);
 }
 
-.bots-cards::after {
+.cards::after {
   content: "";
   position: absolute;
   left: 0;

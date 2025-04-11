@@ -6,6 +6,8 @@ import Button from "../components/Button";
 import CreateLeagueModal from "../components/CreateLeagueModal";
 import CreateBotModal from "../components/CreateBotModal";
 import { fetchUserBots } from "../controllers/BotController";
+import ButtonCreate from "../components/ButtonCreate";
+import {fetchUserLeagues} from "../controllers/LeaguesController";
 
 const Dashboard: React.FC = () => {
   // Estados para almacenar datos del dashboard
@@ -32,24 +34,13 @@ const Dashboard: React.FC = () => {
       (error) => console.error("Error fetching bots:", error)
     );
 
+    fetchUserLeagues(
+        (leagueData) => setActiveLeagues(leagueData),
+        (error) => console.error("Error fetching leagues:", error)
+    )
+
     // Simulación de carga para otros datos
     setTimeout(() => {
-      setActiveLeagues([
-        {
-          id: 1,
-          name: "Liga Profesional",
-          participants: 8,
-          status: "En curso",
-          progress: 75,
-        },
-        {
-          id: 2,
-          name: "Torneo Novatos",
-          participants: 6,
-          status: "Inscripción",
-          progress: 0,
-        },
-      ]);
 
       setRecentMatches([
         {
@@ -113,7 +104,7 @@ const Dashboard: React.FC = () => {
                 <div className="section-content">
                   {myBots.length > 0 ? (
                     myBots.map((bot) => (
-                      <div className="bots-cards" key={bot.id}>
+                      <div className="cards" key={bot.id}>
                         <div className="bots-info">
                           <div className="bots-name">{bot.name}</div>
                         </div>
@@ -129,7 +120,6 @@ const Dashboard: React.FC = () => {
                   )}
                   <div className="create-new">
                     <Button
-                      className={"create-bot-button"}
                       label="Crear bot"
                       onClick={openBotModal}
                     />
@@ -166,8 +156,7 @@ const Dashboard: React.FC = () => {
                     </div>
                   ))}
                   <div className="create-new">
-                    <Button
-                      className={"create-new-button"}
+                    <ButtonCreate
                       label="Crear liga"
                       onClick={openLeagueModal}
                     />

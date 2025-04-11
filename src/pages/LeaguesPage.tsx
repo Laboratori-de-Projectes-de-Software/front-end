@@ -5,6 +5,7 @@ import Button from "../components/Button";
 import CreateLeagueModal from "../components/CreateLeagueModal";
 import { fetchUserLeagues } from "../controllers/LeaguesController";
 import "./LeaguesPage.css";
+import ButtonCreate from "../components/ButtonCreate";
 
 const LeaguesPage: React.FC = () => {
     const [leagues, setLeagues] = useState<any[]>([]);
@@ -51,9 +52,7 @@ const LeaguesPage: React.FC = () => {
                         ))}
                     </div>
                 )}
-                <Button
-                    isTransparent={false}
-                    className="create-league-button"
+                <ButtonCreate
                     label="Crear nueva liga"
                     onClick={handleCreateLeague}
                 />

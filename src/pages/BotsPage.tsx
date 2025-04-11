@@ -5,6 +5,7 @@ import Button from "../components/Button";
 import CreateBotModal from "../components/CreateBotModal";
 import { fetchUserBots } from "../controllers/BotController";
 import "./BotsPage.css";
+import ButtonCreate from "../components/ButtonCreate";
 
 const BotsPage: React.FC = () => {
   const [bots, setBots] = useState<any[]>([]);
@@ -56,9 +57,7 @@ const BotsPage: React.FC = () => {
             ))}
           </div>
         )}
-        <Button
-          isTransparent={false}
-          className={"create-bot-button"}
+        <ButtonCreate
           label="Crear Bot"
           onClick={handleCreateBot}
         />

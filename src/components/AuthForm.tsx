@@ -49,7 +49,6 @@ const AuthForm: React.FC<AuthFormProps> = ({ campos, modo }) => {
         <Button
             onClick={handleSubmit}
             label={modo === "login" ? "Ingresar" : "Registrarse"}
-            className="login-button"
         />
       </form>
   );

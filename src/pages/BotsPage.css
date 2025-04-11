@@ -35,7 +35,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   text-align: center;
   transition: transform 0.2s, box-shadow 0.2s;
-  border: 1px solid rgba(100, 100, 255, 0.3);
+  border: 1px solid rgb(38, 114, 64);
   display: flex; /* Mejora el centrado interno */
   flex-direction: column;
   align-items: center;
@@ -44,7 +44,7 @@
 
 .bot-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 6px 12px rgba(100, 100, 255, 0.4);
+  box-shadow: 0 6px 12px rgb(107, 219, 146);
 }
 
 .bot-name {
@@ -93,7 +93,7 @@
 .create-bot-button {
   margin: 30px auto; /* Centrado horizontal */
   display: block; /* Mejora el centrado */
-  background: linear-gradient(135deg, #0d663a, #1e3a8a);
+  background: linear-gradient(135deg, #1DB954, #326a41, #131617);
   border: none;
   padding: 12px 25px;
   border-radius: 25px;
