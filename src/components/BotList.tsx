@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import BotDetails from "./BotDetails";
+import { getUserInfo } from "../utils/auth";
 
-interface Bot {
+export interface Bot {
   botId: number;
   description: string;
   name: string;
@@ -13,6 +14,7 @@ interface Bot {
 
 export const BotList = () => {
   const [bots, setBots] = useState<Bot[]>([]);
+  const [filtrado, setFiltrado] = useState<boolean>(false);
 
   async function initBots(): Promise<Bot[]> {
     // Fetch to api
@@ -43,6 +45,25 @@ export const BotList = () => {
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   };
+
+  function filterByMe(userId: number): void {
+    // Peticion fetch a /bot/owner=?
+    const response = fetch(`http://localhost:8080/bot?owner=${userId}`);
+
+    response
+      .then((res) => {
+        if (!res.ok) {
+          console.error("API response error:", res.status);
+          setBots([]); // Set empty array on error
+          return;
+        }
+        res.json().then((data) => setBots(data));
+      })
+      .catch((error) => {
+        console.error("Failed to fetch bots by owner:", error);
+        setBots([]);
+      });
+  }
 
   const filteredBots = bots.filter((bot) =>
     bot.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -86,7 +107,23 @@ export const BotList = () => {
             onChange={handleSearch}
             className="w-full rounded-full px-4 py-2 bg-slate-800 text-white shadow-md text-sm"
           />
-          <button className="bg-black/70 border border-gray-700 text-white px-4 py-2 rounded-xl text-sm font-bold hover:bg-black/90">
+          <button
+            className="bg-black/70 border border-gray-700 text-white px-4 py-2 rounded-xl text-sm font-bold hover:bg-blue-600 transition-colors"
+            onClick={() => {
+              if (filtrado) {
+                setFiltrado(false);
+                // Volver a cargar todos los bots
+                initBots().then((data) => setBots(data));
+
+                return;
+              }
+
+              filterByMe(getUserInfo().id);
+              setFiltrado(true);
+            }}
+            // Hover title
+            title={filtrado ? "Ver todos los bots" : "Ver mis bots"}
+          >
             <svg
               className="w-4 h-4 text-white"
               xmlns="http://www.w3.org/2000/svg"

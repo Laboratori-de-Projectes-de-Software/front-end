@@ -21,6 +21,8 @@ export const CreateBotForm = ({ className }: { className?: string }) => {
   });
 
   const [imagePreview, setImagePreview] = useState<string>("");
+  const [error, setError] = useState<string>("");
+  const [success, setSuccess] = useState<string>("");
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -42,11 +44,22 @@ export const CreateBotForm = ({ className }: { className?: string }) => {
     if (promise.status === 201) {
       const data = await promise.json();
       console.log("Bot creado con éxito:", data);
-      // Aquí puedes manejar la respuesta después de crear el bot
+      // Aquí puedes manejar la respuesta del servidor
+      setSuccess("Bot creado con éxito: " + data.name);
+      setError("");
+      setForm({
+        name: "",
+        description: "",
+        urlImagen: "",
+        endpoint: "",
+        userId: getUserInfo().id,
+      });
+      setImagePreview("");
     } else {
       const errorData = await promise.json();
       console.error("Error al crear el bot:", errorData);
       // Aquí puedes manejar el error
+      setError("Error al crear el bot: " + errorData.message);
     }
   };
 
@@ -137,7 +150,12 @@ export const CreateBotForm = ({ className }: { className?: string }) => {
               Create Bot
             </button>
 
-            {/* Error handling will go here  */}
+            {/* SUCCESS */}
+            {success && (
+              <div className="text-green-500 text-sm mt-2">{success}</div>
+            )}
+            {/* ERROR */}
+            {error && <div className="text-red-500 text-sm mt-2">{error}</div>}
           </div>
         </form>
       </div>

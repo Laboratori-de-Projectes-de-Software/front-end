@@ -1,34 +1,22 @@
 import React, { useState } from "react";
-
-interface BotStats {
-  victoria: number;
-  empate: number;
-  derrota: number;
-}
+import type { Bot } from "./BotList";
 
 interface BotDetailsProps {
-  bot: {
-    id: number;
-    name: string;
-    emotion: string;
-    prompt: string;
-    image: string;
-    stats: BotStats;
-  };
+  bot: Bot;
   onClose: () => void;
 }
 
 export default function BotDetails({ bot, onClose }: BotDetailsProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState(bot.name);
-  const [prompt, setPrompt] = useState(bot.prompt);
-  const [image, setImage] = useState(bot.image);
+  const [prompt, setPrompt] = useState(bot.description);
+  const [image, setImage] = useState(bot.urlImagen);
 
   // Guardamos los valores originales para poder cancelar
   const handleCancel = () => {
     setName(bot.name);
-    setPrompt(bot.prompt);
-    setImage(bot.image);
+    setPrompt(bot.description);
+    setImage(bot.urlImagen);
     setIsEditing(false);
   };
 
@@ -92,7 +80,7 @@ export default function BotDetails({ bot, onClose }: BotDetailsProps) {
                   d="M16.5 18.75h-9m9 0a3 3 0 0 1 3 3h-15a3 3 0 0 1 3-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 0 1-.982-3.172M9.497 14.25a7.454 7.454 0 0 0 .981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 0 0 7.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M7.73 9.728a6.726 6.726 0 0 0 2.748 1.35m8.272-6.842V4.5c0 2.108-.966 3.99-2.48 5.228m2.48-5.492a46.32 46.32 0 0 1 2.916.52 6.003 6.003 0 0 1-5.395 4.972m0 0a6.726 6.726 0 0 1-2.749 1.35m0 0a6.772 6.772 0 0 1-3.044 0"
                 />
               </svg>
-              <span className="text-white">{bot.stats.victoria}</span>
+              <span className="text-white">{bot.nwins}</span>
             </div>
             <div className="flex items-center gap-2">
               <svg
@@ -109,7 +97,7 @@ export default function BotDetails({ bot, onClose }: BotDetailsProps) {
                   d="M3.75 9h16.5m-16.5 6.75h16.5"
                 />
               </svg>
-              <span className="text-white">{bot.stats.empate}</span>
+              <span className="text-white">{bot.ndraws}</span>
             </div>
             <div className="flex items-center gap-2">
               <svg
@@ -126,12 +114,12 @@ export default function BotDetails({ bot, onClose }: BotDetailsProps) {
                   d="M6 18L18 6M6 6l12 12"
                 />
               </svg>
-              <span className="text-white">{bot.stats.derrota}</span>
+              <span className="text-white">{bot.nloses}</span>
             </div>
           </div>
           <div className="flex items-center gap-4">
             <span className="bg-black/70 text-white text-xs px-3 py-1.5 rounded-full font-medium border border-gray-700">
-              {bot.emotion}
+              {/* {bot.emotion} */}
             </span>
             {!isEditing && (
               <button
