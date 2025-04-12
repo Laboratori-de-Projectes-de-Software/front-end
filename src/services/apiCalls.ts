@@ -4,4 +4,4 @@ export const registerUser = async (data: Object) => await postData("/auth/signup
 
 export const login = async (data: Object) => await postData("/auth/login", data);
 
-export const home = async () => await getData("/league/all");
+export const home = async (data: Object) => await getData("/league/all", data);
