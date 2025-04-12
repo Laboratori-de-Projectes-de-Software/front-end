@@ -1,4 +1,4 @@
-import { getLeaguesByUser, createLeague, updateLeaguebyId } from "../models/LeaguesModel";
+import { getLeaguesByUser, createLeague, updateLeaguebyId, fetchLeagueByIdModel } from "../models/LeaguesModel";
 import { jwtDecode } from "jwt-decode";
 import { isValidToken } from "../api/AuthUtils";
 
@@ -103,5 +103,24 @@ export const updateLeague = async (
     if (onError) {
       onError(error instanceof Error ? error.message : "Unknown error");
     }
+  }
+};
+
+/**
+ * Fetches league data by ID
+ * @param leagueId ID of the league
+ * @returns League data
+ * @throws Error if the request fails
+ */
+export const fetchLeagueById = async (leagueId: number) => {
+  if (!leagueId) {
+    throw new Error("League ID is required.");
+  }
+
+  try {
+    return await fetchLeagueByIdModel(leagueId);
+  } catch (error) {
+    console.error("Error fetching league data:", error);
+    throw error;
   }
 };

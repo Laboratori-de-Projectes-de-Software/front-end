@@ -3,6 +3,7 @@ import {
   getUserBots,
   getBotById,
   updateBot,
+  addBotsToLeagueModel,
   Bot,
 } from "../models/BotModel";
 import { jwtDecode } from "jwt-decode";
@@ -84,5 +85,24 @@ export const fetchUserBots = async (
     if (setError) {
       setError(error instanceof Error ? error.message : "Error desconocido");
     }
+  }
+};
+/**
+ * Añade bots a una liga
+ * @param leagueId ID de la liga
+ * @param botIds IDs de los bots a inscribir
+ * @throws Error si ocurre algún problema durante la inscripción
+ */
+export const addBotsToLeague = async (leagueId: number, botIds: string[]) => {
+  if (!leagueId || botIds.length === 0) {
+    throw new Error("La liga y los bots son obligatorios.");
+  }
+
+  try {
+    await addBotsToLeagueModel(leagueId, botIds);
+    console.log("Bots inscritos con éxito en la liga:", leagueId);
+  } catch (error) {
+    console.error("Error al inscribir bots en la liga:", error);
+    throw error;
   }
 };

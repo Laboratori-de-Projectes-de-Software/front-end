@@ -91,3 +91,30 @@ export const updateLeaguebyId = async (
 
   return response.json();
 };
+
+/**
+ * Calls the API to fetch league data by ID
+ * @param leagueId ID of the league
+ * @returns League data
+ * @throws Error if the request fails
+ */
+export const fetchLeagueByIdModel = async (leagueId: number) => {
+  const token = getAuthToken();
+  if (!token) {
+    throw new Error("No valid token found.");
+  }
+
+  const response = await fetch(`http://localhost:8080/api/v0/league/${leagueId}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(await response.text());
+  }
+
+  return response.json();
+};

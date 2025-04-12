@@ -230,3 +230,23 @@ export const updateBot = async (
     throw error;
   }
 };
+
+export const addBotsToLeagueModel = async (leagueId: number, botIds: string[]) => {
+  const token = getAuthToken();
+  if (!token) {
+    throw new Error("No hay token válido.");
+  }
+
+  const response = await fetch(`http://localhost:8080/api/v0/league/${leagueId}/add-bots`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ botIds }),
+  });
+
+  if (!response.ok) {
+    throw new Error(await response.text());
+  }
+};

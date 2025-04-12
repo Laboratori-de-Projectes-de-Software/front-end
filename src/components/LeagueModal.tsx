@@ -1,32 +1,54 @@
 import React, { useState } from "react";
 import "./Modal.css";
 import Button from "./Button";
-import EditLeagueModal from "./EditLeagueModal"; // Import the EditLeagueModal component
+import EditLeagueModal from "./EditLeagueModal";
+import AddBotsModal from "./AddBotsModal";
+import { fetchLeagueById } from "../controllers/LeaguesController"; // Asegúrate de tener esta función
 
-interface LeagueDetailsModalProps {
+interface LeagueModalProps {
     isOpen: boolean;
     onClose: () => void;
     league: {
         id: number;
         name: string;
-        urlImagen: string; // Agregado
-        matchTime: number; // Agregado
-        bots: { id: string; imageUrl: string }[];
+        urlImagen: string;
+        matchTime: number;
+        bots: { id: number; imageUrl: string }[];
         rounds: number;
     } | null;
 }
 
-const LeagueDetailsModal: React.FC<LeagueDetailsModalProps> = ({ isOpen, onClose, league }) => {
-    const [isEditModalOpen, setIsEditModalOpen] = useState(false); // State for EditLeagueModal
+const LeagueModal: React.FC<LeagueModalProps> = ({ isOpen, onClose, league }) => {
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [isAddBotsModalOpen, setIsAddBotsModalOpen] = useState(false);
+    const [currentLeague, setCurrentLeague] = useState(league);
 
-    if (!isOpen || !league) return null;
+    if (!isOpen || !currentLeague) return null;
+
+    const reloadLeagueData = () => {
+        if (currentLeague) {
+            fetchLeagueById(currentLeague.id)
+                .then((updatedLeague) => setCurrentLeague(updatedLeague))
+                .catch((error) => console.error("Error fetching league data:", error));
+        }
+    };
 
     const handleEditClick = () => {
-        setIsEditModalOpen(true); // Open the EditLeagueModal
+        setIsEditModalOpen(true);
     };
 
     const handleCloseEditModal = () => {
-        setIsEditModalOpen(false); // Close the EditLeagueModal
+        setIsEditModalOpen(false);
+        reloadLeagueData(); // Recargar datos de la liga específica
+    };
+
+    const handleAddBotClick = () => {
+        setIsAddBotsModalOpen(true);
+    };
+
+    const handleCloseAddBotModal = () => {
+        setIsAddBotsModalOpen(false);
+        reloadLeagueData(); // Recargar datos de la liga específica
     };
 
     return (
@@ -35,10 +57,10 @@ const LeagueDetailsModal: React.FC<LeagueDetailsModalProps> = ({ isOpen, onClose
                 <button className="close-button" onClick={onClose}>
                     &times;
                 </button>
-                <h2>{league.name}</h2>
+                <h2>{currentLeague.name}</h2>
                 <h3>Bots Inscritos:</h3>
                 <div className="bot-images-container">
-                    {league.bots.map((bot) => (
+                    {currentLeague.bots.map((bot) => (
                         <img
                             key={bot.id}
                             src={bot.imageUrl}
@@ -47,21 +69,27 @@ const LeagueDetailsModal: React.FC<LeagueDetailsModalProps> = ({ isOpen, onClose
                         />
                     ))}
                 </div>
-                <p>Number of Rounds: {league.rounds}</p>
+                <p>Number of Rounds: {currentLeague.rounds}</p>
                 <div className="button-group">
-                    <Button label={"Inscribir Bot"} />
+                    <Button label={"Inscribir Bot"} onClick={handleAddBotClick} />
                     <Button label={"Editar"} onClick={handleEditClick} />
                 </div>
             </div>
 
-            {/* Render the EditLeagueModal */}
+            <AddBotsModal
+                isOpen={isAddBotsModalOpen}
+                onClose={handleCloseAddBotModal}
+                leagueId={currentLeague.id}
+                currentBots={currentLeague.bots}
+            />
+
             <EditLeagueModal
                 isOpen={isEditModalOpen}
                 onClose={handleCloseEditModal}
-                league={league} // Pass the league data to the modal
+                league={currentLeague}
             />
         </div>
     );
 };
 
-export default LeagueDetailsModal;
+export default LeagueModal;
