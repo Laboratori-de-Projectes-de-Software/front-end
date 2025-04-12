@@ -3,7 +3,11 @@ import { Button, Card } from "react-bootstrap";
 import foto from "../assets/img/ligabanner.jpg";
 import { leagueResponse } from "../types/LeagueResponse.tsx";
 import {useNavigate, useParams} from "react-router-dom";
-import {deleteLeague, getLeague} from "../services/apiCalls.ts";
+import {deleteLeague, getLeague, registerBotToLeague} from "../services/apiCalls.ts";
+import targetRegisterBot from "../components/TargetRegisterBot.tsx";
+import {useFetchListarBots} from "../hooks/useBot.tsx";
+import TargetaBotComponent from "../components/TargetaBotComponent.tsx";
+import {FiUser} from "react-icons/fi";
 
 
 
@@ -37,12 +41,11 @@ export default function LeagueOverviewPage() {
         fetchLeague();
     }, [leagueId]);
 
-    const handleRegisterBot = () => {
-        alert("Registro de bot no implementado");
+    function handleRegisterBot () {
+        navigate(`/league/${leagueId}/register`);
     };
 
     const handleViewLeague = () => {
-        //CAMBIAR POR EL ID DE LA LIGA
         navigate(`/league/${leagueId}/leaderboard`);
     };
 
