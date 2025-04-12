@@ -6,11 +6,13 @@ export const registerUser = async (data: Object) => await postData("/auth/signup
 export const login = async (data: Object) => await postData("/auth/login", data);
 
 export const home = async (data: Object) => await getData("/league/all", data);
+
 export const getLeague = async (leagueId: number, data: Object) => await getData(`/league/${leagueId}`, data);
 
 export const deleteLeague = async (leagueId: number, data: Object) => await deleteData(`/league/${leagueId}`, data);
 
 export const listarBots = async (data: Object) => await getData("/bot", data);
+
 export const obtenerBot = async (data: number) => await getData(`/bot/${data}`, {});
 
 export const getEnfrentamiento = async (matchId: number) => await getData(`/match/${matchId}`, {});

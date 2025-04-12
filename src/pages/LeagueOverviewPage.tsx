@@ -3,7 +3,7 @@ import { Button, Card } from "react-bootstrap";
 import foto from "../assets/img/ligabanner.jpg";
 import { leagueResponse } from "../types/LeagueResponse.tsx";
 import {useNavigate, useParams} from "react-router-dom";
-import {deleteLeague, getLeague} from "../services/apiCalls.ts"; // Ajusta la ruta según tu estructura
+import {deleteLeague, getLeague} from "../services/apiCalls.ts";
 
 
 
