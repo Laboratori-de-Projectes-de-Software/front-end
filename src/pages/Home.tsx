@@ -9,7 +9,7 @@ import Form from 'react-bootstrap/Form';
 
 interface Ligas {
     leagueId: number
-    state: string
+    status: string
     name: string
     urlImagen: string
     user: number
@@ -58,7 +58,7 @@ const TodasLasLigas = () => {
                     <>
                     <Row className="d-flex align-items-center justify-content-between rounded-4">
                         {ligas.map((liga) => (
-                            (liga.state.toUpperCase() === filter || filter === "") &&
+                            (liga.status.toUpperCase() === filter || filter === "") &&
                             <Col key={liga.leagueId} md={5} lg={3} className="custom-primary rounded-3 text-light p-0 mt-5 mx-2">
                                 <img src={imgPlaceholder} alt="Imagen liga"
                                      className="object-fit- w-100 overflow-hidden rounded-top-4"
@@ -67,10 +67,10 @@ const TodasLasLigas = () => {
                                     <Row className="d-flex align-items-center mb-2 mt-3">
                                         <div>
                                             <FontAwesomeIcon icon={faCircle}
-                                                             color={stateColor[liga.state] || "#000"} size={"sm"}
+                                                             color={stateColor[liga.status] || "#000"} size={"sm"}
                                                              style={{maxWidth: "15px"}}/>
                                             <p className="d-inline ms-2"
-                                               style={{color: stateColor[liga.state]}}>{liga.state}</p>
+                                               style={{color: stateColor[liga.status]}}>{liga.status}</p>
                                         </div>
                                     </Row>
                                     <h1 className="fs-3">{liga.name}</h1>

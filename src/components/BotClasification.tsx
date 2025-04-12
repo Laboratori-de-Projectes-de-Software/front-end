@@ -1,16 +1,18 @@
 import { useEffect, useState} from "react";
 import {participationResponse} from "../types/ParticipationResponse.tsx";
 import {API_LEAGUE} from "../config.tsx";
+import {useParams} from "react-router-dom";
 
 
 export const Leaderboard =() => {
     const [bots, setBots] = useState<participationResponse[]>([]);
     const [loading, setLoading] = useState(true);
+    const {leagueId} = useParams();
 
     useEffect(() => {
         const fetchLeaderboard = async () => {
             try {
-                const response = await fetch(`${API_LEAGUE}/1/leaderboard`);
+                const response = await fetch(`${API_LEAGUE}/${leagueId}/leaderboard`);
                 if (!response.ok) throw new Error("Error en la respuesta del servidor");
                 const data = await response.json();
                 console.log("leaderboard", data);

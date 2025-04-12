@@ -39,10 +39,9 @@ export function App() {
                             <Route path="/perfil/:id" element={<PerfilPage/>}/>
                             <Route path="/crear-bot" element={<CrearBot/>}/>
                             <Route path="/crear-liga" element={<CrearLiga/>}/>
-                            <Route path="/league/:leagueId" element={<LeagueOverviewPage leagueId={1}/>}/>
+                            <Route path="/league/:leagueId" element={<LeagueOverviewPage />}/>
                             <Route path="/league/:leagueId/*" element={<LeaderBoardPage/>}/>
                             <Route path="/league/:leagueId/match/:matchId/message" element={<Enfrentamientos />} />
-
                             <Route path="/enfrentamientos" element={<Enfrentamientos/>}/>
                         </Routes>
                     </Col>

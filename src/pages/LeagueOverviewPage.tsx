@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Button, Card } from "react-bootstrap";
 import foto from "../assets/img/ligabanner.jpg";
 import { leagueResponse } from "../types/LeagueResponse.tsx";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {deleteLeague, getLeague} from "../services/apiCalls.ts"; // Ajusta la ruta según tu estructura
 
 
@@ -21,9 +21,12 @@ export const getStatusColor = (status: string): string => {
 };
 
 
-export default function LeagueOverviewPage({ leagueId }: { leagueId: number }) {
+export default function LeagueOverviewPage() {
     const [league, setLeague] = useState<leagueResponse | null>(null);
     const navigate = useNavigate();
+    const { leagueId} = useParams();
+
+
 
 
     useEffect(() => {
@@ -40,7 +43,7 @@ export default function LeagueOverviewPage({ leagueId }: { leagueId: number }) {
 
     const handleViewLeague = () => {
         //CAMBIAR POR EL ID DE LA LIGA
-        navigate(`/league/0/leaderboard`);
+        navigate(`/league/${leagueId}/leaderboard`);
     };
 
     const handleDeleteLeague = async() => {
