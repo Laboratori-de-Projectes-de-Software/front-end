@@ -22,9 +22,26 @@ const Dashboard: React.FC = () => {
 
   // Funciones para controlar modales
   const openLeagueModal = () => setIsLeagueModalOpen(true);
-  const closeLeagueModal = () => setIsLeagueModalOpen(false);
   const openBotModal = () => setIsBotModalOpen(true);
-  const closeBotModal = () => setIsBotModalOpen(false);
+  const closeLeagueModal = () => {
+    setIsLeagueModalOpen(false);
+    // Recargar las ligas desde la base de datos
+    setLoading(true);
+    fetchUserLeagues(
+        (leagueData) => setActiveLeagues(leagueData),
+        (error) => console.error("Error fetching leagues:", error)
+    ).finally(() => setLoading(false));
+  };
+
+  const closeBotModal = () => {
+    setIsBotModalOpen(false);
+    // Recargar los bots desde la base de datos
+    setLoading(true);
+    fetchUserBots(
+        (botData) => setMyBots(botData),
+        (error) => console.error("Error fetching bots:", error)
+    ).finally(() => setLoading(false));
+  };
 
   // Cargar datos del usuario
   useEffect(() => {

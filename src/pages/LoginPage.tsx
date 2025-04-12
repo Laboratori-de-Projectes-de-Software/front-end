@@ -17,6 +17,12 @@ const LoginPage: React.FC = () => {
         <Logo />
         <h1>Iniciar sesión</h1>
         <AuthForm campos={CamposLogin} modo="login" />
+        <p>
+          ¿No tienes una cuenta?{" "}
+          <a href="/register" className="register-link">
+            Regístrate aquí
+          </a>
+        </p>
       </div>
     </div>
   );

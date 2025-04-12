@@ -1,32 +1,32 @@
 import React, { useState } from "react";
 import "./Modal.css";
 import Button from "./Button";
+import EditLeagueModal from "./EditLeagueModal"; // Import the EditLeagueModal component
 
 interface LeagueDetailsModalProps {
     isOpen: boolean;
     onClose: () => void;
     league: {
+        id: number;
         name: string;
-        bots: { id: string; imageUrl: string }[]; // Updated to include bot image URLs
-        rounds: { [round: number]: string[] }; // Example: { 1: ["Match 1", "Match 2"] }
+        urlImagen: string; // Agregado
+        matchTime: number; // Agregado
+        bots: { id: string; imageUrl: string }[];
+        rounds: number;
     } | null;
 }
 
 const LeagueDetailsModal: React.FC<LeagueDetailsModalProps> = ({ isOpen, onClose, league }) => {
-    const [currentRound, setCurrentRound] = useState(1);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false); // State for EditLeagueModal
 
     if (!isOpen || !league) return null;
 
-    const handleNextRound = () => {
-        if (currentRound < Object.keys(league.rounds).length) {
-            setCurrentRound(currentRound + 1);
-        }
+    const handleEditClick = () => {
+        setIsEditModalOpen(true); // Open the EditLeagueModal
     };
 
-    const handlePreviousRound = () => {
-        if (currentRound > 1) {
-            setCurrentRound(currentRound - 1);
-        }
+    const handleCloseEditModal = () => {
+        setIsEditModalOpen(false); // Close the EditLeagueModal
     };
 
     return (
@@ -47,27 +47,19 @@ const LeagueDetailsModal: React.FC<LeagueDetailsModalProps> = ({ isOpen, onClose
                         />
                     ))}
                 </div>
-                <Button label={"Inscribir Bot"} />
-                <ul>
-                    {league.rounds[currentRound]?.map((match, index) => (
-                        <li key={index}>{match}</li>
-                    ))}
-                </ul>
-                <div className="round-navigation">
-                    <button onClick={handlePreviousRound} disabled={currentRound === 1}>
-                        &lt;
-                    </button>
-                    <span>
-                        &nbsp;Jornada {currentRound}&nbsp;
-                    </span>
-                    <button
-                        onClick={handleNextRound}
-                        disabled={currentRound === Object.keys(league.rounds).length}
-                    >
-                        &gt;
-                    </button>
+                <p>Number of Rounds: {league.rounds}</p>
+                <div className="button-group">
+                    <Button label={"Inscribir Bot"} />
+                    <Button label={"Editar"} onClick={handleEditClick} />
                 </div>
             </div>
+
+            {/* Render the EditLeagueModal */}
+            <EditLeagueModal
+                isOpen={isEditModalOpen}
+                onClose={handleCloseEditModal}
+                league={league} // Pass the league data to the modal
+            />
         </div>
     );
 };

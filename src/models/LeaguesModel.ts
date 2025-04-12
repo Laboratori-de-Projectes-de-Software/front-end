@@ -58,3 +58,36 @@ export const createLeague = async (leagueData: {
 
   return response.json();
 };
+
+export const updateLeaguebyId = async (
+    leagueId: number,
+    leagueData: {
+      name: string;
+      urlImagen?: string;
+      rounds: number;
+      matchTime: number;
+    }
+): Promise<any> => {
+  const token = getAuthToken();
+  if (!token) throw new Error("No hay token válido");
+
+  const response = await fetch(`http://localhost:8080/api/v0/league/${leagueId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(leagueData),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    if (response.status === 401) {
+      localStorage.removeItem("token"); // Eliminar token inválido
+      throw new Error("Sesión expirada. Por favor, inicia sesión nuevamente.");
+    }
+    throw new Error(errorText);
+  }
+
+  return response.json();
+};

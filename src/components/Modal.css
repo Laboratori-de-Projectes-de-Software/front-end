@@ -300,7 +300,7 @@
   cursor: pointer;
 }
 
-.round-navigation button {
+.round-navigation, .round-navigation button{
   margin: 5px;
 }
 

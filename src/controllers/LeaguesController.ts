@@ -1,4 +1,4 @@
-import { getLeaguesByUser, createLeague } from "../models/LeaguesModel";
+import { getLeaguesByUser, createLeague, updateLeaguebyId } from "../models/LeaguesModel";
 import { jwtDecode } from "jwt-decode";
 import { isValidToken } from "../api/AuthUtils";
 
@@ -78,6 +78,28 @@ export const createNewLeague = async (
       return;
     }
 
+    if (onError) {
+      onError(error instanceof Error ? error.message : "Unknown error");
+    }
+  }
+};
+
+export const updateLeague = async (
+    leagueId: number,
+    leagueData: {
+      name: string;
+      urlImagen?: string;
+      rounds: number;
+      matchTime: number;
+    },
+    onSuccess: (updatedLeague: any) => void,
+    onError?: (error: string) => void
+) => {
+  try {
+    const updatedLeague = await updateLeaguebyId(leagueId, leagueData);
+    onSuccess(updatedLeague);
+  } catch (error) {
+    console.error("Error updating league:", error);
     if (onError) {
       onError(error instanceof Error ? error.message : "Unknown error");
     }
