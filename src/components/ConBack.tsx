@@ -19,14 +19,17 @@ import {
 
 // The ConBack class implements the ConAPI interface and provides placeholder HTTP requests using Axios.
 export class ConBack implements ConAPI {
-    private CREATE_USER_ROUTE: string = "http://localhost:8080/api/v0/auth/register";
-    private POST_BOT_ROUTE: string = "/api/v0/bot";
-    private GET_LEAGUE_ROUTE: string = "/api/v0/league/";
+    private DOMAIN: string = "http://localhost:8080"
+    
+    // TODO: add the fuil path of the routes with /api/v0
+    private CREATE_USER_ROUTE: string = "/auth/register";
+    private POST_BOT_ROUTE: string = "/bot";
+    private GET_LEAGUE_ROUTE: string = "/league/";
     private GET_BOT_ROUTE: string = this.POST_BOT_ROUTE;
-    private POST_LEAGUE_ROUTE: string = "/api/v0/league";
-    private REGISTER_BOT_TO_LEAGUE_ROUTE: string = "/api/v0/league/";
-    private DELETE_LEAGUE_ROUTE: string = "/api/v0/league/";
-    private GET_MATCHES_LEAGUE_ROUTE: string = "/api/v0/league/";
+    private POST_LEAGUE_ROUTE: string = "/league";
+    private REGISTER_BOT_TO_LEAGUE_ROUTE: string = "/league/";
+    private DELETE_LEAGUE_ROUTE: string = "/league/";
+    private GET_MATCHES_LEAGUE_ROUTE: string = "/league/";
     // Create a new user.
     createUser(user: UserDTORegister): void {
         // Method returns void, so no empty return type needed
@@ -119,7 +122,7 @@ export class ConBack implements ConAPI {
     private generalEnRouteGetter<T>(route: string, errorHandler: (error: Error) => void): T {
         let responseT: T = {} as T;
 
-        axios.get(route).then(response => {
+        axios.get(`${this.DOMAIN}${route}`).then(response => {
             responseT = response.data as T;
         })
             .catch(error => {
@@ -131,11 +134,12 @@ export class ConBack implements ConAPI {
     private generalPost<T>(route: string, paramStructure: any, errorHandler: (error: Error) => void): T {
         let responseT: T = {} as T;
 
-        axios.post(route, paramStructure)
+        axios.post(`${this.DOMAIN}${route}`, paramStructure)
             .then(response => {
                 responseT = response.data as T;
             })
             .catch(error => {
+                console.log(error);
                 errorHandler(error);
             });
 
