@@ -45,7 +45,7 @@ export const Leaderboard =() => {
     // @ts-ignore
     return (
         <div>
-            <LeagueHeader creador={league?.user} estado={league?.status} participantes={league?.bots.length}  />
+            <LeagueHeader creador={league?.user || ""} estado={league?.status || ""} participantes={league?.bots.length || 0}  />
             <h4>CLASIFICACIÓN</h4>
             {bots.map(bot => (
                 <div key={bot.botId} className="card bg-dark text-light mb-3 p-3">

@@ -7,9 +7,9 @@ export const login = async (data: Object) => await postData("/auth/login", data)
 
 export const home = async (data: Object) => await getData("/league/all", data);
 
-export const getLeague = async (leagueId: number, data: Object) => await getData(`/league/${leagueId}`, data);
+export const getLeague = async (leagueId: string | undefined, data: Object) => await getData(`/league/${leagueId}`, data);
 
-export const deleteLeague = async (leagueId: number, data: Object) => await deleteData(`/league/${leagueId}`, data);
+export const deleteLeague = async (leagueId: string | undefined, data: Object) => await deleteData(`/league/${leagueId}`, data);
 
 export const listarBots = async (data: Object) => await getData("/bot", data);
 

@@ -16,7 +16,7 @@ function TargetaBotComponent({name, id, description, urlImage}: BotDetail) {
                 <div className="col-md-4 ">
                     <img
 
-                        src={urlImage}
+                        src={urlImage != null ? urlImage : iconoBot}
                         alt="Bot"
                         className="card-img-letf"
                         style={{width: "100%", maxHeight: "200px", objectFit: "contain"}}
