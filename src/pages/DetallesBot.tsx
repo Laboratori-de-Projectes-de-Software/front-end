@@ -29,7 +29,7 @@ function DetallesBot() {
                     <div className="col-md-4 ">
                         <img
 
-                            src={iconoBot}
+                            src={bot?.urlImage}
                             alt="Bot"
                             className="card-img-letf"
                             style={{width: "100%", maxHeight: "200px", objectFit: "contain"}}

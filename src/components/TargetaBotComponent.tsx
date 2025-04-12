@@ -3,7 +3,7 @@ import iconoBot from "../assets/img/iconoBot.png"
 import {useNavigate} from "react-router-dom";
 
 
-function TargetaBotComponent({name, id, description}: BotDetail) {
+function TargetaBotComponent({name, id, description, urlImage}: BotDetail) {
 
     const navigate = useNavigate();
     const goToDetalleBot = (id) => {
@@ -16,7 +16,7 @@ function TargetaBotComponent({name, id, description}: BotDetail) {
                 <div className="col-md-4 ">
                     <img
 
-                        src={iconoBot}
+                        src={urlImage}
                         alt="Bot"
                         className="card-img-letf"
                         style={{width: "100%", maxHeight: "200px", objectFit: "contain"}}

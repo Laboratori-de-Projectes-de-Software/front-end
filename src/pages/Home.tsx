@@ -60,7 +60,7 @@ const TodasLasLigas = () => {
                         {ligas.map((liga) => (
                             (liga.status.toUpperCase() === filter || filter === "") &&
                             <Col key={liga.leagueId} md={5} lg={3} className="custom-primary rounded-3 text-light p-0 mt-5 mx-2">
-                                <img src={imgPlaceholder} alt="Imagen liga"
+                                <img src={liga.urlImagen} alt="Imagen liga"
                                      className="object-fit- w-100 overflow-hidden rounded-top-4"
                                      style={{height: "175px"}}/>
                                 <div className="p-3">
