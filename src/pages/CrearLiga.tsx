@@ -2,6 +2,7 @@ import React, { useState, useRef, FormEvent } from 'react';
 import { FiUpload, FiClock } from "react-icons/fi";
 import { FaTrophy } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
+import { API_LEAGUE } from '../config';
 
 const CrearLiga: React.FC = () => {
   const navigate = useNavigate();
@@ -69,29 +70,28 @@ const CrearLiga: React.FC = () => {
     setError(null);
 
     const userId = localStorage.getItem('userId') || '1';
+    
     try {
       const numJornadas = numParticipantes - 1;
-      const ligaData = {
-        estado: "open",
-        jornada_actual: 1,
-        nombre_liga: nombreLiga,
-        num_bots: numParticipantes,
-        num_jornadas: numJornadas,
-        usuario_id: userId,
-        imagen: imagePreview
-      };
 
-      const response = await fetch('/api/ligas', {
+      const formData = new FormData();
+            formData.append("nombreLiga", nombreLiga);
+            formData.append("urlImagen", String(imagePreview));
+            formData.append("numJornadas", String(numJornadas));
+            formData.append("matchTime", minutes);
+            formData.append("numBots", String(numParticipantes));
+            formData.append("id", userId);
+            
+      const response = await fetch(API_LEAGUE, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(ligaData)
-      });
+        body: formData
+    });
 
+      const message = await response.text();
+      
       if (!response.ok) {
-        throw new Error(`Error: ${response.status}`);
+        throw new Error(`Error: ${message}`);
       }
-
-      await response.json();
       navigate('/mis-ligas');
     } catch (err) {
       console.error('Error:', err);

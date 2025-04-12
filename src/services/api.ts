@@ -39,3 +39,11 @@ export const putData = async (endpoint: string, data: object) => {
         throw error;
     }
 }
+
+export const deleteData = async (endpoint: string, data: object) => {
+    try{
+        return await api.delete(endpoint, data);
+    } catch (error) {
+        throw error;
+    }
+}

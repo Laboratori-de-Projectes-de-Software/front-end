@@ -3,7 +3,7 @@ export type leagueResponse = {
     status: string;
     name: string;
     urlImagen: string;
-    user: number;
+    user: string;
     rounds: number;
     matchTime: number;
     bots: number[];
