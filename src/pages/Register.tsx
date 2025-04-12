@@ -10,20 +10,47 @@ export function Register() {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [error, setError] = useState("");
 
-    const handleRegister = () => {
+    const handleRegister = async () => {
         if (!id || !password || !confirmPassword) {
             setError("Por favor, completa todos los campos");
             return;
         }
+    
         if (password !== confirmPassword) {
             setError("Las contraseñas no coinciden");
             return;
         }
-        setError("");
-        console.log("ID:", id);
-        console.log("Password:", password);
-        // Aquí podrías agregar lógica para enviar los datos al backend
+    
+        try {
+            const response = await fetch("http://localhost:3001/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    username: id,      // asegúrate de que coincida con lo que espera tu backend
+                    password: password
+                }),
+            });
+    
+            const data = await response.json();
+    
+            if (response.ok && data.success) {
+                console.log("Registro exitoso");
+    
+                // Opcional: redireccionar al login o loguear automáticamente
+                window.location.href = "/"; // o "/Home" si lo deseás
+            } else {
+                // Si data.message viene del backend con info útil, la mostramos
+                setError(data.message || "No se pudo completar el registro");
+            }
+        } catch (error) {
+            setError("Error de conexión con el servidor");
+            console.error(error);
+        }
     };
+    
+    
 
     return (
         <div>

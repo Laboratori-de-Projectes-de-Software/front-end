@@ -9,15 +9,44 @@ export function Login() {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
 
-    const handleLogin = () => {
+    const handleLogin = async () => {
         if (!id || !password) {
             setError("Por favor, completa todos los campos");
             return;
         }
-        setError("");
-        console.log("ID:", id);
-        console.log("Password:", password);
+    
+        try {
+            const response = await fetch("http://localhost:3001/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    username: id,      // o "id" si tu backend lo espera así
+                    password: password
+                }),
+            });
+    
+            const data = await response.json();
+    
+            if (response.ok) {
+                console.log("Token recibido:", data.token);
+                console.log("Expira en:", data.expiresin, "segundos");
+    
+                // Guardar el token en localStorage (opcional)
+                localStorage.setItem("token", data.token);
+    
+                // Redireccionar a otra ruta (ej: Home)
+                window.location.href = "/Home";
+            } else {
+                setError("Credenciales incorrectas o usuario no encontrado");
+            }
+        } catch (error) {
+            setError("Error de conexión con el servidor");
+            console.error(error);
+        }
     };
+    
 
     return (
         <div className = {style.banner} style = {{backgroundImage: `url(${BackgroundImage})`}}>

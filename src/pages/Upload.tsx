@@ -16,19 +16,46 @@ export function Upload() {
     }
     };
 
-    const [id, setId] = useState("");
+    const [botName, setBotName] = useState("");
     const [theme, setTheme] = useState("");
     const [error, setError] = useState("");
 
-    const handleLogin = () => {
-        if (!id || !theme) {
-            setError("Por favor, completa todos los campos");
-            return;
+    const handleUpload = async () => {
+      if (!botName || !theme || !imagePreview) {
+          setError("Por favor, completa todos los campos e incluye una imagen");
+          return;
+      }
+
+      try {
+          const response = await fetch("http://localhost:3001/upload-bot", {
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                  bot: {
+                      nombre: botName,
+                      tema: theme,
+                      imagen: imagePreview // ya está en base64
+                  }
+              }),
+          });
+
+          const data = await response.json();
+
+          if (response.ok && data.bot) {
+            console.log("Bot recibido del backend:", data.bot);
+            // Mostrar mensaje de éxito
+            alert(`Bot "${data.bot.nombre}" creado con ID: ${data.bot.id}`);
+            // Opcional: redirigir o limpiar formulario
+        } else {
+            setError("No se pudo crear el bot");
         }
-        setError("");
-        console.log("ID:", id);
-        console.log("Theme:", theme);
-    };
+      } catch (error) {
+          setError("Error de conexión con el servidor");
+          console.error(error);
+      }
+  };
 
   return (
     <div>
@@ -44,8 +71,8 @@ export function Upload() {
                     <label>Nombre:</label>
                     <input 
                         type="text" 
-                        value={id} 
-                        onChange={(e) => setId(e.target.value)} 
+                        value={botName} 
+                        onChange={(e) => setBotName(e.target.value)} 
                         required 
                     />
                 </div>
@@ -59,7 +86,7 @@ export function Upload() {
                     />
                 </div>
                 {error && <p className={style.error}>{error}</p>}
-                <button type="button" onClick={handleLogin}>Crear Bot</button>
+                <button type="button" onClick={handleUpload}>Crear Bot</button>
             </form>
         </div>
         <div className={style.upload}>
