@@ -19,7 +19,7 @@ import {
 
 // The ConBack class implements the ConAPI interface and provides placeholder HTTP requests using Axios.
 export class ConBack implements ConAPI {
-    private CREATE_USER_ROUTE: string = "/api/v0/auth/register";
+    private CREATE_USER_ROUTE: string = "http://localhost:8080/api/v0/auth/register";
     private POST_BOT_ROUTE: string = "/api/v0/bot";
     private GET_LEAGUE_ROUTE: string = "/api/v0/league/";
     private GET_BOT_ROUTE: string = this.POST_BOT_ROUTE;
