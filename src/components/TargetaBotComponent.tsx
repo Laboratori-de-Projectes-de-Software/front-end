@@ -1,39 +1,57 @@
-import {BotDetail} from "../types/BotDetail.tsx";
-import iconoBot from "../assets/img/iconoBot.png"
-import {useNavigate} from "react-router-dom";
+import { BotDetail } from "../types/BotDetail.tsx";
+import iconoBot from "../assets/img/iconoBot.png";
+import { useNavigate } from "react-router-dom";
+import { registerBotToLeague } from "../services/apiCalls.ts";
 
+interface Props extends BotDetail {
+    leagueId?: string;
+}
 
-function TargetaBotComponent({name, id, description, urlImage}: BotDetail) {
-
+function TargetaBotComponent({ name, id, description, urlImage, leagueId }: Props) {
     const navigate = useNavigate();
-    const goToDetalleBot = (id) => {
-        navigate(`${id}`);
-    };
-    return (
-        <div className="card p-0 shadow-lg bg-dark text-white rounded-4">
-            <div className="row ">
-                {/*IMAGEN BOT*/}
-                <div className="col-md-4 ">
-                    <img
 
+    const goToDetalleBot = (id: number) => {
+        navigate(`/mis-bots/${id}`);
+    };
+
+    const handleRegisterBot = async () => {
+        if (!leagueId) return;
+        const res = await registerBotToLeague(leagueId, id );
+
+        if (res.status === 201) {
+            alert("Bot registrado con éxito");
+            navigate(`/league/${leagueId}`);
+        } else {
+            alert("Error al registrar el bot");
+        }
+    };
+
+    return (
+        <div className="card p-0 shadow-lg bg-dark text-white rounded-4 mb-4">
+            <div className="row">
+                <div className="col-md-4">
+                    <img
                         src={urlImage != null ? urlImage : iconoBot}
                         alt="Bot"
-                        className="card-img-letf"
-                        style={{width: "100%", maxHeight: "200px", objectFit: "contain"}}
+                        className="card-img-left"
+                        style={{ width: "100%", maxHeight: "200px", objectFit: "contain" }}
                     />
-
                 </div>
 
-                {/* Datos del bot */}
                 <div className="col-md-6">
-
                     <h2 className="fw-bold">{name}</h2>
                     <p className="text-light fs-4 fw-semibold">{description}</p>
 
-                    <button className="btn btn-primary btn-lg " onClick={() => goToDetalleBot(id)}>Ver BOT</button>
-
+                    {leagueId ? (
+                        <button className="btn btn-success btn-lg" onClick={handleRegisterBot}>
+                            Registrar en liga
+                        </button>
+                    ) : (
+                        <button className="btn btn-primary btn-lg" onClick={() => goToDetalleBot(id)}>
+                            Ver BOT
+                        </button>
+                    )}
                 </div>
-
             </div>
         </div>
     );

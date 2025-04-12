@@ -16,3 +16,7 @@ export const listarBots = async (data: Object) => await getData("/bot", data);
 export const obtenerBot = async (data: number) => await getData(`/bot/${data}`, {});
 
 export const getEnfrentamiento = async (matchId: number) => await getData(`/match/${matchId}`, {});
+
+export const registerBotToLeague = async (leagueId: number | string, botId: number) => {
+    return await postData(`/league/${leagueId}/bot`, { botId });
+};

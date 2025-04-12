@@ -7,8 +7,7 @@ import {useFetchListarBots} from "../hooks/useBot.tsx";
 function MisBots() {
 
 
-    const {id} = useParams();
-    console.log(id);
+    const {leagueId: leagueId} = useParams();
     const {botList, loading, error} = useFetchListarBots();
 
     if (loading) return <p className="text-center mt-5">Cargando bot...</p>;
@@ -23,7 +22,7 @@ function MisBots() {
                 <h3 className="fw-bold">MIS BOTS</h3>
             </div>
             {botList?.map((bot)=>(
-                <TargetaBotComponent {...bot} ></TargetaBotComponent>
+                <TargetaBotComponent key={bot.id} {...bot} leagueId={leagueId} />
             ))}
 
         </div>
