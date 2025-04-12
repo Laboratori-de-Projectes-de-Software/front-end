@@ -11,6 +11,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import EditIcon from "@mui/icons-material/Edit";
 import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 interface Props {
   id: number;
@@ -20,6 +21,7 @@ interface Props {
   onJoin?: () => void;
   onStart?: (id: number) => void;
   onEdit?: (id: number) => void;
+  onDelete?: (id: number) => void; // Nueva prop
   isAllLeaguesSection?: boolean;
   isMyLeaguesSection?: boolean;
 }
@@ -32,6 +34,7 @@ export default function LeagueCard({
   onJoin,
   onStart,
   onEdit,
+  onDelete,
   isAllLeaguesSection,
   isMyLeaguesSection,
 }: Props) {
@@ -143,7 +146,22 @@ export default function LeagueCard({
             </IconButton>
           </Tooltip>
         )}
-
+{isMyLeaguesSection && onDelete && (
+  <Tooltip title="Eliminar liga">
+    <IconButton
+      onClick={() => onDelete(id)}
+      sx={{
+        color: "cyan",
+        backgroundColor: "#0a0f1d",
+        "&:hover": {
+          backgroundColor: "rgba(255,0,0,0.1)",
+        },
+      }}
+    >
+      <DeleteIcon />
+    </IconButton>
+  </Tooltip>
+)}
 
         {isMyLeaguesSection && onEdit && (
           <Tooltip title="Editar liga">

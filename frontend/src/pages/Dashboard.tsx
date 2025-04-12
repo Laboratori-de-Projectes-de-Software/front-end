@@ -120,7 +120,32 @@ export default function Dashboard() {
     }
     return "INACTIVE"; // Valor por defecto
   }
-
+  const handleDeleteLeague = async (leagueId: number) => {
+    if (window.confirm("¿Estás seguro de que quieres eliminar esta liga? Esta acción no se puede deshacer.")) {
+      try {
+        const res = await fetch(`http://localhost:8080/api/v0/league/${leagueId}`, {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${token}` },
+        });
+  
+        if (res.ok) {
+          // Actualizar el estado para reflejar la eliminación
+          if (section === "myLeagues") {
+            fetchUserLeagues();
+          } else if (section === "allLeagues") {
+            fetchAllLeagues();
+          }
+          setJoinSuccess(true);
+        } else {
+          console.error("Error al eliminar la liga:", res.status);
+          setJoinError(true);
+        }
+      } catch (err) {
+        console.error("Error de red al eliminar la liga:", err);
+        setJoinError(true);
+      }
+    }
+  };
   const handleJoinLeague = async (leagueId: number) => {
     try {
       const res = await fetch(`http://localhost:8080/api/v0/bot?owner=${username}`, {
@@ -588,13 +613,15 @@ export default function Dashboard() {
                         id={league.leagueId}
                         name={league.name}
                         status={league.status}
+                        onDelete={(id) => handleDeleteLeague(id)} // Nueva prop
                         onView={() => {
                           if (league.status === "ACTIVE" || league.status === "FINISHED") {
                             navigate("/league", { state: { leagueId: league.leagueId } });
                           } else {
                             fetchLeagueById(league.leagueId);
                           }
-                        }}                        
+                        }
+                      }                        
                       />
                     ))}
                 </Box>
@@ -672,6 +699,7 @@ export default function Dashboard() {
                             setSection("registerLeague");
                           }
                         }}
+                        onDelete={(id) => handleDeleteLeague(id)} // Nueva prop
                         isMyLeaguesSection
                       />
                     ))}
@@ -706,6 +734,7 @@ export default function Dashboard() {
                         }
                       }}                      
                       onJoin={() => handleJoinLeague(league.leagueId)}
+                       onDelete={(id) => handleDeleteLeague(id)} // Nueva prop
                       isAllLeaguesSection
                     />
                   ))}
