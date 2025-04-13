@@ -16,7 +16,7 @@ import {
     ParticipationResponseDTO,
     MessageResponseDTO
 } from './ConAPI';
-import { UserAlreadyExists, HttpError} from './ConErrors';
+import { UserAlreadyExists, HttpError } from './ConErrors';
 
 // The ConBack class implements the ConAPI interface and provides placeholder HTTP requests using Axios.
 export class ConBack implements ConAPI {
@@ -57,8 +57,8 @@ export class ConBack implements ConAPI {
     }
 
     // Login a user and return the user response data.
-    loginUser(user: UserDTOLogin): UserResponseDTO {
-        return {} as UserResponseDTO;
+    loginUser(user: UserDTOLogin): Promise<UserResponseDTO> {
+        return {} as Promise<UserResponseDTO>;
     }
 
     // Post a new bot and return its response data.
@@ -68,18 +68,18 @@ export class ConBack implements ConAPI {
     }
 
     // Retrieve all bot summaries associated with a given user.
-    getAllBotsUser(userId: BigInteger): BotSummaryResponseDTO[] {
-        return [] as BotSummaryResponseDTO[];
+    getAllBotsUser(userId: BigInteger): Promise<BotSummaryResponseDTO[]> {
+        return {} as Promise<BotSummaryResponseDTO[]>;
     }
 
     // Retrieve a single bot (the interface takes userId as a parameter here as a placeholder).
-    getBot(botId: BigInteger): BotResponseDTO {
+    getBot(botId: BigInteger): Promise<BotResponseDTO> {
         return this.generalEnRouteGetter<BotResponseDTO>(`${this.GET_BOT_ROUTE}${botId}`, (_ => { }));
     }
 
     // Update a bot. (Note: Since BotDTO doesn't have an id in its structure, we use a placeholder endpoint.)
-    updateBot(bot: BotDTO): BotResponseDTO {
-        return {} as BotResponseDTO;
+    updateBot(bot: BotDTO): Promise<BotResponseDTO> {
+        return {} as Promise<BotResponseDTO>;
     }
 
     // Create a new league.
@@ -88,67 +88,66 @@ export class ConBack implements ConAPI {
     }
 
     // Retrieve all leagues associated with a specific user.
-    getAllLeaguesUser(userId: BigInteger): LeagueResponseDTO[] {
-        return [] as LeagueResponseDTO[];
+    getAllLeaguesUser(userId: BigInteger): Promise<LeagueResponseDTO[]> {
+        return {} as Promise<LeagueResponseDTO[]>;
     }
 
     // Retrieve a specific league by its id.
-    getLeague(leagueId: BigInteger): LeagueResponseDTO {
+    getLeague(leagueId: BigInteger): Promise<LeagueResponseDTO> {
         return this.generalEnRouteGetter<LeagueResponseDTO>(`${this.GET_LEAGUE_ROUTE}${leagueId}`, (_ => { }));
     }
 
     // Update an existing league.
-    updateLeague(league: LeagueDTO): LeagueResponseDTO {
-        return {} as LeagueResponseDTO;
+    updateLeague(league: LeagueDTO): Promise<LeagueResponseDTO> {
+        return {} as Promise<LeagueResponseDTO>;
     }
 
     // Registers a bot to a league.
-    registerBotToLeague(leagueId: BigInteger, botId: BigInteger): void {
+    registerBotToLeague(leagueId: BigInteger, botId: BigInteger): Promise<void> {
         // Method returns void, so no empty return type needed
-        this.generalPost<void>(`${this.REGISTER_BOT_TO_LEAGUE_ROUTE}${leagueId}/bot`, botId, (_ => { }));
+        return this.generalPost<void>(`${this.REGISTER_BOT_TO_LEAGUE_ROUTE}${leagueId}/bot`, botId, (_ => { }));
     }
 
     // Retrieves league class standings or participation info.
-    getClassLeague(): ParticipationResponseDTO[] {
-        return [] as ParticipationResponseDTO[];
+    getClassLeague(): Promise<ParticipationResponseDTO[]> {
+        return {} as Promise<ParticipationResponseDTO[]>;
     }
 
     // Deletes a league and returns the deleted league data.
-    deleteLeague(leagueId: BigInteger): LeagueResponseDTO {
-        let leagueResponse: LeagueResponseDTO = {} as LeagueResponseDTO;
-        axios.delete(`${this.DELETE_LEAGUE_ROUTE}${leagueId}`).then(response => {
-            leagueResponse = response.data as LeagueResponseDTO;
-        }).catch(_ => {
-
+    deleteLeague(leagueId: BigInteger): Promise<LeagueResponseDTO> {
+        return axios.delete<LeagueResponseDTO>(`${this.DELETE_LEAGUE_ROUTE}${leagueId}`).then(response => {
+            return response.data;
+        }).catch(error => {
+            throw error;
         });
-        return leagueResponse;
     }
 
     // Starts a league by its id.
-    startLeague(leagueId: BigInteger): void {
+    startLeague(leagueId: BigInteger): Promise<void> {
         // Method returns void, so no empty return type needed
+        return {} as Promise<void>;
     }
 
     // Retrieve all matches in a given league.
-    getAllMatchesLeague(leagueId: BigInteger): MatchResponseDTO[] {
+    getAllMatchesLeague(leagueId: BigInteger): Promise<MatchResponseDTO[]> {
         return this.generalEnRouteGetter<MatchResponseDTO[]>(`${this.GET_MATCHES_LEAGUE_ROUTE}${leagueId}/match`, (_ => { }));
     }
 
     // Retrieve all messages for a specific match.
-    getAllMessagesMatch(matchId: BigInteger): MessageResponseDTO[] {
-        return [] as MessageResponseDTO[];
+    getAllMessagesMatch(matchId: BigInteger): Promise<MessageResponseDTO[]> {
+        return {} as Promise<MessageResponseDTO[]>;
     }
 
-    private generalEnRouteGetter<T>(route: string, errorHandler: (error: Error) => void): T {
-        let responseT: T = {} as T;
-
-        axios.get(`${this.DOMAIN}${route}`).then(response => {
-            responseT = response.data as T;
+    private generalEnRouteGetter<T>(route: string, errorHandler: (error: Error) => void): Promise<T> {
+        return axios.get<T>(`${this.DOMAIN}${route}`).then(response => {
+            return response.data;
         })
             .catch(error => {
                 errorHandler(error);
+
+                throw error;
             });
-        return responseT;
+
     }
 
     private generalPost<T>(route: string, paramStructure: any, errorHandler: (error: Error) => void): Promise<T> {

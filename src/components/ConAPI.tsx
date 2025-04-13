@@ -1,20 +1,20 @@
 export interface ConAPI {
     createUser: (user: UserDTORegister) => Promise<void>;
-    loginUser: (user: UserDTOLogin) => UserResponseDTO;
+    loginUser: (user: UserDTOLogin) => Promise<UserResponseDTO>;
     postBot: (bot: BotDTO) => Promise<BotResponseDTO>;
-    getAllBotsUser: (userId: BigInteger) => Array<BotSummaryResponseDTO>;
-    getBot: (botId: BigInteger) => BotResponseDTO;
-    updateBot: (bot: BotDTO) => BotResponseDTO;
+    getAllBotsUser: (userId: BigInteger) => Promise<Array<BotSummaryResponseDTO>>;
+    getBot: (botId: BigInteger) => Promise<BotResponseDTO>;
+    updateBot: (bot: BotDTO) => Promise<BotResponseDTO>;
     postLeague: (league: LeagueDTO) => Promise<LeagueResponseDTO>;
-    getAllLeaguesUser: (userId: BigInteger) => Array<LeagueResponseDTO>;
-    getLeague: (leagueId: BigInteger) => LeagueResponseDTO;
-    updateLeague: (league: LeagueDTO) => LeagueResponseDTO;
-    registerBotToLeague: (leagueId: BigInteger, botId: BigInteger) => void;
-    getClassLeague: () => Array<ParticipationResponseDTO>;
-    deleteLeague: (leagueId: BigInteger) => LeagueResponseDTO;
-    startLeague: (leagueId: BigInteger) => void;
-    getAllMatchesLeague: (leagueId: BigInteger) => Array<MatchResponseDTO>;
-    getAllMessagesMatch: (matchId: BigInteger) => Array<MessageResponseDTO>;
+    getAllLeaguesUser: (userId: BigInteger) => Promise<Array<LeagueResponseDTO>>;
+    getLeague: (leagueId: BigInteger) => Promise<LeagueResponseDTO>;
+    updateLeague: (league: LeagueDTO) => Promise<LeagueResponseDTO>;
+    registerBotToLeague: (leagueId: BigInteger, botId: BigInteger) => Promise<void>;
+    getClassLeague: () => Promise<Array<ParticipationResponseDTO>>;
+    deleteLeague: (leagueId: BigInteger) => Promise<LeagueResponseDTO>;
+    startLeague: (leagueId: BigInteger) => Promise<void>;
+    getAllMatchesLeague: (leagueId: BigInteger) => Promise<Array<MatchResponseDTO>>;
+    getAllMessagesMatch: (matchId: BigInteger) => Promise<Array<MessageResponseDTO>>;
 }
 
 export interface UserDTORegister {
