@@ -31,7 +31,7 @@ const Header: React.FC = () => {
                   <div className="top-level-header__login-decoration"></div>
                 </li>
                 <li>
-                  <button className="top-level-header__login" onClick={() => auth?.logout()}>Clasificación</button>
+                  <button className="top-level-header__login" onClick={() => navigate("user")}>Mi cuenta</button>
                   <div className="top-level-header__login-decoration"></div>
                 </li>
                 <li>

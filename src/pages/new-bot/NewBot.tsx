@@ -15,7 +15,6 @@ const NewBot = () => {
 
     const submitForm = (e: any) => {
         e.preventDefault();
-        console.log(auth?.getUser());
         postBot({
             name,
             description,

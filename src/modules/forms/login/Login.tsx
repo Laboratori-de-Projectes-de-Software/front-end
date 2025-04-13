@@ -22,8 +22,8 @@ const Login: React.FC = () => {
     <form className="login-form" onSubmit={handleSubmit}>
       <h1>BIENVENIDO</h1>
       <h3>Inicia sesión para continuar con tu cuenta</h3>
-      <TextInput value={user} setValue={setUser} text="Usuario"/>
-      <PasswordInput value={password} setValue={setPassword} text="Contraseña"/>
+      <TextInput value={user} setValue={setUser} text="Usuario" />
+      <PasswordInput value={password} setValue={setPassword} text="Contraseña" />
       <button className="login-form__submit" type="submit">
         Iniciar Sesión
       </button>

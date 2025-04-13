@@ -85,7 +85,7 @@ export const appApi = createApi({
         },
       }),
     }),
-    getLeague: builder.query<LeagueResponseDTO, number>({
+    getLeague: builder.query<any, number>({
       query: (owner) => ({
         url: `${import.meta.env.VITE_REACT_APP_API_URL}/league${
           owner ? `?owner=${owner}` : ""
@@ -140,6 +140,11 @@ export const appApi = createApi({
           import.meta.env.VITE_REACT_APP_API_URL
         }/league/${leagueId}/leaderboard`,
         method: "GET",
+        headers: {
+          Authorization:
+            "Bearer " +
+            JSON.parse(localStorage.getItem("user") ?? "{}").body.token,
+        },
       }),
     }),
     deleteLeagueLeagueId: builder.mutation<undefined, number>({
@@ -162,6 +167,11 @@ export const appApi = createApi({
           import.meta.env.VITE_REACT_APP_API_URL
         }/league/${leagueId}/match`,
         method: "GET",
+        headers: {
+          Authorization:
+            "Bearer " +
+            JSON.parse(localStorage.getItem("user") ?? "{}").body.token,
+        },
       }),
     }),
     /*/ --- match --- /*/

@@ -12,16 +12,16 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     const storedUser = localStorage.getItem("user");
     return storedUser ? JSON.parse(storedUser).body : null;
   });
+  const [loading, setIsLoading] = useState(false);
 
   const handleLogin = (userData: UserDTOLogin) => {
+    setIsLoading(true);
     login(userData).unwrap().then((response: UserResponseDTO) => {
-      // TODO: Almacenar solo el token no todo el usuario. 
-      // TODO: Hay que esperar a que se haga el endpoint que 
-      // TODO: devuelva la informacion del usuario a partir del token
-
       localStorage.setItem("user", JSON.stringify(response));
       setUser(response);
+      setIsLoading(false);
     }).catch((error) => {
+      setIsLoading(false);
       console.error("Login error:", error);
     });
   }
@@ -40,7 +40,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ user, handleLogin, logout, isUserLoggedIn, getUser }}>
+    <AuthContext.Provider value={{ user, handleLogin, logout, isUserLoggedIn, getUser, loading }}>
       {children}
     </AuthContext.Provider>
   );
