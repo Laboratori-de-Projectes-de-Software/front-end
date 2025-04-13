@@ -13,6 +13,7 @@ import type {
 } from "../../interfaces/user.interface";
 import type { UserResponseDTO } from "../../interfaces/user.interface";
 import { MatchResponseDTO } from "@interfaces/match.interface";
+import { MessageResponseDTO } from "@interfaces/message.interface";
 
 export const appApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "/api" }),
@@ -140,7 +141,7 @@ export const appApi = createApi({
       }),
     }),
     /*/ --- match --- /*/
-    getMatchMatchIdMessage: builder.query<undefined, number>({
+    getMatchMatchIdMessage: builder.query<MessageResponseDTO[], number>({
       query: (matchId) => ({
         url: `${
           import.meta.env.VITE_REACT_APP_API_URL

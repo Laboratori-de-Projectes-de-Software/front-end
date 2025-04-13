@@ -1,0 +1,109 @@
+@import "compass/css3";
+
+$dark: 'black', #2d2d2d;
+
+$tints: $dark;
+
+$tint    : nth($tints, 1);
+$colour  : nth($tint, 2);
+$colour2 : darken($colour, 10%);
+
+html, body {
+  height: 100%;
+}
+
+body {
+  font: 16px Arial;
+  text-align: center;
+}
+
+.inliner {
+  height: 100%;
+}
+
+.inliner,
+.inliner + .inlined {
+  display        : inline-block;
+  vertical-align : middle;
+}
+
+.bubbles {
+  width : 400px;
+  margin: auto;
+}
+
+%bubble {
+  @include border-radius(7px 7px 10px 10px);
+  
+  position      : relative;
+  padding       : 10px;
+  background    : $colour;
+  border-bottom : 5px solid $colour2;
+    
+  &:before,
+  &:after {
+    content  : "";
+    position : absolute;
+    left     : 60%; // Default for right-aligned bubbles
+    top      : 100%;
+    
+    border-top    : 14px solid $colour;
+    border-bottom : none;
+    border-left   : 17px solid transparent;
+    border-right  : 10px solid transparent;
+  }
+  
+  &:before {
+    padding-top      : 10px;
+    border-top-color : $colour2;
+  }
+  
+  &:after {
+    margin-top: -5px;
+  }
+}
+
+%demo {
+  display: inline-block;
+  margin : 10px;
+}
+
+@each $tint in $tints {
+  $_cls : nth($tint, 1);
+  $_c1  : nth($tint, 2);
+  $_c2  : darken($_c1, 10%);
+  $_c3  : darken($_c1, 15%);
+  
+  .bubble-#{$_cls} {
+    @extend %bubble;
+    @extend %demo;
+    
+    @include text-shadow(
+      0 1px 1px rgba(#fff, 0.5)
+    );
+        
+    background          : $_c1;
+    border-bottom-color : $_c2;
+    color               : transparent;
+    color               : $_c3;
+    
+    &:before {
+      border-top-color : $_c2;
+    }
+    
+    &:after {
+      border-top-color : $_c1;
+    }
+  }
+}
+
+// Left-aligned bubble
+.bubble-left {
+  @extend %bubble;
+  @extend %demo;
+
+  &:before,
+  &:after {
+    left: 20%; // Adjusted for left-aligned bubbles
+  }
+}
