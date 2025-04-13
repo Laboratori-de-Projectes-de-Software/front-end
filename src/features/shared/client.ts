@@ -93,7 +93,7 @@ export const appApi = createApi({
       }),
     }),
 
-    getLeague: builder.query<ClientResponse<LeagueResponseDTO>, number>({
+    getLeague: builder.query<ClientResponse<LeagueResponseDTO[]>, number>({
       query: (owner) => ({
         url: `${import.meta.env.VITE_REACT_APP_API_URL}/league${
           owner ? `?owner=${owner}` : ""
