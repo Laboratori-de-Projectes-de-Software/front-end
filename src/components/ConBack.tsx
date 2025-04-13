@@ -24,7 +24,7 @@ export class ConBack implements ConAPI {
 
     // TODO: add the fuil path of the routes with /api/v0
     private CREATE_USER_ROUTE: string = "/auth/register";
-    private POST_BOT_ROUTE: string = "/bot/";
+    private POST_BOT_ROUTE: string = "/bot";
     private GET_LEAGUE_ROUTE: string = "/league/";
     private GET_BOT_ROUTE: string = this.POST_BOT_ROUTE;
     private POST_LEAGUE_ROUTE: string = "/league/";
