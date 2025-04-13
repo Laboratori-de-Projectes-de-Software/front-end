@@ -1,11 +1,11 @@
 export interface ConAPI {
-    createUser: (user: UserDTORegister) => void;
+    createUser: (user: UserDTORegister) => Promise<void>;
     loginUser: (user: UserDTOLogin) => UserResponseDTO;
-    postBot: (bot: BotDTO) => BotResponseDTO;
+    postBot: (bot: BotDTO) => Promise<BotResponseDTO>;
     getAllBotsUser: (userId: BigInteger) => Array<BotSummaryResponseDTO>;
     getBot: (botId: BigInteger) => BotResponseDTO;
     updateBot: (bot: BotDTO) => BotResponseDTO;
-    postLeague: (league: LeagueDTO) => LeagueResponseDTO;
+    postLeague: (league: LeagueDTO) => Promise<LeagueResponseDTO>;
     getAllLeaguesUser: (userId: BigInteger) => Array<LeagueResponseDTO>;
     getLeague: (leagueId: BigInteger) => LeagueResponseDTO;
     updateLeague: (league: LeagueDTO) => LeagueResponseDTO;

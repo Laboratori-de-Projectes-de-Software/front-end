@@ -1,6 +1,6 @@
 // ConBack.ts
 
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 // Adjust the import path to where your interfaces are defined.
 import {
     ConAPI,
@@ -16,24 +16,44 @@ import {
     ParticipationResponseDTO,
     MessageResponseDTO
 } from './ConAPI';
+import { UserAlreadyExists, HttpError} from './ConErrors';
 
 // The ConBack class implements the ConAPI interface and provides placeholder HTTP requests using Axios.
 export class ConBack implements ConAPI {
     private DOMAIN: string = "http://localhost:8080"
-    
+
     // TODO: add the fuil path of the routes with /api/v0
     private CREATE_USER_ROUTE: string = "/auth/register";
-    private POST_BOT_ROUTE: string = "/bot";
+    private POST_BOT_ROUTE: string = "/bot/";
     private GET_LEAGUE_ROUTE: string = "/league/";
     private GET_BOT_ROUTE: string = this.POST_BOT_ROUTE;
-    private POST_LEAGUE_ROUTE: string = "/league";
+    private POST_LEAGUE_ROUTE: string = "/league/";
     private REGISTER_BOT_TO_LEAGUE_ROUTE: string = "/league/";
     private DELETE_LEAGUE_ROUTE: string = "/league/";
     private GET_MATCHES_LEAGUE_ROUTE: string = "/league/";
     // Create a new user.
-    createUser(user: UserDTORegister): void {
+    createUser(user: UserDTORegister): Promise<void> {
         // Method returns void, so no empty return type needed
-        this.generalPost<void>(this.CREATE_USER_ROUTE, user, (_ => { }));
+        const errorHandler = (error: Error) => {
+            if (axios.isAxiosError(error)) {
+                const axiosError = error as AxiosError;
+                const statusCode = axiosError.response?.status;
+
+                // Transform HTTP status codes into custom errors
+                switch (statusCode) {
+                    case 409:
+                        throw new UserAlreadyExists();
+                    default:
+                        throw new HttpError(
+                            statusCode || 500,
+                            axiosError.message || 'Unknown error occurred'
+                        );
+                }
+            }
+            throw error;
+        }
+
+        return this.generalPost<void>(this.CREATE_USER_ROUTE, user, errorHandler);
     }
 
     // Login a user and return the user response data.
@@ -43,7 +63,7 @@ export class ConBack implements ConAPI {
 
     // Post a new bot and return its response data.
     // It is return as empty is an error is detected
-    postBot(bot: BotDTO): BotResponseDTO {
+    postBot(bot: BotDTO): Promise<BotResponseDTO> {
         return this.generalPost<BotResponseDTO>(this.POST_BOT_ROUTE, bot, (_ => { }));
     }
 
@@ -63,7 +83,7 @@ export class ConBack implements ConAPI {
     }
 
     // Create a new league.
-    postLeague(league: LeagueDTO): LeagueResponseDTO {
+    async postLeague(league: LeagueDTO): Promise<LeagueResponseDTO> {
         return this.generalPost(this.POST_LEAGUE_ROUTE, league, (_ => { }));
     }
 
@@ -111,7 +131,7 @@ export class ConBack implements ConAPI {
 
     // Retrieve all matches in a given league.
     getAllMatchesLeague(leagueId: BigInteger): MatchResponseDTO[] {
-        return this.generalEnRouteGetter<MatchResponseDTO[]>(`${this.GET_MATCHES_LEAGUE_ROUTE}${leagueId}/match`,(_=>{}));
+        return this.generalEnRouteGetter<MatchResponseDTO[]>(`${this.GET_MATCHES_LEAGUE_ROUTE}${leagueId}/match`, (_ => { }));
     }
 
     // Retrieve all messages for a specific match.
@@ -131,19 +151,17 @@ export class ConBack implements ConAPI {
         return responseT;
     }
 
-    private generalPost<T>(route: string, paramStructure: any, errorHandler: (error: Error) => void): T {
-        let responseT: T = {} as T;
-
-        axios.post(`${this.DOMAIN}${route}`, paramStructure)
+    private generalPost<T>(route: string, paramStructure: any, errorHandler: (error: Error) => void): Promise<T> {
+        return axios.post<T>(`${this.DOMAIN}${route}`, paramStructure)
             .then(response => {
-                responseT = response.data as T;
+                return response.data;
             })
             .catch(error => {
-                console.log(error);
                 errorHandler(error);
-            });
 
-        return responseT;
+                throw error;
+
+            });
     }
 
 
