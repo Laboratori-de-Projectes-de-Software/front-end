@@ -46,3 +46,18 @@
     gap: 1em;
     padding: 0em;
 }
+
+.logoutButton {
+    background-color: transparent;
+    color: red;
+    border: none;
+    font-size: 1.2rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+  
+.logoutButton:hover {
+    color: red;
+    transform: scale(1.2);
+    transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
+}

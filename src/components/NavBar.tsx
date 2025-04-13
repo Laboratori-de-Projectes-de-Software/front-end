@@ -9,6 +9,14 @@ const NavBar: React.FC = () => {
         { id: 3, link: "Leagues" },
         { id: 4, link: "Management" }
     ];
+    
+    const user = JSON.parse(localStorage.getItem("user") || "null");
+    const isLoggedIn = user?.isLoggedIn;
+
+    const handleLogout = () => {
+        localStorage.removeItem("user");
+        window.location.href = "/";
+    };
 
     return (
         <div className={styles.navbar}>
@@ -23,6 +31,9 @@ const NavBar: React.FC = () => {
                         <a className={styles.navlink} href={link.link}>{link.link}</a>
                     </li>
                 ))}
+                {isLoggedIn && (
+                    <a className={styles.logoutButton} onClick={handleLogout}>Logout</a>
+                )}
             </ul>
         </div>
     );
