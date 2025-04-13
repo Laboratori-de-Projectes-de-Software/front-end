@@ -6,12 +6,13 @@ import logo from "../assets/img/logo.png";
 
 export function Register() {
     const [id, setId] = useState("");
+    const [mail, setMail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [error, setError] = useState("");
 
     const handleRegister = async () => {
-        if (!id || !password || !confirmPassword) {
+        if (!id || !password || !confirmPassword || !mail) {
             setError("Por favor, completa todos los campos");
             return;
         }
@@ -28,7 +29,8 @@ export function Register() {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    username: id,      // asegúrate de que coincida con lo que espera tu backend
+                    username: id,
+                    mail: mail,
                     password: password
                 }),
             });
@@ -45,7 +47,7 @@ export function Register() {
                 setError(data.message || "No se pudo completar el registro");
             }
         } catch (error) {
-            setError("Error de conexión con el servidor");
+            setError("Error de conexión con el servidor" + error);
             console.error(error);
         }
     };
@@ -69,6 +71,15 @@ export function Register() {
                                 type="text" 
                                 value={id} 
                                 onChange={(e) => setId(e.target.value)} 
+                                required 
+                            />
+                        </div>
+                        <div className={style.inputGroup}>
+                            <label>Mail:</label>
+                            <input 
+                                type="text" 
+                                value={mail} 
+                                onChange={(e) => setMail(e.target.value)} 
                                 required 
                             />
                         </div>
