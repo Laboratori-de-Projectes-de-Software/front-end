@@ -1,5 +1,5 @@
 
-import {deleteData, getData, postData} from "./api.ts";
+import {deleteData, getData, postData, putData} from "./api.ts";
 
 export const registerUser = async (data: Object) => await postData("/auth/signup", data);
 
@@ -20,3 +20,5 @@ export const getEnfrentamiento = async (matchId: number) => await getData(`/matc
 export const registerBotToLeague = async (leagueId: number | string, botId: number) => {
     return await postData(`/league/${leagueId}/bot`, { botId });
 };
+
+export const updateLeague = async (leagueId: string, data: Object) => await putData(`/league/${leagueId}`, data);

@@ -6,6 +6,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import imgPlaceholder from "../assets/img/ligabanner.jpg";
 import {NavLink} from "react-router-dom";
 import Form from 'react-bootstrap/Form';
+import foto from "../assets/img/ligabanner.jpg";
 
 interface Ligas {
     leagueId: number
@@ -49,7 +50,7 @@ const TodasLasLigas = () => {
                     <option value="">Todas</option>
                     <option value="ABIERTA">Abiertas</option>
                     <option value="EN CURSO">En curso</option>
-                    <option value="FINALIZADA">Finalizadas</option>
+                    <option value="CERRADA">Finalizadas</option>
                 </Form.Select>
             </Row>
             {
@@ -57,38 +58,41 @@ const TodasLasLigas = () => {
                     <p className="fs-4 mt-4">No hay ligas disponibles actualmente</p>
                     :
                     <>
-                    <Row className="d-flex align-items-center justify-content-between rounded-4">
+                    <Row className="d-flex align-items-center rounded-4">
                         {ligas.map((liga) => (
                             (liga.status.toUpperCase() === filter || filter === "") &&
-                            <Col key={liga.leagueId} md={5} lg={3} className="custom-primary rounded-3 text-light p-0 mt-5 mx-2">
-                                <img src={liga.urlImagen != "null" ? liga.urlImagen : imgPlaceholder } alt="Imagen liga"
-                                     className="object-fit- w-100 overflow-hidden rounded-top-4"
-                                     style={{height: "175px"}}/>
-                                <div className="p-3">
-                                    <Row className="d-flex align-items-center mb-2 mt-3">
-                                        <div>
-                                            <FontAwesomeIcon icon={faCircle}
-                                                             color={stateColor[liga.status] || "#000"} size={"sm"}
-                                                             style={{maxWidth: "15px"}}/>
-                                            <p className="d-inline ms-2"
-                                               style={{color: stateColor[liga.status]}}>{liga.status}</p>
-                                        </div>
-                                    </Row>
-                                    <h1 className="fs-3">{liga.name}</h1>
-                                    <Row className="d-flex align-items-center mb-2">
-                                        <div>
-                                            <FontAwesomeIcon icon={faUser} size={"lg"} style={{maxWidth: "15px"}}/>
-                                            <p className="d-inline ms-2">{liga.user}</p>
-                                        </div>
-                                    </Row>
-                                    <p>{liga.bots.length} {liga.bots.length === 1 ? "participante" : "participantes"}</p>
-                                    <NavLink to={`/league/${liga.leagueId}`} className="text-decoration-none">
-                                        <Button className="custom-action w-100">
-                                            Ver Liga
-                                        </Button>
-                                    </NavLink>
-                                </div>
-                            </Col>
+                            <>
+                                <Col key={liga.leagueId} md={5} lg={3} className="custom-primary rounded-3 text-light p-0 mt-5 mx-2">
+                                    <img src={liga.urlImagen ? liga.urlImagen : imgPlaceholder } alt="Imagen liga"
+                                         className="object-fit- w-100 overflow-hidden rounded-top-4"
+                                         style={{height: "175px"}}/>
+                                    <div className="p-3">
+                                        <Row className="d-flex align-items-center mb-2 mt-3">
+                                            <div>
+                                                <FontAwesomeIcon icon={faCircle}
+                                                                 color={stateColor[liga.status] || "#000"} size={"sm"}
+                                                                 style={{maxWidth: "15px"}}/>
+                                                <p className="d-inline ms-2"
+                                                   style={{color: stateColor[liga.status]}}>{liga.status}</p>
+                                            </div>
+                                        </Row>
+                                        <h1 className="fs-3">{liga.name}</h1>
+                                        <Row className="d-flex align-items-center mb-2">
+                                            <div>
+                                                <FontAwesomeIcon icon={faUser} size={"lg"} style={{maxWidth: "15px"}}/>
+                                                <p className="d-inline ms-2">{liga.user}</p>
+                                            </div>
+                                        </Row>
+                                        <p>{liga.bots.length} {liga.bots.length === 1 ? "participante" : "participantes"}</p>
+                                        <NavLink to={`/league/${liga.leagueId}`} className="text-decoration-none">
+                                            <Button className="custom-action w-100">
+                                                Ver Liga
+                                            </Button>
+                                        </NavLink>
+                                    </div>
+                                </Col>
+                                <Col sm={1}></Col>
+                            </>
                         ))}
                     </Row>
                     </>
