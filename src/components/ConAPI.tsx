@@ -4,13 +4,13 @@ export interface ConAPI {
     postBot: (bot: BotDTO) => Promise<BotResponseDTO>;
     getAllBotsUser: (userId: BigInteger) => Promise<Array<BotSummaryResponseDTO>>;
     getBot: (botId: BigInteger) => Promise<BotResponseDTO>;
-    updateBot: (bot: BotDTO) => Promise<BotResponseDTO>;
+    updateBot: (bot: BotDTO, botId: BigInteger) => Promise<BotResponseDTO>;
     postLeague: (league: LeagueDTO) => Promise<LeagueResponseDTO>;
     getAllLeaguesUser: (userId: BigInteger) => Promise<Array<LeagueResponseDTO>>;
     getLeague: (leagueId: BigInteger) => Promise<LeagueResponseDTO>;
-    updateLeague: (league: LeagueDTO) => Promise<LeagueResponseDTO>;
+    updateLeague: (league: LeagueDTO, leagueId: BigInteger) => Promise<LeagueResponseDTO>;
     registerBotToLeague: (leagueId: BigInteger, botId: BigInteger) => Promise<void>;
-    getClassLeague: () => Promise<Array<ParticipationResponseDTO>>;
+    getClassLeague: (leagueId: BigInteger) => Promise<Array<ParticipationResponseDTO>>;
     deleteLeague: (leagueId: BigInteger) => Promise<LeagueResponseDTO>;
     startLeague: (leagueId: BigInteger) => Promise<void>;
     getAllMatchesLeague: (leagueId: BigInteger) => Promise<Array<MatchResponseDTO>>;

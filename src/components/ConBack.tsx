@@ -22,15 +22,22 @@ import { UserAlreadyExists, HttpError } from './ConErrors';
 export class ConBack implements ConAPI {
     private DOMAIN: string = "http://localhost:8080"
 
-    // TODO: add the fuil path of the routes with /api/v0
     private CREATE_USER_ROUTE: string = "/auth/register";
+    private LOGIN_USER_ROUTE: string = "/auth/login";
     private POST_BOT_ROUTE: string = "/bot";
+    private GET_USERS_BOTS_ROUTE:string = "/bot?owner=";
+    private UPDATE_BOT_ROUTE: string = "/bot/";
     private GET_LEAGUE_ROUTE: string = "/league/";
+    private GET_USERS_LEAGUES_ROUTE: string = "/league?owner=";
     private GET_BOT_ROUTE: string = this.POST_BOT_ROUTE;
-    private POST_LEAGUE_ROUTE: string = "/league/";
+    private POST_LEAGUE_ROUTE: string = "/league";
+    private UPDATE_LEAGUE_ROUTE: string = "/league/";
     private REGISTER_BOT_TO_LEAGUE_ROUTE: string = "/league/";
+    private GET_LEAGUES_CLASSIFICATION_ROUTE: string = "/league/";
     private DELETE_LEAGUE_ROUTE: string = "/league/";
+    private START_LEAGUE_ROUTE: string = "/league/";
     private GET_MATCHES_LEAGUE_ROUTE: string = "/league/";
+    private GET_MATCHES_MESSAGES_ROUTE: string = "/match/"
     // Create a new user.
     createUser(user: UserDTORegister): Promise<void> {
         // Method returns void, so no empty return type needed
@@ -78,13 +85,16 @@ export class ConBack implements ConAPI {
     }
 
     // Update a bot. (Note: Since BotDTO doesn't have an id in its structure, we use a placeholder endpoint.)
-    updateBot(bot: BotDTO): Promise<BotResponseDTO> {
-        return {} as Promise<BotResponseDTO>;
+    updateBot(bot: BotDTO, botId:BigInteger): Promise<BotResponseDTO> {
+        let updatedBot: Promise<BotResponseDTO> = {} as Promise<BotResponseDTO>
+        axios.put(`${this.UPDATE_BOT_ROUTE}${botId}`, bot).then(response =>{
+            updatedBot = response.data as Promise<BotResponseDTO>;
+        }).catch(_ => { });
+        return updatedBot;
     }
 
     // Create a new league.
     async postLeague(league: LeagueDTO): Promise<LeagueResponseDTO> {
-        console.log(league);
         return this.generalPost(this.POST_LEAGUE_ROUTE, league, (_ => { }));
     }
 
@@ -99,8 +109,12 @@ export class ConBack implements ConAPI {
     }
 
     // Update an existing league.
-    updateLeague(league: LeagueDTO): Promise<LeagueResponseDTO> {
-        return {} as Promise<LeagueResponseDTO>;
+    updateLeague(league: LeagueDTO, leagueId: BigInteger): Promise<LeagueResponseDTO> {
+        let updatedLeague: Promise<LeagueResponseDTO> = {} as Promise<LeagueResponseDTO>;
+        axios.put(`${this.UPDATE_LEAGUE_ROUTE}${leagueId}`,league).then(Response => {
+            updatedLeague = Response.data as Promise<LeagueResponseDTO>;
+        }).catch(_ => { });
+        return updatedLeague;
     }
 
     // Registers a bot to a league.
@@ -157,6 +171,7 @@ export class ConBack implements ConAPI {
                 return response.data;
             })
             .catch(error => {
+                console.log(error);
                 errorHandler(error);
 
                 throw error;
