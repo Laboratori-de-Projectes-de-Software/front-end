@@ -330,6 +330,7 @@ export default function Dashboard() {
 
   const handleStartLeague = async (leagueId: number) => {
     try {
+      console.log("👉 Iniciando liga con ID:", leagueId);
       // Iniciar la liga
       const startRes = await fetch(`http://localhost:8080/api/v0/league/${leagueId}/start`, {
         method: "POST",

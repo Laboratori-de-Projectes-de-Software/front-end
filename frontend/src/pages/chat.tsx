@@ -30,11 +30,11 @@ export default function Chat() {
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
-        height: "100%",
-        maxWidth: "400px",
-        margin: "0 auto",
-        border: "1px solid cyan",
-        borderRadius: "8px",
+        height: "calc(100vh - 32px)", // Altura con margen
+        width: "calc(100vw - 32px)", // Ancho con margen
+        margin: "16px", // Márgenes alrededor del contenedor
+        border: "1px solid cyan", // Borde opcional para resaltar el área
+        borderRadius: "8px", // Bordes redondeados
         padding: "16px",
         backgroundColor: "#1a2333",
         color: "white",
@@ -50,7 +50,6 @@ export default function Chat() {
         sx={{
           flex: 1,
           overflowY: "auto", // Habilitar scroll vertical
-          maxHeight: "300px", // Altura máxima del contenedor del chat
           marginBottom: "16px",
           backgroundColor: "#0a0f1d",
           borderRadius: "8px",
