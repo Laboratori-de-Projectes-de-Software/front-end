@@ -32,9 +32,9 @@ const League : FC<Props> = ({ leagueId }) => {
     return <ErrorPage message="Error al cargar la liga" />
   }
 
-  const leagueInfo = queryLeague.data!;
-  const matches = queryMatches.data!;
-  const leaderboard = queryLeaderboard.data!;
+  const leagueInfo = queryLeague.data!.body;
+  const matches = queryMatches.data!.body;
+  const leaderboard = queryLeaderboard.data!.body;
 
   return (
     <div className="dark-theme">

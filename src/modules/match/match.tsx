@@ -30,7 +30,7 @@ const Match: FC<Props> = ({ leagueId, matchId }) => {
     return <ErrorPage message='Error recuperando la información' />;
   }
 
-  const match = queryMatch.data.find((match) => match.matchId === Number(matchId));
+  const match = queryMatch.data.body.find((match) => match.matchId === Number(matchId));
 
   // Mensajes
   const queryMessages = appApi.useGetMatchMatchIdMessageQuery(Number(matchId), {
@@ -42,7 +42,7 @@ const Match: FC<Props> = ({ leagueId, matchId }) => {
     return <ErrorPage message='Error recuperando los mensajes' />;
   }
 
-  const messages = queryMessages.data;
+  const messages = queryMessages.data?.body;
 
   if (!messages) {
     return <ErrorPage message='Error recuperando los mensajes' />;
@@ -97,16 +97,16 @@ const Match: FC<Props> = ({ leagueId, matchId }) => {
         <div className="match-left">
           <div className="match-bot-info">
             <div className="match-bot-info-image-container">
-              <img src={queryB1.data?.urlImagen} alt={queryB1.data?.name} />
+              <img src={queryB1.data?.body.urlImagen} alt={queryB1.data?.body.name} />
             </div>
-            <div className="match-bot-name">{queryB1.data?.name}</div>
+            <div className="match-bot-name">{queryB1.data?.body.name}</div>
           </div>
         </div>
         <Conversation messages={messagesToSent} />
         <div className="match-right">
           <div className="match-bot-info">
-            <img src={queryB2.data?.urlImagen} alt={queryB2.data?.name} />
-            <div className="match-bot-name">{queryB2.data?.name}</div>
+            <img src={queryB2.data?.body.urlImagen} alt={queryB2.data?.body.name} />
+            <div className="match-bot-name">{queryB2.data?.body.name}</div>
           </div>
         </div>
       </div>
