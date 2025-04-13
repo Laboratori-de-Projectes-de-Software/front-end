@@ -1,50 +1,31 @@
 import React, { useState } from "react";
-import Input from "../../shared/input/Input";
-import type { InputConfig } from "@interfaces/shared/Input-config";
 import { useModal } from "../../modalManager/ModalProvider";
 import "./Register.scss";
 import axios from "axios";
+import TextInput from "@modules/shared/input/text-input/text-input";
+import PasswordInput from "@modules/shared/input/password-input/password-input";
 
 const Register: React.FC = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { openModal } = useModal();
-  const apiUrl = "http://localhost:8081/api/register"; // TODO: Cambiar la url de la api
+  const apiUrl = "http://localhost:8081/api/v0/auth/register"; // TODO: Cambiar la url de la api
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    axios.post(apiUrl, { name, username: email, password }).then((response) => {
+    axios.post(apiUrl, { user: name, mail: email, password }).then((response) => {
       alert(response);
     });
-  };
-
-  const nameInputConfig: InputConfig = {
-    id: "register-name",
-    label: "Nombre",
-    state: setName,
-  };
-
-  const emailInputConfig: InputConfig = {
-    id: "register-email",
-    label: "Email",
-    state: setEmail,
-  };
-
-  const passwordInputConfig: InputConfig = {
-    id: "register-password",
-    label: "Contraseña",
-    state: setPassword,
-    type: "password",
   };
 
   return (
     <form className="register-form" onSubmit={handleSubmit}>
       <h1>Registarse</h1>
       <h3>Regístrate para poder acceder a la web</h3>
-      <Input config={nameInputConfig} />
-      <Input config={emailInputConfig} />
-      <Input config={passwordInputConfig} />
+      <TextInput value={name} setValue={setName} text="Nombre de Usuario"/>
+      <TextInput value={email} setValue={setEmail} text="Email"/>
+      <PasswordInput value={password} setValue={setPassword} text="Contraseña"/>
       <button className="register-form__submit" type="submit">
         Crear cuenta
       </button>

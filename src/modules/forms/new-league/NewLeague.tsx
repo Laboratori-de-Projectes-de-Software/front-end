@@ -1,7 +1,8 @@
 import { useState } from "react";
-import Input from "../../shared/input/Input";
 import "./NewLeague.scss";
-import axios from "axios";
+import TextInput from "@modules/shared/input/text-input/text-input";
+import { appApi } from "../../../features/shared/index";
+import { useAuth } from "../../../auth/AuthProvider";
 
 const NewLeague = () => {
   const [name, setName] = useState("");
@@ -9,25 +10,27 @@ const NewLeague = () => {
   const [rounds, setRounds] = useState(1);
   const [duration, setDuration] = useState(10);
   const [date, setDate] = useState("");
-  const leagueNameConfig = {
-    id: "league-name",
-    label: "Nombre de la Liga",
-    state: setName,
-  };
+  const [postLeague] = appApi.usePostLeagueMutation();
+  const auth = useAuth();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    axios
-      .post("http://localhost:8081/api/create-league", {
-        name,
-        numRounds: rounds,
-        quantity,
-        playTime: duration,
-        date
-      })
+    postLeague({
+      name,
+      urlImagen: "https://example.com/image.png",
+      rounds,
+      matchTime: duration,
+      bots: [],
+      userId: auth!.getUser()!.userId,
+    })
+      .unwrap()
       .then((response) => {
-        alert(response);
-      });
+        console.log("Liga creada:", response);
+      })
+      .catch((error) => {
+        console.error("Error al crear la liga:", error);
+      })
+
   };
 
   const renderRoundsOptions = () => {
@@ -41,7 +44,7 @@ const NewLeague = () => {
   return (
     <form onSubmit={handleSubmit} className="new-league-form">
       <h1>Crear Nueva Liga</h1>
-      <Input config={leagueNameConfig} />
+      <TextInput value={name} setValue={setName} text="Nombre de la liga" />
       <div className="new-league-form__quantity">
         <select
           value={quantity}

@@ -10,7 +10,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [login] = appApi.usePostAuthLoginMutation();
   const [user, setUser] = useState<UserResponseDTO | null>(() => {
     const storedUser = localStorage.getItem("user");
-    return storedUser ? JSON.parse(storedUser) : null;
+    return storedUser ? JSON.parse(storedUser).body : null;
   });
 
   const handleLogin = (userData: UserDTOLogin) => {
@@ -35,8 +35,12 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     return user !== null
   }
 
+  const getUser = () => {
+    return user; 
+  }
+
   return (
-    <AuthContext.Provider value={{ user, handleLogin, logout, isUserLoggedIn }}>
+    <AuthContext.Provider value={{ user, handleLogin, logout, isUserLoggedIn, getUser }}>
       {children}
     </AuthContext.Provider>
   );

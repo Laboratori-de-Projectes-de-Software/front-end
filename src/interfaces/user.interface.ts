@@ -3,6 +3,8 @@ export interface UserResponseDTO {
   expiresIn: string;
   user: string;
   userId: number;
+  mail?: string;
+  phone?: string;
 }
 
 export interface UserDTORegister {
