@@ -18,6 +18,7 @@ const LeaguesPage: React.FC = () => {
     const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
 
     const handleLeagueClick = (league: any) => {
+        console.log("Clicked league:", league);
         setSelectedLeague(league);
         setIsDetailsModalOpen(true);
     };

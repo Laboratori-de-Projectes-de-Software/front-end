@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Modal.css";
 import Button from "./Button";
 import EditLeagueModal from "./EditLeagueModal";
 import AddBotsModal from "./AddBotsModal";
-import { fetchLeagueById } from "../controllers/LeaguesController"; // Asegúrate de tener esta función
+import { fetchLeagueById } from "../controllers/LeaguesController";
 
 interface LeagueModalProps {
     isOpen: boolean;
@@ -23,6 +23,12 @@ const LeagueModal: React.FC<LeagueModalProps> = ({ isOpen, onClose, league }) =>
     const [isAddBotsModalOpen, setIsAddBotsModalOpen] = useState(false);
     const [currentLeague, setCurrentLeague] = useState(league);
 
+    // Sincronizar currentLeague con league cuando esta cambie
+    useEffect(() => {
+        setCurrentLeague(league);
+    }, [league]);
+
+    console.log("LeagueModal props:", { isOpen, league });
     if (!isOpen || !currentLeague) return null;
 
     const reloadLeagueData = () => {
@@ -39,7 +45,7 @@ const LeagueModal: React.FC<LeagueModalProps> = ({ isOpen, onClose, league }) =>
 
     const handleCloseEditModal = () => {
         setIsEditModalOpen(false);
-        reloadLeagueData(); // Recargar datos de la liga específica
+        reloadLeagueData();
     };
 
     const handleAddBotClick = () => {
@@ -48,7 +54,7 @@ const LeagueModal: React.FC<LeagueModalProps> = ({ isOpen, onClose, league }) =>
 
     const handleCloseAddBotModal = () => {
         setIsAddBotsModalOpen(false);
-        reloadLeagueData(); // Recargar datos de la liga específica
+        reloadLeagueData();
     };
 
     return (
