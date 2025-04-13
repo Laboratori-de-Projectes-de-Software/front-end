@@ -1,24 +1,29 @@
 .leagues-page {
   &-header {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 20px 75px;
-    gap: 30px;
+    justify-content: center;
+    flex-direction: column;
+    margin-bottom: 30px;
   }
 
   &-main-container {
-    margin: 0 60px;
     border-radius: 10px;
-    border: none;
-    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
     padding: 20px;
   }
 
   &-leagues-container {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    display: flex;
+    flex-direction: column;
     gap: 20px;
+
+    @media (min-width: 420px) {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+    }
+  
+    @media (min-width: 768px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
   }
 
   &-league-container {
@@ -27,8 +32,15 @@
 
   &-main-title {
     font-family: "Shippori Antique", sans-serif;
-    font-size: 32px;
-    flex: 1;
+    font-size: 20px;
+    text-align: center;
+  }
+
+  &-main-subtitle {
+    font-family: "Shippori Mincho", sans-serif;
+    font-size: 14px;
+    opacity: .8;
+    text-align: center;
   }
 
   &-new {

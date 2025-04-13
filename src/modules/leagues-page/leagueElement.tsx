@@ -1,49 +1,62 @@
 import { FC } from "react";
-import { DateTime } from "luxon";
 import "./leagueElement.scss";
-import { Navigate } from "react-router-dom";
+import { LeagueResponseDTO } from "@interfaces/league.interface";
+import { useNavigate } from "react-router-dom";
+import { useModal } from "@modules/modalManager/ModalProvider";
 
+const LeagueElement: FC<LeagueResponseDTO> = (element) => {
 
-type Props = {
-    id: number;
-    name: string;
-    date: DateTime;
-    playTime: number;
-    numRounds: number;
-    playing: boolean;
-}
+    const navigate = useNavigate();
+    const { openModal } = useModal();
 
-const LeagueElement: FC<Props> = ({id, name, date, numRounds, playTime, playing}) => {
-
-    if (!id) {
-        return null;
-    }
-
-    const handleOnClick = () => {
-        return <Navigate to={`/`} />;
+    const getLeagueStatusLabel = () => {
+        switch (element.state) {
+            case "PENDING":
+                return "Inscripción abierta";
+            case "en curso":
+                return "En curso";
+            case "finalizado":
+                return "Finalizada";
+            default:
+                return "Desconocido";
+        }
     }
 
     return (
-        <div className="league-element">
-            <h2 className="league-element-name">{name}</h2>
-            <div className="league-element-info">
-                <h3 className="league-element-date">Fecha:</h3>
-                <h3 className="league-element-date">{date.toISODate()}</h3>
+        <article className="league-card">
+            <div className="league-card-image">
+                <img src={element.urlImagen || "/image-placeholder.jpg"} alt="" onError={event => {
+                    event.target.src = "/image-placeholder.jpg"
+                }
+                } />
+                <div className={`league-status ${element.state}`}>
+                    {getLeagueStatusLabel()}
+                </div>
             </div>
-            <div className="league-element-info">
-                <h3 className="league-element-num-rounds">Rondas:</h3>
-                <h3 className="league-element-num-rounds">{numRounds}</h3>
+            <div className="league-card-content">
+                <h3 className="league-card-title">{element.name}</h3>
+                <ul className="league-card-details">
+                    <li className="league-detail">
+                        <span className="detail-label">Rondas</span>
+                        <span className="detail-value">{element.rounds}</span>
+                    </li>
+                    <li className="league-detail">
+                        <span className="detail-label">Duración</span>
+                        <span className="detail-value">{element.matchTime} s</span>
+                    </li>
+                    <li className="league-detail">
+                        <span className="detail-label">Participantes</span>
+                        <span className="detail-value">{element.bots.length}</span>
+                    </li>
+                </ul>
+                <div className="league-card-actions">
+                    <button className="league-card-button more-details" onClick={() => navigate("/league/" + element.leagueId)}>Ver detalles</button>
+                    {element.state === "PENDING" && (
+                        <button className="league-card-button add-bot" onClick={() => openModal("add-bot")}>Inscribir bot</button>
+                    )}
+                </div>
             </div>
-            <div className="league-element-info">
-                <h3 className="league-element-play-time">Duración:</h3>
-                <h3 className="league-element-play-time">{playTime}</h3>
-            </div>
-            <div className="league-element-info">
-                <h3 className="league-element-playing">Estado:</h3>
-                <h3 className={`league-element-playing${playing ? '-g' : '-r'}`}>{playing ? 'En juego' : 'Finalizado'}</h3>
-            </div>
-            <button onClick={handleOnClick} className="league-element-button">Ver más información</button>
-        </div>
+        </article>
     );
 }
 

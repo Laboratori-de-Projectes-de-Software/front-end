@@ -152,6 +152,11 @@ export const appApi = createApi({
           import.meta.env.VITE_REACT_APP_API_URL
         }/league/${leagueId}/leaderboard`,
         method: "GET",
+        headers: {
+          Authorization:
+            "Bearer " +
+            JSON.parse(localStorage.getItem("user") ?? "{}").body.token,
+        },
       }),
     }),
 
@@ -177,6 +182,11 @@ export const appApi = createApi({
           import.meta.env.VITE_REACT_APP_API_URL
         }/league/${leagueId}/match`,
         method: "GET",
+        headers: {
+          Authorization:
+            "Bearer " +
+            JSON.parse(localStorage.getItem("user") ?? "{}").body.token,
+        },
       }),
     }),
     

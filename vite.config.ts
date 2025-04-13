@@ -10,6 +10,7 @@ export default defineConfig({
     alias: {
       "@modules": path.resolve(__dirname, "./src/modules"),	
       "@interfaces": path.resolve(__dirname, "./src/interfaces"),
+      "@features": path.resolve(__dirname, "./src/features"),
     }
   }
 })

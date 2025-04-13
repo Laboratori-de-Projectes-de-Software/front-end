@@ -1,114 +1,34 @@
-import { FC, useEffect, useState } from 'react';
-import { DateTime } from 'luxon';
 
-import LeagueElement from '../../modules/leagues-page/leagueElement';
-import axios from 'axios';
-import { LeaguesFilters, LeagueType } from '../../interfaces/league.interface';
+import LeagueElement from '@modules/leagues-page/leagueElement';
 import './leaguesPage.scss';
-import LeagueFilters from '../../modules/leagues-page/leagueFilters';
-import Modal from '../../modules/shared/modal/Modal';
-import NewLeague from '../../modules/forms/new-league/NewLeague';
-
-type Props = LeaguesFilters;
-
-const LeaguesPage: FC<Props> = (Props) => {
-
-  // TODO: Limpiar esto
-  const [leagues, setLeagues] = useState<LeagueType[]>([
-    {
-      date: '2021-10-01 00:00:00',
-      id: 1,
-      name: 'Liga 1',
-      numRounds: 5,
-      playTime: 60,
-      playing: true
-    },
-    {
-      date: '2021-10-01 00:00:00',
-      id: 2,
-      name: 'Liga 1',
-      numRounds: 5,
-      playTime: 60,
-      playing: true
-    },
-    {
-      date: '2021-10-01 00:00:00',
-      id: 3,
-      name: 'Liga 1',
-      numRounds: 5,
-      playTime: 60,
-      playing: true
-    },
-    {
-      date: '2021-10-01 00:00:00',
-      id: 4,
-      name: 'Liga 1',
-      numRounds: 5,
-      playTime: 60,
-      playing: true
-    },
-    {
-      date: '2021-10-01 00:00:00',
-      id: 5,
-      name: 'Liga 1',
-      numRounds: 5,
-      playTime: 60,
-      playing: true
-    }
-  ]);
-  const [filters, setFilters] = useState<LeaguesFilters>(Props)
-  const [modalOpen, setModalOpen] = useState(false);
-  const [isNewLeagueModalOpen, setIsNewLeagueModalOpen] = useState(false);
+import { appApi } from '../../features/shared/index';
+import { useModal } from '@modules/modalManager/ModalProvider';
+import LoadingScreen from '@modules/shared/loading-screen/loading-screen';
+import { LeagueResponseDTO } from '@interfaces/league.interface';
 
 
-  const closeNewLeagueModal = () => setIsNewLeagueModalOpen(false);
-  const closeLoginModal = () => setModalOpen(false);
+const LeaguesPage: React.FC = () => {
 
-  const fetchLeagues = () => {
-    // TODO: Cambiar la URL por la que corresponda
-    axios.post<LeagueType[]>(`${import.meta.env.VITE_REACT_APP_API_URL}/leagues`, { ...filters })
-      .then((response) => {
-        setLeagues(response.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
+  const { data: leaguesData, isLoading } = appApi.useGetLeagueQuery(0);
+  const { openModal } = useModal();
 
-  useEffect(() => {
-    fetchLeagues();
-  });
+  if (isLoading) {
+    return <LoadingScreen message='cargando ligas...' />;
+  }
 
   return (
-    <div className='leagues-page-main-container'>
-      <div className="leagues-page-header">
-        <h2 className='leagues-page-main-title'>Listado de ligas</h2>
-        <button className='leagues-page-new' onClick={() => setIsNewLeagueModalOpen(true)}>Nueva liga</button>
-        <button className='leagues-page-filters-button' onClick={() => setModalOpen(true)}>Filtros</button>
-      </div>
+    <article className='leagues-page-main-container'>
+      <header className="leagues-page-header">
+        <h2 className='leagues-page-main-title'>Ligas de bots</h2>
+        <p className='leagues-page-main-subtitle'>Explora todas las competiciones disponibles para tus bots</p>
+        <button onClick={() => openModal("new-league")}>Crear liga</button>
+      </header>
       <div className='leagues-page-leagues-container'>
-        {leagues.map((league) => (
-          <div className='leagues-page-league-container' key={league.id}>
-            <LeagueElement
-            key={league.id}
-            id={league.id}
-            name={league.name}
-            date={DateTime.fromFormat(league.date, 'YYYY-MM-DD HH:mm:ss')} // TODO: Poner que el formato de la fecha venga desde el env
-            numRounds={5}
-            playTime={60}
-            playing
-            />
-          </div>
+        {leaguesData && leaguesData?.body.map((element: LeagueResponseDTO) => (
+          <LeagueElement key={element.leagueId} {...element} />
         ))}
       </div>
-      <Modal isOpen={modalOpen} onClose={closeLoginModal}>
-        <LeagueFilters filters={filters} setFilters={setFilters} />
-      </Modal>
-
-      <Modal isOpen={isNewLeagueModalOpen} onClose={closeNewLeagueModal}>
-        <NewLeague />
-      </Modal>
-    </div>
+    </article>
   );
 }
 
