@@ -17,8 +17,8 @@ export const obtenerBot = async (data: number) => await getData(`/bot/${data}`, 
 
 export const getEnfrentamiento = async (matchId: number) => await getData(`/match/${matchId}`, {});
 
-export const registerBotToLeague = async (leagueId: number | string, botId: number) => {
-    return await postData(`/league/${leagueId}/bot`, { botId });
-};
+export const registerBotToLeague = async (leagueId: number | string, botId: number) =>
+     await postData(`/league/${leagueId}/bot`, { botId });
+
 
 export const updateLeague = async (leagueId: string, data: Object) => await putData(`/league/${leagueId}`, data);

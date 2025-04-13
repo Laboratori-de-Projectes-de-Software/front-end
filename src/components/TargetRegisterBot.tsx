@@ -9,12 +9,13 @@ function TargetRegisterBot({name, id, description, urlImage}: BotDetail, leagueI
     const navigate = useNavigate();
 
     const handleRegister = async () => {
-        const res = await registerBotToLeague( id, leagueId );
-        if (res.status === 200) {
+        try {
+            await registerBotToLeague(leagueId, id); // el orden ya está bien: leagueId primero, luego botId
             alert("Bot registrado correctamente");
             navigate(`/league/${leagueId}`);
-        } else {
-            alert("Error al registrar el bot");
+        } catch (error: any) {
+            const msg = error.response?.data || "Error desconocido";
+            alert(`Error al registrar el bot: ${msg}`);
         }
     };
     return (

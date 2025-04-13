@@ -5,10 +5,7 @@ import { leagueResponse } from "../types/LeagueResponse.tsx";
 import {NavLink, useNavigate, useParams} from "react-router-dom";
 import {deleteLeague, getLeague, registerBotToLeague} from "../services/apiCalls.ts";
 import {faEdit, faTrash} from "@fortawesome/free-solid-svg-icons";
-import targetRegisterBot from "../components/TargetRegisterBot.tsx";
-import {useFetchListarBots} from "../hooks/useBot.tsx";
-import TargetaBotComponent from "../components/TargetaBotComponent.tsx";
-import {FiUser} from "react-icons/fi";
+
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import DeleteModal from "../components/DeleteModal.tsx";
 
