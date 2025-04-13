@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useModal } from "../../modules/modalManager/ModalProvider.tsx";
 import { useAuth } from "../../auth/AuthProvider.tsx";
 import { useNavigate } from "react-router-dom";
+import LoadingScreen from "@modules/shared/loading-screen/loading-screen.tsx";
 
 const Home: React.FC = () => {
   const [blurAmount, setBlurAmount] = useState(0)
@@ -33,6 +34,10 @@ const Home: React.FC = () => {
     } else {
       openModal("login")
     }
+  }
+
+  if ( auth?.loading ) {
+    return <LoadingScreen message="Cargando"/>
   }
 
   return (

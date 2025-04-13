@@ -41,7 +41,7 @@ const Modal: React.FC<ModalProps> = ({ children, isOpen, onClose }) => {
         onClick={handleCloseModal}
         aria-label="Close modal"
       >
-        <img src="close-button.svg" alt="" width={30} />
+        <img src="svg/close-button.svg" alt="" width={30} />
       </button>
       {children}
     </dialog>, modalWrapper
