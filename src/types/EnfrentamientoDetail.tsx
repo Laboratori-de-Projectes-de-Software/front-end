@@ -1,14 +1,8 @@
-import { BotDetail } from "./BotDetail.tsx";
-
-export type Message = {
-    bot: number;
-    message: string;
-}
-
-export interface EnfrentamientoBotDetail extends BotDetail {
-    position: string;
-    quality: string;
-    isWinner?: boolean;
+export interface EnfrentamientoBotDetail {
+    id: number;
+    name: string;
+    description: string;
+    urlImage: string;
 }
 
 export type EnfrentamientoDetail = {
@@ -16,7 +10,5 @@ export type EnfrentamientoDetail = {
     leagueId: number;
     leagueName: string;
     bots: EnfrentamientoBotDetail[];
-    winner: number;
-    messages: Message[];
     resultado: string;
 }
