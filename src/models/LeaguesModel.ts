@@ -118,3 +118,65 @@ export const fetchLeagueByIdModel = async (leagueId: number) => {
 
   return response.json();
 };
+
+// Fetch matches grouped by rounds for a specific league
+export const getMatchesByLeagueId = async (leagueId: number) => {
+  const token = getAuthToken();
+  if (!token) throw new Error("No valid token found.");
+
+  const endpoint = `../league/${leagueId}/match`;
+  const response = await fetch(endpoint, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(await response.text());
+  }
+
+  return response.json();
+};
+
+// Fetch standings for a specific league
+export const getStandingsByLeagueId = async (leagueId: number) => {
+  const token = getAuthToken();
+  if (!token) throw new Error("No valid token found.");
+
+  const endpoint = `../league/${leagueId}/leaderboard`;
+  const response = await fetch(endpoint, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(await response.text());
+  }
+
+  return response.json();
+};
+
+export const startLeagueById = async (leagueId: number) => {
+  const token = getAuthToken();
+  if (!token) throw new Error("No valid token found.");
+
+  const endpoint = `../league/${leagueId}/start`;
+  const response = await fetch(endpoint, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(await response.text());
+  }
+
+  return response.json();
+};

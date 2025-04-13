@@ -146,35 +146,30 @@ const Dashboard: React.FC = () => {
                 <div className="section-header">
                   <h2>Ligas Activas</h2>
                   <button
-                    className="action-button"
-                    onClick={() => (window.location.href = "/leagues")}
+                      className="action-button"
+                      onClick={() => (window.location.href = "/leagues")}
                   >
                     Ver todas
                   </button>
                 </div>
                 <div className="section-content">
-                  {activeLeagues.slice(0,3).map((league) => (
-                    <div className="league-card" key={league.id}>
-                      <div className="league-name">{league.name}</div>
-                      <div className="league-status">
-                        Estado: {league.status}
+                  {activeLeagues.slice(0, 3).map((league) => (
+                      <div className="league-dsh-card" key={league.id}>
+                        <div className="league-dsh-info">
+                          <div className="league-name">{league.name}</div>
+                          <div className="league-status">Estado: {league.state}</div>
+                        </div>
+                        <div className="league-dsh-image-container">
+                          <img
+                              src={league.urlImagen}
+                              alt={`Imagen de ${league.name}`}
+                              className="league-dsh-image"
+                          />
+                        </div>
                       </div>
-                      <div className="progress-bar">
-                        <div
-                          className="progress-fill"
-                          style={{ width: `${league.progress}%` }}
-                        ></div>
-                      </div>
-                      <div className="league-participants">
-                        {league.participants} participantes
-                      </div>
-                    </div>
                   ))}
                   <div className="create-new">
-                    <ButtonCreate
-                      label="Crear liga"
-                      onClick={openLeagueModal}
-                    />
+                    <ButtonCreate label="Crear liga" onClick={openLeagueModal}/>
                   </div>
                 </div>
               </div>
@@ -183,17 +178,17 @@ const Dashboard: React.FC = () => {
                 <div className="section-header">
                   <h2>Enfrentamientos Recientes</h2>
                   <button
-                    className="action-button"
-                    onClick={() => (window.location.href = "/matches")}
+                      className="action-button"
+                      onClick={() => (window.location.href = "/matches")}
                   >
                     Ver todos
                   </button>
                 </div>
                 <div className="section-content">
                   {recentMatches.map((match) => (
-                    <div className="match-card" key={match.id}>
-                      <div className="match-date">{match.date}</div>
-                      <div className="match-bots">
+                      <div className="match-card" key={match.id}>
+                        <div className="match-date">{match.date}</div>
+                        <div className="match-bots">
                         {match.bot1} vs {match.bot2}
                       </div>
                       <div

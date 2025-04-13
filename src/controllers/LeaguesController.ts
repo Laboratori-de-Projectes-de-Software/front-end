@@ -1,4 +1,4 @@
-import { getLeaguesByUser, createLeague, updateLeaguebyId, fetchLeagueByIdModel } from "../models/LeaguesModel";
+import { getLeaguesByUser, createLeague, updateLeaguebyId, fetchLeagueByIdModel, getMatchesByLeagueId, getStandingsByLeagueId, startLeagueById } from "../models/LeaguesModel";
 import { jwtDecode } from "jwt-decode";
 import { isValidToken } from "../api/AuthUtils";
 
@@ -121,6 +121,38 @@ export const fetchLeagueById = async (leagueId: number) => {
     return await fetchLeagueByIdModel(leagueId);
   } catch (error) {
     console.error("Error fetching league data:", error);
+    throw error;
+  }
+};
+
+// Fetch matches grouped by rounds for a specific league
+export const fetchMatchesByLeague = async (leagueId: number) => {
+  try {
+    const matches = await getMatchesByLeagueId(leagueId);
+    return matches;
+  } catch (error) {
+    console.error("Error fetching matches by league:", error);
+    throw error;
+  }
+};
+
+// Fetch standings for a specific league
+export const fetchStandingsByLeague = async (leagueId: number) => {
+  try {
+    const standings = await getStandingsByLeagueId(leagueId);
+    return standings;
+  } catch (error) {
+    console.error("Error fetching standings by league:", error);
+    throw error;
+  }
+};
+
+export const fetchLeagueStart = async (leagueId: number) => {
+  try {
+    const response = await startLeagueById(leagueId);
+    return response;
+  } catch (error) {
+    console.error("Error starting league:", error);
     throw error;
   }
 };
