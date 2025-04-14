@@ -1,11 +1,7 @@
-@import "compass/css3";
+/*/ Message css - Library /*/
+$dark: black, #2d2d2d;
 
-$dark: 'black', #2d2d2d;
-
-$tints: $dark;
-
-$tint    : nth($tints, 1);
-$colour  : nth($tint, 2);
+$colour  : nth($dark, 1);
 $colour2 : darken($colour, 10%);
 
 html, body {
@@ -33,7 +29,7 @@ body {
 }
 
 %bubble {
-  @include border-radius(7px 7px 10px 10px);
+  border-radius: 7px 7px 10px 10px;
   
   position      : relative;
   padding       : 10px;
@@ -68,32 +64,30 @@ body {
   margin : 10px;
 }
 
-@each $tint in $tints {
-  $_cls : nth($tint, 1);
-  $_c1  : nth($tint, 2);
-  $_c2  : darken($_c1, 10%);
-  $_c3  : darken($_c1, 15%);
+$_cls : nth($dark, 1); // Use the first value (e.g., 'black') as the class name
+$_c1  : nth($dark, 2); // Use the second value (e.g., '#2d2d2d') as the color
+$_c2  : darken($_c1, 10%);
+$_c3  : darken($_c1, 15%);
+
+.bubble-#{$_cls} {
+  @extend %bubble;
+  @extend %demo;
   
-  .bubble-#{$_cls} {
-    @extend %bubble;
-    @extend %demo;
-    
-    @include text-shadow(
-      0 1px 1px rgba(#fff, 0.5)
-    );
-        
-    background          : $_c1;
-    border-bottom-color : $_c2;
-    color               : transparent;
-    color               : $_c3;
-    
-    &:before {
-      border-top-color : $_c2;
-    }
-    
-    &:after {
-      border-top-color : $_c1;
-    }
+  text-shadow:
+    0 1px 1px rgba(#fff, 0.5)
+  ;
+      
+  background          : $_c1;
+  border-bottom-color : $_c2;
+  color               : transparent;
+  color               : $_c3;
+  
+  &:before {
+    border-top-color : $_c2;
+  }
+  
+  &:after {
+    border-top-color : $_c1;
   }
 }
 
@@ -104,6 +98,16 @@ body {
 
   &:before,
   &:after {
-    left: 20%; // Adjusted for left-aligned bubbles
+    left: 10%; // Adjusted for left-aligned bubbles
+  }
+}
+
+.bubble-right {
+  @extend %bubble;
+  @extend %demo;
+
+  &:before,
+  &:after {
+    left: 80%; // Adjusted for left-aligned bubbles
   }
 }
