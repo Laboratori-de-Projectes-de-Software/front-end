@@ -109,9 +109,9 @@ export class ConBack implements ConAPI {
     }
 
     // Update a bot. (Note: Since BotDTO doesn't have an id in its structure, we use a placeholder endpoint.)
-    updateBot(bot: BotDTO, botId:BigInteger): Promise<BotResponseDTO> {
+    updateBot(bot: BotDTO, botId: BigInteger): Promise<BotResponseDTO> {
         let updatedBot: Promise<BotResponseDTO> = {} as Promise<BotResponseDTO>
-        axios.put(`${this.UPDATE_BOT_ROUTE}${botId}`, bot).then(response =>{
+        axios.put(`${this.UPDATE_BOT_ROUTE}${botId}`, bot).then(response => {
             updatedBot = response.data as Promise<BotResponseDTO>;
         }).catch(_ => { });
         return updatedBot;
@@ -135,7 +135,7 @@ export class ConBack implements ConAPI {
     // Update an existing league.
     updateLeague(league: LeagueDTO, leagueId: BigInteger): Promise<LeagueResponseDTO> {
         let updatedLeague: Promise<LeagueResponseDTO> = {} as Promise<LeagueResponseDTO>;
-        axios.put(`${this.UPDATE_LEAGUE_ROUTE}${leagueId}`,league).then(Response => {
+        axios.put(`${this.UPDATE_LEAGUE_ROUTE}${leagueId}`, league).then(Response => {
             updatedLeague = Response.data as Promise<LeagueResponseDTO>;
         }).catch(_ => { });
         return updatedLeague;
@@ -178,7 +178,12 @@ export class ConBack implements ConAPI {
     }
 
     private generalEnRouteGetter<T>(route: string, errorHandler: (error: Error) => void): Promise<T> {
-        return axios.get<T>(`${this.DOMAIN}${route}`).then(response => {
+        return axios.get<T>(`${this.DOMAIN}${route}`, {
+            headers: {
+                
+                'Authorization': `${this.getToken()}`,
+            }
+        }).then(response => {
             return response.data;
         })
             .catch(error => {
@@ -190,7 +195,12 @@ export class ConBack implements ConAPI {
     }
 
     private generalPost<T>(route: string, paramStructure: any, errorHandler: (error: Error) => void): Promise<T> {
-        return axios.post<T>(`${this.DOMAIN}${route}`, paramStructure)
+        return axios.post<T>(`${this.DOMAIN}${route}`, paramStructure, {
+            headers: {
+                
+                'Authorization': `${this.getToken()}`,
+            }
+        })
             .then(response => {
                 return response.data;
             })
@@ -202,7 +212,9 @@ export class ConBack implements ConAPI {
 
             });
     }
-
+    private getToken(): string {
+        return document.cookie.split('=')[1];
+    }
 
 
 }
