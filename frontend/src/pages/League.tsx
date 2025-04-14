@@ -58,7 +58,7 @@ interface LeaderboardAPI {
   nDraws: number;
 }
 
-export default function League({ leagueId, onBack }: LeagueProps) {
+export default function League({ leagueId }: LeagueProps) {
   const [leagueData, setLeagueData] = useState<LeagueData | null>(null);
   const [matches, setMatches] = useState<Match[]>([]);
   const [roundMap, setRoundMap] = useState<number[]>([]);
