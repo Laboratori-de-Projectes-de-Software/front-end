@@ -24,8 +24,7 @@ interface Match {
 }
 
 interface LeagueProps {
-  leagueId: number; // Ahora es obligatorio
-  onBack: () => void; // Callback para volver atrás
+  leagueId: number;
 }
 
 // Datos mínimos de la liga (ajusta según lo que devuelve tu API)

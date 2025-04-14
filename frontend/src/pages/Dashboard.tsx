@@ -372,7 +372,7 @@ export default function Dashboard() {
   // Función para manejar el cierre del popup
   const handleViewLeague = (leagueId: number) => {
     setSelectedLeagueId(leagueId);
-    setSection("leagueDetails"); // O podrías crear una nueva sección específica
+    setSection("leagueDetails");
   };
 
   useEffect(() => {
@@ -778,10 +778,7 @@ export default function Dashboard() {
             >
               <ArrowBackIcon />
             </Button>
-            <League 
-              leagueId={selectedLeagueId} 
-              onBack={() => setSection("myLeagues")}
-            />
+            <League leagueId={selectedLeagueId}/>
           </Box>
         )}
 
