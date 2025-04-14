@@ -45,7 +45,7 @@ const AddParticipantPage: React.FC = () => {
       </div>
 
       <button
-        className="bg-(--btn-bkg) text-black px-6 py-2 rounded font-bold"
+        className="bg-(--btn-bkg) text-black px-6 py-2 rounded font-bold hover:cursor-pointer"
         onClick={handleSubmit}
       >
         Add
