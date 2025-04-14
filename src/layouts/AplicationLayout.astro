@@ -1,4 +1,6 @@
 ---
+import UserName from "../components/user/userName";
+
 interface Opcion {
   nombre: string;
   icono?: string;
@@ -310,11 +312,7 @@ const opciones: Opcion[] = [
               <p class="text-sm text-gray-500 dark:text-neutral-500">
                 Signed in as
               </p>
-              <p
-                class="text-sm font-medium text-gray-800 dark:text-neutral-200"
-              >
-                james@site.com
-              </p>
+              <UserName client:only />
             </div>
             <div class="p-1.5 space-y-0.5">
               <a

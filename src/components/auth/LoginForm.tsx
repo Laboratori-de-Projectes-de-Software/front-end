@@ -1,17 +1,17 @@
 import React from "react";
 import { saveToken, sendRequest, saveUserInfo } from "../../utils/auth";
 
-const login_url = "http://localhost:8080/login";
+const login_url = "http://localhost:8080/auth/login";
 const redirect_url = "/auth/home";
 
 interface LoginForm {
-  mail: string;
+  user: string;
   password: string;
 }
 
 export const LoginForm = ({ className }: { className?: string }) => {
   const [form, setForm] = React.useState<LoginForm>({
-    mail: "",
+    user: "",
     password: "",
   });
 
@@ -52,8 +52,8 @@ export const LoginForm = ({ className }: { className?: string }) => {
         <input
           type="email"
           placeholder="Email"
-          value={form.mail}
-          onChange={(e) => setForm({ ...form, mail: e.target.value })}
+          value={form.user}
+          onChange={(e) => setForm({ ...form, user: e.target.value })}
           className="text-black bg-white rounded-2xl placeholder-gray-700 placeholder-opacity-50 p-2"
         />
         <input

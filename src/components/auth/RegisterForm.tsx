@@ -1,17 +1,17 @@
 import React from "react";
-import { saveToken, sendRequest, saveUserInfo } from "../../utils/auth";
+import { sendRequest } from "../../utils/auth";
 
-const register_url = "http://localhost:8080/register";
+const register_url = "http://localhost:8080/auth/register";
 const redirect_url = "/login";
 interface RegisterForm {
   user: string;
-  email: string;
+  mail: string;
   password: string;
 }
 
 export const RegisterForm = ({ className }: { className?: string }) => {
   const [form, setForm] = React.useState<RegisterForm>({
-    email: "",
+    mail: "",
     password: "",
     user: "",
   });
@@ -66,8 +66,8 @@ export const RegisterForm = ({ className }: { className?: string }) => {
         <input
           type="email"
           placeholder="Email"
-          value={form.email}
-          onChange={(e) => setForm({ ...form, email: e.target.value })}
+          value={form.mail}
+          onChange={(e) => setForm({ ...form, mail: e.target.value })}
           className="text-black bg-white rounded-2xl placeholder-gray-700 placeholder-opacity-50 p-2"
         />
         <input
