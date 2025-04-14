@@ -88,28 +88,6 @@ const MultiselectDropdown: React.FC<MultiselectDropdownProps> = ({
           })}
         </div>
       )}
-      
-      {selectedOptions.length > 0 && (
-        <div className="selected-options">
-          <p>Selected bots:</p>
-          <div className="selected-tags">
-            {selectedOptions.map((option) => (
-              <div key={option.botId} className="selected-tag">
-                {option.name}
-                <button 
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    toggleOption(option);
-                  }}
-                  className="remove-tag"
-                >
-                  ×
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
     </div>
   );
 };
