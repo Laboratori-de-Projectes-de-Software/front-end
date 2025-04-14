@@ -1,12 +1,13 @@
 import Match from "@modules/match/match";
 import ErrorPage from "@modules/shared/error-page/error-page";
 import { FC } from "react";
-import { useParams } from "react-router-dom";
 
 
 const MatchPage: FC = () => {
 
-  const { leagueId, matchId } = useParams();
+  const queryParams = new URLSearchParams(window.location.search);
+  const matchId = queryParams.get("matchId");
+  const leagueId = queryParams.get("leagueId");
 
   if (!matchId || isNaN(Number(matchId))) {
     return <ErrorPage message="Ha ocurrido un error al recuperar el partido"/>;
