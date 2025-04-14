@@ -4,7 +4,7 @@ import { userSignUp } from '@use-cases/UseCases';
 
 const RegisterPage: React.FC = () => {
   const [user, setUser] = useState('');
-  const [email, setEmail] = useState('');
+  const [mail, setMail] = useState('');
   const [password, setPassword] = useState('');
   const [rPassword, setRPassword] = useState('');
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ const RegisterPage: React.FC = () => {
       return;
     }
 
-    const r = await userSignUp({user, email, password });
+    const r = await userSignUp({user, mail, password });
     if (r) {
       alert("Registre completat correctament");
       navigate("/login");
@@ -51,8 +51,8 @@ const RegisterPage: React.FC = () => {
             <input
               type="email"
               id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={mail}
+              onChange={(e) => setMail(e.target.value)}
               className="w-full p-3 rounded-lg bg-(--input-bkg) border-none"
             />
           </div>
