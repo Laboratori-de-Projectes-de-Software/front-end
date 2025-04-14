@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { userLoggin } from '../use-cases/UseCases';
+import { userLoggin } from '@use-cases/UseCases';
 
 const LoginPage: React.FC = () => {
  

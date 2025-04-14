@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { userSignUp } from '../use-cases/UseCases';
+import { userSignUp } from '@use-cases/UseCases';
 
 const RegisterPage: React.FC = () => {
   const [user, setUser] = useState('');
