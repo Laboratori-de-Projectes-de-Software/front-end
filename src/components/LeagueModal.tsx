@@ -27,9 +27,9 @@ interface LeagueModalProps {
 }
 
 interface Bot {
-    id: number;
+    botId: number;
     name: string;
-    urlImagen: string; // Image URL
+    urlImage: string; // Image URL
 }
 
 const LeagueModal: React.FC<LeagueModalProps> = ({ isOpen, onClose, league }) => {
@@ -43,25 +43,25 @@ const LeagueModal: React.FC<LeagueModalProps> = ({ isOpen, onClose, league }) =>
     // Sincronizar currentLeague con league cuando esta cambie
     useEffect(() => {
         setCurrentLeague(league);
-        // if (league && (league.state === "Started" || league.state === "Finished")) {
-        //     fetchMatchesByLeague(league.id).then(setMatches).catch(console.error);
-        //     fetchStandingsByLeague(league.id).then(setStandings).catch(console.error);
-        // }
-        if (league) {
-            fetchMatchesByLeague(league.id)
-                .then((matches) => {
-                    console.log("Fetched matches:", matches); // Log para probar los datos
-                    setMatches(matches);
-                })
-                .catch(console.error);
-
-            fetchStandingsByLeague(league.id)
-                .then((standings) => {
-                    console.log("Fetched standings:", standings); // Log para probar los datos
-                    setStandings(standings);
-                })
-                .catch(console.error);
+        if (league && (league.state === "Started" || league.state === "Finished")) {
+            fetchMatchesByLeague(league.id).then(setMatches).catch(console.error);
+            fetchStandingsByLeague(league.id).then(setStandings).catch(console.error);
         }
+        // if (league) {
+        //     fetchMatchesByLeague(league.id)
+        //         .then((matches) => {
+        //             console.log("Fetched matches:", matches); // Log para probar los datos
+        //             setMatches(matches);
+        //         })
+        //         .catch(console.error);
+        //
+        //     fetchStandingsByLeague(league.id)
+        //         .then((standings) => {
+        //             console.log("Fetched standings:", standings); // Log para probar los datos
+        //             setStandings(standings);
+        //         })
+        //         .catch(console.error);
+        // }
     }, [league]);
 
     useEffect(() => {
@@ -72,6 +72,7 @@ const LeagueModal: React.FC<LeagueModalProps> = ({ isOpen, onClose, league }) =>
                         league.bots.map((botId) => fetchBotById(botId))
                     );
                     setBots(fetchedBots);
+                    console.log("Fetched bots:", fetchedBots); // Log para probar los datos
                 } catch (error) {
                     console.error("Error fetching bots:", error);
                 }
@@ -124,22 +125,22 @@ const LeagueModal: React.FC<LeagueModalProps> = ({ isOpen, onClose, league }) =>
     return (
 
         <div className="modal-overlay">
-            <div className="modal-content-started">
+            <div className="modal-content">
                 <button className="close-button" onClick={onClose}>
                     &times;
                 </button>
                 <h2>{currentLeague.name}</h2>
 
-                {currentLeague.state === "Create" ? (
+                {currentLeague.state === "Created" ? (
                     <>
                         {/* Original Design */}
                         <h3>Bots Inscritos:</h3>
                         <div className="bot-images-container">
                             {bots.map((bot) => (
                                 <img
-                                    key={bot.id}
-                                    src={bot.urlImagen}
-                                    alt={`Bot ${bot.id}`}
+                                    key={bot.botId}
+                                    src={bot.urlImage}
+                                    alt={`Bot ${bot.botId}`}
                                     className="bot-league-image"
                                 />
                             ))}

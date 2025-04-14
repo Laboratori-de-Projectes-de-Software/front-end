@@ -19,3 +19,9 @@
     background-color: rgba(29, 185, 84, 0.7);
     transform: scale(0.95);
 }
+
+.button-group {
+    display: flex;
+    gap: 10px; /* Espaciado horizontal entre los botones */
+    justify-content: center; /* Centrar los botones */
+}
