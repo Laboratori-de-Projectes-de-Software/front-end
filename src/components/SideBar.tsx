@@ -14,8 +14,8 @@ const SideBar: React.FC = () => {
         <Link to="/account">
           <div className="sidebar-item">Account</div>
         </Link>
-        <Link to="/home2">
-          <div className="sidebar-item">Home2</div>
+        <Link to="/leaguecreation">
+          <div className="sidebar-item">Create League</div>
         </Link>
         <Link to="/addia">
           <div className="sidebar-item">Add AIs</div>
