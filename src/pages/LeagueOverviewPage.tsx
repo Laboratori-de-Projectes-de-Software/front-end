@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Card } from "react-bootstrap";
 import foto from "../assets/img/ligabanner.jpg";
 import { leagueResponse } from "../types/LeagueResponse.tsx";
 import {NavLink, useNavigate, useParams} from "react-router-dom";
-import {deleteLeague, getLeague, registerBotToLeague} from "../services/apiCalls.ts";
+import {deleteLeague, getLeague} from "../services/apiCalls.ts";
 import {faEdit, faTrash} from "@fortawesome/free-solid-svg-icons";
 
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";

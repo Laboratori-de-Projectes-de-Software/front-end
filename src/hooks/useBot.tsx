@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {BotDetail} from "../types/BotDetail.tsx";
-import {listarBots, obtenerBot} from "../services/apiCalls.ts";
+import {listarBots, listarTodosBots, obtenerBot} from "../services/apiCalls.ts";
 
 export const useFetchListarBots = () => {
     const [botList, setBotList] = useState<Array<BotDetail> | null>(null);
@@ -67,4 +67,27 @@ export const useFetchObtenerBot = (id: number | undefined) => {
     }, []);
 
     return {bot, loading, error};
+};
+
+export const useFetchTodosLosBots = () => {
+    const [botList, setBotList] = useState<Array<BotDetail> | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const res = await listarTodosBots({});
+                setBotList(res.data);
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    return { botList, loading, error };
 };

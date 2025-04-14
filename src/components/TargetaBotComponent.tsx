@@ -1,7 +1,7 @@
+import { useNavigate } from "react-router-dom";
+import { registerBotToLeague} from "../services/apiCalls.ts";
 import { BotDetail } from "../types/BotDetail.tsx";
 import iconoBot from "../assets/img/iconoBot.png";
-import { useNavigate } from "react-router-dom";
-import { registerBotToLeague } from "../services/apiCalls.ts";
 
 interface Props extends BotDetail {
     leagueId?: string;
@@ -10,19 +10,25 @@ interface Props extends BotDetail {
 function TargetaBotComponent({ name, id, description, urlImage, leagueId }: Props) {
     const navigate = useNavigate();
 
+
     const goToDetalleBot = (id: number) => {
         navigate(`/mis-bots/${id}`);
     };
 
     const handleRegisterBot = async () => {
         if (!leagueId) return;
-        const res = await registerBotToLeague(leagueId, id );
 
-        if (res.status === 201) {
-            alert("Bot registrado con éxito");
-            navigate(`/league/${leagueId}`);
-        } else {
-            alert("Error al registrar el bot");
+        try {
+            const res = await registerBotToLeague(leagueId, id);
+
+            if (res.status === 201) {
+                alert("Bot registrado con éxito");
+                navigate(`/league/${leagueId}`);
+            } else {
+                alert("Error al registrar el bot");
+            }
+        } catch (err) {
+            alert("Este bot ya ha sido registrado");
         }
     };
 
@@ -31,7 +37,7 @@ function TargetaBotComponent({ name, id, description, urlImage, leagueId }: Prop
             <div className="row">
                 <div className="col-md-4">
                     <img
-                        src={urlImage != null ? urlImage : iconoBot}
+                        src={urlImage || iconoBot}
                         alt="Bot"
                         className="card-img-left"
                         style={{ width: "100%", maxHeight: "200px", objectFit: "contain" }}
