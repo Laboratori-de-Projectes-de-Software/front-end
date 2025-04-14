@@ -1,26 +1,38 @@
 import React, { useState, useEffect } from "react";
 import { createLeague } from "@use-cases/UseCases";  // Importa la funció createLeague
-import { getAllBots, getLeagues } from "@use-cases/UseCases";  // Importa la funció getBots i getLeagues
+import { getAllBots, getAllLeagues } from "@use-cases/UseCases";  // Importa la funció getBots i getAllLeagues
 import LeagueBar from "@components/LeagueBar";
-import { LeagueDTO } from "../DTOClasses/LeagueDTO";
+import { LeagueDTO, LeagueResponseDTO } from "@DTOClasses/LeagueDTO";
+import { BotSummaryResponseDTO } from "@DTOClasses/BotDTO";
 
 const AddLeaguePage: React.FC = () => {
-  const [leagues, setLeagues] = useState<LeagueDTO[]>([]); // Afegim estat per a les lligues
+  const [leagues, setLeagues] = useState<LeagueResponseDTO[]>([]); // Afegim estat per a les lligues
   const [leagueName, setLeagueName] = useState("");
-  const [selectedParticipants, setSelectedParticipants] = useState<string[]>([]);
-  const [maxRounds, setMaxRounds] = useState("");
-  const [maxTime, setMaxTime] = useState("");
+  const [selectedParticipants, setSelectedParticipants] = useState<number[]>([]);
+  const [rounds, setRounds] = useState("");
+  const [matchTime, setMatchTime] = useState("");
   const [errorMessage, setErrorMessage] = useState(""); // Per gestionar els missatges d'error
-  const bots = getAllBots() ?? [];  // Si `getBots` retorna null, utilitzem una llista buida
+  const [bots, setBots] = useState<BotSummaryResponseDTO[]>([]); // Estat per emmagatzemar els bots
+  
+  useEffect(() => {
+    const fetchBots = async () => {
+      const fetchedBots = await getAllBots();
+      setBots(fetchedBots ?? []); // Si no hi ha bots, utilitzem una llista buida
+    };
+    fetchBots();
+  }, []);
 
   // Obtenir les lligues existents
   useEffect(() => {
-    const fetchedLeagues = getLeagues() ?? [];  // Si no hi ha lligues, utilitzem una llista buida
-    setLeagues(fetchedLeagues);
-  }, []);
+      const fetchLeagues = async () => {
+        const fetchedLeagues = await getAllLeagues(1 /* gestió d'usuari actual */) ?? [];  // Si no hi ha lligues, utilitzem una llista buida
+        setLeagues(fetchedLeagues);
+      };
+      fetchLeagues();
+    }, []);
 
   // Funció per gestionar el canvi de participants seleccionats
-  const handleToggleParticipant = (bot: string) => {
+  const handleToggleParticipant = (bot: number) => {
     setSelectedParticipants((prev) =>
       prev.includes(bot) ? prev.filter((p) => p !== bot) : [...prev, bot]
     );
@@ -38,12 +50,12 @@ const AddLeaguePage: React.FC = () => {
       return;
     }
 
-    if (!maxRounds || isNaN(Number(maxRounds)) || Number(maxRounds) <= 0) {
+    if (!rounds || isNaN(Number(rounds)) || Number(rounds) <= 0) {
       setErrorMessage("Les rondes màximes han de ser un número positiu.");
       return;
     }
 
-    if (!maxTime || isNaN(Number(maxTime)) || Number(maxTime) <= 0) {
+    if (!matchTime || isNaN(Number(matchTime)) || Number(matchTime) <= 0) {
       setErrorMessage("El temps màxim ha de ser un número positiu.");
       return;
     }
@@ -52,9 +64,9 @@ const AddLeaguePage: React.FC = () => {
     const newLeague = {
       name: leagueName,
       bots: selectedParticipants,
-      maxRounds: parseInt(maxRounds),
-      maxTime: parseInt(maxTime),
-    };
+      rounds: parseInt(rounds),
+      matchTime: parseInt(matchTime),
+    } as LeagueDTO;
 
     try {
       const result = await createLeague(newLeague);  // Utilitzem la funció createLeague
@@ -63,8 +75,8 @@ const AddLeaguePage: React.FC = () => {
         // Restableix les dades del formulari
         setLeagueName("");
         setSelectedParticipants([]);
-        setMaxRounds("");
-        setMaxTime("");
+        setRounds("");
+        setMatchTime("");
         setErrorMessage(""); // Restableix els errors en cas d'èxit
       } else {
         setErrorMessage("Error al crear la lliga.");
@@ -78,8 +90,8 @@ const AddLeaguePage: React.FC = () => {
     <div className="min-h-screen">
       <main className="flex flex-row items-start gap-8">
         <LeagueBar
-          leagues={leagues.map((league) => league.name)}
-          selectedLeague={""}
+          leagues={leagues}
+          selectedLeagueId={null} // null de moment, ja que no estem seleccionant cap lliga
           onSelectLeague={() => {}}
         />
         <div className="flex-1 text-center p-10 flex flex-col items-center">
@@ -102,26 +114,26 @@ const AddLeaguePage: React.FC = () => {
           <div className="mb-4 w-2/3 md:w-1/2 lg:w-2/3">
             <label className="block text-left mb-2 font-bold">Participants:</label>
             <div className="bg-gray-200 p-2 rounded-lg">
-              {bots.map((bot) => (
-                <div key={bot.name} className="flex items-center justify-between p-1">
-                  <span className="font-bold">{bot.name}</span>
-                  <input
+                {bots.map((bot) => (
+                  <div key={bot.id} className="flex items-center justify-between p-1">
+                    <span className="font-bold">{bot.name}</span>
+                    <input
                     type="checkbox"
-                    checked={selectedParticipants.includes(bot.name)}
-                    onChange={() => handleToggleParticipant(bot.name)}
-                  />
-                </div>
-              ))}
+                    checked={selectedParticipants.includes(bot.id)}
+                    onChange={() => handleToggleParticipant(bot.id)}
+                    />
+                  </div>
+                ))}
             </div>
-          </div>
+        </div>
 
           <div className="mb-4 w-2/3 md:w-1/2 lg:w-2/3">
             <label className="block text-left mb-2 font-bold">Maximum Rounds:</label>
             <input
               type="number"
               className="w-full p-2 rounded-lg"
-              value={maxRounds}
-              onChange={(e) => setMaxRounds(e.target.value)}
+              value={rounds}
+              onChange={(e) => setRounds(e.target.value)}
             />
           </div>
 
@@ -130,8 +142,8 @@ const AddLeaguePage: React.FC = () => {
             <input
               type="number"
               className="w-full p-2 rounded-lg"
-              value={maxTime}
-              onChange={(e) => setMaxTime(e.target.value)}
+              value={matchTime}
+              onChange={(e) => setMatchTime(e.target.value)}
             />
           </div>
 
