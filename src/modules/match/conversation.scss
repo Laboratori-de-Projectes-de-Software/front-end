@@ -1,8 +1,72 @@
-.conversation {
-  &-container {
-    padding: 1rem;
-    background-color: #121212;
-    border-radius: 0.5rem;
-    border: 1px solid #FFF;
+.conversation-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  padding: 16px;
+  background-color: #121212; // Dark theme background
+}
+
+.conversation-messages {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.message-wrapper {
+  display: flex;
+  width: 100%;
+  
+  // For left-aligned messages
+  &.message-left {
+    justify-content: flex-start;
+    
+    // Target the bubble-left class from Message component
+    :global(.bubble-left) {
+      align-self: flex-start;
+      margin-right: 20%;
+    }
+  }
+  
+  // For right-aligned messages
+  &.message-right {
+    justify-content: flex-end;
+    
+    // Target the bubble-right class from Message component
+    :global(.bubble-right) {
+      align-self: flex-end;
+      margin-left: 20%;
+    }
+  }
+}
+
+// Add some space between consecutive messages from the same side
+.message-left + .message-left,
+.message-right + .message-right {
+  margin-top: -4px;
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .message-wrapper {
+    &.message-left :global(.bubble-left),
+    &.message-right :global(.bubble-right) {
+      max-width: 80%;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .conversation-container {
+    padding: 12px;
+  }
+  
+  .message-wrapper {
+    &.message-left :global(.bubble-left),
+    &.message-right :global(.bubble-right) {
+      max-width: 90%;
+    }
   }
 }
