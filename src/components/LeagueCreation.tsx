@@ -1,28 +1,61 @@
 import Footer from "./Footer";
 import SideBar from "./SideBar";
-import { useState } from "react";
+import { useState, useEffect, FormEvent } from "react";
+import MultiselectDropdown from "./MultiSelectDropdown";
 
-const options = ["Opción 1", "Opción 2", "Opción 3", "Opción 4"];
+interface BotOption {
+  name: string;
+  botId: number;
+}
 
 interface LeagueCreationData {
-  name: string,
-  urlImage: string,
-  rounds: number,
-  matchTime: number,
-  bots: Array<number>
+  name: string;
+  urlImage: string;
+  rounds: number;
+  matchTime: number;
+  bots: Array<number>;
 }
 
 export default function LeagueCreation() {
+  // Get data from back
+  const availableBots: BotOption[] = [
+    { name: "Bot Alpha", botId: 1 },
+    { name: "Bot Beta", botId: 2 },
+    { name: "Bot Gamma", botId: 3 },
+    { name: "Bot Delta", botId: 4 },
+    { name: "Bot Epsilon", botId: 5 },
+  ];
 
-  const [leagueData, setLeagueData] = useState<LeagueCreationData>({ name: "", urlImage: "", rounds: 0, matchTime: 0, bots: [] });
+  const [leagueData, setLeagueData] = useState<LeagueCreationData>({
+    name: "",
+    urlImage: "",
+    rounds: 0,
+    matchTime: 0,
+    bots: [],
+  });
+
+  const [selectedOptions, setSelectedOptions] = useState<BotOption[]>([]);
+
+  // Update leagueData.bots when selectedOptions changes
+  useEffect(() => {
+    setLeagueData(prevData => ({
+      ...prevData,
+      bots: selectedOptions.map(bot => bot.botId),
+      rounds: selectedOptions.length > 1 ? selectedOptions.length : prevData.rounds
+    }));
+  }, [selectedOptions]);
 
   const handleLeagueData = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    var newValue = value;
+    let newValue = value;
+    
     switch (name) {
       case 'rounds':
-        if (( +value  < leagueData.bots.length) || (+value >( leagueData.bots.length * (leagueData.bots.length-1))/2) ){
-          newValue = leagueData.bots.length.toString();
+        const minRounds = leagueData.bots.length || 0;
+        const maxRounds = minRounds > 1 ? (minRounds * (minRounds - 1)) / 2 : 0;
+        
+        if ((+value < minRounds) || (+value > maxRounds && maxRounds > 0)) {
+          newValue = minRounds.toString();
         }
         break;
       default:
@@ -31,21 +64,24 @@ export default function LeagueCreation() {
 
     setLeagueData({
       ...leagueData,
-      [name]: newValue
+      [name]: newValue,
     });
-  }
-
-
-
-  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
-
-  const toggleOption = (option: string) => {
-    setSelectedOptions((prev) =>
-      prev.includes(option) ? prev.filter((item) => item !== option) : [...prev, option]
-    );
-    
   };
 
+  // Handle the selected bots
+  const handleBotSelection = (selected: BotOption[]) => {
+    setSelectedOptions(selected);
+  };
+
+  const canStartLeague = leagueData.name !== "" && 
+                         leagueData.matchTime > 0 &&
+                         leagueData.rounds > 0 &&
+                         leagueData.bots.length > 1;
+
+
+  const handleLeagueCreation = (e: FormEvent<HTMLButtonElement>): void => {
+    console.log(selectedOptions);
+  }
   return (
     <>
       <div>
@@ -56,37 +92,19 @@ export default function LeagueCreation() {
               <h2> Home </h2>
               <p>Select the AIs for the match:</p>
               <div className="dropdown-container">
-                <details className="dropdown-details">
-                  <summary className="dropdown-button">
-                    {selectedOptions.length > 0 ? selectedOptions.join(", ") : "Seleccionar..."}
-                    <span className="icon">▼</span>
-                  </summary>
-                  <div className="dropdown-menu">
-                    {options.map((option) => (
-                      <div
-                        key={option}
-                        className={`option-item ${selectedOptions.includes(option) ? "selected" : ""}`}
-                        onClick={() => toggleOption(option)}
-                      >
-                        <input
-                          type="checkbox"
-                          checked={selectedOptions.includes(option)}
-                          readOnly
-                        />
-                        {option}
-                      </div>
-                    ))}
-                  </div>
-                </details>
+                <MultiselectDropdown
+                  options={availableBots}
+                  selectedOptions={selectedOptions}
+                  onChange={handleBotSelection}
+                  placeholder="Select bots for the league"
+                />
               </div>
               <p>Match details:</p>
               <div className="counter">
-
                 <label>League Name:</label>
                 <input
                   type="text"
                   name="name"
-                  defaultValue=""
                   value={leagueData.name}
                   onChange={handleLeagueData}
                   className="counter-input"
@@ -95,7 +113,6 @@ export default function LeagueCreation() {
                 <input
                   type="url"
                   name="urlImage"
-                  defaultValue=""
                   value={leagueData.urlImage}
                   onChange={handleLeagueData}
                   className="counter-input"
@@ -104,7 +121,6 @@ export default function LeagueCreation() {
                 <input
                   type="number"
                   name="matchTime"
-                  defaultValue="0"
                   value={leagueData.matchTime}
                   onChange={handleLeagueData}
                   className="counter-input"
@@ -113,18 +129,23 @@ export default function LeagueCreation() {
                 <input
                   type="number"
                   name="rounds"
-                  defaultValue="0"
                   value={leagueData.rounds}
                   onChange={handleLeagueData}
                   className="counter-input"
                 />
               </div>
-              <button className="button-round button-blue">Start</button>
+              <button 
+                className={`button-round ${canStartLeague ? "button-blue" : "button-disabled"}`}
+                disabled={!canStartLeague}
+                onClick={handleLeagueCreation}
+              >
+                Start
+              </button>
             </div>
           </div>
         </div>
         <Footer />
       </div>
     </>
-  )
+  );
 }

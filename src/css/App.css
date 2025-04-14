@@ -464,3 +464,42 @@ h2 {
   padding: 20px;
   font-weight: bold;
 }
+
+.table_container {
+  margin-top: 1.25rem;
+  border-radius: 0.31rem;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;  
+}
+
+.table {
+  border: 0.1rem solid white;
+  border-collapse: collapse;
+}
+
+.table th, .table td {
+  padding: 0.94rem;
+  border: 0.1rem solid white;
+  text-align: left;
+}
+
+
+.table th {
+  color: white;
+  text-align: center;
+}
+
+.table tr:hover {
+  background: #3b4859;
+}
+
+.delete-button {
+  color: #e53e3e;
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-size: 1.2rem;
+}
+
+
