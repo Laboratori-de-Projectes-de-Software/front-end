@@ -8,7 +8,7 @@ const ParticipantsPage: React.FC = () => {
   const [bots, setBots] = useState<BotResponseDTO[]>([]); // Estat per emmagatzemar els bots
     
   useEffect(() => {
-    const fetchB = async () => {
+    const fetchBots = async () => {
       const fetchedBots = await getAllBots();
       fetchedBots.forEach(async (bot: BotSummaryResponseDTO) =>  {
         const botDetails = await getBot(bot.id);
@@ -18,7 +18,7 @@ const ParticipantsPage: React.FC = () => {
       });
     };
 
-    fetchB();
+    fetchBots();
   }, []);
 
   if (!bots) {
