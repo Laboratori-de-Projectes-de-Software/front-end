@@ -1,6 +1,6 @@
 import Footer from "./Footer";
 import { Link } from "react-router-dom";
-import { UserDTOLogin } from "./ConAPI";
+import { UserDTOLogin, UserResponseDTO } from "./ConAPI";
 import { ChangeEvent, FormEvent, useState } from "react";
 
 interface loginFormData {
@@ -41,11 +41,12 @@ export default function Login() {
               password: loginData.password
           };
   
-          window.APIConection.loginUser(userData).then((response: any) => {
+          window.APIConection.loginUser(userData).then((response: UserResponseDTO) => {
               setNotification({
                   message: "Account logged successfully!",
                   type: "success"
               });
+              setCookie("token",response.token,response.expiresIn)
           })
               .catch((error: any) => {
                   setNotification({
@@ -54,6 +55,12 @@ export default function Login() {
                   });
               });
       };
+
+      function setCookie(name: string, value: string, date: Date): void {
+        let expires = "; expires=" + date;
+        
+        document.cookie = name + "=" + value + expires + "; path=/";
+      }
   
       const notificationStyles = {
           container: {
