@@ -16,7 +16,7 @@ import {
     ParticipationResponseDTO,
     MessageResponseDTO
 } from './ConAPI';
-import { UserAlreadyExists, HttpError } from './ConErrors';
+import { UserAlreadyExists, HttpError, UserNotExists } from './ConErrors';
 
 // The ConBack class implements the ConAPI interface and provides placeholder HTTP requests using Axios.
 export class ConBack implements ConAPI {
@@ -65,7 +65,31 @@ export class ConBack implements ConAPI {
 
     // Login a user and return the user response data.
     loginUser(user: UserDTOLogin): Promise<UserResponseDTO> {
-        return {} as Promise<UserResponseDTO>;
+        /*let loginResponse: UserResponseDTO = {} as Promise<UserResponseDTO>;
+        axios.post(`${this.LOGIN_USER_ROUTE}`, user).then(response => {
+            loginResponse = response.data as UserResponseDTO;
+        }).catch(_ => {
+
+        });*/
+        const errorHandler = (error: Error) => {
+            if (axios.isAxiosError(error)) {
+                const axiosError = error as AxiosError;
+                const statusCode = axiosError.response?.status;
+
+                // Transform HTTP status codes into custom errors
+                switch (statusCode) {
+                    case 401:
+                        throw new UserNotExists();
+                    default:
+                        throw new HttpError(
+                            statusCode || 500,
+                            axiosError.message || 'Unknown error occurred'
+                        );
+                }
+            }
+            throw error;
+        }
+        return this.generalPost<UserResponseDTO>(`${this.LOGIN_USER_ROUTE}`, user, errorHandler);
     }
 
     // Post a new bot and return its response data.
