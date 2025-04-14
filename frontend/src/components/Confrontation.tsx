@@ -1,15 +1,13 @@
 import { Card, CardContent, Typography, Button } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 
 interface Props {
   bot1: string;
   bot2: string;
   jornada: number;
+  onViewDebate: (bot1: string, bot2: string, jornada: number) => void;
 }
 
-export default function Confrontation({ bot1, bot2, jornada }: Props) {
-  const navigate = useNavigate();
-
+export default function Confrontation({ bot1, bot2, jornada, onViewDebate }: Props) {
   return (
     <Card className="enfrentamiento-card" sx={{ minWidth: 200, maxWidth: 250, textAlign: "center", flexShrink: 0 }}>
       <CardContent>
@@ -20,7 +18,7 @@ export default function Confrontation({ bot1, bot2, jornada }: Props) {
           color="error"
           size="small"
           sx={{ mt: 1 }}
-          onClick={() => navigate("/chat", { state: { bot1, bot2, jornada } })}
+          onClick={() => onViewDebate(bot1, bot2, jornada)}
         >
           Ver debate
         </Button>

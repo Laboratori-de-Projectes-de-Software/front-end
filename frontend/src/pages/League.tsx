@@ -10,10 +10,12 @@ import {
   SelectChangeEvent,
   CircularProgress,
 } from "@mui/material";
-import Enfrentamiento from "../components/Confrontation";
+import Confrontation from "../components/Confrontation";
 import TablaClasificacion from "../components/ClassificationTable";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import Chat from "./Chat";
+import CloseIcon from '@mui/icons-material/Close';
 
 // Tipo para un match
 interface Match {
@@ -66,6 +68,13 @@ export default function League({ leagueId }: LeagueProps) {
   const pageSize = 4;
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [showChat, setShowChat] = useState(false);
+  const [selectedDebate, setSelectedDebate] = useState<{ bot1: string; bot2: string; jornada: number } | null>(null);
+
+  const handleViewDebate = (bot1: string, bot2: string, jornada: number) => {
+    setSelectedDebate({ bot1, bot2, jornada });
+    setShowChat(true);
+  };
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -191,12 +200,18 @@ export default function League({ leagueId }: LeagueProps) {
       px: 0,
       height: "100%",
       overflowY: "auto",
-      color: "white"
+      color: "white",
+      display: "flex",
+      gap: 2
     }}>
-
-      <Typography variant="h4" sx={{ mb: 3, color: "cyan", fontWeight: "bold", textAlign: "center" }}>
-        {leagueData.name}
-      </Typography>
+      <Box sx={{ 
+        flex: showChat ? "1 1 60%" : "1 1 100%", // Modificado
+        overflowY: "auto",
+        color: "white"
+      }}>
+        <Typography variant="h4" sx={{ mb: 3, color: "cyan", fontWeight: "bold", textAlign: "center" }}>
+          {leagueData.name}
+        </Typography>
 
       <FormControl
         variant="outlined"
@@ -258,13 +273,14 @@ export default function League({ leagueId }: LeagueProps) {
           }}
         >
           {visibleMatches.map((match, index) => (
-            <Enfrentamiento
-              key={index}
-              bot1={botNames[match.fighters[0]] || match.fighters[0].toString()}
-              bot2={botNames[match.fighters[1]] || match.fighters[1].toString()}
-              jornada={selectedIndex}
-            />
-          ))}
+          <Confrontation
+            key={index}
+            bot1={botNames[match.fighters[0]] || match.fighters[0].toString()}
+            bot2={botNames[match.fighters[1]] || match.fighters[1].toString()}
+            jornada={selectedIndex}
+            onViewDebate={handleViewDebate}
+          />
+        ))}
         </Box>
 
         <IconButton
@@ -293,6 +309,32 @@ export default function League({ leagueId }: LeagueProps) {
           nDraws: item.nDraws,
         }))}
       />
+    </Box>
+    {showChat && selectedDebate && (
+    <Box sx={{ 
+      flex: "1 1 40%",
+      borderLeft: "1px solid cyan",
+      position: "relative"
+    }}>
+      <IconButton
+        onClick={() => setShowChat(false)}
+        sx={{
+          position: "absolute",
+          right: 8,
+          top: 8,
+          color: "white",
+          zIndex: 1
+        }}
+      >
+        <CloseIcon />
+      </IconButton>
+      <Chat
+        bot1={selectedDebate.bot1}
+        bot2={selectedDebate.bot2}
+        jornada={selectedDebate.jornada}
+      />
+    </Box>
+)}
     </Box>
   );
 }
