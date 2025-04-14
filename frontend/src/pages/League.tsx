@@ -14,7 +14,6 @@ import Enfrentamiento from "../components/Confrontation";
 import TablaClasificacion from "../components/ClassificationTable";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import { useLocation, useNavigate } from "react-router-dom";
 
 // Tipo para un match
 interface Match {
@@ -22,6 +21,11 @@ interface Match {
   result: number;
   fighters: number[];
   roundNumber: number;
+}
+
+interface LeagueProps {
+  leagueId: number; // Ahora es obligatorio
+  onBack: () => void; // Callback para volver atrás
 }
 
 // Datos mínimos de la liga (ajusta según lo que devuelve tu API)
@@ -54,16 +58,7 @@ interface LeaderboardAPI {
   nDraws: number;
 }
 
-// Tipo para location.state (al navegar a esta vista)
-interface LocationState {
-  leagueId?: number;
-}
-
-export default function Liga() {
-  const location = useLocation() as { state?: LocationState };
-  const navigate = useNavigate();
-  const leagueId = location.state?.leagueId; // Puede ser undefined
-
+export default function League({ leagueId, onBack }: LeagueProps) {
   const [leagueData, setLeagueData] = useState<LeagueData | null>(null);
   const [matches, setMatches] = useState<Match[]>([]);
   const [roundMap, setRoundMap] = useState<number[]>([]);
@@ -192,11 +187,13 @@ export default function Liga() {
   }));
 
   return (
-    <Box sx={{ pt: 3, px: 3, height: "100%", overflowY: "auto", color: "white" }}>
-      {/* Botón para volver atrás */}
-      <IconButton onClick={() => navigate(-1)} sx={{ mb: 2, color: "white" }}>
-        <ArrowBackIosNewIcon />
-      </IconButton>
+    <Box sx={{ 
+      pt: 0, // Ajustar para integrarse en el Dashboard
+      px: 0,
+      height: "100%",
+      overflowY: "auto",
+      color: "white"
+    }}>
 
       <Typography variant="h4" sx={{ mb: 3, color: "cyan", fontWeight: "bold", textAlign: "center" }}>
         {leagueData.name}
