@@ -109,9 +109,6 @@ export default function Dashboard() {
   // Para el filtro
   const [selectedFilter, setSelectedFilter] = useState<"ALL" | "ACTIVE" | "INACTIVE" | "FINISHED">("ALL");
 
-  // Añadir un nuevo estado para controlar si se muestra la liga
-  const [selectedLeagueId, setSelectedLeagueId] = useState<number | null>(null);
-
   // Función que calcula el estado basado únicamente en el campo state.
   function calcularEstadoLiga(state?: string): "INACTIVE" | "ACTIVE" | "FINISHED" {
     if (state) {
@@ -123,7 +120,6 @@ export default function Dashboard() {
     }
     return "INACTIVE"; // Valor por defecto
   }
-
   const handleDeleteLeague = async (leagueId: number) => {
     if (window.confirm("¿Estás seguro de que quieres eliminar esta liga? Esta acción no se puede deshacer.")) {
       try {
@@ -150,7 +146,6 @@ export default function Dashboard() {
       }
     }
   };
-
   const handleJoinLeague = async (leagueId: number) => {
     try {
       const res = await fetch(`http://localhost:8080/api/v0/bot?owner=${username}`, {
@@ -354,7 +349,8 @@ export default function Dashboard() {
         if (matchesRes.ok) {
           const matches = await matchesRes.json();
           console.log("✅ Matches obtenidos correctamente:", matches);
-          handleViewLeague(leagueId);
+          // Redirigir al componente League si la liga ya se inició
+          navigate("/league", { state: { leagueId } });
         } else {
           console.error("❌ Error al obtener los matches:", matchesRes.status);
         }
@@ -367,12 +363,6 @@ export default function Dashboard() {
       console.error("❌ Error de red al iniciar la liga o al obtener los matches:", err);
       setJoinError(true);
     }
-  };
-
-  // Función para manejar el cierre del popup
-  const handleViewLeague = (leagueId: number) => {
-    setSelectedLeagueId(leagueId);
-    setSection("leagueDetails");
   };
 
   useEffect(() => {
@@ -627,7 +617,7 @@ export default function Dashboard() {
                         onDelete={(id) => handleDeleteLeague(id)} // Nueva prop
                         onView={() => {
                           if (league.status === "ACTIVE" || league.status === "FINISHED") {
-                            handleViewLeague(league.leagueId);
+                            navigate("/league", { state: { leagueId: league.leagueId } });
                           } else {
                             fetchLeagueById(league.leagueId);
                           }
@@ -697,7 +687,7 @@ export default function Dashboard() {
                         status={league.status}
                         onView={() => {
                           if (league.status === "ACTIVE" || league.status === "FINISHED") {
-                            handleViewLeague(league.leagueId);
+                            navigate("/league", { state: { leagueId: league.leagueId } });
                           } else {
                             fetchLeagueById(league.leagueId);
                           }
@@ -739,7 +729,7 @@ export default function Dashboard() {
                       status={league.status}
                       onView={() => {
                         if (league.status === "ACTIVE" || league.status === "FINISHED") {
-                          handleViewLeague(league.leagueId);
+                          navigate("/league", { state: { leagueId: league.leagueId } });
                         } else {
                           fetchLeagueById(league.leagueId);
                         }
@@ -758,11 +748,11 @@ export default function Dashboard() {
         )}
   
         {/* Detalles de la liga */}
-        {section === "leagueDetails" && selectedLeagueId && (
-          <Box sx={{ position: "relative", height: "100%" }}>
+        {section === "leagueDetails" && (
+          <Box>
             <Button
               variant="outlined"
-              onClick={() => setSection("myLeagues")}
+              onClick={() => setSection("allLeagues")}
               sx={{
                 mb: 2,
                 color: "cyan",
@@ -778,11 +768,14 @@ export default function Dashboard() {
             >
               <ArrowBackIcon />
             </Button>
-            <League leagueId={selectedLeagueId}/>
+
+            {/*  Eliminado <League />, para que NO muestre "Cargando liga..."  */}
+            
+            {/* Podrías dejar algún contenido de texto aquí, o simplemente nada */}
           </Box>
         )}
 
-        {/* Registrar nueva liga */}
+
         {section === "registerLeague" && (
           <Box>
             <Button

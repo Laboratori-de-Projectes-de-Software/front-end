@@ -14,8 +14,7 @@ import Confrontation from "../components/Confrontation";
 import TablaClasificacion from "../components/ClassificationTable";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import Chat from "./Chat";
-import CloseIcon from '@mui/icons-material/Close';
+import { useLocation, useNavigate } from "react-router-dom";
 
 // Tipo para un match
 interface Match {
@@ -25,14 +24,12 @@ interface Match {
   roundNumber: number;
 }
 
-interface LeagueProps {
-  leagueId: number;
-}
-
 // Datos mínimos de la liga (ajusta según lo que devuelve tu API)
+// Se utiliza la propiedad matchTime para el tiempo máximo del debate
 interface LeagueData {
   leagueId: number;
   name: string;
+  matchTime: number; // Tiempo del debate en segundos (o minutos si lo defines así)
   // Otros campos que utilices...
 }
 
@@ -59,7 +56,16 @@ interface LeaderboardAPI {
   nDraws: number;
 }
 
-export default function League({ leagueId }: LeagueProps) {
+// Tipo para location.state (al navegar a esta vista)
+interface LocationState {
+  leagueId?: number;
+}
+
+export default function Liga() {
+  const location = useLocation() as { state?: LocationState };
+  const navigate = useNavigate();
+  const leagueId = location.state?.leagueId; // Puede ser undefined
+
   const [leagueData, setLeagueData] = useState<LeagueData | null>(null);
   const [matches, setMatches] = useState<Match[]>([]);
   const [roundMap, setRoundMap] = useState<number[]>([]);
@@ -68,13 +74,6 @@ export default function League({ leagueId }: LeagueProps) {
   const pageSize = 4;
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
-  const [showChat, setShowChat] = useState(false);
-  const [selectedDebate, setSelectedDebate] = useState<{ bot1: string; bot2: string; jornada: number } | null>(null);
-
-  const handleViewDebate = (bot1: string, bot2: string, jornada: number) => {
-    setSelectedDebate({ bot1, bot2, jornada });
-    setShowChat(true);
-  };
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -83,21 +82,25 @@ export default function League({ leagueId }: LeagueProps) {
     const fetchLeagueData = async () => {
       try {
         // 1. Obtener datos de la liga
-        const resLeague = await fetch(`http://localhost:8080/api/v0/league/${leagueId}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const resLeague = await fetch(
+          `http://localhost:8080/api/v0/league/${leagueId}`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
         const dataLeague: LeagueData = await resLeague.json();
         setLeagueData(dataLeague);
 
         // 2. Obtener los matches de la liga
-        const resMatches = await fetch(`http://localhost:8080/api/v0/league/${leagueId}/match`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const resMatches = await fetch(
+          `http://localhost:8080/api/v0/league/${leagueId}/match`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
         const dataMatches: Match[] = await resMatches.json();
         setMatches(dataMatches);
 
         // 3. Extraer los números de jornada (rounds)
-        const rounds: number[] = [...new Set(dataMatches.map((m) => m.roundNumber))].sort((a, b) => a - b);
+        const rounds: number[] = [
+          ...new Set(dataMatches.map((m) => m.roundNumber))
+        ].sort((a, b) => a - b);
         setRoundMap(rounds);
         setSelectedIndex(0);
 
@@ -106,33 +109,36 @@ export default function League({ leagueId }: LeagueProps) {
         dataMatches.forEach((m) => m.fighters.forEach((id) => botIds.add(id)));
         const names: Record<number, string> = {};
         for (const id of botIds) {
-          const resBot = await fetch(`http://localhost:8080/api/v0/bot/${id}`, {
-            headers: { Authorization: `Bearer ${token}` },
-          });
+          const resBot = await fetch(
+            `http://localhost:8080/api/v0/bot/${id}`,
+            { headers: { Authorization: `Bearer ${token}` } }
+          );
           const botData = await resBot.json();
           names[id] = botData.name;
         }
         setBotNames(names);
 
         // 5. Obtener la clasificación (leaderboard)
-        const resLeaderboard = await fetch(`http://localhost:8080/api/v0/league/${leagueId}/leaderboard`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const resLeaderboard = await fetch(
+          `http://localhost:8080/api/v0/league/${leagueId}/leaderboard`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
         const dataLeaderboard: LeaderboardAPI[] = await resLeaderboard.json();
-        // Para cada registro, si el campo name es null, se obtiene llamando al endpoint de bot.
+        // Si el campo name es null, se obtiene llamando al endpoint de bot
         const updatedLeaderboard = await Promise.all(
           dataLeaderboard.map(async (item, i) => {
             let name = item.name;
             if (name === null) {
-              const resBot = await fetch(`http://localhost:8080/api/v0/bot/${item.botId}`, {
-                headers: { Authorization: `Bearer ${token}` },
-              });
+              const resBot = await fetch(
+                `http://localhost:8080/api/v0/bot/${item.botId}`,
+                { headers: { Authorization: `Bearer ${token}` } }
+              );
               const botData = await resBot.json();
               name = botData.name;
             }
             return {
               ...item,
-              position: item.position ?? (i + 1),  // Asigna posición si viene null
+              position: item.position ?? (i + 1),
               name,
             };
           })
@@ -160,7 +166,10 @@ export default function League({ leagueId }: LeagueProps) {
   }, [roundNumberActual, matches]);
 
   // Paginación: obtener la página actual de matches
-  const visibleMatches = enfrentamientosFiltrados.slice(currentIndex, currentIndex + pageSize);
+  const visibleMatches = enfrentamientosFiltrados.slice(
+    currentIndex,
+    currentIndex + pageSize
+  );
 
   const handlePrevious = () => {
     if (currentIndex - pageSize >= 0) {
@@ -173,6 +182,9 @@ export default function League({ leagueId }: LeagueProps) {
       setCurrentIndex((prev) => prev + pageSize);
     }
   };
+
+  // Nota: El botón "Ver debate" se maneja internamente en el componente Confrontation,
+  // al cual le pasamos la prop leagueTime para que el Chat use ese valor.
 
   if (!leagueData || roundMap.length === 0) {
     return (
@@ -188,30 +200,25 @@ export default function League({ leagueId }: LeagueProps) {
     botId: item.botId,
     botName: item.name ?? "Desconocido",
     points: item.points,
-    position: item.position ?? 0, // Asigna un valor por defecto si es null
+    position: item.position ?? 0,
     nWins: item.nWins,
     nLosses: item.nLosses,
     nDraws: item.nDraws,
   }));
 
   return (
-    <Box sx={{ 
-      pt: 0, // Ajustar para integrarse en el Dashboard
-      px: 0,
-      height: "100%",
-      overflowY: "auto",
-      color: "white",
-      display: "flex",
-      gap: 2
-    }}>
-      <Box sx={{ 
-        flex: showChat ? "1 1 60%" : "1 1 100%", // Modificado
-        overflowY: "auto",
-        color: "white"
-      }}>
-        <Typography variant="h4" sx={{ mb: 3, color: "cyan", fontWeight: "bold", textAlign: "center" }}>
-          {leagueData.name}
-        </Typography>
+    <Box sx={{ pt: 3, px: 3, height: "100%", overflowY: "auto", color: "white" }}>
+      {/* Botón para volver atrás */}
+      <IconButton onClick={() => navigate(-1)} sx={{ mb: 2, color: "white" }}>
+        <ArrowBackIosNewIcon />
+      </IconButton>
+
+      <Typography
+        variant="h4"
+        sx={{ mb: 3, color: "cyan", fontWeight: "bold", textAlign: "center" }}
+      >
+        {leagueData.name}
+      </Typography>
 
       <FormControl
         variant="outlined"
@@ -272,20 +279,26 @@ export default function League({ leagueId }: LeagueProps) {
             maxWidth: "1000px",
           }}
         >
-          {visibleMatches.map((match, index) => (
-          <Confrontation
-            key={index}
-            bot1={botNames[match.fighters[0]] || match.fighters[0].toString()}
-            bot2={botNames[match.fighters[1]] || match.fighters[1].toString()}
-            jornada={selectedIndex}
-            onViewDebate={handleViewDebate}
-          />
-        ))}
+          {visibleMatches.map((match, index) => {
+            const bot1 = botNames[match.fighters[0]] || match.fighters[0].toString();
+            const bot2 = botNames[match.fighters[1]] || match.fighters[1].toString();
+            return (
+              <Confrontation
+                key={index}
+                bot1={bot1}
+                bot2={bot2}
+                jornada={selectedIndex}
+                leagueTime={leagueData.matchTime} // Pasamos matchTime al Chat
+              />
+            );
+          })}
         </Box>
 
         <IconButton
           onClick={handleNext}
-          disabled={currentIndex + pageSize >= enfrentamientosFiltrados.length}
+          disabled={
+            currentIndex + pageSize >= enfrentamientosFiltrados.length
+          }
           sx={{
             color: "white",
             border: "1px solid cyan",
@@ -296,7 +309,10 @@ export default function League({ leagueId }: LeagueProps) {
         </IconButton>
       </Box>
 
-      <Typography variant="h5" sx={{ mb: 2, color: "cyan", fontWeight: "bold", textAlign: "center" }}>
+      <Typography
+        variant="h5"
+        sx={{ mb: 2, color: "cyan", fontWeight: "bold", textAlign: "center" }}
+      >
         Clasificación
       </Typography>
       <TablaClasificacion
@@ -309,32 +325,6 @@ export default function League({ leagueId }: LeagueProps) {
           nDraws: item.nDraws,
         }))}
       />
-    </Box>
-    {showChat && selectedDebate && (
-    <Box sx={{ 
-      flex: "1 1 40%",
-      borderLeft: "1px solid cyan",
-      position: "relative"
-    }}>
-      <IconButton
-        onClick={() => setShowChat(false)}
-        sx={{
-          position: "absolute",
-          right: 8,
-          top: 8,
-          color: "white",
-          zIndex: 1
-        }}
-      >
-        <CloseIcon />
-      </IconButton>
-      <Chat
-        bot1={selectedDebate.bot1}
-        bot2={selectedDebate.bot2}
-        jornada={selectedDebate.jornada}
-      />
-    </Box>
-)}
     </Box>
   );
 }
