@@ -124,7 +124,7 @@ export const getMatchesByLeagueId = async (leagueId: number) => {
   const token = getAuthToken();
   if (!token) throw new Error("No valid token found.");
 
-  const endpoint = `../league/${leagueId}/match`;
+  const endpoint = `http://localhost:8080/api/v0/league/${leagueId}/match`;
   const response = await fetch(endpoint, {
     method: "GET",
     headers: {
@@ -145,7 +145,7 @@ export const getStandingsByLeagueId = async (leagueId: number) => {
   const token = getAuthToken();
   if (!token) throw new Error("No valid token found.");
 
-  const endpoint = `../league/${leagueId}/leaderboard`;
+  const endpoint = `http://localhost:8080/api/v0/league/${leagueId}/leaderboard`;
   const response = await fetch(endpoint, {
     method: "GET",
     headers: {
@@ -165,7 +165,7 @@ export const startLeagueById = async (leagueId: number) => {
   const token = getAuthToken();
   if (!token) throw new Error("No valid token found.");
 
-  const endpoint = `../league/${leagueId}/start`;
+  const endpoint = `http://localhost:8080/api/v0/league/${leagueId}/start`;
   const response = await fetch(endpoint, {
     method: "POST",
     headers: {
@@ -175,8 +175,15 @@ export const startLeagueById = async (leagueId: number) => {
   });
 
   if (!response.ok) {
-    throw new Error(await response.text());
+    const errorText = await response.text();
+    throw new Error(errorText || `Error ${response.status}: ${response.statusText}`);
   }
 
-  return response.json();
+  // Handle empty response body
+  const contentType = response.headers.get("Content-Type");
+  if (contentType && contentType.includes("application/json")) {
+    return await response.json();
+  }
+
+  return null; // Return null if no JSON body is present
 };

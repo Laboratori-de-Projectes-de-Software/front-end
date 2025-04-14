@@ -9,6 +9,7 @@ import {
     fetchMatchesByLeague,
     fetchStandingsByLeague
 } from "../controllers/LeaguesController";
+import {fetchBotById} from "../controllers/BotController";
 
 
 interface LeagueModalProps {
@@ -19,10 +20,16 @@ interface LeagueModalProps {
         name: string;
         urlImagen: string;
         matchTime: number;
-        bots: { id: number; imageUrl: string }[];
+        bots: number[];
         rounds: number;
         state: string;
     } | null;
+}
+
+interface Bot {
+    id: number;
+    name: string;
+    urlImagen: string; // Image URL
 }
 
 const LeagueModal: React.FC<LeagueModalProps> = ({ isOpen, onClose, league }) => {
@@ -31,17 +38,49 @@ const LeagueModal: React.FC<LeagueModalProps> = ({ isOpen, onClose, league }) =>
     const [currentLeague, setCurrentLeague] = useState(league);
     const [matches, setMatches] = useState<any[]>([]);
     const [standings, setStandings] = useState<any[]>([]);
+    const [bots, setBots] = useState<Bot[]>([]);
 
     // Sincronizar currentLeague con league cuando esta cambie
     useEffect(() => {
         setCurrentLeague(league);
-        if (league && (league.state === "Started" || league.state === "Finished")) {
-            fetchMatchesByLeague(league.id).then(setMatches).catch(console.error);
-            fetchStandingsByLeague(league.id).then(setStandings).catch(console.error);
+        // if (league && (league.state === "Started" || league.state === "Finished")) {
+        //     fetchMatchesByLeague(league.id).then(setMatches).catch(console.error);
+        //     fetchStandingsByLeague(league.id).then(setStandings).catch(console.error);
+        // }
+        if (league) {
+            fetchMatchesByLeague(league.id)
+                .then((matches) => {
+                    console.log("Fetched matches:", matches); // Log para probar los datos
+                    setMatches(matches);
+                })
+                .catch(console.error);
+
+            fetchStandingsByLeague(league.id)
+                .then((standings) => {
+                    console.log("Fetched standings:", standings); // Log para probar los datos
+                    setStandings(standings);
+                })
+                .catch(console.error);
         }
     }, [league]);
 
-    console.log("LeagueModal props:", { isOpen, league });
+    useEffect(() => {
+        if (league && league.bots.length > 0) {
+            const fetchBots = async () => {
+                try {
+                    const fetchedBots = await Promise.all(
+                        league.bots.map((botId) => fetchBotById(botId))
+                    );
+                    setBots(fetchedBots);
+                } catch (error) {
+                    console.error("Error fetching bots:", error);
+                }
+            };
+
+            fetchBots();
+        }
+    }, [league?.bots]);
+
     if (!isOpen || !currentLeague) return null;
 
     const reloadLeagueData = () => {
@@ -70,38 +109,38 @@ const LeagueModal: React.FC<LeagueModalProps> = ({ isOpen, onClose, league }) =>
         reloadLeagueData();
     };
 
-    const handleStartClick = () => {
+    const handleStartClick = async () => {
         if (currentLeague) {
             try {
-                fetchLeagueStart(currentLeague.id);
+                await fetchLeagueStart(currentLeague.id);
                 console.log("League started successfully");
                 reloadLeagueData(); // Refresh league data after starting
             } catch (error) {
                 console.error("Error starting league:", error);
             }
         }
-    }
+    };
 
     return (
 
         <div className="modal-overlay">
-            <div className="modal-content">
+            <div className="modal-content-started">
                 <button className="close-button" onClick={onClose}>
                     &times;
                 </button>
                 <h2>{currentLeague.name}</h2>
 
-                {currentLeague.state === "Created" ? (
+                {currentLeague.state === "Create" ? (
                     <>
                         {/* Original Design */}
                         <h3>Bots Inscritos:</h3>
                         <div className="bot-images-container">
-                            {currentLeague.bots.map((bot) => (
+                            {bots.map((bot) => (
                                 <img
                                     key={bot.id}
-                                    src={bot.imageUrl}
+                                    src={bot.urlImagen}
                                     alt={`Bot ${bot.id}`}
-                                    className="bot-image"
+                                    className="bot-league-image"
                                 />
                             ))}
                         </div>
@@ -116,21 +155,20 @@ const LeagueModal: React.FC<LeagueModalProps> = ({ isOpen, onClose, league }) =>
                     <div className="league-details">
                         <div className="matches-column">
                             <h3>Enfrentamientos por Jornada</h3>
-                            {matches.map((round) => (
-                                <div key={round.id} className="round">
-                                    <h4>Jornada {round.num_jornada}</h4>
-                                    <ul>
-                                        {round.enfrentamientos.map((match: any) => (
-                                            <li key={match.id}>
-                                                Enfrentamiento {match.id} - Estado: {match.estado}
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            ))}
+                            {/*{matches.map((round) => (*/}
+                            {/*    <div key={round.matchId} className="round">*/}
+                            {/*        <h4>Jornada {round.num_jornada}</h4>*/}
+                            {/*        <ul>*/}
+                            {/*            {round.enfrentamientos.map((match: any) => (*/}
+                            {/*                <li key={match.matchId}>*/}
+                            {/*                    Enfrentamiento {match.matchId} - Estado: {match.state}*/}
+                            {/*                </li>*/}
+                            {/*            ))}*/}
+                            {/*        </ul>*/}
+                            {/*    </div>*/}
+                            {/*))}*/}
                         </div>
                         <div className="standings-column">
-                            <h3>Clasificación</h3>
                             <table>
                                 <thead>
                                 <tr>
@@ -142,15 +180,15 @@ const LeagueModal: React.FC<LeagueModalProps> = ({ isOpen, onClose, league }) =>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {standings.map((bot) => (
-                                    <tr key={bot.bot_id}>
-                                        <td>{bot.bot_id}</td>
-                                        <td>{bot.num_ganados}</td>
-                                        <td>{bot.num_perdidos}</td>
-                                        <td>{bot.num_empatados}</td>
-                                        <td>{bot.puntuacion}</td>
-                                    </tr>
-                                ))}
+                                    {standings.map((bot) => (
+                                        <tr key={bot.botId}>
+                                            <td>{bot.name}</td>
+                                            <td>{bot.nwins}</td>
+                                            <td>{bot.nlosses}</td>
+                                            <td>{bot.ndraws}</td>
+                                            <td>{bot.points}</td>
+                                        </tr>
+                                    ))}
                                 </tbody>
                             </table>
                         </div>

@@ -30,6 +30,22 @@
   box-sizing: border-box;
 }
 
+.modal-content-started {
+  background: rgba(30, 30, 30, 0.9); /* Semi-transparent background */
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8);
+  width: 100%;
+  max-width: 1200px; /* Limits the modal width */
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  margin: 20px 0; /* Adds spacing between the modal and the edges */
+  max-height: none; /* Removes height restrictions */
+  color: white;
+  box-sizing: border-box;
+}
+
 /* Animación al aparecer */
 @keyframes modal-fade-in {
   from {
@@ -313,7 +329,13 @@
 }
 
 .bot-image {
-  width: 50px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ccc;
+}
+
+.bot-league-image {
   height: 50px;
   border-radius: 50%;
   object-fit: cover;

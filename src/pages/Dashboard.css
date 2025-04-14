@@ -140,7 +140,6 @@
   border: 1px solid rgba(255, 255, 255, 0.08);
   position: relative;
   overflow: hidden;
-  height: 120px; /* Fija la altura para que todas las tarjetas sean iguales */
   box-sizing: border-box; /* Incluye el padding en el tamaño total */
 }
 
@@ -173,7 +172,7 @@
   justify-content: center; /* Centra las estadísticas horizontalmente */
   align-items: center;
   background: rgba(0, 0, 0, 0.2);
-  padding: 6px 12px; /* Aumenta el padding para mayor separación */
+  padding: 3px 6px; /* Aumenta el padding para mayor separación */
   border-radius: 20px;
   font-size: 14px; /* Ajusta el tamaño de la fuente */
   gap: 8px; /* Aumenta la separación entre los elementos */

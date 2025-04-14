@@ -6,7 +6,7 @@ interface AddBotsModalProps {
     isOpen: boolean;
     onClose: () => void;
     leagueId: number;
-    currentBots: { id: number; imageUrl: string }[];
+    currentBots: number[];
     onSuccess?: () => void; // Callback to refresh the league's bot list
 }
 
@@ -17,8 +17,8 @@ const AddBotsModal: React.FC<AddBotsModalProps> = ({
                                                        currentBots,
                                                        onSuccess,
                                                    }) => {
-    const [allBots, setAllBots] = useState<{ id: string; name: string }[]>([]);
-    const [selectedBots, setSelectedBots] = useState<string[]>([]);
+    const [allBots, setAllBots] = useState<{ id: number; name: string }[]>([]);
+    const [selectedBots, setSelectedBots] = useState<number[]>([]);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     useEffect(() => {
@@ -28,8 +28,8 @@ const AddBotsModal: React.FC<AddBotsModalProps> = ({
                 (bots) => {
                     // Filter out bots already in the league
                     const filteredBots = bots
-                        .filter((bot) => !currentBots.some((current) => current.id === bot.id))
-                        .map((bot) => ({ id: bot.id!.toString(), name: bot.name || "Unnamed Bot" }));
+                        .filter((bot) => !currentBots.some((current) => current === bot.id))
+                        .map((bot) => ({ id: bot.id!, name: bot.name || "Unnamed Bot" }));
                     setAllBots(filteredBots);
                 },
                 (error) => console.error("Error fetching bots:", error)
@@ -37,7 +37,7 @@ const AddBotsModal: React.FC<AddBotsModalProps> = ({
         }
     }, [isOpen, currentBots]);
 
-    const handleBotSelection = (botId: string) => {
+    const handleBotSelection = (botId: number) => {
         setSelectedBots((prev) =>
             prev.includes(botId) ? prev.filter((id) => id !== botId) : [...prev, botId]
         );

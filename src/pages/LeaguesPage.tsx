@@ -17,8 +17,20 @@ const LeaguesPage: React.FC = () => {
     const [selectedLeague, setSelectedLeague] = useState<any | null>(null);
     const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
 
+    // Función centralizada para recargar las ligas
+    const reloadLeagues = () => {
+        setLoading(true);
+        fetchUserLeagues(setLeagues, (error) => {
+            console.error("Error fetching leagues:", error);
+        }).finally(() => setLoading(false));
+        console.log(leagues);
+    };
+
+    useEffect(() => {
+        reloadLeagues(); // Cargar las ligas al montar el componente
+    }, []);
+
     const handleLeagueClick = (league: any) => {
-        console.log("Clicked league:", league);
         setSelectedLeague(league);
         setIsDetailsModalOpen(true);
     };
@@ -26,18 +38,8 @@ const LeaguesPage: React.FC = () => {
     const handleCloseDetailsModal = () => {
         setIsDetailsModalOpen(false);
         setSelectedLeague(null);
-        // Recargar las ligas desde la base de datos
-        setLoading(true);
-        fetchUserLeagues(setLeagues, (error) => {
-            console.error("Error fetching leagues:", error);
-        }).finally(() => setLoading(false));
+        reloadLeagues(); // Recargar las ligas al cerrar el modal de detalles
     };
-
-    useEffect(() => {
-        fetchUserLeagues(setLeagues, (error) => {
-            console.error("Error fetching leagues:", error);
-        }).finally(() => setLoading(false));
-    }, []);
 
     const handleCreateLeague = () => {
         setIsModalOpen(true);
@@ -45,11 +47,7 @@ const LeaguesPage: React.FC = () => {
 
     const handleCloseModal = () => {
         setIsModalOpen(false);
-        // Recargar las ligas desde la base de datos
-        setLoading(true);
-        fetchUserLeagues(setLeagues, (error) => {
-            console.error("Error fetching leagues:", error);
-        }).finally(() => setLoading(false));
+        reloadLeagues();
     };
 
     return (

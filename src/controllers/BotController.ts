@@ -93,7 +93,7 @@ export const fetchUserBots = async (
  * @param botIds IDs de los bots a inscribir
  * @throws Error si ocurre algún problema durante la inscripción
  */
-export const addBotsToLeague = async (leagueId: number, botIds: string[]) => {
+export const addBotsToLeague = async (leagueId: number, botIds: number[]) => {
   if (!leagueId || botIds.length === 0) {
     throw new Error("La liga y los bots son obligatorios.");
   }
@@ -103,6 +103,17 @@ export const addBotsToLeague = async (leagueId: number, botIds: string[]) => {
     console.log("Bots inscritos con éxito en la liga:", leagueId);
   } catch (error) {
     console.error("Error al inscribir bots en la liga:", error);
+    throw error;
+  }
+};
+
+/// Función para obtener un bot por su ID
+export const fetchBotById = async (botId: number) => {
+  try {
+    const bot = await getBotById(botId);
+    return bot;
+  } catch (error) {
+    console.error("Error al obtener el bot:", error);
     throw error;
   }
 };
