@@ -1,24 +1,26 @@
-import React from 'react';
+import React, { useState, useEffect } from "react";
 import ParticipantCard from '@components/ParticipantCard';
-import { getAllBots } from '@use-cases/UseCases';
-// import BotDTO from '@DTOClasses/BotDTO';
-
-/*
-const participants = [
-  { name: 'Bot 1', team: 'Team 1', wins: 4, draws: 2, losses: 1 },
-  { name: 'Bot 2', team: 'Team 1', wins: 4, draws: 2, losses: 1 },
-  { name: 'Bot 3', team: 'Team 2', wins: 4, draws: 2, losses: 1 },
-  { name: 'Bot 4', team: 'Team 2', wins: 4, draws: 2, losses: 1 },
-  { name: 'Bot 5', team: 'Team 2', wins: 4, draws: 2, losses: 1 },
-  { name: 'Bot 6', team: 'Team 3', wins: 4, draws: 2, losses: 1 },
-];
-*/
-
-let participants; 
+import { getAllBots, getBot } from '@use-cases/UseCases';
+import { BotSummaryResponseDTO, BotResponseDTO } from '@DTOClasses/BotDTO';
 
 const ParticipantsPage: React.FC = () => {
-  participants = getAllBots();
-  if (!participants) {
+  const [bots, setBots] = useState<BotResponseDTO[]>([]); // Estat per emmagatzemar els bots
+    
+  useEffect(() => {
+    const fetchB = async () => {
+      const fetchedBots = await getAllBots();
+      fetchedBots.forEach(async (bot: BotSummaryResponseDTO) =>  {
+        const botDetails = await getBot(bot.id);
+        if (botDetails) {
+          setBots([...bots, botDetails]);
+        }
+      });
+    };
+
+    fetchB();
+  }, []);
+
+  if (!bots) {
     return <div className="min-h-screen"><h1 className="text-3xl font-bold mb-8">Error loading participants</h1></div>;
   }
 
@@ -27,14 +29,13 @@ const ParticipantsPage: React.FC = () => {
       <main className="p-8 flex flex-col items-center">
         <h1 className="text-3xl font-bold mb-8">Participants</h1>
         <div className="grid grid-cols-3 gap-6">
-          {participants.map((participant) => (
+          {bots.map((bot) => (
             <ParticipantCard
-              key={participant.botId}
-              name={participant.name}
-              team={participant.team}
-              wins={participant.wins}
-              draws={participant.draws}
-              losses={participant.losses}
+              key={bot.botId}
+              name={bot.name}
+              wins={bot.nWins}
+              draws={bot.nDraws}
+              losses={bot.nLosses}
             />
           ))}
         </div>
