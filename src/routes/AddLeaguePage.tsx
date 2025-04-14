@@ -105,7 +105,7 @@ const AddLeaguePage: React.FC = () => {
             <label className="block text-left mb-2 font-bold">Name:</label>
             <input
               type="text"
-              className="w-full p-2 rounded-lg"
+              className="w-full bg-(--input-bkg) p-2 rounded-lg"
               value={leagueName}
               onChange={(e) => setLeagueName(e.target.value)}
             />
@@ -113,7 +113,7 @@ const AddLeaguePage: React.FC = () => {
 
           <div className="mb-4 w-2/3 md:w-1/2 lg:w-2/3">
             <label className="block text-left mb-2 font-bold">Participants:</label>
-            <div className="bg-gray-200 p-2 rounded-lg">
+            <div className="bg-(--input-bkg) p-2 rounded-lg">
                 {bots.map((bot) => (
                   <div key={bot.id} className="flex items-center justify-between p-1">
                     <span className="font-bold">{bot.name}</span>
@@ -131,7 +131,7 @@ const AddLeaguePage: React.FC = () => {
             <label className="block text-left mb-2 font-bold">Maximum Rounds:</label>
             <input
               type="number"
-              className="w-full p-2 rounded-lg"
+              className="w-full bg-(--input-bkg) p-2 rounded-lg"
               value={rounds}
               onChange={(e) => setRounds(e.target.value)}
             />
@@ -141,7 +141,7 @@ const AddLeaguePage: React.FC = () => {
             <label className="block text-left mb-2 font-bold">Maximum Time:</label>
             <input
               type="number"
-              className="w-full p-2 rounded-lg"
+              className="w-full bg-(--input-bkg) p-2 rounded-lg"
               value={matchTime}
               onChange={(e) => setMatchTime(e.target.value)}
             />
