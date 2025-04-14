@@ -17,10 +17,10 @@ const AddLeaguePage: React.FC = () => {
   useEffect(() => {
     const fetchBots = async () => {
       const fetchedBots = await getAllBots();
-      setBots(fetchedBots ?? []); // Si no hi ha bots, utilitzem una llista buida
+      setBots(fetchedBots);
     };
     const fetchLeagues = async () => {
-      const fetchedLeagues = await getAllLeagues(1 /* gestió d'usuari actual */) ?? [];  // Si no hi ha lligues, utilitzem una llista buida
+      const fetchedLeagues = await getAllLeagues(1 /* gestió d'usuari actual */);
       setLeagues(fetchedLeagues);
     };
     fetchBots();
