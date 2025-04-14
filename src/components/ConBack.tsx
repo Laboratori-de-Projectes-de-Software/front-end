@@ -25,7 +25,7 @@ export class ConBack implements ConAPI {
     private CREATE_USER_ROUTE: string = "/auth/register";
     private LOGIN_USER_ROUTE: string = "/auth/login";
     private POST_BOT_ROUTE: string = "/bot";
-    private GET_USERS_BOTS_ROUTE:string = "/bot?owner=";
+    private GET_USERS_BOTS_ROUTE: string = "/bot?owner=";
     private UPDATE_BOT_ROUTE: string = "/bot/";
     private GET_LEAGUE_ROUTE: string = "/league/";
     private GET_USERS_LEAGUES_ROUTE: string = "/league?owner=";
@@ -180,8 +180,9 @@ export class ConBack implements ConAPI {
     private generalEnRouteGetter<T>(route: string, errorHandler: (error: Error) => void): Promise<T> {
         return axios.get<T>(`${this.DOMAIN}${route}`, {
             headers: {
-                
-                'Authorization': `${this.getToken()}`,
+
+                'Authorization': `Bearer ${this.getToken()}`,
+                'Content-Type': 'application/json'
             }
         }).then(response => {
             return response.data;
@@ -195,11 +196,31 @@ export class ConBack implements ConAPI {
     }
 
     private generalPost<T>(route: string, paramStructure: any, errorHandler: (error: Error) => void): Promise<T> {
+
+        // Add this before making any requests
+        axios.interceptors.request.use(request => {
+            console.log('Request:', request);
+            return request;
+        });
+
+        axios.interceptors.response.use(
+            response => {
+                console.log('Response:', response);
+                return response;
+            },
+            error => {
+                console.log('Error response:', error.response);
+                return Promise.reject(error);
+            }
+        );
+        console.log(this.getToken());
         return axios.post<T>(`${this.DOMAIN}${route}`, paramStructure, {
             headers: {
-                
-                'Authorization': `${this.getToken()}`,
-            }
+
+                'Authorization': `Bearer ${this.getToken()}`,
+                'Content-Type': 'application/json'
+            },
+            timeout: 10000
         })
             .then(response => {
                 return response.data;
