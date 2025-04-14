@@ -2,8 +2,6 @@ import { BotDTO, BotResponseDTO, BotSummaryResponseDTO } from "@DTOClasses/BotDT
 import { LeagueDTO, LeagueResponseDTO } from "@DTOClasses/LeagueDTO";
 import { ParticipationResponseDTO } from "@DTOClasses/ParticipationDTO";
 import {UserDTORegister, UserResponseDTO } from "@DTOClasses/UserDTO";
-
-
   
 //const BASE_URL = "http://localhost:8080";
 
@@ -86,7 +84,7 @@ export async function registerBot(botData: BotDTO): Promise<BotResponseDTO | nul
     }
 }
 
-export async function getAllBots(userId?: number): Promise<BotSummaryResponseDTO[] | null> {
+export async function getAllBots(userId?: number): Promise<BotSummaryResponseDTO[]> {
     try {
         // Construcció dinàmica de l'URL amb o sense paràmetre `owner`
         const url = userId ? `${BASE_URL}/bot?owner=${userId}` : `${BASE_URL}/bot`;
@@ -100,14 +98,14 @@ export async function getAllBots(userId?: number): Promise<BotSummaryResponseDTO
   
         if (!response.ok) {
             console.error("Error al obtenir els bots:", response.statusText);
-            return null;
+            return [];
         }
   
         const bots: BotSummaryResponseDTO[] = await response.json();
         return bots;
     } catch (error) {
         console.error("Error inesperat al obtenir els bots:", error);
-        return null;
+        return [];
     }
 }
 
@@ -182,7 +180,7 @@ export async function createLeague(leagueData: LeagueDTO): Promise<LeagueRespons
       }
 }
 
-export async function getAllLeagues(userId: number): Promise<LeagueResponseDTO[] | null> {
+export async function getAllLeagues(userId: number): Promise<LeagueResponseDTO[]> {
     const token = localStorage.getItem("token");
   
     try {
@@ -196,7 +194,7 @@ export async function getAllLeagues(userId: number): Promise<LeagueResponseDTO[]
   
       if (!response.ok) {
         console.error("Error HTTP carregant lligues:", response.status);
-        return null;
+        return [];
       }
   
       let data: LeagueResponseDTO[];
@@ -204,12 +202,12 @@ export async function getAllLeagues(userId: number): Promise<LeagueResponseDTO[]
         data = await response.json();
       } catch (err) {
         console.error("Error parsejant JSON de lligues:", err);
-        return null;
+        return [];
       }
       return data;
     } catch (err) {
       console.error("Error de connexió a getAllLeagues:", err);
-      return null;
+      return [];
     }
   }
   
@@ -292,7 +290,7 @@ export async function getAllLeagues(userId: number): Promise<LeagueResponseDTO[]
     }
   }
 
-  export async function getLeagueClassification(leagueId: number): Promise<ParticipationResponseDTO[] | null> {
+  export async function getLeagueClassification(leagueId: number): Promise<ParticipationResponseDTO[]> {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(`/leagues/${leagueId}/leaderboard`, {
@@ -305,7 +303,7 @@ export async function getAllLeagues(userId: number): Promise<LeagueResponseDTO[]
   
       if (!response.ok) {
         console.error("Error HTTP carregant classificació:", response.status);
-        return null;
+        return [];
       }
   
       try {
@@ -313,11 +311,11 @@ export async function getAllLeagues(userId: number): Promise<LeagueResponseDTO[]
         return data;
       } catch (parseError) {
         console.error("Error parsejant JSON de classificació:", parseError);
-        return null;
+        return [];
       }
     } catch (error) {
       console.error("Error durant la petició de classificació:", error);
-      return null;
+      return [];
     }
   }
 
