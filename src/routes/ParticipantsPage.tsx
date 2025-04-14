@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ParticipantCard from '@components/ParticipantCard';
+import WhiteButton from '@components/WhiteButton';
 import { getAllBots, getBot } from '@use-cases/UseCases';
 import { BotSummaryResponseDTO, BotResponseDTO } from '@DTOClasses/BotDTO';
 
@@ -40,7 +41,7 @@ const ParticipantsPage: React.FC = () => {
           ))}
         </div>
         <a href="/add-bot">
-          <button className="mt-8 bg-(--btn-bkg) text-black font-bold p-2 rounded hover:cursor-pointer">Add</button>
+          <WhiteButton>Add</WhiteButton>
         </a>
       </main>
     </div>

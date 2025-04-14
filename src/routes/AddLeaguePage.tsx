@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { createLeague } from "@use-cases/UseCases";  // Importa la funció createLeague
 import { getAllBots, getAllLeagues } from "@use-cases/UseCases";  // Importa la funció getBots i getAllLeagues
 import LeagueBar from "@components/LeagueBar";
+import WhiteButton from "@components/WhiteButton";
 import { LeagueDTO, LeagueResponseDTO } from "@DTOClasses/LeagueDTO";
 import { BotSummaryResponseDTO } from "@DTOClasses/BotDTO";
 
@@ -143,12 +144,7 @@ const AddLeaguePage: React.FC = () => {
             />
           </div>
 
-          <button
-            className="bg-blue-500 text-white px-6 py-2 rounded font-bold"
-            onClick={handleSubmit}
-          >
-            Add League
-          </button>
+          <WhiteButton onClick={handleSubmit}>Add League</WhiteButton>
         </div>
       </main>
     </div>

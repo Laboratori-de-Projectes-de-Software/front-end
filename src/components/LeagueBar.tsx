@@ -1,6 +1,7 @@
 import { LeagueResponseDTO } from "@DTOClasses/LeagueDTO";
 import React from "react";
 import { useNavigate } from "react-router-dom"; 
+import WhiteButton from "@components/WhiteButton";
 
 
 interface LeagueBarProps {
@@ -14,12 +15,8 @@ const LeagueBar: React.FC<LeagueBarProps> = ({ leagues, selectedLeagueId, onSele
 
   return (
     <aside className="w-1/4 bg-black p-4 text-white min-h-screen">
-      <button 
-        className="w-full bg-white text-black py-2 mb-4 rounded-lg font-bold text-lg hover:cursor-pointer hover:bg-gray-200 transition duration-100"
-        onClick={() => navigate("/add-league")}
-      >
-        + Add League
-      </button>
+      <WhiteButton className="w-full text-lg" onClick={() => navigate("/add-league")}>+ Add League</WhiteButton>
+      
       {leagues.map((league) => (
         <button
         key={league.leagueId}

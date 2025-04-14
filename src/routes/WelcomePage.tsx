@@ -1,4 +1,5 @@
 import React from 'react';
+import WhiteButton from '@components/WhiteButton';
 
 const WelcomePage: React.FC = () => {
   const isUserLogged = localStorage.getItem("user") !== null;
@@ -15,15 +16,15 @@ const WelcomePage: React.FC = () => {
           <div className="flex flex-row items-center gap-4">
             <a
               href="/login"
-              className="mt-8 bg-[var(--btn-bkg)] text-black font-bold px-4 py-2 rounded-lg"
+              className="mt-8"
             >
-              Login
+              <WhiteButton>Log in</WhiteButton>
             </a>
             <a
               href="/register"
-              className="mt-8 bg-[var(--btn-bkg)] text-black font-bold px-4 py-2 rounded-lg"
+              className="mt-8"
             >
-              Register
+              <WhiteButton>Register</WhiteButton>
             </a>
           </div>
         )}

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { userSignUp } from '@use-cases/UseCases';
+import WhiteButton from '@components/WhiteButton';
 
 const RegisterPage: React.FC = () => {
   const [user, setUser] = useState('');
@@ -80,12 +81,7 @@ const RegisterPage: React.FC = () => {
               className="w-full p-3 rounded-lg bg-(--input-bkg) border-none"
             />
           </div>
-          <button
-            type="submit"
-            className="w-full bg-(--btn-bkg) text-black font-bold p-3 rounded-lg hover:bg-gray-300 transition-colors hover:cursor-pointer"
-          >
-            Register
-          </button>
+          <WhiteButton type="submit" className="w-full">Register</WhiteButton>
         </form>
         <div className="mt-4 text-center">
           <p className="text-sm text-gray-400">
