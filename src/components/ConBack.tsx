@@ -84,6 +84,7 @@ export class ConBack implements ConAPI {
 
     // Create a new league.
     async postLeague(league: LeagueDTO): Promise<LeagueResponseDTO> {
+        console.log(league);
         return this.generalPost(this.POST_LEAGUE_ROUTE, league, (_ => { }));
     }
 

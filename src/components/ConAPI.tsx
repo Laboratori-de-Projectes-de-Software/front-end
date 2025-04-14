@@ -29,7 +29,7 @@ export interface BotDTO {
 }
 
 export interface LeagueDTO {
-    name: string; urlImagen: string; rounds: BigInteger; matchTime: BigInteger; bots: Int32Array; userId: BigInteger;
+    name: string; urlImagen: string; rounds: number; matchTime: number; bots: Array<number>; userId: number;
 }
 
 export interface UserResponseDTO {

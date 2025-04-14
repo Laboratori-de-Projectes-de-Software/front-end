@@ -2,7 +2,7 @@ import Footer from "./Footer";
 import SideBar from "./SideBar";
 import { useState, useEffect, FormEvent } from "react";
 import MultiselectDropdown from "./MultiSelectDropdown";
-
+import { LeagueDTO } from "./ConAPI";
 interface BotOption {
   name: string;
   botId: number;
@@ -80,7 +80,15 @@ export default function LeagueCreation() {
 
 
   const handleLeagueCreation = (e: FormEvent<HTMLButtonElement>): void => {
-    console.log(selectedOptions);
+    const leagueInfo: LeagueDTO ={
+      name: leagueData.name,
+      urlImagen: leagueData.urlImage,
+      matchTime: leagueData.matchTime,
+      rounds: leagueData.rounds,
+      bots: leagueData.bots,
+      userId: 0
+    }
+    window.APIConection.postLeague(leagueInfo).then().catch((error) => console.log(error));
   }
   return (
     <>
