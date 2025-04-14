@@ -19,17 +19,13 @@ const AddLeaguePage: React.FC = () => {
       const fetchedBots = await getAllBots();
       setBots(fetchedBots ?? []); // Si no hi ha bots, utilitzem una llista buida
     };
+    const fetchLeagues = async () => {
+      const fetchedLeagues = await getAllLeagues(1 /* gestió d'usuari actual */) ?? [];  // Si no hi ha lligues, utilitzem una llista buida
+      setLeagues(fetchedLeagues);
+    };
     fetchBots();
+    fetchLeagues();
   }, []);
-
-  // Obtenir les lligues existents
-  useEffect(() => {
-      const fetchLeagues = async () => {
-        const fetchedLeagues = await getAllLeagues(1 /* gestió d'usuari actual */) ?? [];  // Si no hi ha lligues, utilitzem una llista buida
-        setLeagues(fetchedLeagues);
-      };
-      fetchLeagues();
-    }, []);
 
   // Funció per gestionar el canvi de participants seleccionats
   const handleToggleParticipant = (bot: number) => {
