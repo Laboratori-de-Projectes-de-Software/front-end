@@ -1,4 +1,5 @@
 import React from 'react';
+import Dropdown from 'react-bootstrap/Dropdown';
 
 const Navbar: React.FC = () => {
   return (
@@ -8,12 +9,20 @@ const Navbar: React.FC = () => {
         <ul className="flex space-x-4">
           <li><a href="/classification">Leagues</a></li>
           <li><a href="/bots">Participants</a></li>
-          <li><a href="/logout">Log out</a></li>
         </ul>
       </div>
       
       <div className="flex items-center">
-        <span>Icon</span>
+        <Dropdown>
+          <Dropdown.Toggle variant="success" id="dropdown-basic" className='hover:underline hover:cursor-pointer'>
+            Icon
+          </Dropdown.Toggle>
+
+          <Dropdown.Menu className='flex flex-col bg-(--primary) px-4 py-2 mt-20 gap-2 rounded-lg'>
+            <Dropdown.Item href="/">View profile</Dropdown.Item>
+            <Dropdown.Item href="/logout">Log out</Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
       </div>
     </nav>
   );
