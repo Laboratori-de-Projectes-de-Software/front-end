@@ -2,15 +2,15 @@ import React, { useState, useEffect } from "react";
 import ParticipantCard from '@components/ParticipantCard';
 import WhiteButton from '@components/WhiteButton';
 import { getAllBots, getBot } from '@use-cases/UseCases';
-import { BotSummaryResponseDTO, BotResponseDTO } from '@DTOClasses/BotDTO';
+import { BotDTO } from '@DTOClasses/BotDTO';
 
 const ParticipantsPage: React.FC = () => {
-  const [bots, setBots] = useState<BotResponseDTO[]>([]); // Estat per emmagatzemar els bots
+  const [bots, setBots] = useState<BotDTO[]>([]); // Estat per emmagatzemar els bots
     
   useEffect(() => {
     const fetchBots = async () => {
       const fetchedBots = await getAllBots();
-      fetchedBots.forEach(async (bot: BotSummaryResponseDTO) =>  {
+      fetchedBots.forEach(async (bot: BotDTO) =>  {
         const botDetails = await getBot(bot.id);
         if (botDetails) {
           setBots( b => [...b, botDetails]);
@@ -32,11 +32,11 @@ const ParticipantsPage: React.FC = () => {
         <div className="grid grid-cols-3 gap-6">
           {bots.map((bot) => (
             <ParticipantCard
-              key={bot.botId}
+              key={bot.id}
               name={bot.name}
-              wins={bot.nWins}
-              draws={bot.nDraws}
-              losses={bot.nLosses}
+              quality={bot.quality}
+              apiUrl={bot.apiUrl}
+              imageUrl={bot.imageUrl}
             />
           ))}
         </div>
