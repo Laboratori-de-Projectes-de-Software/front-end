@@ -2,7 +2,7 @@ import Footer from "./Footer";
 import SideBar from "./SideBar";
 import { useState, useEffect, FormEvent } from "react";
 import MultiselectDropdown from "./MultiSelectDropdown";
-import { LeagueDTO } from "./ConAPI";
+import { BotDTO, BotSummaryResponseDTO, LeagueDTO } from "./ConAPI";
 interface BotOption {
   name: string;
   botId: number;
@@ -16,15 +16,38 @@ interface LeagueCreationData {
   bots: Array<number>;
 }
 
+
+function getCookie(cookie: string): string {
+  const cookies = document.cookie.split('; ');
+  for (const cookie of cookies) {
+    const [cookieName, value] = cookie.split('=');
+    if (cookieName === cookie) {
+      return `${decodeURIComponent(value)}`;
+    }
+  }
+  return "";
+}
+
 export default function LeagueCreation() {
+  const [availableBots, setAvailableBots] = useState<BotOption[]>([]);
+
+  useEffect(() => {
+    window.APIConection.getAllBotsUser(parseInt(getCookie("userid")))
+      .then((bots: BotSummaryResponseDTO[]) => {
+        // Wrap the object literal in parentheses to return it directly
+        const botOptions = bots.map(bot => ({
+          name: bot.name,
+          botId: bot.id,
+        }));
+        setAvailableBots(botOptions);
+      })
+      .catch(error => {
+        console.error("Error fetching bots:", error);
+      });
+  }, []);
+
   // Get data from back
-  const availableBots: BotOption[] = [
-    { name: "Bot Alpha", botId: 1 },
-    { name: "Bot Beta", botId: 2 },
-    { name: "Bot Gamma", botId: 3 },
-    { name: "Bot Delta", botId: 4 },
-    { name: "Bot Epsilon", botId: 5 },
-  ];
+
 
   const [leagueData, setLeagueData] = useState<LeagueCreationData>({
     name: "",
@@ -48,12 +71,12 @@ export default function LeagueCreation() {
   const handleLeagueData = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     let newValue = value;
-    
+
     switch (name) {
       case 'rounds':
         const minRounds = leagueData.bots.length || 0;
         const maxRounds = minRounds > 1 ? (minRounds * (minRounds - 1)) / 2 : 0;
-        
+
         if ((+value < minRounds) || (+value > maxRounds && maxRounds > 0)) {
           newValue = minRounds.toString();
         }
@@ -73,14 +96,14 @@ export default function LeagueCreation() {
     setSelectedOptions(selected);
   };
 
-  const canStartLeague = leagueData.name !== "" && 
-                         leagueData.matchTime > 0 &&
-                         leagueData.rounds > 0 &&
-                         leagueData.bots.length > 1;
+  const canStartLeague = leagueData.name !== "" &&
+    leagueData.matchTime > 0 &&
+    leagueData.rounds > 0 &&
+    leagueData.bots.length > 1;
 
 
   const handleLeagueCreation = (e: FormEvent<HTMLButtonElement>): void => {
-    const leagueInfo: LeagueDTO ={
+    const leagueInfo: LeagueDTO = {
       name: leagueData.name,
       urlImagen: leagueData.urlImage,
       matchTime: leagueData.matchTime,
@@ -142,7 +165,7 @@ export default function LeagueCreation() {
                   className="counter-input"
                 />
               </div>
-              <button 
+              <button
                 className={`button-round ${canStartLeague ? "button-blue" : "button-disabled"}`}
                 disabled={!canStartLeague}
                 onClick={handleLeagueCreation}
