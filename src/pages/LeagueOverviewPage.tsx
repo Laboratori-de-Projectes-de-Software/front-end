@@ -3,7 +3,7 @@ import { Button, Card } from "react-bootstrap";
 import foto from "../assets/img/ligabanner.jpg";
 import { leagueResponse } from "../types/LeagueResponse.tsx";
 import {NavLink, useNavigate, useParams} from "react-router-dom";
-import {deleteLeague, getLeague} from "../services/apiCalls.ts";
+import {deleteLeague, getLeague, iniciarLiga} from "../services/apiCalls.ts";
 import {faEdit, faTrash} from "@fortawesome/free-solid-svg-icons";
 
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -51,6 +51,14 @@ export default function LeagueOverviewPage() {
         const response = await deleteLeague(leagueId, {});
         if (response) {
             navigate(`/`);
+        }
+
+    };
+
+    const handleStartLeague = async() => {
+        const response = await iniciarLiga(leagueId, {});
+        if (response) {
+            navigate(`/league/${leagueId}/leaderboard`);
         }
 
     };
@@ -107,15 +115,15 @@ export default function LeagueOverviewPage() {
                                         variant="outline-light"
                                         size="lg"
                                         onClick={handleRegisterBot}
-                                        //disabled={league.status === "CERRADA"}
+
                                     >
                                         Registrar un bot
                                     </Button>
                                     {isOwner && (<Button
                                         variant="outline-light"
                                         size="lg"
-                                        //onClick={handleStartLeague}
-                                        //disabled={league.status === "CERRADA"}
+                                        onClick={handleStartLeague}
+
                                     >
                                         Iniciar Liga
                                     </Button>)}

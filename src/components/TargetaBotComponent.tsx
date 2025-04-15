@@ -27,8 +27,18 @@ function TargetaBotComponent({ name, id, description, urlImage, leagueId }: Prop
             } else {
                 alert("Error al registrar el bot");
             }
-        } catch (err) {
-            alert("Este bot ya ha sido registrado");
+        } catch (err: any) {
+            const status = err?.response?.status;
+
+            if (status === 401) {
+                alert("Este bot ya ha sido registrado");
+            } else if (status === 409) {
+                alert("Límite de participantes alcanzado");
+            } else {
+                alert("Error desconocido al registrar el bot");
+            }
+
+            console.error("Error al registrar bot:", err);
         }
     };
 

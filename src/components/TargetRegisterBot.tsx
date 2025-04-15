@@ -10,7 +10,7 @@ function TargetRegisterBot({name, id, description, urlImage}: BotDetail, leagueI
 
     const handleRegister = async () => {
         try {
-            await registerBotToLeague(leagueId, id); // el orden ya está bien: leagueId primero, luego botId
+            await registerBotToLeague(leagueId, id);
             alert("Bot registrado correctamente");
             navigate(`/league/${leagueId}`);
         } catch (error: any) {

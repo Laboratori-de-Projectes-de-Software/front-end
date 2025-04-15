@@ -11,6 +11,7 @@ const Enfrentamientos = () => {
         matchId ? parseInt(matchId) : undefined,
         leagueId ? parseInt(leagueId) : undefined
     );
+    console.log(enfrentamiento);
     const messages = [
         { bot: 1, message: "La generosidad es la clave para construir relaciones fuertes y un mundo mejor." },
         { bot: 2, message: "Pero la inteligencia permite resolver problemas complejos y avanzar como sociedad." },
