@@ -1,41 +1,120 @@
 import Footer from "./Footer";
-import SideBar from"./SideBar";
+import SideBar from "./SideBar";
+import { LeagueResponseDTO } from "./ConAPI";
+import { useState, useEffect } from "react";
+
+interface NotificationProps {
+  message: string;
+  type: "success" | "error";
+}
 
 export default function Scores() {
-  const matches = [
-    { winner: "Trait1 (Username)", date: "01/01/2025", points: 3, link: "/match/1" },
-    { winner: "Trait2 (User123)", date: "02/01/2025", points: 5, link: "/match/2" },
-    { winner: "Trait3 (GamerX)", date: "03/01/2025", points: 2, link: "/match/3" },
-    { winner: "Trait4 (Player99)", date: "04/01/2025", points: 4, link: "/match/4" },
-    { winner: "Trait5 (ProGamer)", date: "05/01/2025", points: 6, link: "/match/5" },
-  ];
+  const [leagues, setLeagues] = useState<LeagueResponseDTO[]>([]);
+  const [notification, setNotification] = useState<NotificationProps | null>(null);
+
+  useEffect(() => {
+    const userId = 14;
+    window.APIConection.getAllLeaguesUser(userId)
+      .then((response: LeagueResponseDTO[]) => {
+        setLeagues(response);
+      })
+      .catch((error: any) => {
+        setNotification({
+          message: error.message || "Failed to load leagues",
+          type: "error",
+        });
+      });
+  }, []);
+
+  const notificationStyles = {
+    container: {
+      padding: "12px 16px",
+      borderRadius: "4px",
+      marginBottom: "16px",
+      position: "relative" as const,
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+    },
+    success: {
+      backgroundColor: "#e6f4ea",
+      border: "1px solid #34a853",
+      color: "#1e7e34",
+    },
+    error: {
+      backgroundColor: "#fdecea",
+      border: "1px solid #ea4335",
+      color: "#d32f2f",
+    },
+    closeButton: {
+      background: "none",
+      border: "none",
+      fontSize: "20px",
+      cursor: "pointer",
+      marginLeft: "8px",
+    },
+  };
+
+  const Notification = ({ message, type }: NotificationProps) => {
+    const style = {
+      ...notificationStyles.container,
+      ...(type === "success"
+        ? notificationStyles.success
+        : notificationStyles.error),
+    };
+
+    return (
+      <div style={style} role="alert">
+        <span>{message}</span>
+        <button
+          style={notificationStyles.closeButton}
+          onClick={() => setNotification(null)}
+        >
+          &times;
+        </button>
+      </div>
+    );
+  };
 
   return (
-    <>
     <div>
       <div className="page_container">
         <SideBar />
         <div className="content_container">
           <div className="scores_container">
             <h1>Scores</h1>
-            <h2 className="title">Historical data from all the matches:</h2>
-            {matches.map((match, index) => (
-              <div key={index} className="match_card">
-                <div className="match_info">
-                  <p className="winner">Winner: {match.winner}</p>
-                  <p className="date">{match.date}</p>
-                  <p className="points">{match.points} Points</p>
+            <h2 className="title">Historical leagues:</h2>
+            {notification && (
+              <Notification
+                message={notification.message}
+                type={notification.type}
+              />
+            )}
+            {leagues.map((league, index) => (
+              <div key={index} className="league_card">
+                <div className="league_info">
+                  <img
+                    src={league.urlImage}
+                    alt={league.name}
+                    className="league_image"
+                  />
+                  <p className="league_name">{league.name}</p>
+                  <p className="league_state">Estado: {league.state}</p>
+                  <p className="league_rounds">Rondas: {league.rounds}</p>
+                  <p className="league_owner">ID del dueño: {league.user}</p>
                 </div>
-                <a href={match.link} className="match_link">
-                  View
+                <a
+                  href={`/leagues/${league.leagueId}`}
+                  className="league_link"
+                >
+                  Ver Liga
                 </a>
               </div>
             ))}
           </div>
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </div>
-    </>
   );
 }
