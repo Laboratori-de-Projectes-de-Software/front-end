@@ -99,6 +99,7 @@ export class ConBack implements ConAPI {
     }
 
     // Retrieve all bot summaries associated with a given user.
+    
     getAllBotsUser(userId: number): Promise<BotSummaryResponseDTO[]> {
         return this.generalEnRouteGetter<BotSummaryResponseDTO[]>(`${this.GET_USERS_BOTS_ROUTE}${userId}`, (_ => { }));
     }
@@ -109,7 +110,7 @@ export class ConBack implements ConAPI {
     }
 
     // Update a bot. (Note: Since BotDTO doesn't have an id in its structure, we use a placeholder endpoint.)
-    updateBot(bot: BotDTO, botId: number): Promise<BotResponseDTO> {
+    updateBot(bot: BotDTO, botId:number): Promise<BotResponseDTO> {
         let updatedBot: Promise<BotResponseDTO> = {} as Promise<BotResponseDTO>
         axios.put(`${this.UPDATE_BOT_ROUTE}${botId}`, bot).then(response => {
             updatedBot = response.data as Promise<BotResponseDTO>;
@@ -124,7 +125,7 @@ export class ConBack implements ConAPI {
 
     // Retrieve all leagues associated with a specific user.
     getAllLeaguesUser(userId: number): Promise<LeagueResponseDTO[]> {
-        return this.generalEnRouteGetter<LeagueResponseDTO[]>(`${this.GET_USERS_LEAGUES_ROUTE}${userId}`, (_ => { }));
+        return this.generalEnRouteGetter<LeagueResponseDTO[]>(`${this.GET_USERS_LEAGUES_ROUTE}${userId}`,(_ => { }));
     }
 
     // Retrieve a specific league by its id.

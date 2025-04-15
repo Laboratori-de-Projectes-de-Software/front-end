@@ -5,7 +5,19 @@ export interface ConAPI {
     getAllBotsUser: (userId: number) => Promise<Array<BotSummaryResponseDTO>>;
     getBot: (botId: number) => Promise<BotResponseDTO>;
     updateBot: (bot: BotDTO, botId: number) => Promise<BotResponseDTO>;
+    getAllBotsUser: (userId: number) => Promise<Array<BotSummaryResponseDTO>>;
+    getBot: (botId: number) => Promise<BotResponseDTO>;
+    updateBot: (bot: BotDTO, botId: number) => Promise<BotResponseDTO>;
     postLeague: (league: LeagueDTO) => Promise<LeagueResponseDTO>;
+    getAllLeaguesUser: (userId: number) => Promise<Array<LeagueResponseDTO>>;
+    getLeague: (leagueId: number) => Promise<LeagueResponseDTO>;
+    updateLeague: (league: LeagueDTO, leagueId: number) => Promise<LeagueResponseDTO>;
+    registerBotToLeague: (leagueId: number, botId: number) => Promise<void>;
+    getClassLeague: (leagueId: number) => Promise<Array<ParticipationResponseDTO>>;
+    deleteLeague: (leagueId: number) => Promise<LeagueResponseDTO>;
+    startLeague: (leagueId: number) => Promise<void>;
+    getAllMatchesLeague: (leagueId: number) => Promise<Array<MatchResponseDTO>>;
+    getAllMessagesMatch: (matchId: number) => Promise<Array<MessageResponseDTO>>;
     getAllLeaguesUser: (userId: number) => Promise<Array<LeagueResponseDTO>>;
     getLeague: (leagueId: number) => Promise<LeagueResponseDTO>;
     updateLeague: (league: LeagueDTO, leagueId: number) => Promise<LeagueResponseDTO>;
@@ -25,11 +37,11 @@ export interface UserDTOLogin {
 }
 
 export interface BotDTO {
-    name: string; description: string; urlImagen: string; endpoint: string; userId: number;
+    name: string; description: string; urlImage: string; endpoint: string; userId: number
 }
 
 export interface LeagueDTO {
-    name: string; urlImagen: string; rounds: number; matchTime: number; bots: Array<number>; userId: number;
+    name: string; urlImagen: string; rounds: number; matchTime: number; bots: Int32Array; userId: number;
 }
 
 export interface UserResponseDTO {
