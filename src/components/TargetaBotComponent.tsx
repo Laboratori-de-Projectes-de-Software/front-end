@@ -1,15 +1,17 @@
 import { useNavigate } from "react-router-dom";
-import { registerBotToLeague} from "../services/apiCalls.ts";
+import { registerBotToLeague, deleteBot } from "../services/apiCalls.ts";
 import { BotDetail } from "../types/BotDetail.tsx";
 import iconoBot from "../assets/img/iconoBot.png";
 
 interface Props extends BotDetail {
     leagueId?: string;
+    editable?: boolean;
 }
 
-function TargetaBotComponent({ name, id, description, urlImage, leagueId }: Props) {
+function TargetaBotComponent({ name, id, description, urlImage, leagueId, editable = false }: Props) {
     const navigate = useNavigate();
 
+    console.log("Bot:", name, "Editable:", editable);
 
     const goToDetalleBot = (id: number) => {
         navigate(`/mis-bots/${id}`);
@@ -42,6 +44,28 @@ function TargetaBotComponent({ name, id, description, urlImage, leagueId }: Prop
         }
     };
 
+    const handleDeleteBot = async () => {
+        const confirmar = window.confirm("¿Estás seguro de que deseas eliminar este bot?");
+        if (!confirmar) return;
+
+        try {
+            const res = await deleteBot(id, {});
+            if (res.status === 200 || res.status === 204) {
+                alert("Bot eliminado exitosamente.");
+                window.location.reload();
+            } else {
+                alert("No se pudo eliminar el bot.");
+            }
+        } catch (err) {
+            console.error("Error al eliminar el bot:", err);
+            alert("Error al eliminar el bot.");
+        }
+    };
+
+    const handleEditBot = () => {
+        navigate(`/crear-bot?editing=true&botId=${id}`);
+    };
+
     return (
         <div className="card p-0 shadow-lg bg-dark text-white rounded-4 mb-4">
             <div className="row">
@@ -59,13 +83,24 @@ function TargetaBotComponent({ name, id, description, urlImage, leagueId }: Prop
                     <p className="text-light fs-4 fw-semibold">{description}</p>
 
                     {leagueId ? (
-                        <button className="btn btn-success btn-lg" onClick={handleRegisterBot}>
+                        <button className="btn btn-success btn-lg me-2" onClick={handleRegisterBot}>
                             Registrar en liga
                         </button>
                     ) : (
-                        <button className="btn btn-primary btn-lg" onClick={() => goToDetalleBot(id)}>
+                        <button className="btn btn-primary btn-lg me-2" onClick={() => goToDetalleBot(id)}>
                             Ver BOT
                         </button>
+                    )}
+
+                    {editable && (
+                        <div className="mt-3 d-flex gap-2">
+                            <button className="btn btn-outline-primary btn-sm" onClick={handleEditBot}>
+                                Actualizar
+                            </button>
+                            <button className="btn btn-outline-danger btn-sm" onClick={handleDeleteBot}>
+                                Borrar
+                            </button>
+                        </div>
                     )}
                 </div>
             </div>

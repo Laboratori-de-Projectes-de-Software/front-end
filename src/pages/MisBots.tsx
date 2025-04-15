@@ -58,7 +58,12 @@ function MisBots() {
             </div>
 
             {botList?.map((bot) => (
-                <TargetaBotComponent key={bot.id} {...bot} leagueId={leagueId} />
+                <TargetaBotComponent
+                    key={bot.id}
+                    {...bot}
+                    leagueId={leagueId}
+                    editable={true}
+                />
             ))}
         </div>
     );
