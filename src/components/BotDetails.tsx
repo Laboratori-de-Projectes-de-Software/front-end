@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import type { Bot } from "./BotList";
+import { sendAuthedRequest } from "../utils/auth";
+import type { BotDTO } from "../utils/formInterface";
 
 interface BotDetailsProps {
   bot: Bot;
@@ -10,6 +12,7 @@ export default function BotDetails({ bot, onClose }: BotDetailsProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState(bot.name);
   const [prompt, setPrompt] = useState(bot.description);
+  const [endpoint, setEndpoint] = useState("");
   const [image, setImage] = useState(bot.urlImagen);
 
   // Guardamos los valores originales para poder cancelar
@@ -20,10 +23,31 @@ export default function BotDetails({ bot, onClose }: BotDetailsProps) {
     setIsEditing(false);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     // Aquí iría la lógica para guardar los cambios
     console.log("Guardando cambios:", { name, prompt, image });
     setIsEditing(false);
+
+    const botData: BotDTO = {
+      name: name,
+      description: prompt,
+      urlImagen: image,
+      endpoint: endpoint,
+    };
+
+    const response = await sendAuthedRequest(
+      "PUT",
+      `http://localhost:8080/bot/${bot.botId}`,
+      botData
+    );
+
+    if (response.status === 201) {
+      // Recargar la pagina
+      window.location.reload();
+    } else {
+      const errorData = response.json();
+      console.error("Error al guardar cambios:", errorData);
+    }
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -183,6 +207,26 @@ export default function BotDetails({ bot, onClose }: BotDetailsProps) {
               />
               <span className="absolute top-2 right-2 bg-black/70 text-white text-xs px-3 py-1 rounded-full border border-gray-700">
                 PROMPT
+              </span>
+            </div>
+
+            {/* Add Endpoint Input Field */}
+            <div className="relative">
+              <input
+                type="text"
+                value={endpoint}
+                onChange={(e) => setEndpoint(e.target.value)}
+                disabled={!isEditing}
+                className={`w-full bg-slate-800 text-white rounded-xl py-3 px-4 pr-24 border border-gray-700 
+                  ${
+                    isEditing
+                      ? "focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-20"
+                      : "opacity-75 cursor-default"
+                  }`}
+                placeholder="Endpoint del bot (opcional)"
+              />
+              <span className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/70 text-white text-xs px-3 py-1 rounded-full border border-gray-700">
+                ENDPOINT
               </span>
             </div>
           </div>
