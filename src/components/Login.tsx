@@ -46,7 +46,8 @@ export default function Login() {
                   message: "Account logged successfully!",
                   type: "success"
               });
-              setCookie("token",response.token,response.expiresIn)
+              setCookie("token",response.token,response.expiresIn);
+              setCookie("userId", response.userId.toString(),response.expiresIn);
           })
               .catch((error: any) => {
                   setNotification({

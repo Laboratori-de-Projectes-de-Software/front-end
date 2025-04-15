@@ -99,17 +99,17 @@ export class ConBack implements ConAPI {
     }
 
     // Retrieve all bot summaries associated with a given user.
-    getAllBotsUser(userId: BigInteger): Promise<BotSummaryResponseDTO[]> {
-        return {} as Promise<BotSummaryResponseDTO[]>;
+    getAllBotsUser(userId: number): Promise<BotSummaryResponseDTO[]> {
+        return this.generalEnRouteGetter<BotSummaryResponseDTO[]>(`${this.GET_USERS_BOTS_ROUTE}${userId}`, (_ => { }));
     }
 
     // Retrieve a single bot (the interface takes userId as a parameter here as a placeholder).
-    getBot(botId: BigInteger): Promise<BotResponseDTO> {
+    getBot(botId: number): Promise<BotResponseDTO> {
         return this.generalEnRouteGetter<BotResponseDTO>(`${this.GET_BOT_ROUTE}${botId}`, (_ => { }));
     }
 
     // Update a bot. (Note: Since BotDTO doesn't have an id in its structure, we use a placeholder endpoint.)
-    updateBot(bot: BotDTO, botId: BigInteger): Promise<BotResponseDTO> {
+    updateBot(bot: BotDTO, botId: number): Promise<BotResponseDTO> {
         let updatedBot: Promise<BotResponseDTO> = {} as Promise<BotResponseDTO>
         axios.put(`${this.UPDATE_BOT_ROUTE}${botId}`, bot).then(response => {
             updatedBot = response.data as Promise<BotResponseDTO>;
@@ -123,17 +123,17 @@ export class ConBack implements ConAPI {
     }
 
     // Retrieve all leagues associated with a specific user.
-    getAllLeaguesUser(userId: BigInteger): Promise<LeagueResponseDTO[]> {
-        return {} as Promise<LeagueResponseDTO[]>;
+    getAllLeaguesUser(userId: number): Promise<LeagueResponseDTO[]> {
+        return this.generalEnRouteGetter<LeagueResponseDTO[]>(`${this.GET_USERS_LEAGUES_ROUTE}${userId}`, (_ => { }));
     }
 
     // Retrieve a specific league by its id.
-    getLeague(leagueId: BigInteger): Promise<LeagueResponseDTO> {
+    getLeague(leagueId: number): Promise<LeagueResponseDTO> {
         return this.generalEnRouteGetter<LeagueResponseDTO>(`${this.GET_LEAGUE_ROUTE}${leagueId}`, (_ => { }));
     }
 
     // Update an existing league.
-    updateLeague(league: LeagueDTO, leagueId: BigInteger): Promise<LeagueResponseDTO> {
+    updateLeague(league: LeagueDTO, leagueId: number): Promise<LeagueResponseDTO> {
         let updatedLeague: Promise<LeagueResponseDTO> = {} as Promise<LeagueResponseDTO>;
         axios.put(`${this.UPDATE_LEAGUE_ROUTE}${leagueId}`, league).then(Response => {
             updatedLeague = Response.data as Promise<LeagueResponseDTO>;
@@ -142,18 +142,18 @@ export class ConBack implements ConAPI {
     }
 
     // Registers a bot to a league.
-    registerBotToLeague(leagueId: BigInteger, botId: BigInteger): Promise<void> {
+    registerBotToLeague(leagueId: number, botId: number): Promise<void> {
         // Method returns void, so no empty return type needed
         return this.generalPost<void>(`${this.REGISTER_BOT_TO_LEAGUE_ROUTE}${leagueId}/bot`, botId, (_ => { }));
     }
 
     // Retrieves league class standings or participation info.
-    getClassLeague(): Promise<ParticipationResponseDTO[]> {
-        return {} as Promise<ParticipationResponseDTO[]>;
+    getClassLeague(leagueId: number): Promise<ParticipationResponseDTO[]> {
+        return this.generalEnRouteGetter<ParticipationResponseDTO[]>(`${this.GET_LEAGUES_CLASSIFICATION_ROUTE}${leagueId}/leaderboard`, (_ => { }));
     }
 
     // Deletes a league and returns the deleted league data.
-    deleteLeague(leagueId: BigInteger): Promise<LeagueResponseDTO> {
+    deleteLeague(leagueId: number): Promise<LeagueResponseDTO> {
         return axios.delete<LeagueResponseDTO>(`${this.DELETE_LEAGUE_ROUTE}${leagueId}`).then(response => {
             return response.data;
         }).catch(error => {
@@ -162,19 +162,18 @@ export class ConBack implements ConAPI {
     }
 
     // Starts a league by its id.
-    startLeague(leagueId: BigInteger): Promise<void> {
-        // Method returns void, so no empty return type needed
-        return {} as Promise<void>;
+    startLeague(leagueId: number): Promise<void> {
+        return this.generalPost<void>(`${this.START_LEAGUE_ROUTE}${leagueId}/start`, null, (_ => { }));
     }
 
     // Retrieve all matches in a given league.
-    getAllMatchesLeague(leagueId: BigInteger): Promise<MatchResponseDTO[]> {
+    getAllMatchesLeague(leagueId: number): Promise<MatchResponseDTO[]> {
         return this.generalEnRouteGetter<MatchResponseDTO[]>(`${this.GET_MATCHES_LEAGUE_ROUTE}${leagueId}/match`, (_ => { }));
     }
 
     // Retrieve all messages for a specific match.
-    getAllMessagesMatch(matchId: BigInteger): Promise<MessageResponseDTO[]> {
-        return {} as Promise<MessageResponseDTO[]>;
+    getAllMessagesMatch(matchId: number): Promise<MessageResponseDTO[]> {
+        return this.generalEnRouteGetter<MessageResponseDTO[]>(`${this.GET_MATCHES_MESSAGES_ROUTE}${matchId}/message`, (_ => { }));
     }
 
     private generalEnRouteGetter<T>(route: string, errorHandler: (error: Error) => void): Promise<T> {

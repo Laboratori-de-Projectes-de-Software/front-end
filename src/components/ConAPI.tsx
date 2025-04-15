@@ -2,19 +2,19 @@ export interface ConAPI {
     createUser: (user: UserDTORegister) => Promise<void>;
     loginUser: (user: UserDTOLogin) => Promise<UserResponseDTO>;
     postBot: (bot: BotDTO) => Promise<BotResponseDTO>;
-    getAllBotsUser: (userId: BigInteger) => Promise<Array<BotSummaryResponseDTO>>;
-    getBot: (botId: BigInteger) => Promise<BotResponseDTO>;
-    updateBot: (bot: BotDTO, botId: BigInteger) => Promise<BotResponseDTO>;
+    getAllBotsUser: (userId: number) => Promise<Array<BotSummaryResponseDTO>>;
+    getBot: (botId: number) => Promise<BotResponseDTO>;
+    updateBot: (bot: BotDTO, botId: number) => Promise<BotResponseDTO>;
     postLeague: (league: LeagueDTO) => Promise<LeagueResponseDTO>;
-    getAllLeaguesUser: (userId: BigInteger) => Promise<Array<LeagueResponseDTO>>;
-    getLeague: (leagueId: BigInteger) => Promise<LeagueResponseDTO>;
-    updateLeague: (league: LeagueDTO, leagueId: BigInteger) => Promise<LeagueResponseDTO>;
-    registerBotToLeague: (leagueId: BigInteger, botId: BigInteger) => Promise<void>;
-    getClassLeague: (leagueId: BigInteger) => Promise<Array<ParticipationResponseDTO>>;
-    deleteLeague: (leagueId: BigInteger) => Promise<LeagueResponseDTO>;
-    startLeague: (leagueId: BigInteger) => Promise<void>;
-    getAllMatchesLeague: (leagueId: BigInteger) => Promise<Array<MatchResponseDTO>>;
-    getAllMessagesMatch: (matchId: BigInteger) => Promise<Array<MessageResponseDTO>>;
+    getAllLeaguesUser: (userId: number) => Promise<Array<LeagueResponseDTO>>;
+    getLeague: (leagueId: number) => Promise<LeagueResponseDTO>;
+    updateLeague: (league: LeagueDTO, leagueId: number) => Promise<LeagueResponseDTO>;
+    registerBotToLeague: (leagueId: number, botId: number) => Promise<void>;
+    getClassLeague: (leagueId: number) => Promise<Array<ParticipationResponseDTO>>;
+    deleteLeague: (leagueId: number) => Promise<LeagueResponseDTO>;
+    startLeague: (leagueId: number) => Promise<void>;
+    getAllMatchesLeague: (leagueId: number) => Promise<Array<MatchResponseDTO>>;
+    getAllMessagesMatch: (matchId: number) => Promise<Array<MessageResponseDTO>>;
 }
 
 export interface UserDTORegister {
@@ -33,29 +33,29 @@ export interface LeagueDTO {
 }
 
 export interface UserResponseDTO {
-    token: string; expiresIn: Date; user: string, userId: BigInteger;
+    token: string; expiresIn: Date; user: string, userId: number;
 }
 
 export interface BotSummaryResponseDTO {
-    name: string; id: BigInteger; description: string;
+    name: string; id: number; description: string;
 }
 
 export interface BotResponseDTO {
-    botId: BigInteger; name: string; description: string; urlImage: string; nWins: BigInteger; nLosses: BigInteger; nDraws: BigInteger;
+    botId: number; name: string; description: string; urlImage: string; nWins: number; nLosses: number; nDraws: number;
 }
 
 export interface LeagueResponseDTO {
-    leagueId: BigInteger; state: string; name: string; urlImage: string; user: BigInteger; rounds: BigInteger; matchTime: BigInteger; bots: Array<BigInteger>;
+    leagueId: number; state: string; name: string; urlImage: string; user: number; rounds: number; matchTime: number; bots: Array<number>;
 }
 
 export interface MatchResponseDTO {
-    matchId: BigInteger; state: string; result: BigInteger; fighters: Array<BigInteger>; roundNumber: BigInteger;
+    matchId: number; state: string; result: number; fighters: Array<number>; roundNumber: number;
 }
 
 export interface ParticipationResponseDTO {
-    botId: BigInteger; name: string; points: BigInteger; postition: BigInteger;
+    botId: number; name: string; points: number; postition: number;
 }
 export interface MessageResponseDTO {
-    text: string; botId: BigInteger; time: string;
+    text: string; botId: number; time: string;
 }
 
