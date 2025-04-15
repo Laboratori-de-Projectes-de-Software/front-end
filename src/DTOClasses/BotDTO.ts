@@ -8,7 +8,7 @@ export interface CreateBotDTO {
 export interface BotDTO {
   id: number;
   name: string;
-  description: string;
-  urlImage: string | null;
+  quality: string;
+  imageUrl: string | null;
   apiUrl: string
 }
