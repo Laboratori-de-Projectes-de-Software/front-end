@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import type { BotDTO } from "../../interfaces/bot.interface";
 import type {
   BotResponseDTO,
-  BotSumaryResponseDTO,
+  BotSummaryResponseDTO,
 } from "../../interfaces/bot.interface";
 import type { LeagueDTO } from "../../interfaces/league.interface";
 import type { LeagueResponseDTO } from "../../interfaces/league.interface";
@@ -13,27 +13,31 @@ import type {
 } from "../../interfaces/user.interface";
 import type { UserResponseDTO } from "../../interfaces/user.interface";
 import { MatchResponseDTO } from "@interfaces/match.interface";
+import { MessageResponseDTO } from "@interfaces/message.interface";
+import { ClientResponse } from "@interfaces/client.interface";
 
 export const appApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "/api" }),
   endpoints: (builder) => ({
     /*/ --- auth --- /*/
-    postAuthRegister: builder.mutation<undefined, UserDTORegister>({
+    postAuthRegister: builder.mutation<ClientResponse<undefined>, UserDTORegister>({
       query: (data) => ({
         url: `${import.meta.env.VITE_REACT_APP_API_URL}/auth/register`,
         method: "POST",
         body: data,
       }),
     }),
-    postAuthLogin: builder.mutation<UserResponseDTO, UserDTOLogin>({
+
+    postAuthLogin: builder.mutation<ClientResponse<UserResponseDTO>, UserDTOLogin>({
       query: (data) => ({
         url: `${import.meta.env.VITE_REACT_APP_API_URL}/auth/login`,
         method: "POST",
         body: data,
       }),
     }),
+
     /*/ --- bot --- /*/
-    postBot: builder.mutation<BotResponseDTO, BotDTO>({
+    postBot: builder.mutation<ClientResponse<BotResponseDTO>, BotDTO>({
       query: (data) => ({
         url: `${import.meta.env.VITE_REACT_APP_API_URL}/bot`,
         method: "POST",
@@ -46,7 +50,7 @@ export const appApi = createApi({
       }),
     }),
 
-    getBot: builder.query<BotSumaryResponseDTO[], number | undefined>({
+    getBot: builder.query<ClientResponse<BotSummaryResponseDTO[]>, number | undefined>({
       query: (owner?: number) => ({
         url: `${import.meta.env.VITE_REACT_APP_API_URL}/bot${
           owner ? `?owner=${owner}` : ""
@@ -59,21 +63,24 @@ export const appApi = createApi({
         },
       }),
     }),
-    getBotBotId: builder.query<BotResponseDTO, number>({
+
+    getBotBotId: builder.query<ClientResponse<BotResponseDTO>, number>({
       query: (id) => ({
         url: `${import.meta.env.VITE_REACT_APP_API_URL}/bot/${id}`,
         method: "GET",
       }),
     }),
-    putBotBotId: builder.mutation<BotResponseDTO, { id: number; bot: BotDTO }>({
+
+    putBotBotId: builder.mutation<ClientResponse<BotResponseDTO>, { id: number; bot: BotDTO }>({
       query: (data) => ({
         url: `${import.meta.env.VITE_REACT_APP_API_URL}/bot/${data.id}`,
         method: "PUT",
         body: data.bot,
       }),
     }),
+
     /*/ --- league --- /*/
-    postLeague: builder.mutation<LeagueResponseDTO, LeagueDTO>({
+    postLeague: builder.mutation<ClientResponse<LeagueResponseDTO>, LeagueDTO>({
       query: (data) => ({
         url: `${import.meta.env.VITE_REACT_APP_API_URL}/league`,
         method: "POST",
@@ -85,7 +92,8 @@ export const appApi = createApi({
         },
       }),
     }),
-    getLeague: builder.query<any, number>({
+
+    getLeague: builder.query<ClientResponse<LeagueResponseDTO[]>, number>({
       query: (owner) => ({
         url: `${import.meta.env.VITE_REACT_APP_API_URL}/league${
           owner ? `?owner=${owner}` : ""
@@ -98,7 +106,8 @@ export const appApi = createApi({
         },
       }),
     }),
-    getLeagueLeagueId: builder.query<LeagueResponseDTO, number>({
+
+    getLeagueLeagueId: builder.query<ClientResponse<LeagueResponseDTO>, number>({
       query: (id) => ({
         url: `${import.meta.env.VITE_REACT_APP_API_URL}/league/${id}`,
         method: "GET",
@@ -109,8 +118,9 @@ export const appApi = createApi({
         },
       }),
     }),
+
     putLeagueLeagueId: builder.mutation<
-      LeagueResponseDTO,
+      ClientResponse<LeagueResponseDTO>,
       { id: number; league: LeagueDTO }
     >({
       query: (data) => ({
@@ -119,8 +129,9 @@ export const appApi = createApi({
         body: data.league,
       }),
     }),
+
     postLeagueLeagueIdBot: builder.mutation<
-      undefined,
+      ClientResponse<undefined>,
       { leagueId: number; botId: number }
     >({
       query: (data) => ({
@@ -131,8 +142,9 @@ export const appApi = createApi({
         body: data.botId,
       }),
     }),
+
     getLeagueLeagueIdLeaderboard: builder.query<
-      ParticipationResponseDTO[],
+      ClientResponse<ParticipationResponseDTO[]>,
       number
     >({
       query: (leagueId) => ({
@@ -147,13 +159,15 @@ export const appApi = createApi({
         },
       }),
     }),
-    deleteLeagueLeagueId: builder.mutation<undefined, number>({
+
+    deleteLeagueLeagueId: builder.mutation<ClientResponse<undefined>, number>({
       query: (leagueId) => ({
         url: `${import.meta.env.VITE_REACT_APP_API_URL}/league/${leagueId}`,
         method: "DELETE",
       }),
     }),
-    postLeagueLeagueIdStart: builder.mutation<undefined, number>({
+
+    postLeagueLeagueIdStart: builder.mutation<ClientResponse<undefined>, number>({
       query: (leagueId) => ({
         url: `${
           import.meta.env.VITE_REACT_APP_API_URL
@@ -161,7 +175,8 @@ export const appApi = createApi({
         method: "POST",
       }),
     }),
-    getLeagueLeagueIdMatch: builder.query<MatchResponseDTO[], number>({
+
+    getLeagueLeagueIdMatch: builder.query<ClientResponse<MatchResponseDTO[]>, number>({
       query: (leagueId) => ({
         url: `${
           import.meta.env.VITE_REACT_APP_API_URL
@@ -174,8 +189,9 @@ export const appApi = createApi({
         },
       }),
     }),
+    
     /*/ --- match --- /*/
-    getMatchMatchIdMessage: builder.query<undefined, number>({
+    getMatchMatchIdMessage: builder.query<ClientResponse<MessageResponseDTO[]>, number>({
       query: (matchId) => ({
         url: `${
           import.meta.env.VITE_REACT_APP_API_URL

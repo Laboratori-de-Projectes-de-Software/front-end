@@ -5,11 +5,14 @@ import { appApi } from '../../features/shared/index';
 import { useModal } from '@modules/modalManager/ModalProvider';
 import LoadingScreen from '@modules/shared/loading-screen/loading-screen';
 import { LeagueResponseDTO } from '@interfaces/league.interface';
+import { useAuth } from '../../auth/AuthProvider';
 
 
 const LeaguesPage: React.FC = () => {
 
-  const { data: leaguesData, isLoading } = appApi.useGetLeagueQuery(0);
+  const auth = useAuth();
+
+  const { data: leaguesData, isLoading } = appApi.useGetLeagueQuery(auth?.getUser()?.userId ?? 0);
   const { openModal } = useModal();
 
   if (isLoading) {
@@ -24,7 +27,7 @@ const LeaguesPage: React.FC = () => {
         <button onClick={() => openModal("new-league")}>Crear liga</button>
       </header>
       <div className='leagues-page-leagues-container'>
-        {leaguesData && leaguesData?.body.map((element: LeagueResponseDTO) => (
+        {leaguesData?.body && leaguesData?.body.map((element: LeagueResponseDTO) => (
           <LeagueElement key={element.leagueId} {...element} />
         ))}
       </div>

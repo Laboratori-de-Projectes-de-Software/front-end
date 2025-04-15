@@ -3,6 +3,7 @@ import "./league.scss"
 import { appApi } from "../../features/shared/client"
 import LoadingScreen from "../../modules/shared/loading-screen/loading-screen"
 import ErrorPage from "../../modules/shared/error-page/error-page"
+import { useNavigate } from "react-router-dom"
 
 export type Props = {
   leagueId: number
@@ -10,6 +11,7 @@ export type Props = {
 
 const League : FC<Props> = ({ leagueId }) => {
   const [activeTab, setActiveTab] = useState("clasificacion")
+  const navigate = useNavigate()
 
   const queryLeague = appApi.useGetLeagueLeagueIdQuery(leagueId, {
     refetchOnFocus: true,
@@ -32,9 +34,13 @@ const League : FC<Props> = ({ leagueId }) => {
     return <ErrorPage message="Error al cargar la liga" />
   }
 
-  const leagueInfo = queryLeague.data!;
-  const matches = queryMatches.data!;
-  const leaderboard = queryLeaderboard.data!;
+  if (!queryLeague.data?.body) return <ErrorPage message="No se encontró la liga" />
+  if (!queryMatches.data?.body) return <ErrorPage message="No se encontraron partidos" />
+  if (!queryLeaderboard.data?.body) return <ErrorPage message="No se encontró la clasificación" />
+
+  const leagueInfo = queryLeague.data.body;
+  const matches = queryMatches.data?.body;
+  const leaderboard = queryLeaderboard.data.body;
 
   return (
     <div className="dark-theme">
@@ -116,6 +122,7 @@ const League : FC<Props> = ({ leagueId }) => {
                           <span className={`match-status ${match.state === "finalizado" ? "completed" : "upcoming"}`}>
                             {match.state}
                           </span>
+                          <button className="tab-button" onClick={() => navigate(`/match?leagueId=${leagueId}&matchId=${match.matchId}`)}>Ver partido</button>
                         </div>
                         <div className="match-content">
                           <div className="match-team home-team">
