@@ -1,16 +1,114 @@
-import "react";
+import React from "react";
 
 import type { LeagueCardProps } from "../LeagueCard";
+import type {
+  ParticipationResponseDTO,
+  MatchResponseDTO,
+} from "../../utils/responseInterfaces";
+import { sendAuthedRequest } from "../../utils/auth";
+
 export default function LeagueInfo(league: LeagueCardProps) {
+  const [leaderboard, setLeaderboard] = React.useState<
+    ParticipationResponseDTO[]
+  >([]);
+  const [matches, setMatches] = React.useState<MatchResponseDTO[]>([]);
+
+  // Peticion a la api de leaderboards
+  React.useEffect(() => {
+    async function fetchLeaderboard() {
+      try {
+        const response = await fetch(
+          `http://localhost:8080/league/${league.leagueId}/leaderboard`
+        );
+        if (response.ok) {
+          const data = await response.json();
+          setLeaderboard(data);
+        } else {
+          console.error("Error fetching leaderboard:", response.status);
+        }
+      } catch (error) {
+        console.error("Error fetching leaderboard:", error);
+      }
+    }
+
+    fetchLeaderboard();
+  }, []);
+
+  // Peticion a la api de matches
+  React.useEffect(() => {
+    async function fetchMatches() {
+      try {
+        const response = await fetch(
+          `http://localhost:8080/league/${league.leagueId}/match`
+        );
+        if (response.ok) {
+          const data = await response.json();
+          setMatches(data);
+        } else {
+          console.error("Error fetching matches:", response.status);
+        }
+      } catch (error) {
+        console.error("Error fetching matches:", error);
+      }
+    }
+
+    fetchMatches();
+  }, []);
+
+  async function startLeague() {
+    // Hacemos peticion post a ../league/{leagueId}/start
+
+    const response = await sendAuthedRequest(
+      "POST",
+      `http://localhost:8080/league/${league.leagueId}/start`,
+      "{}"
+    );
+
+    if (response.ok) {
+      console.log("League started successfully");
+    } else {
+      console.error("Error starting league:", response.status);
+    }
+  }
+
+  async function deleteLeague() {
+    // Hacemos peticion delete a ../league/{leagueId}
+    const response = await sendAuthedRequest(
+      "DELETE",
+      `http://localhost:8080/league/${league.leagueId}`,
+      "{}"
+    );
+
+    if (response.ok) {
+      console.log("League deleted successfully");
+      // Redirigir a la página de búsqueda de ligas
+      league.onClick();
+    } else {
+      console.error("Error deleting league:", response.status);
+    }
+  }
+
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-b from-zinc-800 to-zinc-900 text-gray-100">
       {/* Top Bar: Return Button */}
-      <div className="flex justify-start p-4 sticky top-0 bg-zinc-800 z-10 shadow-md">
+      <div className="flex justify-around p-4 sticky top-0 bg-zinc-800 z-10 shadow-md">
         <button
           onClick={league.onClick}
           className="bg-blue-600 text-white rounded-lg px-5 py-2.5 text-sm font-medium hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-800 transition duration-150 ease-in-out"
         >
           Back
+        </button>
+        <button
+          onClick={deleteLeague}
+          className="bg-red-600 text-white rounded-lg px-5 py-2.5 text-sm font-medium hover:bg-red-700 focus:outline-none focus:ring-4 focus:ring-red-800 transition duration-150 ease-in-out"
+        >
+          Delete League
+        </button>
+        <button
+          onClick={startLeague}
+          className="ml-4 bg-green-600 text-white rounded-lg px-5 py-2.5 text-sm font-medium hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-green-800 transition duration-150 ease-in-out"
+        >
+          Start League
         </button>
       </div>
 
@@ -52,51 +150,56 @@ export default function LeagueInfo(league: LeagueCardProps) {
             {/* Added for potential scroll */}
             {/* Placeholder for leaderboard content */}
             <ul className="space-y-2 text-base">
-              {/* Example Leaderboard Item - Repeat for actual data */}
-              <li className="flex justify-between items-center bg-zinc-700/50 hover:bg-zinc-700 transition-colors duration-150 ease-in-out p-3 rounded-md shadow-sm">
-                <span className="font-medium text-gray-200">Player 1</span>
-                <span className="font-semibold text-green-400">1500</span>
-              </li>
-              <li className="flex justify-between items-center bg-zinc-700/50 hover:bg-zinc-700 transition-colors duration-150 ease-in-out p-3 rounded-md shadow-sm">
-                <span className="font-medium text-gray-200">Player 2</span>
-                <span className="font-semibold text-green-400">1450</span>
-              </li>
-              <li className="flex justify-between items-center bg-zinc-700/50 hover:bg-zinc-700 transition-colors duration-150 ease-in-out p-3 rounded-md shadow-sm">
-                <span className="font-medium text-gray-200">Player 3</span>
-                <span className="font-semibold text-green-400">1400</span>
-              </li>
-              <li className="flex justify-between items-center bg-zinc-700/50 hover:bg-zinc-700 transition-colors duration-150 ease-in-out p-3 rounded-md shadow-sm">
-                <span className="font-medium text-gray-200">Player 4</span>
-                <span className="font-semibold text-green-400">1350</span>
-              </li>
-              {/* Add more players as needed */}
+              {/* Map */}
+              {leaderboard.map((player) => (
+                <li
+                  key={player.botId}
+                  className="flex justify-between items-center bg-zinc-700/50 hover:bg-zinc-700 transition-colors duration-150 ease-in-out p-3 rounded-md shadow-sm"
+                >
+                  <span className="font-medium text-gray-200">
+                    {player.name}
+                  </span>
+                  <span className="font-semibold text-green-400">
+                    {player.points}
+                  </span>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
 
         {/* Right Column: League Details & Image */}
         <div className="w-full md:w-2/3 flex flex-col space-y-6">
-          {/* Display League Image */}
-          {league.urlImagen && (
-            <div className="flex justify-center items-center bg-zinc-800 rounded-lg shadow-xl p-4">
-              <img
-                src={league.urlImagen}
-                alt={`${league.name} league banner`} // More descriptive alt text
-                className="rounded-md object-contain max-h-60 md:max-h-80 shadow-lg" // Adjusted styling for better containment
-              />
-            </div>
-          )}
+          {/* All Matches Map*/}
 
-          {/* Optional: Add more details or sections here if needed */}
-          {/* Example: A section for rules or description */}
-          {/*
-          <div className="bg-zinc-800 rounded-lg shadow-xl p-5">
-            <h4 className="text-lg font-semibold mb-3 text-gray-300">Description</h4>
-            <p className="text-gray-400 text-sm">
-              {league.description || "No description available."}
-            </p>
+          <div className="bg-zinc-800 rounded-lg shadow-xl p-5 flex-grow">
+            <h3 className="text-xl font-semibold mb-4 text-center text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500">
+              All Matches
+            </h3>
+            <div className="overflow-y-auto h-full">
+              <ul className="space-y-2 text-base">
+                {matches.map((match) => (
+                  <li
+                    key={match.matchId}
+                    className="flex justify-between items-center bg-zinc-700/50 hover:bg-zinc-700 transition-colors duration-150 ease-in-out p-3 rounded-md shadow-sm"
+                  >
+                    <span className="font-medium text-gray-200">
+                      {match.fighters[0]} vs {match.fighters[1]}
+                    </span>
+                    <span className="font-semibold text-green-400">
+                      {match.result}
+                    </span>
+                    <span className="font-semibold text-gray-400">
+                      {match.roundNumber} rounds
+                    </span>
+                    <span className="font-semibold text-gray-400">
+                      {match.state}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
-          */}
         </div>
       </div>
     </div>
