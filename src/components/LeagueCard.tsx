@@ -1,7 +1,7 @@
 import "react";
 
 // Define the interface for the component props
-interface BotCardProps {
+export interface LeagueCardProps {
   leagueId: number;
   estado: string;
   name: string;
@@ -10,6 +10,7 @@ interface BotCardProps {
   matchTime: string;
   rounds: number;
   bots: number[]; // Array of bot IDs, length represents participants
+  onClick?: () => void; // Optional click handler
 }
 
 export default function BotCard({
@@ -21,11 +22,15 @@ export default function BotCard({
   matchTime,
   rounds,
   bots,
-}: BotCardProps) {
+  onClick,
+}: LeagueCardProps) {
   const participantCount = bots.length; // Calculate participant count from bots array
 
   return (
-    <div className="flex flex-col text-center justify-between rounded-2xl bg-zinc-700 text-white shadow-md overflow-hidden hover:shadow-xl hover:scale-105 transition-all duration-300">
+    <div
+      className="flex flex-col text-center justify-between rounded-2xl bg-zinc-700 text-white shadow-md overflow-hidden hover:shadow-xl hover:scale-105 transition-all duration-300"
+      onClick={onClick} // Attach the click handler if provided
+    >
       {/* Header with League Name */}
       <div
         className="bg-zinc-800 py-2 px-4 font-semibold text-lg truncate"

@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import LeagueCard from "../LeagueCard";
+import LeagueInfo from "./LeagueInfo";
 
-interface LeagueProps {
+export interface LeagueProps {
   leagueId: number;
-  state: string;
+  estado: string;
   name: string;
   urlImagen: string;
   user: number;
@@ -17,6 +18,7 @@ export default function HistorySearcher() {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState<LeagueProps[]>([]);
+  const [selectedResult, setSelected] = useState<LeagueProps | null>(null);
 
   useEffect(() => {
     // Peticion a http://localhost:8080/league
@@ -28,7 +30,6 @@ export default function HistorySearcher() {
         }
         const data = await response.json();
         setSearchResults(data);
-        
       } catch (error) {
         console.error("Error al obtener los datos:", error);
       }
@@ -50,7 +51,6 @@ export default function HistorySearcher() {
         const data = await response.json();
         setAllLeagues(data); // Store all fetched leagues
         setSearchResults(data); // Initialize search results with all leagues
-
       } catch (error) {
         console.error("Error al obtener los datos:", error);
       }
@@ -68,8 +68,24 @@ export default function HistorySearcher() {
     setSearchResults(results); // Update the displayed results
   };
 
+  if (selectedResult) {
+    return (
+      <LeagueInfo
+        leagueId={selectedResult.leagueId}
+        estado={selectedResult.estado}
+        name={selectedResult.name}
+        urlImagen={selectedResult.urlImagen}
+        user={selectedResult.user}
+        matchTime={selectedResult.matchTime}
+        rounds={selectedResult.rounds}
+        bots={selectedResult.bots}
+        onClick={() => setSelected(null)} // Close the selected league
+      />
+    );
+  }
+
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4 hover:cursor-pointer">
       <h2 className="text-xl font-bold mb-4">Search History</h2>
       <input
         type="text"
@@ -81,7 +97,7 @@ export default function HistorySearcher() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
         {/* Enseña las cartas de los bots */}
         {searchResults.map((bot, index) => (
-          <LeagueCard key={index} {...bot} />
+          <LeagueCard key={index} {...bot} onClick={() => setSelected(bot)} />
         ))}
       </div>
     </div>
