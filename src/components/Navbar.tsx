@@ -15,7 +15,7 @@ const Navbar: React.FC = () => {
       <div className="flex items-center">
         <Dropdown>
           <Dropdown.Toggle variant="success" id="dropdown-basic" className='hover:underline hover:cursor-pointer'>
-            Icon
+            Menu
           </Dropdown.Toggle>
 
           <Dropdown.Menu className='flex flex-col bg-(--primary) px-4 py-2 mt-20 gap-2 rounded-lg'>
