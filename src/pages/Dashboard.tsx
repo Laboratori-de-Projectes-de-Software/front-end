@@ -43,40 +43,19 @@ const Dashboard: React.FC = () => {
     ).finally(() => setLoading(false));
   };
 
-  // Cargar datos del usuario
   useEffect(() => {
-    // Cargar bots del usuario usando el controlador
+    // Fetch bots and leagues
     fetchUserBots(
-      (botData) => setMyBots(botData),
-      (error) => console.error("Error fetching bots:", error)
+        (botData) => setMyBots(botData),
+        (error) => console.error("Error fetching bots:", error)
     );
 
     fetchUserLeagues(
-      (leagueData) => setActiveLeagues(leagueData),
-      (error) => console.error("Error fetching leagues:", error)
+        (leagueData) => setActiveLeagues(leagueData),
+        (error) => console.error("Error fetching leagues:", error)
     );
 
-    // Simulación de carga para otros datos
-    setTimeout(() => {
-      setRecentMatches([
-        {
-          id: 1,
-          date: "2025-03-25",
-          bot1: "ArgumentBot",
-          bot2: "SmartDebater",
-          result: "Victoria",
-        },
-        {
-          id: 2,
-          date: "2025-03-24",
-          bot1: "DebateKing",
-          bot2: "LogicMaster",
-          result: "Derrota",
-        },
-      ]);
-
-      setLoading(false);
-    }, 1000);
+    setLoading(false);
   }, []);
 
   return (
@@ -99,10 +78,6 @@ const Dashboard: React.FC = () => {
               <div className="summary-card">
                 <h3>Ligas activas</h3>
                 <div className="summary-value">{activeLeagues.length}</div>
-              </div>
-              <div className="summary-card">
-                <h3>Enfrentamientos</h3>
-                <div className="summary-value">{recentMatches.length}</div>
               </div>
             </div>
 
@@ -157,7 +132,7 @@ const Dashboard: React.FC = () => {
                       </div>
                       <div className="league-dsh-image-container">
                         <img
-                          src={league.urlImage}
+                          src={league.urlImagen}
                           alt={`Imagen de ${league.name}`}
                           className="league-dsh-image"
                         />
@@ -173,32 +148,7 @@ const Dashboard: React.FC = () => {
                 </div>
               </div>
 
-              <div className="dashboard-section">
-                <div className="section-header">
-                  <h2>Enfrentamientos Recientes</h2>
-                  <button
-                    className="action-button"
-                    onClick={() => (window.location.href = "/matches")}
-                  >
-                    Ver todos
-                  </button>
-                </div>
-                <div className="section-content">
-                  {recentMatches.map((match) => (
-                    <div className="match-card" key={match.id}>
-                      <div className="match-date">{match.date}</div>
-                      <div className="match-bots">
-                        {match.bot1} vs {match.bot2}
-                      </div>
-                      <div
-                        className={`match-result ${match.result.toLowerCase()}`}
-                      >
-                        {match.result}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+
             </div>
           </>
         )}

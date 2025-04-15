@@ -24,7 +24,7 @@ export interface Bot {
 export const createBot = async (botData: {
   name: string;
   descripcion: string;
-  urlImage: string;
+  urlImagen: string;
   endpoint?: string;
 }) => {
   const token = localStorage.getItem("token");

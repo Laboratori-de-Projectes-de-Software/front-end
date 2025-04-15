@@ -16,6 +16,7 @@ const BotsPage: React.FC = () => {
     fetchUserBots(setBots, (error) => {
       console.error("Error fetching bots:", error);
     }).finally(() => setLoading(false));
+    console.log("Bots:", bots);
   }, []);
 
   const handleCreateBot = () => {
@@ -43,7 +44,7 @@ const BotsPage: React.FC = () => {
                 <div className="bot-name">{bot.name}</div>
                 <img
                   className="bot-image"
-                  src={bot.urlImage || "default-bot-image.jpg"}
+                  src={bot.urlImage}
                   alt={`Imagen de ${bot.name}`}
                 />
                 <div className="bot-stats">

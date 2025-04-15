@@ -62,7 +62,6 @@ const Navbar: React.FC = () => {
             <li onClick={() => navigate("/dashboard")}>Inicio</li>
             <li onClick={() => navigate("/bots")}>Mis Bots</li>
             <li onClick={() => navigate("/leagues")}>Ligas</li>
-            <li onClick={() => navigate("/matches")}>Enfrentamientos</li>
           </ul>
           <div className="hamburger-menu" onClick={toggleMobileMenu}>
             <span></span>
@@ -103,7 +102,6 @@ const Navbar: React.FC = () => {
           <li onClick={() => navigateTo("/dashboard")}>Inicio</li>
           <li onClick={() => navigateTo("/mybots")}>Mis Bots</li>
           <li onClick={() => navigateTo("/leagues")}>Ligas</li>
-          <li onClick={() => navigateTo("/matches")}>Enfrentamientos</li>
         </ul>
       </div>
     </>

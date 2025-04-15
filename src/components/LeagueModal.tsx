@@ -10,13 +10,14 @@ import {
     fetchStandingsByLeague
 } from "../controllers/LeaguesController";
 import {fetchBotById} from "../controllers/BotController";
+import MatchModal from "./MatchModal"; // Importa el componente MatchModal
 
 
 interface LeagueModalProps {
     isOpen: boolean;
     onClose: () => void;
     league: {
-        id: number;
+        leagueId: number;
         name: string;
         urlImagen: string;
         matchTime: number;
@@ -39,29 +40,68 @@ const LeagueModal: React.FC<LeagueModalProps> = ({ isOpen, onClose, league }) =>
     const [matches, setMatches] = useState<any[]>([]);
     const [standings, setStandings] = useState<any[]>([]);
     const [bots, setBots] = useState<Bot[]>([]);
+    const [currentRoundIndex, setCurrentRoundIndex] = useState(0);
+    const [selectedMatch, setSelectedMatch] = useState<any>(null); // Estado para el match seleccionado
+
+    const handleMatchClick = (match: any) => {
+        setSelectedMatch(match); // Establece el match seleccionado
+    };
+
+    const closeMatchModal = () => {
+        setSelectedMatch(null); // Cierra el modal
+    };
+
+    const Match = ({ match }: { match: any }) => {
+        if (!match.fighters || match.fighters.length < 2) {
+            return <div className="match-card">Invalid match data</div>;
+        }
+
+        const bot1 = bots.find((bot) => bot.name === match.fighters[0]);
+        const bot2 = bots.find((bot) => bot.name === match.fighters[1]);
+
+        if (!bot1 || !bot2) {
+            return <div className="match-card">Bot data not found</div>;
+        }
+
+        return (
+            <div
+                className="match-card"
+                onClick={() => handleMatchClick(match)} // Abre el modal al hacer clic
+            >
+                <img src={bot1.urlImage} alt={bot1.name} />
+                <div className="match-card-content">
+                    <p>
+                        BOT {bot1.name} vs BOT {bot2.name}
+                    </p>
+                    <p>Estado: {match.state}</p>
+                </div>
+                <img src={bot2.urlImage} alt={bot2.name} />
+            </div>
+        );
+    };
 
     // Sincronizar currentLeague con league cuando esta cambie
     useEffect(() => {
         setCurrentLeague(league);
-        if (league && (league.state === "Started" || league.state === "Finished")) {
-            fetchMatchesByLeague(league.id).then(setMatches).catch(console.error);
-            fetchStandingsByLeague(league.id).then(setStandings).catch(console.error);
-        }
-        // if (league) {
-        //     fetchMatchesByLeague(league.id)
-        //         .then((matches) => {
-        //             console.log("Fetched matches:", matches); // Log para probar los datos
-        //             setMatches(matches);
-        //         })
-        //         .catch(console.error);
-        //
-        //     fetchStandingsByLeague(league.id)
-        //         .then((standings) => {
-        //             console.log("Fetched standings:", standings); // Log para probar los datos
-        //             setStandings(standings);
-        //         })
-        //         .catch(console.error);
+        // if (league && (league.state === "IN_PROCESS" || league.state === "Finished")) {
+        //     fetchMatchesByLeague(league.leagueId).then(setMatches).catch(console.error);
+        //     fetchStandingsByLeague(league.leagueId).then(setStandings).catch(console.error);
         // }
+        if (league) {
+            fetchMatchesByLeague(league.leagueId)
+                .then((matches) => {
+                    console.log("Fetched matches:", matches); // Log para probar los datos
+                    setMatches(matches);
+                })
+                .catch(console.error);
+
+            fetchStandingsByLeague(league.leagueId)
+                .then((standings) => {
+                    console.log("Fetched standings:", standings); // Log para probar los datos
+                    setStandings(standings);
+                })
+                .catch(console.error);
+        }
     }, [league]);
 
     useEffect(() => {
@@ -86,7 +126,7 @@ const LeagueModal: React.FC<LeagueModalProps> = ({ isOpen, onClose, league }) =>
 
     const reloadLeagueData = () => {
         if (currentLeague) {
-            fetchLeagueById(currentLeague.id)
+            fetchLeagueById(currentLeague.leagueId)
                 .then((updatedLeague) => setCurrentLeague(updatedLeague))
                 .catch((error) => console.error("Error fetching league data:", error));
         }
@@ -113,7 +153,8 @@ const LeagueModal: React.FC<LeagueModalProps> = ({ isOpen, onClose, league }) =>
     const handleStartClick = async () => {
         if (currentLeague) {
             try {
-                await fetchLeagueStart(currentLeague.id);
+                console.log("Starting league with ID:", currentLeague.leagueId);
+                await fetchLeagueStart(currentLeague.leagueId);
                 console.log("League started successfully");
                 reloadLeagueData(); // Refresh league data after starting
             } catch (error) {
@@ -125,13 +166,13 @@ const LeagueModal: React.FC<LeagueModalProps> = ({ isOpen, onClose, league }) =>
     return (
 
         <div className="modal-overlay">
-            <div className="modal-content">
+            <div className={currentLeague.state === "PENDING" ? "modal-content" : "modal-content-started"}>
                 <button className="close-button" onClick={onClose}>
                     &times;
                 </button>
                 <h2>{currentLeague.name}</h2>
 
-                {currentLeague.state === "Created" ? (
+                {currentLeague.state === "PENDING" ? (
                     <>
                         {/* Original Design */}
                         <h3>Bots Inscritos:</h3>
@@ -146,29 +187,35 @@ const LeagueModal: React.FC<LeagueModalProps> = ({ isOpen, onClose, league }) =>
                             ))}
                         </div>
                         <p>Number of Rounds: {currentLeague.rounds}</p>
-                            <div className="button-group">
-                                <Button label={"Inscribir Bot"} onClick={handleAddBotClick}/>
-                                <Button label={"Editar"} onClick={handleEditClick}/>
-                                <Button label={"Iniciar"} onClick={handleStartClick}/>
-                            </div>
+                        <div className="button-group">
+                            <Button label={"Inscribir Bot"} onClick={handleAddBotClick}/>
+                            <Button label={"Editar"} onClick={handleEditClick}/>
+                            <Button label={"Iniciar"} onClick={handleStartClick}/>
+                        </div>
                     </>
                 ) : (
                     <div className="league-details">
                         <div className="matches-column">
-                            <h3>Enfrentamientos por Jornada</h3>
-                            {/*{matches.map((round) => (*/}
-                            {/*    <div key={round.matchId} className="round">*/}
-                            {/*        <h4>Jornada {round.num_jornada}</h4>*/}
-                            {/*        <ul>*/}
-                            {/*            {round.enfrentamientos.map((match: any) => (*/}
-                            {/*                <li key={match.matchId}>*/}
-                            {/*                    Enfrentamiento {match.matchId} - Estado: {match.state}*/}
-                            {/*                </li>*/}
-                            {/*            ))}*/}
-                            {/*        </ul>*/}
-                            {/*    </div>*/}
-                            {/*))}*/}
+                            <h3>Enfrentamientos</h3>
+                            {matches && matches.length > 0 ? (
+                                <div className="round-matches">
+                                    {matches.map((match: any) => (
+                                        <Match key={match.matchId} match={match}/>
+                                    ))}
+                                </div>
+                            ) : (
+                                <p>No matches available.</p>
+                            )}
                         </div>
+                        {/* MatchModal */}
+                        {selectedMatch && (
+                            <MatchModal
+                                isOpen={!!selectedMatch}
+                                onClose={closeMatchModal}
+                                match={selectedMatch}
+                                bots={bots} // Pasar los bots dinámicamente
+                            />
+                        )}
                         <div className="standings-column">
                             <table>
                                 <thead>
@@ -181,15 +228,15 @@ const LeagueModal: React.FC<LeagueModalProps> = ({ isOpen, onClose, league }) =>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    {standings.map((bot) => (
-                                        <tr key={bot.botId}>
-                                            <td>{bot.name}</td>
-                                            <td>{bot.nwins}</td>
-                                            <td>{bot.nlosses}</td>
-                                            <td>{bot.ndraws}</td>
-                                            <td>{bot.points}</td>
-                                        </tr>
-                                    ))}
+                                {standings.map((bot) => (
+                                    <tr key={bot.botId}>
+                                        <td>{bot.name}</td>
+                                        <td>{bot.nwins}</td>
+                                        <td>{bot.nlosses}</td>
+                                        <td>{bot.ndraws}</td>
+                                        <td>{bot.points}</td>
+                                    </tr>
+                                ))}
                                 </tbody>
                             </table>
                         </div>
@@ -198,7 +245,7 @@ const LeagueModal: React.FC<LeagueModalProps> = ({ isOpen, onClose, league }) =>
                 <AddBotsModal
                     isOpen={isAddBotsModalOpen}
                     onClose={handleCloseAddBotModal}
-                    leagueId={currentLeague.id}
+                    leagueId={currentLeague.leagueId}
                     currentBots={currentLeague.bots}
                 />
 

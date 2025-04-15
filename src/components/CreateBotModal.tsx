@@ -10,8 +10,8 @@ interface CreateBotModalProps {
 
 interface BotData {
   name: string;
-  description: string;
-  imageUrl: string;
+  descripcion: string;
+  urlImagen: string;
 }
 
 interface FormErrors {
@@ -23,8 +23,8 @@ interface FormErrors {
 const CreateBotModal: React.FC<CreateBotModalProps> = ({ isOpen, onClose }) => {
   const [botData, setBotData] = useState<BotData>({
     name: "",
-    description: "",
-    imageUrl: "",
+    descripcion: "",
+    urlImagen: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<FormErrors>({});
@@ -108,11 +108,11 @@ const CreateBotModal: React.FC<CreateBotModalProps> = ({ isOpen, onClose }) => {
           </div>
 
           <div className="modal-form-group">
-            <label htmlFor="description">Descripción</label>
+            <label htmlFor="descripcion">Descripción</label>
             <textarea
-              id="description"
-              name="description"
-              value={botData.description}
+              id="descripcion"
+              name="descripcion"
+              value={botData.descripcion}
               onChange={handleChange}
               placeholder="Describe brevemente la estrategia de tu bot"
               rows={3}
@@ -120,20 +120,20 @@ const CreateBotModal: React.FC<CreateBotModalProps> = ({ isOpen, onClose }) => {
           </div>
 
           <div className="modal-form-group">
-            <label htmlFor="imageUrl">Imagen del Bot</label>
+            <label htmlFor="urlImage">Imagen del Bot</label>
             <input
-              id="imageUrl"
-              name="imageUrl"
+              id="urlImagen"
+              name="urlImagen"
               type="url"
-              value={botData.imageUrl}
+              value={botData.urlImagen}
               onChange={handleChange}
               placeholder="URL de la imagen para personalizar tu bot"
             />
-            {botData.imageUrl && (
+            {botData.urlImagen && (
               <div className="modal-image-preview">
                 <p>Previsualización:</p>
                 <img
-                  src={botData.imageUrl}
+                  src={botData.urlImagen}
                   alt="Vista previa del bot"
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;

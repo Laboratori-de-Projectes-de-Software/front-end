@@ -7,7 +7,7 @@ interface EditLeagueModalProps {
     isOpen: boolean;
     onClose: () => void;
     league: {
-        id: number;
+        leagueId: number;
         name: string;
         urlImagen: string;
         matchTime: number;
@@ -88,7 +88,7 @@ const EditLeagueModal: React.FC<EditLeagueModalProps> = ({
 
         try {
             await updateLeague(
-                league.id,
+                league.leagueId,
                 leagueData,
                 (updatedLeague) => {
                     console.log("League updated successfully:", updatedLeague);
