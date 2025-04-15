@@ -3,7 +3,7 @@ import "react";
 // Define the interface for the component props
 interface BotCardProps {
   leagueId: number;
-  state: string;
+  estado: string;
   name: string;
   urlImagen: string; // Assuming this is a general image URL for the league/bot
   user: number; // Assuming this is a user ID
@@ -14,7 +14,7 @@ interface BotCardProps {
 
 export default function BotCard({
   leagueId,
-  state,
+  estado,
   name,
   urlImagen,
   user,
@@ -52,7 +52,7 @@ export default function BotCard({
             <span className="block font-semibold text-gray-300 uppercase tracking-wider text-xs">
               State
             </span>
-            <span className="text-base">{state}</span>
+            <span className="text-base">{estado}</span>
           </div>
           <div className="text-right">
             <span className="block font-semibold text-gray-300 uppercase tracking-wider text-xs">
