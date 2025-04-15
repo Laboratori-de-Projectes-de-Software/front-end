@@ -7,7 +7,7 @@ const Navbar: React.FC = () => {
       <div className="flex space-x-8 content-center">
         <a href="/"><span className="text-xl font-bold">Bot Debate League</span></a>
         <ul className="flex space-x-4">
-          <li><a href="/classification">Leagues</a></li>
+          <li><a href="/leagues">Leagues</a></li>
           <li><a href="/bots">Participants</a></li>
         </ul>
       </div>
