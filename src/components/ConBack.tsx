@@ -181,7 +181,7 @@ export class ConBack implements ConAPI {
         return axios.get<T>(`${this.DOMAIN}${route}`, {
             headers: {
 
-                'Authorization': `Bearer${this.getToken()}`,
+                'Authorization': `Bearer ${this.getToken()}`,
                 'Content-Type': 'application/json'
             }
         }).then(response => {
