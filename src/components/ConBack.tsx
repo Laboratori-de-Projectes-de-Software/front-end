@@ -112,7 +112,7 @@ export class ConBack implements ConAPI {
     // Update a bot. (Note: Since BotDTO doesn't have an id in its structure, we use a placeholder endpoint.)
     updateBot(bot: BotDTO, botId:number): Promise<BotResponseDTO> {
         let updatedBot: Promise<BotResponseDTO> = {} as Promise<BotResponseDTO>
-        axios.put(`${this.UPDATE_BOT_ROUTE}${botId}`, bot).then(response => {
+        axios.put(`${this.DOMAIN}${this.UPDATE_BOT_ROUTE}${botId}`, bot).then(response => {
             updatedBot = response.data as Promise<BotResponseDTO>;
         }).catch(_ => { });
         return updatedBot;
@@ -136,7 +136,7 @@ export class ConBack implements ConAPI {
     // Update an existing league.
     updateLeague(league: LeagueDTO, leagueId: number): Promise<LeagueResponseDTO> {
         let updatedLeague: Promise<LeagueResponseDTO> = {} as Promise<LeagueResponseDTO>;
-        axios.put(`${this.UPDATE_LEAGUE_ROUTE}${leagueId}`, league).then(Response => {
+        axios.put(`${this.DOMAIN}${this.UPDATE_LEAGUE_ROUTE}${leagueId}`, league).then(Response => {
             updatedLeague = Response.data as Promise<LeagueResponseDTO>;
         }).catch(_ => { });
         return updatedLeague;
@@ -155,7 +155,7 @@ export class ConBack implements ConAPI {
 
     // Deletes a league and returns the deleted league data.
     deleteLeague(leagueId: number): Promise<LeagueResponseDTO> {
-        return axios.delete<LeagueResponseDTO>(`${this.DELETE_LEAGUE_ROUTE}${leagueId}`).then(response => {
+        return axios.delete<LeagueResponseDTO>(`${this.DOMAIN}${this.DELETE_LEAGUE_ROUTE}${leagueId}`).then(response => {
             return response.data;
         }).catch(error => {
             throw error;

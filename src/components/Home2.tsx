@@ -11,13 +11,17 @@ export default function Account() {
     type: "success" | "error";
   }
   const [notification, setNotification] = useState<NotificationProps | null>(null);
+
+  const [bots, setBots] = useState<BotSummaryResponseDTO[]>([]);
   
 
   const initializeComponent = (userId: number) => {
 
     //const userId = 1
   
-          window.APIConection.getAllBotsUser(userId).then((Response: BotSummaryResponseDTO[]) => {})
+          window.APIConection.getAllBotsUser(userId).then((response: BotSummaryResponseDTO[]) => {
+            setBots(response); // Guarda la respuesta en el estado
+          })
               .catch((error: any) => {
                   setNotification({
                       message: error.message || "Failed to log account",
@@ -111,6 +115,12 @@ const toggleOption = (option: string) => {
                       <span className="icon">▼</span>
                     </summary>
                     <div className="dropdown-menu">
+                      {bots.map((bot)=>(
+                        <div>
+                          key={bot.name}
+                        </div>
+                      ))}
+
                       {options.map((option) => (
                         <div
                           key={option}

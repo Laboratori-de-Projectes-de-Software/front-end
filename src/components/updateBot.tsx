@@ -2,7 +2,6 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import Footer from "./Footer";
 import SideBar from "./SideBar";
 import { BotDTO } from "./ConAPI";
-import { useNavigate } from 'react-router-dom';
 
 interface AIInfo {
   name: string,
@@ -16,61 +15,6 @@ interface NotificationProps {
   type: "success" | "error";
 }
 
-const navigate = useNavigate();
-const handleUpdateBotClick = (index: Number): any => {
-  // Los 4 strings que quieres pasar
- /* const aiData: BotDTO ={
-/*    name:,
-    description:botInfo.description,
-    urlImage:botInfo.urlImage,
-    endpoint:botInfo.endpoint
-  }*/
-  
-  // Navegar a updateBot pasando los parámetros
-  navigate('/update-bot', { 
-    
-    state: { 
-      index
-    } 
-  });
-};
-
-// Definimos la interfaz para el tipo TableRow
-interface TableRow {
-  name: string;
-  description: string;
-  urlImage: string;
-  endpoint: string;
-}
-
-// Creamos el array tableData con dos objetos
-const tableData: TableRow[] = [
-  {
-    name: "Bot Asistente",
-    description: "Un bot que proporciona asistencia a usuarios con consultas generales",
-    urlImage: "https://example.com/images/assistant-bot.png",
-    endpoint: "/api/bots/assistant"
-  },
-  {
-    name: "Bot Análisis",
-    description: "Bot especializado en análisis de datos y generación de informes",
-    urlImage: "https://example.com/images/analysis-bot.png",
-    endpoint: "/api/bots/analysis"
-  }
-];
-
-
-function getCookie(c: string): string {
-  console.log(document.cookie);
-  const cookies = document.cookie.split('; ');
-  for (const cookie of cookies) {
-    const [cookieName, value] = cookie.split('=');
-    if (cookieName === c) {
-      return `${decodeURIComponent(value)}`;
-    }
-  }
-  return "";
-}
 export default function Account() {
 
   const [botInfo, setBotInfo] = useState<AIInfo>({ name: "", description: "", urlImage: "", endpoint: "" });
@@ -84,17 +28,16 @@ export default function Account() {
     });
   };
 
-  const handleBotPost = (e: FormEvent<HTMLButtonElement>): void => {
+  const handleBotUpdate = (e: FormEvent<HTMLButtonElement>): void => {
     e.preventDefault();
     // Validate input data
     const aiData: BotDTO ={
       name:botInfo.name,
       description:botInfo.description,
-      urlImagen:botInfo.urlImage,
-      endpoint:botInfo.endpoint,
-      userId: parseInt(getCookie("userId"))
+      urlImage:botInfo.urlImage,
+      endpoint:botInfo.endpoint
     }
-    window.APIConection.postBot(aiData).then(() => {
+    window.APIConection.updateBot(aiData,40).then(() => {
       setNotification({
         message: "Account created successfully!",
         type: "success"
@@ -176,33 +119,7 @@ export default function Account() {
                 <input type="url" name="urlImage" value={botInfo.urlImage} onChange={handleBotInfoChange} />
                 <label>Endpoint: </label>
                 <input type="url" name="endpoint" value={botInfo.endpoint} onChange={handleBotInfoChange} />
-              </div>
-              <button className="button-round button-blue" onClick={handleBotPost}>ADD</button>
-              <div className="table_container">
-                <table className="table">
-                  <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th>Description</th>
-                      <th>Url Image</th>
-                      <th>Endpoint</th>
-                      <th>Update</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {tableData.map((row, index) => (
-                      <tr key={index}>
-                        <td>{row.name}</td>
-                        <td>{row.description}</td>
-                        <td>{row.urlImage}</td>
-                        <td>{row.endpoint}</td>
-                        <td>
-                          <button className="delete-button" onClick={handleUpdateBotClick(index)}>✖</button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                <button className="delete-button" onClick={handleBotUpdate}>✖</button>
               </div>
             </div>
           </div>

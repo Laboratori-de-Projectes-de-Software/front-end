@@ -52,7 +52,7 @@ export default function SignUp() {
             password: signupData.password
         };
 
-        window.APIConection.createUser(userData).then((response: any) => {
+        window.APIConection.createUser(userData).then(() => {
             setNotification({
                 message: "Account created successfully!",
                 type: "success"
