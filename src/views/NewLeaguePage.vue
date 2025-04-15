@@ -4,6 +4,7 @@ import FooterApp from '@/components/FooterApp.vue'
 import HeaderApp from '@/components/HeaderApp.vue'
 import router from '@/router'
 import { onMounted, ref } from 'vue'
+import Swal from 'sweetalert2'
 
 // TODO: Cambiar cuando se haya hecho la Tarea ABB-134
 interface BotTemp {
@@ -79,8 +80,8 @@ const createLeagueRequest = async () => {
     rounds: rounds.value,
     matchTime: matchTime.value,
     bots: selectedBots.value.map((bot) => bot.id),
-    imagen: '',
-    // urlImagen: '',
+    imagen: imageUrl.value,
+    // urlImagen: imageUrl.value,
   }
   console.log('Body:', body)
 
@@ -102,6 +103,45 @@ const createLeagueRequest = async () => {
     router.push('/')
   }
 }
+
+const externalUrl = ref('')
+const imageUrl = ref<string | null>(null)
+
+const onExternalUrlSubmit = () => {
+  const url = externalUrl.value.trim()
+
+  // Crea una imagen de prueba para verificar que la URL carga correctamente
+  const testImg = new Image()
+  testImg.onload = () => {
+    imageUrl.value = url
+    externalUrl.value = '' // Limpia el campo tras una carga exitosa
+  }
+  testImg.onerror = () => {
+    Swal.fire({
+      icon: 'error',
+      title: 'Error de carga de imagen',
+      text: 'La URL proporcionada no es válida.',
+      customClass: {
+        confirmButton:
+          'bg-[#06f] cursor-pointer text-white rounded border-0 text-base px-4 py-2 shadow-md font-medium',
+      },
+      buttonsStyling: false,
+    })
+    externalUrl.value = ''
+    imageUrl.value = null
+  }
+  testImg.src = url
+}
+
+const imageClass = ref('')
+const onImageLoad = (event: Event) => {
+  const img = event.target as HTMLImageElement
+  if (img.naturalWidth > img.naturalHeight) {
+    imageClass.value = 'w-full h-auto' // Imagen más ancha que alta
+  } else {
+    imageClass.value = 'h-full w-auto' // Imagen más alta que ancha
+  }
+}
 </script>
 
 <template>
@@ -118,14 +158,50 @@ const createLeagueRequest = async () => {
     </header>
 
     <div className="bg-[#2a2a2a] rounded-2xl mb-4 flex flex-col items-center gap-12 py-5">
-      <!-- Imagen del Usuario -->
-      <img src="@/assets/tempProfile.png" alt="" class="w-[150px] rounded-full object-contain" />
-
       <form
         action="post"
         @submit.prevent="createLeagueRequest()"
         class="flex w-full flex-col items-center gap-8 rounded-md px-18 font-bold lg:w-[700px] dark:text-white"
       >
+        <div class="flex w-full flex-col items-center gap-2">
+          <div
+            class="flex h-37.5 w-45 cursor-pointer items-center justify-center rounded-2xl bg-white p-6"
+          >
+            <div
+              class="flex h-full w-full items-center justify-center p-2 text-center text-2xl text-black"
+              v-if="!imageUrl || imageUrl === ''"
+            >
+              Añadir imagen
+            </div>
+            <img
+              v-else
+              :src="imageUrl"
+              alt="League Image"
+              :class="`object-cover ${imageClass}`"
+              @load="onImageLoad"
+            />
+          </div>
+          <label for="external-url" class="mt-2 -mb-2 flex w-full flex-col">
+            URL Imagen (Opcional)
+            <div class="flex w-full items-center gap-2">
+              <input
+                id="external-url"
+                v-model="externalUrl"
+                type="text"
+                placeholder="Introduce la URL..."
+                class="w-full rounded-xl bg-[#c1c1c1] p-2.5 text-sm placeholder:text-[#878787] dark:bg-[#4e4e4e]"
+              />
+              <button
+                type="button"
+                @click="onExternalUrlSubmit()"
+                class="rounded-full bg-[#06f] px-6 py-2 text-[16px] font-bold text-white"
+              >
+                Aplicar
+              </button>
+            </div>
+          </label>
+        </div>
+
         <fieldset class="mb-8 grid w-full grid-cols-1 gap-x-12 gap-y-6 sm:grid-cols-2">
           <!-- Nombre -->
           <label for="name">
