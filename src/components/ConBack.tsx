@@ -181,7 +181,7 @@ export class ConBack implements ConAPI {
         return axios.get<T>(`${this.DOMAIN}${route}`, {
             headers: {
 
-                'Authorization': `Bearer ${this.getToken()}`,
+                'Authorization': `Bearer${this.getToken()}`,
                 'Content-Type': 'application/json'
             }
         }).then(response => {
@@ -234,7 +234,14 @@ export class ConBack implements ConAPI {
             });
     }
     private getToken(): string {
-        return document.cookie.split('=')[1];
+        const cookies = document.cookie.split('; ');
+        for (const cookie of cookies) {
+            const [cookieName, value] = cookie.split('=');
+            if (cookieName === "token") {
+                return ` ${decodeURIComponent(value)}`;
+            }
+        }
+        return "";
     }
 
 
