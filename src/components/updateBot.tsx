@@ -1,7 +1,8 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState, useEffect } from "react";
 import Footer from "./Footer";
 import SideBar from "./SideBar";
 import { BotDTO } from "./ConAPI";
+import { useLocation } from 'react-router-dom';
 
 interface AIInfo {
   name: string,
@@ -15,10 +16,32 @@ interface NotificationProps {
   type: "success" | "error";
 }
 
-export default function Account() {
-
-  const [botInfo, setBotInfo] = useState<AIInfo>({ name: "", description: "", urlImage: "", endpoint: "" });
+export default function Update_Bot() {
+  // Obtener los datos pasados por navegación
+  const location = useLocation();
+  const { name, description, urlImage, endpoint } = location.state || {};
+  
+  // Inicializar estado con valores vacíos
+  const [botInfo, setBotInfo] = useState<AIInfo>({ 
+    name: "", 
+    description: "", 
+    urlImage: "", 
+    endpoint: "" 
+  });
+  
   const [notification, setNotification] = useState<NotificationProps | null>(null);
+
+  // Cargar los datos recibidos en el estado cuando el componente se monte
+  useEffect(() => {
+    if (name && description && urlImage && endpoint) {
+      setBotInfo({
+        name,
+        description,
+        urlImage,
+        endpoint
+      });
+    }
+  }, [name, description, urlImage, endpoint]);
 
   const handleBotInfoChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target;
@@ -31,21 +54,26 @@ export default function Account() {
   const handleBotUpdate = (e: FormEvent<HTMLButtonElement>): void => {
     e.preventDefault();
     // Validate input data
-    const aiData: BotDTO ={
-      name:botInfo.name,
-      description:botInfo.description,
-      urlImage:botInfo.urlImage,
-      endpoint:botInfo.endpoint
+    const aiData: BotDTO = {
+      name: botInfo.name,
+      description: botInfo.description,
+      urlImage: botInfo.urlImage,
+      endpoint: botInfo.endpoint
     }
-    window.APIConection.updateBot(aiData,40).then(() => {
+    
+    // Aquí deberías obtener el ID real del bot en lugar de usar un valor fijo
+    // Podrías pasarlo también en location.state
+    const botId = 40; // Idealmente, este valor debería venir de location.state
+    
+    window.APIConection.updateBot(aiData, botId).then(() => {
       setNotification({
-        message: "Account created successfully!",
+        message: "Bot updated successfully!",
         type: "success"
       });
     })
       .catch((error: any) => {
         setNotification({
-          message: error.message || "Failed to create account",
+          message: error.message || "Failed to update bot",
           type: "error"
         });
       });
@@ -100,7 +128,6 @@ export default function Account() {
       );
   };
 
-
   return (
     <>
       <div>
@@ -108,9 +135,10 @@ export default function Account() {
           <SideBar />
           <div className="content_container">
             <div className="IAs_container">
-              <h2>Add AIs</h2>
+              <h2>Update Bot</h2>
               {notification && <Notification message={notification.message} type={notification.type} />}
-              <div>
+              
+              <div className="form-container">
                 <label>Name: </label>
                 <input type="text" name="name" value={botInfo.name} onChange={handleBotInfoChange} />
                 <label>Description: </label>
@@ -119,7 +147,29 @@ export default function Account() {
                 <input type="url" name="urlImage" value={botInfo.urlImage} onChange={handleBotInfoChange} />
                 <label>Endpoint: </label>
                 <input type="url" name="endpoint" value={botInfo.endpoint} onChange={handleBotInfoChange} />
-                <button className="delete-button" onClick={handleBotUpdate}>✖</button>
+                <button className="button-round button-blue" onClick={handleBotUpdate}>Update Bot</button>
+              </div>
+              
+              <h3>Original Data:</h3>
+              <div className="table_container">
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Description</th>
+                      <th>Url Image</th>
+                      <th>Endpoint</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>{name}</td>
+                      <td>{description}</td>
+                      <td>{urlImage}</td>
+                      <td>{endpoint}</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>

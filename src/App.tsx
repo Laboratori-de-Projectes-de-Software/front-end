@@ -8,6 +8,7 @@ import LeagueCreation from "./components/LeagueCreation";
 import MatchPage from "./components/MatchPage";
 import AddIA from "./components/AddIA";
 import SignUp from "./components/SignUp";
+import UpdateBot from "./components/updateBot";
 import './css/App.css';
 export default function App() {
     return (
@@ -17,12 +18,13 @@ export default function App() {
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/login" element={<Login/>}/>
-                    <Route path="signup" element={<SignUp/>}/>
+                    <Route path="/signup" element={<SignUp/>}/>
                     <Route path="/account" element={<Account />}/>
                     <Route path="/scores" element={<Scores/>}/>
                     <Route path="/leaguecreation" element={<LeagueCreation/>}/>
                     <Route path="/combat" element={<MatchPage/>}/>
                     <Route path="/addia" element={<AddIA/>}/>
+                    <Route path="/updateBot" element={<UpdateBot/>}/>
                 </Routes>
             </Router>
         </>

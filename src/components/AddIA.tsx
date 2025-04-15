@@ -16,25 +16,6 @@ interface NotificationProps {
   type: "success" | "error";
 }
 
-const navigate = useNavigate();
-const handleUpdateBotClick = (index: Number): any => {
-  // Los 4 strings que quieres pasar
- /* const aiData: BotDTO ={
-/*    name:,
-    description:botInfo.description,
-    urlImage:botInfo.urlImage,
-    endpoint:botInfo.endpoint
-  }*/
-  
-  // Navegar a updateBot pasando los parámetros
-  navigate('/update-bot', { 
-    
-    state: { 
-      index
-    } 
-  });
-};
-
 // Definimos la interfaz para el tipo TableRow
 interface TableRow {
   name: string;
@@ -72,9 +53,23 @@ function getCookie(c: string): string {
   return "";
 }
 export default function Account() {
-
+  // Mueve useNavigate dentro del componente
+  const navigate = useNavigate();
+  
   const [botInfo, setBotInfo] = useState<AIInfo>({ name: "", description: "", urlImage: "", endpoint: "" });
   const [notification, setNotification] = useState<NotificationProps | null>(null);
+
+  // Mueve handleUpdateBotClick dentro del componente y arréglalo
+  const handleUpdateBotClick = (row: TableRow) => {
+    navigate('/updateBot', { 
+      state: { 
+        name: row.name,
+        description: row.description,
+        urlImage: row.urlImage,
+        endpoint: row.endpoint
+      } 
+    });
+  };
 
   const handleBotInfoChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target;
@@ -197,7 +192,12 @@ export default function Account() {
                         <td>{row.urlImage}</td>
                         <td>{row.endpoint}</td>
                         <td>
-                          <button className="delete-button" onClick={handleUpdateBotClick(index)}>✖</button>
+                          <button 
+                            className="delete-button" 
+                            onClick={() => handleUpdateBotClick(row)}
+                          >
+                            ✖
+                          </button>
                         </td>
                       </tr>
                     ))}
