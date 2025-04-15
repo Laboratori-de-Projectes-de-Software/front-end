@@ -3,7 +3,7 @@ import { FiUpload, FiClock } from "react-icons/fi";
 import { FaTrophy } from "react-icons/fa";
 import {useNavigate, useSearchParams} from 'react-router-dom';
 import { API_LEAGUE } from '../config';
-import {getLeague, updateLeague} from "../services/apiCalls.ts";
+import {createBot, createLiga, getLeague, updateLeague} from "../services/apiCalls.ts";
 import Alert from 'react-bootstrap/Alert';
 
 const CrearLiga: React.FC = () => {
@@ -123,23 +123,24 @@ const CrearLiga: React.FC = () => {
         }else{
             try {
                 const formData = new FormData();
-                formData.append("nombreLiga", nombreLiga);
+                formData.append("name", nombreLiga);
                 formData.append("urlImagen", imagePreview ? String(imagePreview) : "");
-                formData.append("numJornadas", String(numJornadas));
+                formData.append("rounds", String(numJornadas));
                 formData.append("matchTime", minutes);
-                formData.append("numBots", String(numParticipantes));
-                formData.append("id", userId);
+                formData.append("bots", "");
+                formData.append("creador", userId);
 
-                const response = await fetch(API_LEAGUE, {
-                    method: 'POST',
-                    body: formData
+                const response = await createLiga({
+                    "name": nombreLiga,
+                    "urlImagen": imagePreview ? String(imagePreview) : "",
+                    "rounds": numJornadas,
+                    "matchTime": minutes,
+                    "bots": Array.from({ length: numParticipantes }, (_, i) => i),
+                    "creador": parseInt(userId)
                 });
 
-                const message = await response.text();
+                console.log(response);
 
-                if (!response.ok) {
-                    throw new Error(`Error: ${message}`);
-                }
                 navigate('/mis-ligas');
             } catch (err) {
                 console.error('Error:', err);

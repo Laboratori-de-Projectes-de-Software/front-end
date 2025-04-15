@@ -28,6 +28,7 @@ export const registerBotToLeague = async (leagueId: number | string, botId: numb
         },
     });
 
+export const createBot = async (data: Object) => await putData(`/bot`, data);
 
 export const updateLeague = async (leagueId: string, data: Object) => await putData(`/league/${leagueId}`, data);
 
@@ -44,3 +45,5 @@ export const iniciarLiga = async (leagueId: string | undefined, data: Object) =>
 export const getMatchesByLeague = async (leagueId: string | undefined, data: Object) => await getData(`/league/${leagueId}/match`, data);
 
 export const getLeaguesByUserId = async (data: Object) => await getData(`/league`, data);
+
+export const createLiga = async (data: Object) => await putData(`/league`, data);

@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, FormEvent } from 'react';
 import { FiUpload } from "react-icons/fi";
 import { FaRobot } from 'react-icons/fa';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { createBot, getBotById, updateBot } from '../services/apiCalls.ts';
+import {createBot, getBotById, updateBot} from '../services/apiCalls.ts';
 import { Alert } from 'react-bootstrap';
 import {API_BOT} from "../config.tsx";
 
@@ -114,13 +114,15 @@ const CrearBot: React.FC = () => {
         formData.append("API", apiKey);
         formData.append("id", userId);
 
-        const response = await fetch(API_BOT, {
-          method: 'POST',
-          body: formData
+        const response = await createBot({
+          name: nombreBot,
+          description: descripcion,
+          urlImagen: imagePreview || "",
+          endpoint: apiKey,
+          userId: userId
         });
 
-        const message = await response.text();
-        if (!response.ok) throw new Error(`Error: ${message}`);
+
         navigate('/mis-bots');
       }
     } catch (err) {
