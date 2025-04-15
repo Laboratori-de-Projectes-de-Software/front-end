@@ -3,9 +3,9 @@ import LeagueBar from "@components/LeagueBar";
 import { useNavigate, useParams } from "react-router-dom";
 import { LeagueResponseDTO } from "@DTOClasses/LeagueDTO";
 
-const leagues: LeagueResponseDTO[] = [{leagueId: 1, state: "", name: "League 1", urlImage: "", user: 1, rounds: 3, matchTime: 2, bots: []},
-                                      {leagueId: 1, state: "", name: "League 1", urlImage: "", user: 1, rounds: 3, matchTime: 2, bots: []},
-                                      {leagueId: 1, state: "", name: "League 1", urlImage: "", user: 1, rounds: 3, matchTime: 2, bots: []} ];
+const leagues: LeagueResponseDTO[] = [{leagueId: 1, state: "PENDIND", name: "League 1", urlImage: "", user: 1, rounds: 3, matchTime: 2, bots: []},
+                                      {leagueId: 1, state: "", name: "League 2", urlImage: "", user: 1, rounds: 3, matchTime: 2, bots: []},
+                                      {leagueId: 1, state: "", name: "League 3", urlImage: "", user: 1, rounds: 3, matchTime: 2, bots: []} ];
 
 const matches = Array(10).fill({ bot1: "Bot 1", bot2: "Bot 2", winner: "Bot 2" });
 
