@@ -11,6 +11,7 @@ import NotFound from "./pages/not-found/NotFound.tsx";
 import UserInfo from "./pages/user-info/UserInfo.tsx";
 import NewBot from "./pages/new-bot/NewBot.tsx";
 import LeaguePage from "./pages/league/leaguePage.tsx";
+import MatchPage from "./pages/match-page/matchPage.tsx";
 
 function App() {
   return (
@@ -30,6 +31,9 @@ function App() {
                 </Route>
                 <Route element={<PrivateRoute />}>
                   <Route path="/league/:id" element={<LeaguePage />} />
+                </Route>
+                <Route element={<PrivateRoute />}>
+                  <Route path="/match" element={<MatchPage />} />
                 </Route>
                 <Route element={<PrivateRoute />}>
                   <Route path="/new-bot" element={<NewBot />} />
