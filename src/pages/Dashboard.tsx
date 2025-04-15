@@ -7,7 +7,7 @@ import CreateLeagueModal from "../components/CreateLeagueModal";
 import CreateBotModal from "../components/CreateBotModal";
 import { fetchUserBots } from "../controllers/BotController";
 import ButtonCreate from "../components/ButtonCreate";
-import {fetchUserLeagues} from "../controllers/LeaguesController";
+import { fetchUserLeagues } from "../controllers/LeaguesController";
 
 const Dashboard: React.FC = () => {
   // Estados para almacenar datos del dashboard
@@ -28,8 +28,8 @@ const Dashboard: React.FC = () => {
     // Recargar las ligas desde la base de datos
     setLoading(true);
     fetchUserLeagues(
-        (leagueData) => setActiveLeagues(leagueData),
-        (error) => console.error("Error fetching leagues:", error)
+      (leagueData) => setActiveLeagues(leagueData),
+      (error) => console.error("Error fetching leagues:", error)
     ).finally(() => setLoading(false));
   };
 
@@ -38,8 +38,8 @@ const Dashboard: React.FC = () => {
     // Recargar los bots desde la base de datos
     setLoading(true);
     fetchUserBots(
-        (botData) => setMyBots(botData),
-        (error) => console.error("Error fetching bots:", error)
+      (botData) => setMyBots(botData),
+      (error) => console.error("Error fetching bots:", error)
     ).finally(() => setLoading(false));
   };
 
@@ -52,13 +52,12 @@ const Dashboard: React.FC = () => {
     );
 
     fetchUserLeagues(
-        (leagueData) => setActiveLeagues(leagueData),
-        (error) => console.error("Error fetching leagues:", error)
-    )
+      (leagueData) => setActiveLeagues(leagueData),
+      (error) => console.error("Error fetching leagues:", error)
+    );
 
     // Simulación de carga para otros datos
     setTimeout(() => {
-
       setRecentMatches([
         {
           id: 1,
@@ -119,25 +118,20 @@ const Dashboard: React.FC = () => {
                   </button>
                 </div>
                 <div className="section-content">
-                  {myBots.slice(0,3).map((bot) => (
-                      <div className="cards" key={bot.id}>
-                        <div className="bots-info">
-                          <div className="bots-name">{bot.name}</div>
-                        </div>
-                        <div className="bot-stats">
-                          <span className="wins">{bot.wins || 0}W</span>
-                          <span className="stats-divider">/</span>
-                          <span className="losses">{bot.losses || 0}L</span>
-                        </div>
+                  {myBots.slice(0, 3).map((bot) => (
+                    <div className="cards" key={bot.id}>
+                      <div className="bots-info">
+                        <div className="bots-name">{bot.name}</div>
                       </div>
-                    )
-                  )
-                  }
+                      <div className="bot-stats">
+                        <span className="wins">{bot.wins || 0}W</span>
+                        <span className="stats-divider">/</span>
+                        <span className="losses">{bot.losses || 0}L</span>
+                      </div>
+                    </div>
+                  ))}
                   <div className="create-new">
-                    <ButtonCreate
-                      label="Crear bot"
-                      onClick={openBotModal}
-                    />
+                    <ButtonCreate label="Crear bot" onClick={openBotModal} />
                   </div>
                 </div>
               </div>
@@ -146,30 +140,35 @@ const Dashboard: React.FC = () => {
                 <div className="section-header">
                   <h2>Ligas Activas</h2>
                   <button
-                      className="action-button"
-                      onClick={() => (window.location.href = "/leagues")}
+                    className="action-button"
+                    onClick={() => (window.location.href = "/leagues")}
                   >
                     Ver todas
                   </button>
                 </div>
                 <div className="section-content">
                   {activeLeagues.slice(0, 3).map((league) => (
-                      <div className="league-dsh-card" key={league.id}>
-                        <div className="league-dsh-info">
-                          <div className="league-name">{league.name}</div>
-                          <div className="league-status">Estado: {league.state}</div>
-                        </div>
-                        <div className="league-dsh-image-container">
-                          <img
-                              src={league.urlImagen}
-                              alt={`Imagen de ${league.name}`}
-                              className="league-dsh-image"
-                          />
+                    <div className="league-dsh-card" key={league.id}>
+                      <div className="league-dsh-info">
+                        <div className="league-name">{league.name}</div>
+                        <div className="league-status">
+                          Estado: {league.state}
                         </div>
                       </div>
+                      <div className="league-dsh-image-container">
+                        <img
+                          src={league.urlImage}
+                          alt={`Imagen de ${league.name}`}
+                          className="league-dsh-image"
+                        />
+                      </div>
+                    </div>
                   ))}
                   <div className="create-new">
-                    <ButtonCreate label="Crear liga" onClick={openLeagueModal}/>
+                    <ButtonCreate
+                      label="Crear liga"
+                      onClick={openLeagueModal}
+                    />
                   </div>
                 </div>
               </div>
@@ -178,17 +177,17 @@ const Dashboard: React.FC = () => {
                 <div className="section-header">
                   <h2>Enfrentamientos Recientes</h2>
                   <button
-                      className="action-button"
-                      onClick={() => (window.location.href = "/matches")}
+                    className="action-button"
+                    onClick={() => (window.location.href = "/matches")}
                   >
                     Ver todos
                   </button>
                 </div>
                 <div className="section-content">
                   {recentMatches.map((match) => (
-                      <div className="match-card" key={match.id}>
-                        <div className="match-date">{match.date}</div>
-                        <div className="match-bots">
+                    <div className="match-card" key={match.id}>
+                      <div className="match-date">{match.date}</div>
+                      <div className="match-bots">
                         {match.bot1} vs {match.bot2}
                       </div>
                       <div

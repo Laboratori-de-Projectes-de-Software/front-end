@@ -39,7 +39,7 @@ export const handleCreateBot = async (
     const botData = {
       name: formData.name,
       descripcion: formData.description || "",
-      urlImagen: formData.imageUrl || "",
+      urlImage: formData.imageUrl || "",
       endpoint: "default",
     };
 

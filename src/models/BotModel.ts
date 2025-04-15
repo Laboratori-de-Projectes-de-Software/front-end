@@ -9,7 +9,7 @@ export interface Bot {
   id?: number;
   name: string;
   descripcion?: string; // Nota: descripcion, no description
-  urlImagen?: string; // Nota: urlImagen, no imageUrl
+  urlImage?: string; // Nota: urlImagen, no imageUrl
   endpoint?: string; // Campo requerido por la API
   userId?: number;
   createdAt?: string;
@@ -24,7 +24,7 @@ export interface Bot {
 export const createBot = async (botData: {
   name: string;
   descripcion: string;
-  urlImagen: string;
+  urlImage: string;
   endpoint?: string;
 }) => {
   const token = localStorage.getItem("token");
@@ -185,7 +185,7 @@ export const updateBot = async (
   botData: {
     name: string;
     descripcion: string;
-    urlImagen: string;
+    urlImage: string;
     endpoint?: string;
   }
 ) => {
@@ -231,21 +231,27 @@ export const updateBot = async (
   }
 };
 
-export const addBotsToLeagueModel = async (leagueId: number, botIds: number[]) => {
+export const addBotsToLeagueModel = async (
+  leagueId: number,
+  botIds: number[]
+) => {
   const token = getAuthToken();
   if (!token) {
     throw new Error("No hay token válido.");
   }
 
   for (const botId of botIds) {
-    const response = await fetch(`http://localhost:8080/api/v0/league/${leagueId}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ botId }),
-    });
+    const response = await fetch(
+      `http://localhost:8080/api/v0/league/${leagueId}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ botId }),
+      }
+    );
 
     if (!response.ok) {
       throw new Error(await response.text());

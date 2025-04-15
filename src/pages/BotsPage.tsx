@@ -43,7 +43,7 @@ const BotsPage: React.FC = () => {
                 <div className="bot-name">{bot.name}</div>
                 <img
                   className="bot-image"
-                  src={bot.urlImagen || "default-bot-image.jpg"}
+                  src={bot.urlImage || "default-bot-image.jpg"}
                   alt={`Imagen de ${bot.name}`}
                 />
                 <div className="bot-stats">
@@ -57,10 +57,7 @@ const BotsPage: React.FC = () => {
             ))}
           </div>
         )}
-        <ButtonCreate
-          label="Crear Bot"
-          onClick={handleCreateBot}
-        />
+        <ButtonCreate label="Crear Bot" onClick={handleCreateBot} />
       </div>
 
       <CreateBotModal isOpen={isBotModalOpen} onClose={handleCloseModal} />
