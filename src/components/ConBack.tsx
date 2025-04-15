@@ -238,7 +238,7 @@ export class ConBack implements ConAPI {
         for (const cookie of cookies) {
             const [cookieName, value] = cookie.split('=');
             if (cookieName === "token") {
-                return ` ${decodeURIComponent(value)}`;
+                return `${decodeURIComponent(value)}`;
             }
         }
         return "";
