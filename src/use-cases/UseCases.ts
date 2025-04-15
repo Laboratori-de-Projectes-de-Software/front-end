@@ -1,15 +1,15 @@
-import { BotDTO, BotResponseDTO, BotSummaryResponseDTO } from "@DTOClasses/BotDTO";
-import { LeagueDTO, LeagueResponseDTO } from "@DTOClasses/LeagueDTO";
-import { MatchResponseDTO } from "@DTOClasses/MatchDTO";
-import { MessageResponseDTO } from "@DTOClasses/MessageDTO";
-import { ParticipationResponseDTO } from "@DTOClasses/ParticipationDTO";
-import {UserDTORegister, UserResponseDTO } from "@DTOClasses/UserDTO";
+import { CreateBotDTO, BotDTO, BotSummaryResponseDTO } from "@DTOClasses/BotDTO";
+import { CreateLeagueDTO, LeagueDTO } from "@DTOClasses/LeagueDTO";
+import { MatchDTO } from "@DTOClasses/MatchDTO";
+import { MessageDTO } from "@DTOClasses/MessageDTO";
+import { ParticipationDTO } from "@DTOClasses/ParticipationDTO";
+import {UserRegisterDTO, UserDTO } from "@DTOClasses/UserDTO";
   
 //const BASE_URL = "http://localhost:8080";
 
 const BASE_URL = ""
 
-export async function userSignUp(userData: UserDTORegister): Promise<UserResponseDTO | null> {
+export async function userSignUp(userData: UserRegisterDTO): Promise<UserDTO | null> {
     try {
         const response = await fetch(`${BASE_URL}/auth/register`, {
             method: "POST",
@@ -26,7 +26,7 @@ export async function userSignUp(userData: UserDTORegister): Promise<UserRespons
   }
   
 
-  export async function userLoggin(email: string, password: string):  Promise<UserResponseDTO | null> {
+  export async function userLoggin(email: string, password: string):  Promise<UserDTO | null> {
     try {
         const response = await fetch(`${BASE_URL}/auth/login`, {
         method: "POST",
@@ -36,7 +36,7 @@ export async function userSignUp(userData: UserDTORegister): Promise<UserRespons
 
         if (!response.ok) return null;
 
-        const data: UserResponseDTO = await response.json();
+        const data: UserDTO = await response.json();
       
         console.log("Resposta del backend:", data);      
         return data;
@@ -53,10 +53,12 @@ export async function userSignUp(userData: UserDTORegister): Promise<UserRespons
  */
 export function userLoggout(): boolean {
     localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("user");
     return true;
   }
 
-export async function registerBot(botData: BotDTO): Promise<BotResponseDTO | null> {
+export async function registerBot(botData: CreateBotDTO): Promise<BotDTO | null> {
     try {
       // Realitzem la petició POST per registrar el bot
       const response = await fetch(`${BASE_URL}/bot`, {
@@ -74,7 +76,7 @@ export async function registerBot(botData: BotDTO): Promise<BotResponseDTO | nul
       }
   
       // Parsegem la resposta com a JSON i la convertim en un objecte `BotResponseDTO`
-      const result: BotResponseDTO = await response.json();
+      const result: BotDTO = await response.json();
   
       // Per fer proves, podem mostrar el resultat a la consola
       console.log("Bot registrat amb èxit:", result);
@@ -111,7 +113,7 @@ export async function getAllBots(userId?: number): Promise<BotSummaryResponseDTO
     }
 }
 
-export async function getBot(botId: number): Promise<BotResponseDTO | null> {
+export async function getBot(botId: number): Promise<BotDTO | null> {
     try {
         const response = await fetch(`${BASE_URL}/bot/${botId}`, {
             method: "GET",
@@ -125,7 +127,7 @@ export async function getBot(botId: number): Promise<BotResponseDTO | null> {
             return null;
         }
   
-        const bot: BotResponseDTO = await response.json();
+        const bot: BotDTO = await response.json();
         return bot;
     } catch (error) {
         console.error(`Error inesperat en obtenir el bot amb ID ${botId}:`, error);
@@ -133,7 +135,7 @@ export async function getBot(botId: number): Promise<BotResponseDTO | null> {
     }
 }
 
-export async function updateBot(botId: number, botData: BotDTO): Promise<BotResponseDTO | null> {
+export async function updateBot(botId: number, botData: CreateBotDTO): Promise<BotDTO | null> {
     try {
         const response = await fetch(`${BASE_URL}/bot/${botId}`, {
             method: "PUT",
@@ -148,7 +150,7 @@ export async function updateBot(botId: number, botData: BotDTO): Promise<BotResp
             return null;
         }
   
-        const updatedBot: BotResponseDTO = await response.json();
+        const updatedBot: BotDTO = await response.json();
         return updatedBot;
     } catch (error) {
         console.error(`Error inesperat al actualitzar el bot amb ID ${botId}:`, error);
@@ -156,7 +158,7 @@ export async function updateBot(botId: number, botData: BotDTO): Promise<BotResp
     }
 }
 
-export async function createLeague(leagueData: LeagueDTO): Promise<LeagueResponseDTO | null> {
+export async function createLeague(leagueData: CreateLeagueDTO): Promise<LeagueDTO | null> {
     try {
         const response = await fetch(`${BASE_URL}/league`, {
           method: "POST",
@@ -171,7 +173,7 @@ export async function createLeague(leagueData: LeagueDTO): Promise<LeagueRespons
           return null;
         }
     
-        const result: LeagueResponseDTO = await response.json();
+        const result: LeagueDTO = await response.json();
     
         console.log("Lliga creada amb èxit:", result);
     
@@ -182,11 +184,11 @@ export async function createLeague(leagueData: LeagueDTO): Promise<LeagueRespons
       }
 }
 
-export async function getAllLeagues(userId: number): Promise<LeagueResponseDTO[]> {
+export async function getAllLeagues(userId?: number): Promise<LeagueDTO[]> {
     const token = localStorage.getItem("token");
   
     try {
-      const response = await fetch(`/league?owner=${userId}`, {
+      const response = await fetch(userId ? `/league?owner=${userId}` : `/league`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -199,7 +201,7 @@ export async function getAllLeagues(userId: number): Promise<LeagueResponseDTO[]
         return [];
       }
   
-      let data: LeagueResponseDTO[];
+      let data: LeagueDTO[];
       try {
         data = await response.json();
       } catch (err) {
@@ -213,7 +215,7 @@ export async function getAllLeagues(userId: number): Promise<LeagueResponseDTO[]
     }
   }
   
-  export async function getLeague(leagueId: number): Promise<LeagueResponseDTO | null> {
+  export async function getLeague(leagueId: number): Promise<LeagueDTO | null> {
     const token = localStorage.getItem("token");
     try {
       const response = await fetch(`${BASE_URL}/league/${leagueId}`, {
@@ -230,7 +232,7 @@ export async function getAllLeagues(userId: number): Promise<LeagueResponseDTO[]
       }
 
       try {
-        const data: LeagueResponseDTO = await response.json();
+        const data: LeagueDTO = await response.json();
         return data;
       } catch (err) {
         console.error("Error parsejant JSON de la lliga:", err);
@@ -242,7 +244,7 @@ export async function getAllLeagues(userId: number): Promise<LeagueResponseDTO[]
     }
   }
   
-  export async function updateLeague(leagueId: number, leagueData: LeagueDTO): Promise<LeagueResponseDTO | null> {
+  export async function updateLeague(leagueId: number, leagueData: CreateLeagueDTO): Promise<LeagueDTO | null> {
     const token = localStorage.getItem("token");
     try {
       const response = await fetch(`${BASE_URL}/league/${leagueId}`, {
@@ -260,7 +262,7 @@ export async function getAllLeagues(userId: number): Promise<LeagueResponseDTO[]
       }
 
       try {
-        const data: LeagueResponseDTO = await response.json();
+        const data: LeagueDTO = await response.json();
         return data;
       } catch (err) {
         console.error("Error parsejant JSON de la lliga actualitzada:", err);
@@ -292,7 +294,7 @@ export async function getAllLeagues(userId: number): Promise<LeagueResponseDTO[]
     }
   }
 
-  export async function getLeagueClassification(leagueId: number): Promise<ParticipationResponseDTO[]> {
+  export async function getLeagueClassification(leagueId: number): Promise<ParticipationDTO[]> {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(`/leagues/${leagueId}/leaderboard`, {
@@ -309,7 +311,7 @@ export async function getAllLeagues(userId: number): Promise<LeagueResponseDTO[]
       }
   
       try {
-        const data: ParticipationResponseDTO[] = await response.json();
+        const data: ParticipationDTO[] = await response.json();
         return data;
       } catch (parseError) {
         console.error("Error parsejant JSON de classificació:", parseError);
@@ -369,12 +371,11 @@ export async function startLeague(leagueId: number): Promise<boolean> {
   }
 }
 
-export async function getMatchesFromLeague(leagueId: number): Promise<MatchResponseDTO[] | null> {
-
+export async function getMatchesFromLeague(leagueId: number): Promise<MatchDTO[] | null> {
   return [];
 }
 
-export async function getMessagesFromMatch(matchId: number): Promise<MessageResponseDTO[] | null> {
+export async function getMessagesFromMatch(matchId: number): Promise<MessageDTO[] | null> {
   const token = localStorage.getItem("token");
     try {
       const response = await fetch(`${BASE_URL}/match/${matchId}/message`, {
@@ -391,7 +392,7 @@ export async function getMessagesFromMatch(matchId: number): Promise<MessageResp
       }
 
       try {
-        const data: MessageResponseDTO[] = await response.json();
+        const data: MessageDTO[] = await response.json();
         return data;
       } catch (err) {
         console.error("Error while parsing JSON from messages:", err);

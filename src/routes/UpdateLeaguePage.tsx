@@ -3,11 +3,11 @@ import { updateLeague } from "@use-cases/UseCases";  // Importa la funció updat
 import { getAllBots, getAllLeagues } from "@use-cases/UseCases";  // Importa la funció getBots i getAllLeagues
 import LeagueBar from "@components/LeagueBar";
 import WhiteButton from "@components/WhiteButton";
-import { LeagueDTO, LeagueResponseDTO } from "@DTOClasses/LeagueDTO";
+import { CreateLeagueDTO, LeagueDTO } from "@DTOClasses/LeagueDTO";
 import { BotSummaryResponseDTO } from "@DTOClasses/BotDTO";
 
 const UpdateLeaguePage: React.FC = () => {
-  const [leagues, setLeagues] = useState<LeagueResponseDTO[]>([]); // Afegim estat per a les lligues
+  const [leagues, setLeagues] = useState<LeagueDTO[]>([]); // Afegim estat per a les lligues
   const [leagueName, setLeagueName] = useState("");
   const [selectedParticipants, setSelectedParticipants] = useState<number[]>([]);
   const [rounds, setRounds] = useState("");
@@ -80,7 +80,7 @@ const UpdateLeaguePage: React.FC = () => {
       bots: selectedParticipants,
       rounds: parseInt(rounds),
       matchTime: parseInt(matchTime),
-    } as LeagueDTO;
+    } as CreateLeagueDTO;
 
     try {
       const result = await updateLeague(1, newLeague);  // Utilitzem la funció updateLeague
