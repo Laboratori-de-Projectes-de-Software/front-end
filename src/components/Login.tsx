@@ -2,6 +2,8 @@ import Footer from "./Footer";
 import { Link } from "react-router-dom";
 import { UserDTOLogin, UserResponseDTO } from "./ConAPI";
 import { ChangeEvent, FormEvent, useState } from "react";
+import { useNavigate } from 'react-router-dom';
+
 
 interface loginFormData {
   username: string;
@@ -14,7 +16,10 @@ interface NotificationProps {
 }
 
 export default function Login() {
-      // State for login form
+
+      const navigate = useNavigate();
+
+        // State for login form
       const [loginData, setloginData] = useState<loginFormData>({
           username: "",
           password: "",
@@ -43,7 +48,7 @@ export default function Login() {
   
           window.APIConection.loginUser(userData).then((response: UserResponseDTO) => {
               setNotification({
-                  message: "Account logged successfully!",
+                  message: "Account logged in successfully!",
                   type: "success"
               });
               setCookie("token",response.token,response.expiresIn);
