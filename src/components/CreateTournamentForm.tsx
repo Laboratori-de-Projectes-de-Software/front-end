@@ -2,7 +2,12 @@ import React, { useState, useEffect } from "react";
 import { sendAuthedRequest } from "../utils/auth";
 
 const url_create_league = "http://localhost:8080/league";
-const url_get_bots = "http://localhost:8080/bots";
+const url_get_bots = "http://localhost:8080/bot";
+
+interface Bots {
+  botId: number;
+  name: string;
+}
 
 interface TournamentForm {
   name: string;
@@ -10,7 +15,15 @@ interface TournamentForm {
   bots: string;
   matches: string;
   matchTime: string;
-  selectedBots: string[];
+  selectedBots: Bots[];
+}
+
+interface TournamendSendRequest {
+  name: string;
+  urlImagen: string | null;
+  rounds: number;
+  matchTime: number;
+  bots: number[];
 }
 
 export const CreateTournamentForm = ({ className }: { className?: string }) => {
@@ -29,6 +42,7 @@ export const CreateTournamentForm = ({ className }: { className?: string }) => {
   const [success, setSuccess] = useState<string>("");
 
   // Obtener la lista de bots desde la API
+  const [allBots, setAllBots] = useState<Bots[]>([]);
   useEffect(() => {
     if (showBotList) {
       const fetchBots = async () => {
@@ -36,7 +50,10 @@ export const CreateTournamentForm = ({ className }: { className?: string }) => {
           const response = await fetch(url_get_bots);
           if (response.ok) {
             const bots = await response.json();
-            setBotList(bots.map((bot: { id: number; name: string }) => bot.name));
+            setAllBots(bots);
+            setBotList(
+              bots.map((bot: { id: number; name: string }) => bot.name)
+            );
           } else {
             console.error("Error al obtener los bots:", response.status);
           }
@@ -60,47 +77,48 @@ export const CreateTournamentForm = ({ className }: { className?: string }) => {
   };
 
   const handleMatchTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const matchTime = e.target.value === "" ? "" : Math.min(parseInt(e.target.value) || 0, 15);
+    const matchTime =
+      e.target.value === "" ? "" : Math.min(parseInt(e.target.value) || 0, 15);
     setForm({ ...form, matchTime: matchTime.toString() });
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const leagueData = {
+    const leagueData: TournamendSendRequest = {
       name: form.name,
+      urlImagen: null,
       rounds: parseInt(form.rounds),
       matchTime: parseInt(form.matchTime),
-      bots: form.selectedBots,
+      bots: form.selectedBots.map((bot) => bot.botId),
     };
 
-    try {
-      const response = await fetch(url_create_league, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(leagueData),
-      });
+    console.log("League Data:", leagueData);
 
-      if (response.status === 201) {
-        const data = await response.json();
-        setSuccess(`Liga creada con éxito: ${data.name}`);
-        setError("");
-        setForm({
-          name: "",
-          rounds: "",
-          bots: "",
-          matches: "",
-          matchTime: "",
-          selectedBots: [],
-        });
-        setShowBotList(false);
-      } else {
-        const errorData = await response.json();
-        setError(`Error al crear la liga: ${errorData.message}`);
-      }
-    } catch (err) {
-      setError("Error de red al crear la liga");
+    const response = await sendAuthedRequest(
+      "POST",
+      url_create_league,
+      leagueData
+    );
+
+    console.log("Response:", response);
+
+    // Manejo de la respuesta
+    if (response.status === 201) {
+      const data = await response.json();
+      setSuccess(`Liga creada con éxito: ${data.name}`);
+      setError("");
+      setForm({
+        name: "",
+        rounds: "",
+        bots: "",
+        matches: "",
+        matchTime: "",
+        selectedBots: [],
+      });
+      setShowBotList(false);
+    } else {
+      const errorData = await response.json();
+      setError(`Error al crear la liga: ${errorData.message}`);
     }
   };
 
@@ -145,7 +163,9 @@ export const CreateTournamentForm = ({ className }: { className?: string }) => {
             type="number"
             value={form.bots}
             placeholder="Número de bots"
-            onChange={(val) => handleBotCountChange({ target: { value: val } } as any)}
+            onChange={(val) =>
+              handleBotCountChange({ target: { value: val } } as any)
+            }
             disabled={showBotList}
           />
 
@@ -176,7 +196,9 @@ export const CreateTournamentForm = ({ className }: { className?: string }) => {
             type="number"
             value={form.matchTime}
             placeholder="Tiempo por partido (minutos)"
-            onChange={(val) => handleMatchTimeChange({ target: { value: val } } as any)}
+            onChange={(val) =>
+              handleMatchTimeChange({ target: { value: val } } as any)
+            }
             disabled={showBotList}
           />
 
@@ -201,7 +223,9 @@ export const CreateTournamentForm = ({ className }: { className?: string }) => {
             </button>
           )}
 
-          {success && <div className="text-green-500 text-sm mt-2">{success}</div>}
+          {success && (
+            <div className="text-green-500 text-sm mt-2">{success}</div>
+          )}
           {error && <div className="text-red-500 text-sm mt-2">{error}</div>}
         </form>
       </div>
@@ -209,23 +233,36 @@ export const CreateTournamentForm = ({ className }: { className?: string }) => {
       {/* Bot List Sidebar */}
       {showBotList && (
         <div className="w-1/4 bg-slate-800 border-l border-gray-700 p-4">
-          <h2 className="text-white text-lg font-semibold mb-4">Seleccionar Bots</h2>
+          <h2 className="text-white text-lg font-semibold mb-4">
+            Seleccionar Bots
+          </h2>
           <ul className="text-white">
             {botList.map((bot) => (
               <li key={bot}>
                 <label className="flex items-center gap-2">
                   <input
                     type="checkbox"
-                    value={bot}
-                    checked={form.selectedBots.includes(bot)}
                     onChange={(e) => {
-                      const selected = e.target.checked
-                        ? [...form.selectedBots, bot]
-                        : form.selectedBots.filter((b) => b !== bot);
-                      setForm({ ...form, selectedBots: selected });
+                      if (e.target.checked) {
+                        const botObj = allBots.find((b) => b.name === bot);
+                        if (botObj) {
+                          setForm({
+                            ...form,
+                            selectedBots: [...form.selectedBots, botObj],
+                          });
+                        }
+                      } else {
+                        setForm({
+                          ...form,
+                          selectedBots: form.selectedBots.filter(
+                            (b) => b.name !== bot
+                          ),
+                        });
+                      }
                     }}
+                    checked={form.selectedBots.some((b) => b.name === bot)}
                   />
-                  {bot}
+                  <span>{bot}</span>
                 </label>
               </li>
             ))}

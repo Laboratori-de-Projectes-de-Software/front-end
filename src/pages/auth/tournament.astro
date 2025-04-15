@@ -1,13 +1,11 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import Icons from "../../components/HomeMenu.astro";
-import HomeLayout from "../../layouts/HomeLayout.astro";
+import { CreateTournamentForm } from "../../components/CreateTournamentForm.tsx";
 import AplicationLayout from "../../layouts/AplicationLayout.astro";
-
-const user = null;
-// cuando el user este autenticado y tenga img de perfil cambiar a const user = { photoUrl: "/path/to/profile.jpg" }
 ---
 
-<Layout title="Tournament Menu">
-  <AplicationLayout />
+<Layout title="Create Tournament Menu">
+  <AplicationLayout>
+    <CreateTournamentForm client:only />
+  </AplicationLayout>
 </Layout>
