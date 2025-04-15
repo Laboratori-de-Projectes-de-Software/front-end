@@ -33,12 +33,12 @@ export const CreateTournamentForm = ({ className }: { className?: string }) => {
     if (showBotList) {
       const fetchBots = async () => {
         try {
-          const response = await sendAuthedRequest("GET", url_get_bots);
+          const response = await fetch(url_get_bots);
           if (response.ok) {
             const bots = await response.json();
             setBotList(bots.map((bot: { id: number; name: string }) => bot.name));
           } else {
-            console.error("Error al obtener los bots");
+            console.error("Error al obtener los bots:", response.status);
           }
         } catch (err) {
           console.error("Error de red al obtener los bots:", err);
@@ -74,7 +74,14 @@ export const CreateTournamentForm = ({ className }: { className?: string }) => {
     };
 
     try {
-      const response = await sendAuthedRequest("POST", url_create_league, leagueData);
+      const response = await fetch(url_create_league, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(leagueData),
+      });
+
       if (response.status === 201) {
         const data = await response.json();
         setSuccess(`Liga creada con éxito: ${data.name}`);
@@ -234,8 +241,6 @@ export const CreateTournamentForm = ({ className }: { className?: string }) => {
     </div>
   );
 };
-
-// Reusable input field component
 const InputField = ({
   label,
   value,
