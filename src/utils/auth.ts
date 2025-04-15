@@ -63,7 +63,7 @@ export function deleteToken() : void {
  * @returns A promise with the response of the request
  * @author Andrés B. S.
  */
-export async function sendAuthedRequest(type : string, url: string, data: any) : Promise<Response> {
+export async function sendAuthedRequest(type : string, url: string, data?: any) : Promise<Response> {
 
     // We check if url is a string
     if (typeof url !== 'string') {
@@ -76,14 +76,21 @@ export async function sendAuthedRequest(type : string, url: string, data: any) :
     const authToken = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
 
     // Sends the request with the token in the header
-    const response = await fetch(url, {
+    const headers = {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${authToken}`
+    };
+
+    const options: RequestInit = {
         method: type,
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${authToken}`
-        },
-        body: JSON.stringify(data)
-    });
+        headers: headers
+    };
+
+    if (data !== undefined) {
+        options.body = JSON.stringify(data);
+    }
+
+    const response = await fetch(url, options);
 
     return response;
 }

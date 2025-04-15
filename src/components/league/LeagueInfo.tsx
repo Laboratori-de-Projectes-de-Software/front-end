@@ -1,9 +1,10 @@
 import React from "react";
 
 import type { LeagueCardProps } from "../LeagueCard";
-import type {
-  ParticipationResponseDTO,
-  MatchResponseDTO,
+import {
+  type ParticipationResponseDTO,
+  type MatchResponseDTO,
+  type MessageResponseDTO,
 } from "../../utils/responseInterfaces";
 import { sendAuthedRequest } from "../../utils/auth";
 
@@ -12,6 +13,9 @@ export default function LeagueInfo(league: LeagueCardProps) {
     ParticipationResponseDTO[]
   >([]);
   const [matches, setMatches] = React.useState<MatchResponseDTO[]>([]);
+  const [activeMatch, setActiveMatch] = React.useState<MatchResponseDTO | null>(
+    null
+  );
 
   // Peticion a la api de leaderboards
   React.useEffect(() => {
@@ -176,32 +180,103 @@ export default function LeagueInfo(league: LeagueCardProps) {
             <h3 className="text-xl font-semibold mb-4 text-center text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500">
               All Matches
             </h3>
-            <div className="overflow-y-auto h-full">
-              <ul className="space-y-2 text-base">
-                {matches.map((match) => (
-                  <li
-                    key={match.matchId}
-                    className="flex justify-between items-center bg-zinc-700/50 hover:bg-zinc-700 transition-colors duration-150 ease-in-out p-3 rounded-md shadow-sm"
-                  >
-                    <span className="font-medium text-gray-200">
-                      {match.fighters[0]} vs {match.fighters[1]}
-                    </span>
-                    <span className="font-semibold text-green-400">
-                      {match.result}
-                    </span>
-                    <span className="font-semibold text-gray-400">
-                      {match.roundNumber} rounds
-                    </span>
-                    <span className="font-semibold text-gray-400">
-                      {match.state}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+
+            {/* If not selected, show matches board, else  show chat*/}
+            {activeMatch ? (
+              <MatchChat match={activeMatch} setActiveMatch={setActiveMatch} />
+            ) : (
+              matchesBoard(matches, setActiveMatch)
+            )}
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+function matchesBoard(
+  matches: MatchResponseDTO[],
+  setActiveMatch: React.Dispatch<React.SetStateAction<MatchResponseDTO | null>>
+) {
+  return (
+    <div className="overflow-y-auto h-full">
+      <ul className="space-y-2 text-base">
+        {matches.map((match) => (
+          <li
+            key={match.matchId}
+            className="flex justify-between items-center bg-zinc-700/50 hover:bg-zinc-700 transition-colors duration-150 ease-in-out p-3 rounded-md shadow-sm"
+            onClick={() => setActiveMatch(match)}
+          >
+            <span className="font-medium text-gray-200">
+              {match.fighters[0]} vs {match.fighters[1]}
+            </span>
+            <span className="font-semibold text-green-400">{match.result}</span>
+            <span className="font-semibold text-gray-400">
+              {match.roundNumber} rounds
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+// Renamed from matchChat to MatchChat and made it a proper component
+function MatchChat({
+  match,
+  setActiveMatch,
+}: {
+  match: MatchResponseDTO;
+  setActiveMatch: React.Dispatch<React.SetStateAction<MatchResponseDTO | null>>;
+}) {
+  const [messages, setMessages] = React.useState<MessageResponseDTO[]>([]);
+
+  // Fetch ../match/{matchId}/message
+  React.useEffect(() => {
+    async function fetchMessages() {
+      try {
+        const response = await sendAuthedRequest(
+          "GET",
+          `http://localhost:8080/match/${match.matchId}/message`
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          setMessages(data);
+        } else {
+          console.error("Error fetching messages:", response.status);
+        }
+      } catch (error) {
+        console.error("Error fetching messages:", error);
+      }
+    }
+
+    fetchMessages();
+  }, [match.matchId]);
+
+  return (
+    <div className="overflow-y-auto h-full">
+      {/* Add a button to go back to the matches list */}
+      <button
+        onClick={() => setActiveMatch(null)}
+        className="mb-4 bg-gray-600 text-white rounded-lg px-4 py-2 text-sm font-medium hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-800 transition duration-150 ease-in-out"
+      >
+        Back to Matches
+      </button>
+      <ul className="space-y-2 text-base">
+        {messages.map((message) => (
+          <li
+            key={message.time} // Consider using a more unique key if time isn't guaranteed unique
+            className="flex justify-between items-center bg-zinc-700/50 p-3 rounded-md shadow-sm"
+          >
+            <span className="font-medium text-gray-200">
+              {/* Display bot name if available, otherwise ID */}
+              {message.botId}: {message.text}
+            </span>
+            {/* Optionally display timestamp or other message details */}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
