@@ -1,15 +1,19 @@
 import React, { useState } from "react";
 import LeagueBar from "@components/LeagueBar";
 import { useNavigate, useParams } from "react-router-dom";
+import { LeagueResponseDTO } from "@DTOClasses/LeagueDTO";
 
-const leagues = ["League 1", "League 2", "League 3"];
+const leagues: LeagueResponseDTO[] = [{leagueId: 1, state: "", name: "League 1", urlImage: "", user: 1, rounds: 3, matchTime: 2, bots: []},
+                                      {leagueId: 1, state: "", name: "League 1", urlImage: "", user: 1, rounds: 3, matchTime: 2, bots: []},
+                                      {leagueId: 1, state: "", name: "League 1", urlImage: "", user: 1, rounds: 3, matchTime: 2, bots: []} ];
+
 const matches = Array(10).fill({ bot1: "Bot 1", bot2: "Bot 2", winner: "Bot 2" });
 
 const LeagueMatches: React.FC = () => {
-  const [selectedLeague, setSelectedLeague] = useState("Liga 2");
+  const [selectedLeague, setSelectedLeague] = useState<LeagueResponseDTO | null>(null);
   const { leagueId } = useParams();
 
-  
+
 
   const navigate = useNavigate();
   return (
@@ -17,13 +21,13 @@ const LeagueMatches: React.FC = () => {
       <main className="flex flex-row items-start gap-8">
         <LeagueBar
           leagues={leagues}
-          selectedLeague={selectedLeague}
-          onSelectLeague={() => navigate()}
+          selectedLeagueId={selectedLeague?.leagueId}
+          onSelectLeague={() => navigate(`/leagues/${leagueId}`)}
         />
 
         <div className="flex-1">
           <h1 className="pt-5 pb-2 text-3xl font-bold text-center mb-4">
-            {selectedLeague}
+            {selectedLeague?.name}
           </h1>
 
           <div className="pb-12 flex justify-center mb-4">
