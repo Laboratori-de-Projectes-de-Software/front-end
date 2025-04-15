@@ -17,11 +17,12 @@ interface LeagueCreationData {
 }
 
 
-function getCookie(cookie: string): string {
+function getCookie(c: string): string {
+  console.log(document.cookie);
   const cookies = document.cookie.split('; ');
   for (const cookie of cookies) {
     const [cookieName, value] = cookie.split('=');
-    if (cookieName === cookie) {
+    if (cookieName === c) {
       return `${decodeURIComponent(value)}`;
     }
   }
@@ -30,9 +31,8 @@ function getCookie(cookie: string): string {
 
 export default function LeagueCreation() {
   const [availableBots, setAvailableBots] = useState<BotOption[]>([]);
-
   useEffect(() => {
-    window.APIConection.getAllBotsUser(parseInt(getCookie("userid")))
+    window.APIConection.getAllBotsUser(parseInt(getCookie("userId")))
       .then((bots: BotSummaryResponseDTO[]) => {
         // Wrap the object literal in parentheses to return it directly
         const botOptions = bots.map(bot => ({
