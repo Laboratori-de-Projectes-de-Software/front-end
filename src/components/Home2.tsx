@@ -32,7 +32,7 @@ export default function Account() {
 
   // useEffect que ejecuta la función cuando el componente se monta
   useEffect(() => {
-    initializeComponent(1);
+    initializeComponent(40);
   }, []); 
 
 
@@ -116,8 +116,9 @@ const toggleOption = (option: string) => {
                     </summary>
                     <div className="dropdown-menu">
                       {bots.map((bot)=>(
-                        <div>
+                        <div                          
                           key={bot.name}
+                        >
                         </div>
                       ))}
 

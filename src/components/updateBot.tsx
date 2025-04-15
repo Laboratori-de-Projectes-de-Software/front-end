@@ -65,7 +65,7 @@ export default function Update_Bot() {
     // Podrías pasarlo también en location.state
     const botId = 40; // Idealmente, este valor debería venir de location.state
     
-    window.APIConection.updateBot(aiData, botId).then(() => {
+    window.APIConection.updateBot(aiData, botId).then((response: any) => {
       setNotification({
         message: "Bot updated successfully!",
         type: "success"
