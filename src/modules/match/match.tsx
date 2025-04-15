@@ -1,6 +1,6 @@
 import {FC} from 'react';
 import Conversation from './conversation';
-import { appApi } from 'src/features/shared';
+import { appApi } from '@features/shared';
 import LoadingScreen from '@modules/shared/loading-screen/loading-screen';
 import ErrorPage from "@modules/shared/error-page/error-page";
 import './match.scss';
@@ -12,7 +12,6 @@ export type Props = {
 
 const Match: FC<Props> = ({ leagueId, matchId }) => {
 
-  // TODO: Extraer toda la lógica de aquí y pasarlo al componente Match.tsx (mejor si en un hook aparte)
   
   /*/ Recuperar datos de la API: /*/
 
@@ -26,7 +25,7 @@ const Match: FC<Props> = ({ leagueId, matchId }) => {
     return <ErrorPage message='Error recuperando la información' />;
   }
 
-  if (!queryMatch.data) {
+  if (!queryMatch.data?.body) {
     return <ErrorPage message='Error recuperando la información' />;
   }
 
@@ -67,6 +66,13 @@ const Match: FC<Props> = ({ leagueId, matchId }) => {
     return <ErrorPage message='Error recuperando la información de los bots' />;
   }
 
+  if (!queryB1.data?.body || !queryB2.data?.body) {
+    return <ErrorPage message='Error recuperando la información de los bots' />;
+  }
+
+  const bot1 = queryB1.data.body;
+  const bot2 = queryB2.data.body;
+
   // Ordenar los mensajes
   const messagesToSent: {
     text:string;
@@ -91,22 +97,24 @@ const Match: FC<Props> = ({ leagueId, matchId }) => {
               {match?.result === 0 ? "Empate" : match?.result === 1 ? "Victoria Bot 1" : "Victoria Bot 2"}
             </div> 
           : 
-            <></>
-          }
+          <></>
+        }
         </div>
-        <div className="match-left">
-          <div className="match-bot-info">
-            <div className="match-bot-info-image-container">
-              <img src={queryB1.data?.body.urlImagen} alt={queryB1.data?.body.name} />
+        <div className="match-fight">
+          <div className="match-left">
+            <div className="match-bot-info">
+              <div className="match-bot-info-image-container">
+                <img src={bot1.urlImagen} alt={bot1.name} />
+              </div>
+              <div className="match-bot-name">{bot1.name}</div>
             </div>
-            <div className="match-bot-name">{queryB1.data?.body.name}</div>
           </div>
-        </div>
-        <Conversation messages={messagesToSent} />
-        <div className="match-right">
+          <Conversation messages={messagesToSent} />
+          <div className="match-right">
           <div className="match-bot-info">
-            <img src={queryB2.data?.body.urlImagen} alt={queryB2.data?.body.name} />
-            <div className="match-bot-name">{queryB2.data?.body.name}</div>
+            <img src={bot2.urlImagen} alt={bot2.name} />
+            <div className="match-bot-name">{bot2.name}</div>
+          </div>
           </div>
         </div>
       </div>
