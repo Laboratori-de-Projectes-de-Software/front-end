@@ -19,11 +19,11 @@ const LeagueBar: React.FC<LeagueBarProps> = ({ leagues, selectedLeagueId, onSele
       
       {leagues.map((league) => (
         <button
-        key={league.leagueId}
-        className={`w-full py-2 mb-2 rounded-lg font-medium text-md ${
-          selectedLeagueId === league.leagueId ? "bg-(--lliga-btn-sel)" : "bg-(--lliga-btn)"
-        }`}
-        onClick={() => onSelectLeague(league)}
+          key={league.leagueId}
+          className={`w-full py-2 mb-2 rounded-lg font-medium text-md ${
+            selectedLeagueId === league.leagueId ? "bg-(--lliga-btn-sel)" : "bg-(--lliga-btn)"
+          }`}
+          onClick={() => onSelectLeague(league)}
       >
         {league.name}
       </button>
