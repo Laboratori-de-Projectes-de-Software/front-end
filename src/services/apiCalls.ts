@@ -17,6 +17,8 @@ export const listarBots = async (data: Object) => await getData("/bot", data);
 
 export const obtenerBot = async (data: number | undefined) => await getData(`/bot/${data}`, {});
 
+export const deleteBot = async (botId: string | undefined, data: Object) => await deleteData(`/bot/${botId}`, data);
+
 export const getEnfrentamiento = async (matchId: number) => await getData(`/match/${matchId}/message`, {});
 
 export const registerBotToLeague = async (leagueId: number | string, botId: number) =>
@@ -29,7 +31,11 @@ export const registerBotToLeague = async (leagueId: number | string, botId: numb
 
 export const updateLeague = async (leagueId: string, data: Object) => await putData(`/league/${leagueId}`, data);
 
+export const updateBot = async (botId: string, data: Object) => await putData(`/bot/${botId}`, data);
+
 export const getLeagueOwnerById = async (leagueId: string | undefined, data: Object) => await getData(`/league/${leagueId}/owner`, data);
+
+export const getBotById = async (botId: string | undefined, data: Object) => await getData(`/bot/${botId}/byid`, data);
 
 export const listarTodosBots = async (data: Object) => await getData("/bot/all", data);
 
