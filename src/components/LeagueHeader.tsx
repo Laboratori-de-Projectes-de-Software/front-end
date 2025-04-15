@@ -3,7 +3,7 @@ import {getStatusColor} from "../pages/LeagueOverviewPage.tsx"
 
 import { FC } from "react";
 import { Button } from "react-bootstrap";
-import {NavLink, useNavigate, useParams} from "react-router-dom";
+import { useNavigate, useParams} from "react-router-dom";
 type LeagueHeaderProps = {
     creador: string;
     estado: "CERRADA" | "ABIERTA" | "EN CURSO";
