@@ -2,19 +2,8 @@
 import Dropdown from '@/components/DropDown.vue'
 import FooterApp from '@/components/FooterApp.vue'
 import HeaderApp from '@/components/HeaderApp.vue'
-import { ref } from 'vue'
-
-// TODO: Eliminar cuando se funcione la API para crear una liga (ABB-82)
-const options = ref<BotTemp[]>([
-  {
-    id: 0,
-    name: 'Adonde Boy',
-    description: 'Empatía',
-    urlImage: 'src/assets/svg/arg.svg',
-  },
-  { id: 1, name: 'Carlos', description: 'Educacion', urlImage: 'src/assets/svg/arg.svg' },
-  { id: 2, name: 'Rama', description: 'Soberbia', urlImage: 'src/assets/svg/arg.svg' },
-])
+import router from '@/router'
+import { onMounted, ref } from 'vue'
 
 // TODO: Cambiar cuando se haya hecho la Tarea ABB-134
 interface BotTemp {
@@ -24,57 +13,95 @@ interface BotTemp {
   urlImage: string
 }
 
-// TODO: Descomentar cuando se funcione la API para crear una liga (ABB-82)
-// interface BotSummary {
-//   id: number
-//   name: string
-//   description: string
-// }
+interface BotSummary {
+  id: number
+  name: string
+  description: string
+}
 
-// const options = ref<BotTemp[]>()
+const options = ref<BotTemp[]>()
 
-// const getAllBotsSummary = async () => {
-//   const response = await fetch('http://localhost:3000/api/v0/bot', {
-//     method: 'GET',
-//     headers: {
-//       'Content-Type': 'application/json',
-//     },
-//   })
+const getAllBotsSummary = async () => {
+  const response = await fetch('http://localhost:3000/api/v0/bot', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  })
 
-//   if (!response.ok) {
-//     console.error('Error fetching bots:', response.statusText)
-//     return []
-//   } else {
-//     const data = await response.json()
+  if (!response.ok) {
+    console.error('Error fetching bots:', response.statusText)
+    return []
+  } else {
+    const data = await response.json()
 
-//     const botsDetails = await Promise.all(
-//       data.map(async (bot: BotSummary) => {
-//         const botResponse = await fetch(`http://localhost:3000/api/v0/bot/${bot.name}`, {
-//           method: 'GET',
-//           headers: {
-//             'Content-Type': 'application/json',
-//           },
-//         })
+    const botsDetails = await Promise.all(
+      data.map(async (bot: BotSummary) => {
+        const botResponse = await fetch(`http://localhost:3000/api/v0/bot/${bot.name}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
 
-//         if (!botResponse.ok) {
-//           console.error('Error fetching bot details:', botResponse.statusText)
-//           return null
-//         }
-//         const botData = await botResponse.json()
+        if (!botResponse.ok) {
+          console.error('Error fetching bot details:', botResponse.statusText)
+          return null
+        }
+        const botData = await botResponse.json()
 
-//         return {
-//           id: botData.id,
-//           name: botData.name,
-//           description: botData.description,
-//           urlImage: botData.urlImage,
-//         }
-//       })
-//     )
-//     options.value = botsDetails.filter((bot) => bot !== null)
-//   }
-// }
+        return {
+          id: botData.id,
+          name: botData.name,
+          description: botData.description,
+          urlImage: botData.urlImage,
+        }
+      })
+    )
+    options.value = botsDetails.filter((bot) => bot !== null)
+  }
+}
 
+onMounted(() => {
+  getAllBotsSummary()
+})
+
+const name = ref('')
+const rounds = ref(0)
+const matchTime = ref(0)
 const selectedBots = ref<BotTemp[]>([])
+
+const createLeagueRequest = async () => {
+  // TODO: Implementar la selección de imagenes
+  const body = {
+    name: name.value,
+    rounds: rounds.value,
+    matchTime: matchTime.value,
+    bots: selectedBots.value.map((bot) => bot.id),
+    imagen: '',
+    // urlImagen: '',
+  }
+  console.log('Body:', body)
+
+  const response = await fetch('http://localhost:8080/api/v0/league', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+    body: JSON.stringify(body),
+  })
+
+  if (!response.ok) {
+    console.error('Error creating league:', response.statusText)
+    return
+  } else {
+    const data = await response.json()
+    console.log('League created successfully:', data)
+    router.push('/')
+  }
+}
 </script>
 
 <template>
@@ -96,6 +123,7 @@ const selectedBots = ref<BotTemp[]>([])
 
       <form
         action="post"
+        @submit.prevent="createLeagueRequest()"
         class="flex w-full flex-col items-center gap-8 rounded-md px-18 font-bold lg:w-[700px] dark:text-white"
       >
         <fieldset class="mb-8 grid w-full grid-cols-1 gap-x-12 gap-y-6 sm:grid-cols-2">
@@ -103,6 +131,7 @@ const selectedBots = ref<BotTemp[]>([])
           <label for="name">
             Nombre
             <input
+              v-model="name"
               id="name"
               type="text"
               class="w-full rounded-xl bg-[#c1c1c1] p-2.5 text-sm placeholder:text-[#878787] dark:bg-[#4e4e4e]"
@@ -114,6 +143,7 @@ const selectedBots = ref<BotTemp[]>([])
           <label for="rounds">
             Rondas
             <input
+              v-model="rounds"
               id="rounds"
               type="text"
               class="w-full rounded-xl bg-[#c1c1c1] p-2.5 text-sm placeholder:text-[#878787] dark:bg-[#4e4e4e]"
@@ -125,6 +155,7 @@ const selectedBots = ref<BotTemp[]>([])
           <label for="matchTime">
             Tiempo de partida (segundos)
             <input
+              v-model="matchTime"
               id="matchTime"
               type="text"
               class="w-full rounded-xl bg-[#c1c1c1] p-2.5 text-sm placeholder:text-[#878787] dark:bg-[#4e4e4e]"
@@ -151,7 +182,7 @@ const selectedBots = ref<BotTemp[]>([])
         <!-- Botón Crear Liga -->
         <button
           type="submit"
-          class="mt-6 rounded-full bg-[#06f] px-6 py-3 text-lg text-white"
+          class="mt-6 cursor-pointer rounded-full bg-[#06f] px-6 py-3 text-lg text-white"
           aria-label="Guardar cambios"
         >
           Crear Liga

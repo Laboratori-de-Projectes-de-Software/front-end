@@ -15,11 +15,11 @@ const search = ref('')
 const dropdownContainer = ref()
 
 const props = defineProps<{
-  options: BotTemp[]
+  options: BotTemp[] | undefined
 }>()
 const emit = defineEmits(['update:selected'])
 
-const options = ref<BotTemp[]>(props.options)
+const options = ref<BotTemp[] | undefined>(props.options)
 
 const toggleDropdown = () => {
   if (!isOpen.value) {
@@ -53,7 +53,7 @@ const hasFilteredOptions = computed(() => {
 })
 
 const filteredOptions = computed(() => {
-  return options.value.filter((option) =>
+  return (options.value ?? []).filter((option) =>
     option.name.toLowerCase().includes(search.value.toLowerCase())
   )
 })
@@ -93,7 +93,9 @@ const filteredOptions = computed(() => {
         <div v-for="(option, index) in filteredOptions" :key="option.name">
           <div class="flex flex-row gap-2">
             <input type="checkbox" :checked="isSelected(option)" @change="toggleOption(option)" />
-            <img :src="option.urlImage" alt="" srcset="" /> {{ option.description }} ({{ option.name }})
+            <img :src="option.urlImage" alt="" srcset="" /> {{ option.description }} ({{
+              option.name
+            }})
           </div>
 
           <div

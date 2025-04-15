@@ -1,51 +1,4 @@
 <script setup lang="ts">
-import AddIcon from '@/assets/svg/AddIcon.vue'
-import ButtonLeague from '@/components/ButtonLeague.vue'
-import FooterApp from '@/components/FooterApp.vue'
-import HeaderApp from '@/components/HeaderApp.vue'
-import type { League } from '@/types'
-
-const welcomeMessage = '¡Hola, ' + localStorage.getItem('username') + '!'
-
-const ligas: League[] = [
-  {
-    leagueId: 1,
-    state: 'pendiente',
-    name: 'LaLiga EA Sports',
-    urlImagen:
-      'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.fifplay.com%2Fimg%2Fpublic%2Flaliga-logo.png&f=1&nofb=1&ipt=23bde28a17fadd8e4ab36893c3247fc039ddf921d0d8245eaa26b64d017074ce&ipo=images',
-    user: 101,
-    rounds: 38,
-    matchTime: 90,
-    bots: [1, 2, 3],
-  },
-  {
-    leagueId: 2,
-    state: 'finalizado',
-    name: 'Bundesliga',
-    urlImagen:
-      'https://upload.wikimedia.org/wikipedia/en/thumb/d/df/Bundesliga_logo_%282017%29.svg/1200px-Bundesliga_logo_%282017%29.svg.png',
-    user: 102,
-    rounds: 34,
-    matchTime: 90,
-    bots: [4, 5, 6],
-  },
-  {
-    leagueId: 3,
-    state: 'pendiente',
-    name: 'Premier League',
-    urlImagen:
-      'https://upload.wikimedia.org/wikipedia/en/thumb/f/f2/Premier_League_Logo.svg/1200px-Premier_League_Logo.svg.png',
-    user: 103,
-    rounds: 38,
-    matchTime: 90,
-    bots: [7, 8, 9],
-  },
-]
-
-const ligasEnCurso = ligas.filter((liga) => liga.state === 'pendiente')
-const ligasFinalizadas = ligas.filter((liga) => liga.state === 'finalizado')
-/*
 import { ref, onMounted } from 'vue'
 import AddIcon from '@/assets/svg/AddIcon.vue'
 import ButtonLeague from '@/components/ButtonLeague.vue'
@@ -53,8 +6,7 @@ import FooterApp from '@/components/FooterApp.vue'
 import HeaderApp from '@/components/HeaderApp.vue'
 import type { League } from '@/types'
 
-const welcomeMessage = '¡Hola, ' + localStorage.getItem('username') + '!'
-const userId = parseInt(localStorage.getItem('userId') || '0')
+const welcomeMessage = '¡Hola, ' + localStorage.getItem('user') + '!'
 const token = localStorage.getItem('token')
 
 const ligasPendientes = ref<League[]>([])
@@ -74,9 +26,13 @@ async function loadLeagues() {
     handleErrorResponse(response.status)
   } else {
     const data: League[] = await response.json()
-    ligasPendientes.value = data.filter((l) => l.state === 'pendiente')
-    ligasEnJuego.value = data.filter((l) => l.state === 'in_process')
-    ligasFinalizadas.value = data.filter((l) => l.state === 'finalizado')
+    // TODO: Cambiar cuando se siga el Contrato de LeagueResponse (ABB-142)
+    // ligasPendientes.value = data.filter((l) => l.state === 'PENDIENTE')
+    // ligasEnJuego.value = data.filter((l) => l.state === 'EN CURSO')
+    // ligasFinalizadas.value = data.filter((l) => l.state === 'FINALIZADO')
+    ligasPendientes.value = data.filter((l) => l.estado === 'PENDIENTE')
+    ligasEnJuego.value = data.filter((l) => l.estado === 'EN CURSO')
+    ligasFinalizadas.value = data.filter((l) => l.estado === 'FINALIZADO')
   }
 }
 
@@ -85,61 +41,12 @@ function handleErrorResponse(status: number) {
   else alert('Error al obtener las ligas')
 }
 
-onMounted(loadLeagues)
-*/
+onMounted(() => {
+  loadLeagues()
+})
 </script>
 
-
 <template>
-     <!-- 
-  <HeaderApp :title="welcomeMessage" :isHeading1="false" />
-
-  <main class="mb-10 flex w-full flex-col items-center px-3 sm:max-w-[860px]">
-    <header class="m-3 w-full">
-      <h1 class="text-4xl font-bold">Mis Ligas</h1>
-      <div class="h-0 w-full border mt-2"></div>
-    </header>
-
-     
-    <section class="w-full mb-8">
-      <h2 class="text-xl text-[#9b9b9b] mb-2">Pendientes</h2>
-      <ul class="flex flex-wrap justify-center gap-6">
-        <li v-for="liga in ligasPendientes" :key="liga.leagueId">
-          <ButtonLeague :liga="liga" />
-        </li>
-      </ul>
-      <RouterLink
-        to="/createLeague"
-        class="mt-4 inline-flex items-center gap-2 rounded-2xl border-2 border-dashed bg-[#d3d3d3] px-5 py-3 text-sm dark:bg-[#3b3b3b]"
-      >
-        <AddIcon classList="h-6 w-6 fill-black dark:fill-white" />
-        Añadir Liga
-      </RouterLink>
-    </section>
-
-    
-    <section class="w-full mb-8">
-      <h2 class="text-xl text-[#9b9b9b] mb-2">En juego</h2>
-      <ul class="flex flex-wrap justify-center gap-6">
-        <li v-for="liga in ligasEnJuego" :key="liga.leagueId">
-          <ButtonLeague :liga="liga" />
-        </li>
-      </ul>
-    </section>
-
-    
-    <section class="w-full mb-8">
-      <h2 class="text-xl text-[#9b9b9b] mb-2">Finalizadas</h2>
-      <ul class="flex flex-wrap justify-center gap-6">
-        <li v-for="liga in ligasFinalizadas" :key="liga.leagueId">
-          <ButtonLeague :liga="liga" />
-        </li>
-      </ul>
-    </section>
-  </main>
-
-  <FooterApp />
-  -->
   <HeaderApp :title="welcomeMessage" :isHeading1="false" />
 
   <main
@@ -160,13 +67,18 @@ onMounted(loadLeagues)
     </header>
 
     <section class="mb-6 flex w-full flex-col items-center gap-4 font-semibold">
-      <div class="flex w-full flex-col gap-1 text-[#9b9b9b]">
-        <h2 class="text-xl">En vivo</h2>
+      <div v-if="ligasPendientes.length == 0" class="mt-8 text-2xl">
+        No se ha creado ninguna liga aún
+      </div>
+      <div v-else class="flex w-full flex-col gap-1 text-[#9b9b9b]">
+        <h2 class="text-xl">Pendientes</h2>
         <div class="h-0 w-[120px] border"></div>
       </div>
 
       <ul class="flex flex-wrap justify-center gap-x-8 gap-y-5">
-        <li v-for="liga in ligasEnCurso" :key="liga.leagueId" class="w-fit">
+        <!-- TODO: Cambiar cuando se siga el Contrato de LeagueResponse (ABB-142)
+        <li v-for="liga in ligasPendientes" :key="liga.leagueId" class="w-fit"> -->
+        <li v-for="liga in ligasPendientes" :key="liga.id" class="w-fit">
           <ButtonLeague :liga="liga" />
         </li>
       </ul>
@@ -179,14 +91,36 @@ onMounted(loadLeagues)
         Añadir Liga
       </RouterLink>
     </section>
-    <section class="flex w-full flex-col items-center gap-4 font-semibold">
+    <section
+      v-if="ligasEnJuego.length > 0"
+      class="mb-6 flex w-full flex-col items-center gap-4 font-semibold"
+    >
+      <div class="flex w-full flex-col gap-1 text-[#9b9b9b]">
+        <h2 class="text-xl">En vivo</h2>
+        <div class="h-0 w-[120px] border"></div>
+      </div>
+
+      <ul class="flex flex-wrap justify-center gap-x-8 gap-y-5">
+        <!-- TODO: Cambiar cuando se siga el Contrato de LeagueResponse (ABB-142)
+        <li v-for="liga in ligasEnJuego" :key="liga.leagueId" class="w-fit"> -->
+        <li v-for="liga in ligasEnJuego" :key="liga.id" class="w-fit">
+          <ButtonLeague :liga="liga" />
+        </li>
+      </ul>
+    </section>
+    <section
+      v-if="ligasFinalizadas.length > 0"
+      class="flex w-full flex-col items-center gap-4 font-semibold"
+    >
       <div class="flex w-full flex-col gap-1 text-[#9b9b9b]">
         <h2 class="text-xl">Finalizadas</h2>
         <div class="h-0 w-[120px] border"></div>
       </div>
 
       <ul class="flex flex-wrap justify-center gap-8">
-        <li v-for="liga in ligasFinalizadas" :key="liga.leagueId" class="w-fit">
+        <!-- TODO: Cambiar cuando se siga el Contrato de LeagueResponse (ABB-142)
+        <li v-for="liga in ligasFinalizadas" :key="liga.leagueId" class="w-fit"> -->
+        <li v-for="liga in ligasFinalizadas" :key="liga.id" class="w-fit">
           <ButtonLeague :liga="liga" />
         </li>
       </ul>

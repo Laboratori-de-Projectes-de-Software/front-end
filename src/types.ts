@@ -20,13 +20,24 @@ export interface Bot {
   nDraws: number
 }
 
+// TODO: Cambiar cuando se siga el Contrato de LeagueResponse (ABB-142)
+// export interface League {
+//   leagueId: number
+//   state: "PENDIENTE" | "EN CURSO" | "FINALIZADO"
+//   name: string
+//   urlImagen: string
+//   user: number
+//   rounds: number
+//   matchTime: number
+//   bots: number[]
+// }
 export interface League {
-  leagueId: number
-  state: "pendiente" | "en curso" | "finalizado"
-  name: string
+  id: number
+  estado: 'PENDIENTE' | 'EN CURSO' | 'FINALIZADO'
+  nombre: string
   urlImagen: string
   user: number
-  rounds: number
+  rondas: number
   matchTime: number
   bots: number[]
 }
@@ -39,7 +50,7 @@ export interface Message {
 
 export interface Match {
   matchId: number
-  state: "pendiente" | "en curso" | "finalizado"
+  state: 'PENDIENTE' | 'EN CURSO' | 'FINALIZADO'
   result: 1 | 2 | 3
   fighters: [string, string]
   roundNumber: number
@@ -47,14 +58,14 @@ export interface Match {
 
 // Interfaz para la gestión de los bots:
 // - id: Es el identificador del bot
-export interface BotSummary{
+export interface BotSummary {
   id: number
   name: string
   description: string
 }
 
 export interface BotLeagueSummary {
-  botId: number;
-  league: League;
-  classification: Participation[]; // [Pos - 1][Pos][Pos + 1]
+  botId: number
+  league: League
+  classification: Participation[] // [Pos - 1][Pos][Pos + 1]
 }
