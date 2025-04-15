@@ -1,7 +1,11 @@
 import BotSidebar from "@components/BotSidebar";
+import { getMatchesFromLeague } from "@use-cases/UseCases";
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 
+interface Props {
+  leagueId: number;
+}
 
 interface Message {
   id: number;
@@ -51,6 +55,12 @@ const MatchPage: React.FC = () => {
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages]);
+
+  useEffect(() => {
+    async function getMatches(params:type) {
+      const matches = await getMatchesFromLeague();
+    }
+  }, []);
 
   const TimeToString = (t: number): string => {
     const m = Math.floor(t / 60);

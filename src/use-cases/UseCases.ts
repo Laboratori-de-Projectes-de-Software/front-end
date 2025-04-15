@@ -1,5 +1,7 @@
 import { BotDTO, BotResponseDTO, BotSummaryResponseDTO } from "@DTOClasses/BotDTO";
 import { LeagueDTO, LeagueResponseDTO } from "@DTOClasses/LeagueDTO";
+import { MatchResponseDTO } from "@DTOClasses/MatchDTO";
+import { MessageResponseDTO } from "@DTOClasses/MessageDTO";
 import { ParticipationResponseDTO } from "@DTOClasses/ParticipationDTO";
 import {UserDTORegister, UserResponseDTO } from "@DTOClasses/UserDTO";
   
@@ -365,4 +367,38 @@ export async function startLeague(leagueId: number): Promise<boolean> {
     console.error("Error iniciant la lliga:", error);
     return false;
   }
+}
+
+export async function getMatchesFromLeague(leagueId: number): Promise<MatchResponseDTO[] | null> {
+  
+  return [];
+}
+
+export async function getMessagesFromMatch(matchId: number): Promise<MessageResponseDTO[] | null> {
+  const token = localStorage.getItem("token");
+    try {
+      const response = await fetch(`${BASE_URL}/match/${matchId}/message`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        console.error("Error HTTP while fething the messages:", response.status);
+        return null;
+      }
+
+      try {
+        const data: MessageResponseDTO[] = await response.json();
+        return data;
+      } catch (err) {
+        console.error("Error while parsing JSON from messages:", err);
+        return null;
+      }
+    } catch (error) {
+      console.error("Error while fetching messages", error);
+      return null;
+    }
 }

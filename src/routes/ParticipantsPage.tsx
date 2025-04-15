@@ -13,7 +13,7 @@ const ParticipantsPage: React.FC = () => {
       fetchedBots.forEach(async (bot: BotSummaryResponseDTO) =>  {
         const botDetails = await getBot(bot.id);
         if (botDetails) {
-          setBots([...bots, botDetails]);
+          setBots( b => [...b, botDetails]);
         }
       });
     };

@@ -1,19 +1,24 @@
 import React, { useState } from "react";
 import LeagueBar from "@components/LeagueBar";
+import { useNavigate, useParams } from "react-router-dom";
 
 const leagues = ["League 1", "League 2", "League 3"];
 const matches = Array(10).fill({ bot1: "Bot 1", bot2: "Bot 2", winner: "Bot 2" });
 
 const LeagueMatches: React.FC = () => {
   const [selectedLeague, setSelectedLeague] = useState("Liga 2");
+  const { leagueId } = useParams();
 
+  
+
+  const navigate = useNavigate();
   return (
     <div className="min-h-screen">
       <main className="flex flex-row items-start gap-8">
         <LeagueBar
           leagues={leagues}
           selectedLeague={selectedLeague}
-          onSelectLeague={setSelectedLeague}
+          onSelectLeague={() => navigate()}
         />
 
         <div className="flex-1">

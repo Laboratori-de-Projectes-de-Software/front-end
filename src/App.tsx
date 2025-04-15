@@ -20,11 +20,12 @@ function App() {
           <Route path="/" element={<WelcomePage />} />
           <Route path='/login' element={<LoginPage />} />
           <Route path='/register' element={<RegisterPage />} />
-          <Route path="/participants/user/:userId" element={<ParticipantsPage />} />
-          <Route path="/participants/league/:leagueId" element={<ParticipantsPage />} />
-          <Route path="/participants" element={<ParticipantsPage />} />
-          <Route path="/classification" element={<ClassificationPage />} />
-          <Route path="/confrontations" element={<ConfrontationsPage />} />
+          <Route path="/user/:userId/bots" element={<ParticipantsPage />} />
+          <Route path="/bots" element={<ParticipantsPage />} />
+          <Route path="/league/:leagueId/participants" element={<ParticipantsPage />} />
+          <Route path="/leagues/:leagueId/classification" element={<ClassificationPage />} />
+          <Route path="/leagues/:leagueId" element={<ConfrontationsPage />} />
+          <Route path="/leagues" element={<ConfrontationsPage />} />
           <Route path="/add-league" element={<AddLeaguePage />} />
           <Route path="/add-bot" element={<AddParticipantPage />} />
           <Route path="/match/:matchId" element={<Match />} />
