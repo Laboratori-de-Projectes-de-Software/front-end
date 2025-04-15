@@ -28,3 +28,5 @@ export const getLeagueOwnerById = async (leagueId: string | undefined, data: Obj
 export const listarTodosBots = async (data: Object) => await getData("/bot/all", data);
 
 export const iniciarLiga = async (leagueId: string | undefined, data: Object) => await postData(`/league/${leagueId}/start`, data);
+
+export const getMatchesByLeague = async (leagueId: string | undefined, data: Object) => await getData(`/league/${leagueId}/match`, data);
