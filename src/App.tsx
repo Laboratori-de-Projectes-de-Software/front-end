@@ -22,7 +22,7 @@ function App() {
           <Route path='/register' element={<RegisterPage />} />
           <Route path="/user/:userId/bots" element={<ParticipantsPage />} />
           <Route path="/bots" element={<ParticipantsPage />} />
-          <Route path="/league/:leagueId/participants" element={<ParticipantsPage />} />
+          <Route path="/leagues/:leagueId/participants" element={<ParticipantsPage />} />
           <Route path="/leagues/:leagueId/classification" element={<ClassificationPage />} />
           <Route path="/leagues/:leagueId" element={<ConfrontationsPage />} />
           <Route path="/leagues" element={<ConfrontationsPage />} />
