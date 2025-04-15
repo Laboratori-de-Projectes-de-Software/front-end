@@ -3,10 +3,6 @@ import { getMatchesFromLeague } from "@use-cases/UseCases";
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 
-interface Props {
-  leagueId: number;
-}
-
 interface Message {
   id: number;
   sender: string;
@@ -57,7 +53,7 @@ const MatchPage: React.FC = () => {
   }, [messages]);
 
   useEffect(() => {
-    async function getMatches(params:type) {
+    async function getMatches(params: type) {
       const matches = await getMatchesFromLeague();
     }
   }, []);
