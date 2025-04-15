@@ -1,34 +1,68 @@
 import React, { useEffect, useState } from "react";
 import LeagueBar from "@components/LeagueBar";
-import { useNavigate, useParams } from "react-router-dom";
-import { LeagueResponseDTO } from "@DTOClasses/LeagueDTO";
-import { getAllLeagues } from "@use-cases/UseCases";
+import { LeagueDTO } from "@DTOClasses/LeagueDTO";
+import { getAllLeagues, getLeagueClassification, getMatchesFromLeague } from "@use-cases/UseCases";
+import { ParticipationDTO } from "@DTOClasses/ParticipationDTO";
+import { LeaderboardComponent } from "@components/LeaderboardComponent";
+import { MatchesComponent } from "@components/MatchesComponent";
+import { MatchDTO } from "@DTOClasses/MatchDTO";
 
-const leagues: LeagueResponseDTO[] = [{leagueId: 1, state: "PENDIND", name: "League 1", urlImage: "", user: 1, rounds: 3, matchTime: 2, bots: []},
-                                      {leagueId: 1, state: "", name: "League 2", urlImage: "", user: 1, rounds: 3, matchTime: 2, bots: []},
-                                      {leagueId: 1, state: "", name: "League 3", urlImage: "", user: 1, rounds: 3, matchTime: 2, bots: []} ];
+const leaguesMockup: LeagueDTO[] = [{id: 1, state: "PENDING", name: "League 1", imageUrl: "", rounds: 3, matchTime: 2, bots: []},
+                                      {id: 2, state: "PENDING", name: "League 2", imageUrl: "", rounds: 3, matchTime: 2, bots: []},
+                                      {id: 3, state: "PENDING", name: "League 3", imageUrl: "", rounds: 3, matchTime: 2, bots: []} ];
 
-const matches = Array(10).fill({ bot1: "Bot 1", bot2: "Bot 2", winner: "Bot 2" });
+const matchesMockup: MatchDTO[] = [{id: 1, state: "PENDING", result: null, roundNumber: 3, fighters: [1, 2]},
+                                    {id: 2, state: "PENDING", result: null, roundNumber: 4, fighters: [1, 2]},
+                                    {id: 3, state: "IN_PROCESS", result: null, roundNumber: 1, fighters: [1, 2]},
+                                    {id: 4, state: "COMPLETED", result: 0, roundNumber: 2, fighters: [1, 2]},
+                                    {id: 5, state: "COMPLETED", result: 1, roundNumber: 3, fighters: [1, 2]},];
 
 type componentShow = "Classification" | "Confrontations"
 
-const LeagueMatches: React.FC = () => {
-  const [selectedLeague, setSelectedLeague] = useState<LeagueResponseDTO | null>(null);
-  const [leagues, setLeagues] = useState<LeagueResponseDTO[]>([]);
-  const [showComponentm setShowComponent] = useState<componentShow>("Classification");
+const LeaguesPage: React.FC = () => {
+  const [selectedLeague, setSelectedLeague] = useState<LeagueDTO | null>(null);
+  const [leagues, setLeagues] = useState<LeagueDTO[]>([]);
+  const [showComponent, setShowComponent] = useState<componentShow>("Classification");
+  const [participants, setParticipants] = useState<ParticipationDTO[]>([]);
+  const [matches, setMatches] = useState<MatchDTO[]>([]);
 
-  useEffect(() => {
-    const leagues = getAllLeagues();
-  });
+    useEffect(() => {
+        const fetchLeagues = async () => {
+            const userId = localStorage.getItem("userId");
+            if(userId) {
+                const leaguesFetch = await getAllLeagues();
+                setLeagues(leaguesFetch);
+            } else {
+                alert("You are not logged in. Complete the login to acces the page");
+            }
+        }
+    }, []);
+  
+    useEffect(() => {
+        if (selectedLeague === null) return;
 
-  const navigate = useNavigate();
+        const fetchClassification = async () => {
+            const data: ParticipationDTO[] | null = await getLeagueClassification(selectedLeague.id);
+            if (data) setParticipants(data);
+        };
+    }, [selectedLeague]);
+
+    useEffect(() => {
+        if (selectedLeague === null) return;
+
+        const fetchMatches = async () => {
+            const matches: MatchDTO[] | null = await getMatchesFromLeague(selectedLeague.id);
+            if (matches) setMatches(matches);
+        };
+    }, [selectedLeague]);
+
   return (
     <div className="min-h-screen">
       <main className="flex flex-row items-start gap-8">
         <LeagueBar
-          leagues={leagues}
-          selectedLeagueId={selectedLeague?.leagueId}
-          onSelectLeague={() => navigate(`/leagues/${leagueId}`)}
+          leagues={leaguesMockup}
+          selectedLeagueId={selectedLeague ? selectedLeague.id : null}
+          onSelectLeague={setSelectedLeague}
         />
 
         <div className="flex-1">
@@ -37,35 +71,26 @@ const LeagueMatches: React.FC = () => {
           </h1>
 
           <div className="pb-12 flex justify-center mb-4">
-            <button className="bg-black text-white px-4 py-2 rounded-l">
+            <button className={`px-4 py-2 rounded-l ${showComponent === "Classification" ? "bg-gray-500 text-white" : "bg-black text-white" }`}
+                    onClick={() => setShowComponent("Classification")}>
               Classification
             </button>
-            <button className="bg-gray-500 text-white px-4 py-2 rounded-r">
+            <button className={`px-4 py-2 rounded-l ${showComponent === "Classification" ? "bg-black text-white" : "bg-gray-500 text-white" }`}
+                    onClick={() => setShowComponent("Confrontations")}>
               Confrontations
             </button>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
-            {matches.map((match, index) => (
-              <div
-                key={index}
-                className="bg-black text-white text-lg p-4 rounded-lg text-center h-28"
-              >
-                <p className="font-bold text-gray-400">{match.bot1} vs {match.bot2}</p>
-                {index < 7 ? (
-                  <p className="mt-4 text-white font-bold">Victoria {match.winner}</p>
-                ) : (
-                  <button className="mt-2 bg-gray-200 text-black px-4 py-2 rounded-md">
-                    Start ▶
-                  </button>
-                )}
-              </div>
-            ))}
-          </div>
+            {
+                showComponent === "Classification"
+                ? <LeaderboardComponent participants={[]}/>
+                : <MatchesComponent matches={matchesMockup}/>
+            }
+
         </div>
       </main>
     </div>
   );
 };
 
-export default LeagueMatches;
+export default LeaguesPage;
