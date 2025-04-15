@@ -370,7 +370,7 @@ export async function startLeague(leagueId: number): Promise<boolean> {
 }
 
 export async function getMatchesFromLeague(leagueId: number): Promise<MatchResponseDTO[] | null> {
-  
+
   return [];
 }
 
@@ -401,4 +401,8 @@ export async function getMessagesFromMatch(matchId: number): Promise<MessageResp
       console.error("Error while fetching messages", error);
       return null;
     }
+}
+
+export function isLogged(): boolean {
+  return localStorage.getItem('token') !== null;
 }
