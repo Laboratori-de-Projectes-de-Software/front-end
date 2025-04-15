@@ -20,7 +20,10 @@ export const appApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "/api" }),
   endpoints: (builder) => ({
     /*/ --- auth --- /*/
-    postAuthRegister: builder.mutation<ClientResponse<undefined>, UserDTORegister>({
+    postAuthRegister: builder.mutation<
+      ClientResponse<undefined>,
+      UserDTORegister
+    >({
       query: (data) => ({
         url: `${import.meta.env.VITE_REACT_APP_API_URL}/auth/register`,
         method: "POST",
@@ -28,7 +31,10 @@ export const appApi = createApi({
       }),
     }),
 
-    postAuthLogin: builder.mutation<ClientResponse<UserResponseDTO>, UserDTOLogin>({
+    postAuthLogin: builder.mutation<
+      ClientResponse<UserResponseDTO>,
+      UserDTOLogin
+    >({
       query: (data) => ({
         url: `${import.meta.env.VITE_REACT_APP_API_URL}/auth/login`,
         method: "POST",
@@ -50,7 +56,10 @@ export const appApi = createApi({
       }),
     }),
 
-    getBot: builder.query<ClientResponse<BotSummaryResponseDTO[]>, number | undefined>({
+    getBot: builder.query<
+      ClientResponse<BotSummaryResponseDTO[]>,
+      number | undefined
+    >({
       query: (owner?: number) => ({
         url: `${import.meta.env.VITE_REACT_APP_API_URL}/bot${
           owner ? `?owner=${owner}` : ""
@@ -68,10 +77,18 @@ export const appApi = createApi({
       query: (id) => ({
         url: `${import.meta.env.VITE_REACT_APP_API_URL}/bot/${id}`,
         method: "GET",
+        headers: {
+          Authorization:
+            "Bearer " +
+            JSON.parse(localStorage.getItem("user") ?? "{}").body.token,
+        },
       }),
     }),
 
-    putBotBotId: builder.mutation<ClientResponse<BotResponseDTO>, { id: number; bot: BotDTO }>({
+    putBotBotId: builder.mutation<
+      ClientResponse<BotResponseDTO>,
+      { id: number; bot: BotDTO }
+    >({
       query: (data) => ({
         url: `${import.meta.env.VITE_REACT_APP_API_URL}/bot/${data.id}`,
         method: "PUT",
@@ -92,7 +109,6 @@ export const appApi = createApi({
         },
       }),
     }),
-
     getLeague: builder.query<ClientResponse<LeagueResponseDTO[]>, number>({
       query: (owner) => ({
         url: `${import.meta.env.VITE_REACT_APP_API_URL}/league${
@@ -107,17 +123,19 @@ export const appApi = createApi({
       }),
     }),
 
-    getLeagueLeagueId: builder.query<ClientResponse<LeagueResponseDTO>, number>({
-      query: (id) => ({
-        url: `${import.meta.env.VITE_REACT_APP_API_URL}/league/${id}`,
-        method: "GET",
-        headers: {
-          Authorization:
-            "Bearer " +
-            JSON.parse(localStorage.getItem("user") ?? "{}").body.token,
-        },
-      }),
-    }),
+    getLeagueLeagueId: builder.query<ClientResponse<LeagueResponseDTO>, number>(
+      {
+        query: (id) => ({
+          url: `${import.meta.env.VITE_REACT_APP_API_URL}/league/${id}`,
+          method: "GET",
+          headers: {
+            Authorization:
+              "Bearer " +
+              JSON.parse(localStorage.getItem("user") ?? "{}").body.token,
+          },
+        }),
+      }
+    ),
 
     putLeagueLeagueId: builder.mutation<
       ClientResponse<LeagueResponseDTO>,
@@ -139,7 +157,13 @@ export const appApi = createApi({
           data.leagueId
         }/bot`,
         method: "POST",
-        body: data.botId,
+        body: JSON.stringify(data.botId),
+        headers: {
+          Authorization:
+            "Bearer " +
+            JSON.parse(localStorage.getItem("user") ?? "{}").body.token,
+          "Content-Type": "application/json",
+        },
       }),
     }),
 
@@ -164,10 +188,18 @@ export const appApi = createApi({
       query: (leagueId) => ({
         url: `${import.meta.env.VITE_REACT_APP_API_URL}/league/${leagueId}`,
         method: "DELETE",
+        headers: {
+          Authorization:
+            "Bearer " +
+            JSON.parse(localStorage.getItem("user") ?? "{}").body.token,
+        },
       }),
     }),
 
-    postLeagueLeagueIdStart: builder.mutation<ClientResponse<undefined>, number>({
+    postLeagueLeagueIdStart: builder.mutation<
+      ClientResponse<undefined>,
+      number
+    >({
       query: (leagueId) => ({
         url: `${
           import.meta.env.VITE_REACT_APP_API_URL
@@ -176,7 +208,10 @@ export const appApi = createApi({
       }),
     }),
 
-    getLeagueLeagueIdMatch: builder.query<ClientResponse<MatchResponseDTO[]>, number>({
+    getLeagueLeagueIdMatch: builder.query<
+      ClientResponse<MatchResponseDTO[]>,
+      number
+    >({
       query: (leagueId) => ({
         url: `${
           import.meta.env.VITE_REACT_APP_API_URL
@@ -189,14 +224,22 @@ export const appApi = createApi({
         },
       }),
     }),
-    
+
     /*/ --- match --- /*/
-    getMatchMatchIdMessage: builder.query<ClientResponse<MessageResponseDTO[]>, number>({
+    getMatchMatchIdMessage: builder.query<
+      ClientResponse<MessageResponseDTO[]>,
+      number
+    >({
       query: (matchId) => ({
         url: `${
           import.meta.env.VITE_REACT_APP_API_URL
         }/match/${matchId}/message`,
         method: "GET",
+        headers: {
+          Authorization:
+            "Bearer " +
+            JSON.parse(localStorage.getItem("user") ?? "{}").body.token,
+        },
       }),
     }),
   }),

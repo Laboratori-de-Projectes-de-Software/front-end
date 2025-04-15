@@ -9,7 +9,7 @@ export type Props = {
   leagueId: number
 }
 
-const League : FC<Props> = ({ leagueId }) => {
+const League: FC<Props> = ({ leagueId }) => {
   const [activeTab, setActiveTab] = useState("clasificacion")
   const navigate = useNavigate()
 
@@ -26,11 +26,11 @@ const League : FC<Props> = ({ leagueId }) => {
     refetchOnMountOrArgChange: true,
   })
 
-  if (queryLeague.isLoading || queryMatches.isLoading || queryLeaderboard.isLoading) {
+  if (queryLeague.isLoading || queryMatches.isLoading) {
     return <LoadingScreen message="Cargando liga..." />
   }
 
-  if (queryLeague.isError || queryMatches.isError || queryLeaderboard.isError) {
+  if (queryLeague.isError || queryMatches.isError) {
     return <ErrorPage message="Error al cargar la liga" />
   }
 
