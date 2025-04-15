@@ -6,14 +6,14 @@ import {useNavigate} from "react-router-dom";
 
 function LogIn() {
     const [signUp, setSignUp] = useState(false);
-    const [email, setEmail] = useState<string>("");
-    const [nombreUsuario, setName] = useState<string>("");
+    const [mail, setEmail] = useState<string>("");
+    const [user, setName] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const navigate = useNavigate();
 
     const handleSignUp = async () => {
         try{
-            const response = await registerUser({ email, nombreUsuario, password });
+            const response = await registerUser({ mail, user, password });
             localStorage.setItem("token", response.data.token);
             localStorage.setItem("username", response.data.user);
             localStorage.setItem("userId", response.data.userId);
@@ -36,7 +36,7 @@ function LogIn() {
 
     const handleLogIn = async () => {
         try{
-            const response = await login({nombreUsuario, password});
+            const response = await login({user, password});
             localStorage.setItem("token", response.data.token);
             localStorage.setItem("username", response.data.user);
             localStorage.setItem("userId", response.data.userId);
@@ -88,7 +88,7 @@ function LogIn() {
                                 required
                                 type="email"
                                 placeholder="Correo"
-                                value={email}
+                                value={mail}
                                 onChange={(e) => setEmail(e.target.value)}
                             />
                             <Form.Control.Feedback type="invalid">
@@ -102,7 +102,7 @@ function LogIn() {
                             required
                             type="text"
                             placeholder="Usuario"
-                            value={nombreUsuario}
+                            value={user}
                             onChange={(e) => setName(e.target.value)}
                         />
                         <Form.Control.Feedback type="invalid">
