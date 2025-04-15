@@ -42,7 +42,6 @@ export const Leaderboard =() => {
 
     if (loading) return <div>Cargando clasificación...</div>;
 
-    // @ts-ignore
     return (
         <div>
             <LeagueHeader creador={league?.user || ""} estado={league?.status || ""} participantes={league?.bots.length || 0}  />

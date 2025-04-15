@@ -14,6 +14,7 @@ import LeagueOverviewPage from "./pages/LeagueOverviewPage.tsx";
 import LogIn from "./pages/LogIn.tsx";
 import DetallesBot from "./pages/DetallesBot.tsx";
 import Enfrentamientos from "./pages/Enfrentamientos.tsx";
+import VerEnfrentamientos from "./pages/VerEnfrentamientos.tsx";
 
 export function App() {
     const location = useLocation();
@@ -42,6 +43,7 @@ export function App() {
                             <Route path="/league/:leagueId" element={<LeagueOverviewPage />}/>
                             <Route path="/league/:leagueId/*" element={<LeaderBoardPage/>}/>
                             <Route path="/league/:leagueId/match/:matchId/message" element={<Enfrentamientos />} />
+                            <Route path="/league/:leagueId/match" element={<VerEnfrentamientos />} />
                             <Route path="/enfrentamientos" element={<Enfrentamientos/>}/>
                             <Route path="/league/:leagueId/register" element={<MisBots />} />
                         </Routes>
