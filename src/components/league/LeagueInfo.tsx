@@ -5,6 +5,7 @@ import {
   type ParticipationResponseDTO,
   type MatchResponseDTO,
   type MessageResponseDTO,
+  type BotResponseDTO,
 } from "../../utils/responseInterfaces";
 import { sendAuthedRequest } from "../../utils/auth";
 
@@ -16,6 +17,8 @@ export default function LeagueInfo(league: LeagueCardProps) {
   const [activeMatch, setActiveMatch] = React.useState<MatchResponseDTO | null>(
     null
   );
+  const [showBotList, setShowBotList] = React.useState(false);
+  const [botList, setBotList] = React.useState<BotResponseDTO[]>([]);
 
   // Peticion a la api de leaderboards
   React.useEffect(() => {
@@ -59,6 +62,26 @@ export default function LeagueInfo(league: LeagueCardProps) {
     fetchMatches();
   }, []);
 
+  // Peticion a la api de bots
+  React.useEffect(() => {
+    async function fetchBots() {
+      const response = await sendAuthedRequest(
+        "GET",
+        `http://localhost:8080/bot` // Si el usuario solo puede escoger sus bots hay que cambiar esta línea
+        // Si es solo los mios, añadir ?owner={userId} a esta url
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        setBotList(data);
+      } else {
+        console.error("Error fetching bots:", response.status);
+      }
+    }
+
+    fetchBots();
+  }, []);
+
   async function startLeague() {
     // Hacemos peticion post a ../league/{leagueId}/start
 
@@ -85,12 +108,75 @@ export default function LeagueInfo(league: LeagueCardProps) {
 
     if (response.ok) {
       console.log("League deleted successfully");
-      // Redirigir a la página de búsqueda de ligas
-      league.onClick();
+      // Reload pagina
+      window.location.reload();
     } else {
       console.error("Error deleting league:", response.status);
     }
   }
+
+  async function addBot(botId: number, leagueId: number) {
+    // Hacemos peticion post a ../league/{leagueId}/bot
+    const response = await sendAuthedRequest(
+      "POST",
+      `http://localhost:8080/league/${leagueId}/bot`,
+      botId
+    );
+
+    if (response.ok) {
+      console.log("Bot added successfully");
+      // Reload this page
+      window.location.reload();
+    } else {
+      console.error("Error adding bot:", response.status);
+    }
+  }
+
+  // If enseñar botlist
+  if (showBotList) {
+    return (
+      <div className="flex flex-col min-h-screen bg-gradient-to-b from-zinc-800 to-zinc-900 text-gray-100">
+        <div className="flex justify-around p-4 sticky top-0 bg-zinc-800 z-10 shadow-md">
+          <button
+            onClick={() => setShowBotList(false)}
+            className="bg-blue-600 text-white rounded-lg px-5 py-2.5 text-sm font-medium hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-800 transition duration-150 ease-in-out"
+          >
+            Back
+          </button>
+        </div>
+        <div className="text-center py-6 px-4">
+          <h1
+            className="inline-block bg-gradient-to-r from-purple-500 to-indigo-600 text-white text-2xl md:text-3xl lg:text-4xl font-bold px-6 py-3 rounded-xl shadow-lg"
+            title={league.name}
+          >
+            {league.name}
+          </h1>
+        </div>
+        <div className="flex flex-wrap justify-center items-center gap-3 p-4 bg-zinc-700/50 rounded-lg mx-4 md:mx-8 lg:mx-12 mb-6 shadow">
+          {botList
+            .filter((bot) => !league.bots.some((botId) => botId === bot.botId))
+            .map((bot) => (
+              <span
+                key={bot.botId}
+                className="bg-blue-500 text-white text-sm font-semibold px-4 py-2 rounded-full shadow hover:bg-blue-600 transition-colors cursor-pointer"
+                onClick={() => addBot(bot.botId, league.leagueId)}
+              >
+                {bot.name}
+              </span>
+            ))}
+          {botList.filter(
+            (bot) => !league.bots.some((botId) => botId === bot.botId)
+          ).length === 0 && (
+            <p className="text-gray-300">
+              All the bots are already in this league.
+            </p>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  // Else
 
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-b from-zinc-800 to-zinc-900 text-gray-100">
@@ -108,6 +194,14 @@ export default function LeagueInfo(league: LeagueCardProps) {
         >
           Delete League
         </button>
+
+        <button
+          onClick={() => setShowBotList(true)}
+          className="bg-yellow-600 text-white rounded-lg px-5 py-2.5 text-sm font-medium hover:bg-yellow-700 focus:outline-none focus:ring-4 focus:ring-yellow-800 transition duration-150 ease-in-out"
+        >
+          Add Bots
+        </button>
+
         <button
           onClick={startLeague}
           className="ml-4 bg-green-600 text-white rounded-lg px-5 py-2.5 text-sm font-medium hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-green-800 transition duration-150 ease-in-out"
