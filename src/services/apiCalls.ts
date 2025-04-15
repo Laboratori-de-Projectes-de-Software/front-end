@@ -1,7 +1,9 @@
 
 import {deleteData, getData, postData, putData} from "./api.ts";
+import axios from "axios";
+import {API} from "../config.tsx";
 
-export const registerUser = async (data: Object) => await postData("/auth/signup", data);
+export const registerUser = async (data: Object) => await postData("/auth/register", data);
 
 export const login = async (data: Object) => await postData("/auth/login", data);
 
@@ -18,7 +20,11 @@ export const obtenerBot = async (data: number | undefined) => await getData(`/bo
 export const getEnfrentamiento = async (matchId: number) => await getData(`/match/${matchId}/message`, {});
 
 export const registerBotToLeague = async (leagueId: number | string, botId: number) =>
-     await postData(`/league/${leagueId}/bot`, { botId });
+    axios.post(`${API}/league/${leagueId}/bot`, botId, {
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
 
 
 export const updateLeague = async (leagueId: string, data: Object) => await putData(`/league/${leagueId}`, data);
