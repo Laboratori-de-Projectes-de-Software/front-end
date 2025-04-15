@@ -1,17 +1,16 @@
-export interface UserDTORegister {
+export interface UserRegisterDTO {
   user: string
   mail: string;
   password: string;
 }
 
-export interface UserDTOLogin {
+export interface UserLoginDTO {
   user: string;
   password: string;
 }
 
-export interface UserResponseDTO {
-  token: string;
-  expiresIn: string;
-  user: string;
+export interface UserDTO {
   userId: number;
+  user: string;
+  mail: string;
 }
