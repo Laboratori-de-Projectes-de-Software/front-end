@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { createLeague } from "@use-cases/UseCases";  // Importa la funció createLeague
+import { addBotToLeague, createLeague } from "@use-cases/UseCases";  // Importa la funció createLeague
 import { getAllBots } from "@use-cases/UseCases";  // Importa la funció getBots i getAllLeagues
 import WhiteButton from "@components/WhiteButton";
-import { CreateLeagueDTO, LeagueDTO } from "@DTOClasses/LeagueDTO";
+import { CreateLeagueDTO } from "@DTOClasses/LeagueDTO";
 import { BotDTO } from "@DTOClasses/BotDTO";
 
 const AddLeaguePage: React.FC = () => {
@@ -67,6 +67,7 @@ const AddLeaguePage: React.FC = () => {
         setRounds("");
         setMatchTime("");
         setErrorMessage(""); // Restableix els errors en cas d'èxit
+        selectedParticipants.forEach((botId) => addBotToLeague(result.id, botId));
       } else {
         setErrorMessage("Error al crear la lliga.");
       }
