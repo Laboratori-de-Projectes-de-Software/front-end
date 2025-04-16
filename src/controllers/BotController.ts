@@ -83,7 +83,6 @@ export const fetchUserBots = async (
     console.log("CONTROLER: Bots obtenidos:", bots);
     // Obtener detalles completos de cada bot
     setBots(bots);
-    console.log("Bots obtenidos con éxito:", bots);
   } catch (error) {
     console.error("Error al obtener los bots del usuario:", error);
     if (setError) {
@@ -103,6 +102,7 @@ export const addBotsToLeague = async (leagueId: number, botIds: number[]) => {
   }
 
   try {
+    console.log("Inscribiendo bots en la liga:", leagueId, botIds);
     await addBotsToLeagueModel(leagueId, botIds);
     console.log("Bots inscritos con éxito en la liga:", leagueId);
   } catch (error) {

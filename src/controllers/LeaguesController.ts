@@ -46,10 +46,9 @@ export const fetchUserLeagues = async (
 export const createNewLeague = async (
   leagueData: {
     name: string;
-    urlImagen?: string;
+    imageUrl?: string;
     rounds: number;
     matchTime: number;
-    bots: number[];
   },
   onSuccess: (createdLeague: any) => void,
   onError?: (error: string) => void,
@@ -61,8 +60,9 @@ export const createNewLeague = async (
       navigate("/login");
       return;
     }
-
+    console.log("CREATE LEAGUE: Datos de la liga:", leagueData);
     const createdLeague = await createLeague(leagueData);
+    console.log("CREATE LEAGUE: Liga creada:", createdLeague);
     onSuccess(createdLeague);
   } catch (error) {
     console.error("Error creating league:", error);
@@ -88,7 +88,7 @@ export const updateLeague = async (
     leagueId: number,
     leagueData: {
       name: string;
-      urlImagen?: string;
+      imageUrl?: string;
       rounds: number;
       matchTime: number;
     },

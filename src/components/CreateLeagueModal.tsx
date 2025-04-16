@@ -13,10 +13,9 @@ interface CreateLeagueModalProps {
 
 interface LeagueData {
   name: string;
-  urlImagen: string;
+  imageUrl: string;
   rounds: number;
   matchTime: number;
-  bots: number[]; // IDs de los bots participantes
 }
 
 // Interfaz para los errores
@@ -36,10 +35,9 @@ const CreateLeagueModal: React.FC<CreateLeagueModalProps> = ({
 
   const [leagueData, setLeagueData] = useState<LeagueData>({
     name: "",
-    urlImagen: "",
+    imageUrl: "",
     rounds: 3, // Valor predeterminado
     matchTime: 15, // Valor predeterminado en segundos
-    bots: [], // IDs de los bots seleccionados
   });
   const [availableBots, setAvailableBots] = useState<Bot[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -54,7 +52,6 @@ const CreateLeagueModal: React.FC<CreateLeagueModalProps> = ({
         (bots) => {
           setAvailableBots(bots);
           setIsLoadingBots(false);
-          console.log("Datos actuales de leagueData:", leagueData); // Log de leagueData
         },
         (error) => {
           console.error("Error al cargar los bots:", error);
@@ -73,7 +70,7 @@ const CreateLeagueModal: React.FC<CreateLeagueModalProps> = ({
           }
         }
       );
-      console.log("League Data with Bots:", leagueData);
+      console.log("LEAGUE MODAL: Available bots:", availableBots);
     }
   }, [isOpen, navigate]);
 
@@ -116,68 +113,48 @@ const CreateLeagueModal: React.FC<CreateLeagueModalProps> = ({
     }));
   };
 
-  // Manejo de selección de bots con checkbox
-  const handleBotSelection = (botId: number) => {
-    setLeagueData((prev) => {
-      if (prev.bots.includes(botId)) {
-        return {
-          ...prev,
-          bots: prev.bots.filter((id) => id !== botId),
-        };
-      } else {
-        return {
-          ...prev,
-          bots: [...prev.bots, botId],
-        };
-      }
-    });
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!validateForm()) return;
 
-    console.log("Datos de la liga antes de enviar:", leagueData); // Log de leagueData
-
     setIsSubmitting(true);
 
     try {
       await createNewLeague(
-        leagueData,
-        (createdLeague) => {
-          console.log("Liga creada exitosamente:", createdLeague);
-          if (onSuccess) onSuccess();
-          onClose();
-        },
-        (error) => {
-          console.error("Error al crear la liga:", error);
-          // Redirigir al login si el error es por autenticación
-          if (
-            error.includes("Sesión expirada") ||
-            error.includes("token válido") ||
-            error.includes("Unauthorized")
-          ) {
-            alert(
-              "Tu sesión ha expirado. Por favor, inicia sesión nuevamente."
-            );
-            navigate("/login");
-          } else {
-            alert(`Error al crear la liga: ${error}`);
-          }
-        },
-        navigate // Pasar la función navigate para permitir redirecciones
+          leagueData,
+          (createdLeague) => {
+            if (onSuccess) onSuccess();
+            onClose();
+          },
+          (error) => {
+            console.error("Error al crear la liga:", error);
+            // Redirigir al login si el error es por autenticación
+            if (
+                error.includes("Sesión expirada") ||
+                error.includes("token válido") ||
+                error.includes("Unauthorized")
+            ) {
+              alert(
+                  "Tu sesión ha expirado. Por favor, inicia sesión nuevamente."
+              );
+              navigate("/login");
+            } else {
+              alert(`Error al crear la liga: ${error}`);
+            }
+          },
+          navigate // Pasar la función navigate para permitir redirecciones
       );
     } catch (error) {
       console.error("Error en la solicitud:", error);
       const errorMessage =
-        error instanceof Error ? error.message : "Error desconocido";
+          error instanceof Error ? error.message : "Error desconocido";
 
       // Redirigir al login si el error es por autenticación
       if (
-        errorMessage.includes("Sesión expirada") ||
-        errorMessage.includes("token válido") ||
-        errorMessage.includes("Unauthorized")
+          errorMessage.includes("Sesión expirada") ||
+          errorMessage.includes("token válido") ||
+          errorMessage.includes("Unauthorized")
       ) {
         alert("Tu sesión ha expirado. Por favor, inicia sesión nuevamente.");
         navigate("/login");
@@ -209,12 +186,12 @@ const CreateLeagueModal: React.FC<CreateLeagueModalProps> = ({
           </div>
 
           <div className="modal-form-group">
-            <label htmlFor="urlImagen">URL de imagen (opcional)</label>
+            <label htmlFor="imageUrl">URL de imagen (opcional)</label>
             <input
-              id="urlImagen"
-              name="urlImagen"
+              id="imageUrl"
+              name="imageUrl"
               type="text"
-              value={leagueData.urlImagen}
+              value={leagueData.imageUrl}
               onChange={handleChange}
               placeholder="URL de imagen para la liga"
             />
@@ -250,36 +227,6 @@ const CreateLeagueModal: React.FC<CreateLeagueModalProps> = ({
             {errors.matchTime && (
               <span className="modal-error-message">{errors.matchTime}</span>
             )}
-          </div>
-
-          <div className="modal-form-group">
-            <label>Selección de bots (opcional)</label>
-            {isLoadingBots ? (
-              <p className="modal-helper-text">Cargando bots disponibles...</p>
-            ) : availableBots.length > 0 ? (
-              <div className="bot-selection-container">
-                {availableBots.map((bot) => (
-                  <div key={bot.botId} className="bot-selection-item">
-                    <input
-                      type="checkbox"
-                      id={`bot-${bot.botId}`}
-                      checked={leagueData.bots.includes(bot.botId as number)}
-                      onChange={() => handleBotSelection(bot.botId as number)}
-                    />
-                    <label htmlFor={`bot-${bot.botId}`}>
-                      {bot.name} {bot.quality ? `- ${bot.quality}` : ""}
-                    </label>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p className="modal-helper-text">
-                No hay bots disponibles. Puedes añadirlos más tarde.
-              </p>
-            )}
-            <p className="modal-helper-text">
-              Puedes seleccionar bots ahora o añadirlos más tarde a la liga.
-            </p>
           </div>
 
           <div className="modal-form-actions">

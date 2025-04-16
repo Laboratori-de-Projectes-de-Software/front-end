@@ -3,7 +3,7 @@ import "./Modal.css";
 
 interface Bot {
     name: string;
-    urlImage: string;
+    imageUrl: string;
 }
 
 interface MatchModalProps {
@@ -48,7 +48,7 @@ const MatchModal: React.FC<MatchModalProps> = ({ isOpen, onClose, match, bots })
                 <div className="match-header-matchmodal">
                     <div className="bot-container-matchmodal">
                         <img
-                            src={bot1.urlImage}
+                            src={bot1.imageUrl}
                             alt={bot1.name}
                             className="bot-image-matchmodal"
                         />
@@ -57,7 +57,7 @@ const MatchModal: React.FC<MatchModalProps> = ({ isOpen, onClose, match, bots })
                     <div className="vs-text-matchmodal">VS</div>
                     <div className="bot-container-matchmodal">
                         <img
-                            src={bot2.urlImage}
+                            src={bot2.imageUrl}
                             alt={bot2.name}
                             className="bot-image-matchmodal"
                         />

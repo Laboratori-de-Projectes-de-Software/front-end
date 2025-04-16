@@ -30,10 +30,9 @@ export const getLeaguesByUser = async (userId: string) => {
 // Función para crear una nueva liga
 export const createLeague = async (leagueData: {
   name: string;
-  urlImagen?: string;
+  imageUrl?: string;
   rounds: number;
   matchTime: number;
-  bots: number[];
 }) => {
   const token = getAuthToken();
   if (!token) throw new Error("No hay token válido");

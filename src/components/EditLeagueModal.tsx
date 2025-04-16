@@ -7,9 +7,9 @@ interface EditLeagueModalProps {
     isOpen: boolean;
     onClose: () => void;
     league: {
-        leagueId: number;
+        id: number;
         name: string;
-        urlImagen: string;
+        imageUrl: string;
         matchTime: number;
         rounds: number;
     } | null;
@@ -38,7 +38,7 @@ const EditLeagueModal: React.FC<EditLeagueModalProps> = ({
             // Pre-fill the form with the league's current data
             setLeagueData({
                 name: league.name,
-                urlImagen: league.urlImagen,
+                urlImagen: league.imageUrl,
                 rounds: league.rounds,
                 matchTime: league.matchTime,
             });
@@ -88,7 +88,7 @@ const EditLeagueModal: React.FC<EditLeagueModalProps> = ({
 
         try {
             await updateLeague(
-                league.leagueId,
+                league.id,
                 leagueData,
                 (updatedLeague) => {
                     console.log("League updated successfully:", updatedLeague);

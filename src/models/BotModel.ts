@@ -7,7 +7,7 @@ import { getAuthToken } from "../api/AuthUtils";
  */
 
 export interface Bot {
-  botId: number;
+  id: number;
   name: string;
   quality: string;
   imageUrl: string;
@@ -231,27 +231,23 @@ export const updateBot = async (
   }
 };
 
-export const addBotsToLeagueModel = async (
-  leagueId: number,
-  botIds: number[]
-) => {
+export const addBotsToLeagueModel = async (id: number, botIds: number[]) => {
   const token = getAuthToken();
   if (!token) {
     throw new Error("No hay token válido.");
   }
 
   for (const botId of botIds) {
-    const response = await fetch(
-      `http://localhost:8080/api/v0/league/${leagueId}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ botId }),
-      }
-    );
+    console.log("Añadiendo bot con ID:", botId, "a la liga con ID:", id);
+
+    const response = await fetch(`http://localhost:8080/api/v0/league/${id}/bot`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify([botId]), // Enviar el ID del bot como un array
+    });
 
     if (!response.ok) {
       throw new Error(await response.text());

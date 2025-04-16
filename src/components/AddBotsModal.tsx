@@ -28,8 +28,8 @@ const AddBotsModal: React.FC<AddBotsModalProps> = ({
                 (bots) => {
                     // Filter out bots already in the league
                     const filteredBots = bots
-                        .filter((bot) => !currentBots.some((current) => current === bot.botId))
-                        .map((bot) => ({ id: bot.botId!, name: bot.name || "Unnamed Bot" }));
+                        .filter((bot) => !currentBots.some((current) => current === bot.id))
+                        .map((bot) => ({ id: bot.id!, name: bot.name || "Unnamed Bot" }));
                     setAllBots(filteredBots);
                 },
                 (error) => console.error("Error fetching bots:", error)
@@ -48,6 +48,8 @@ const AddBotsModal: React.FC<AddBotsModalProps> = ({
 
         setIsSubmitting(true);
         try {
+            console.log("Selected bots:", selectedBots);
+            console.log("League ID:", leagueId);
             await addBotsToLeague(leagueId, selectedBots);
             if (onSuccess) onSuccess();
             onClose();

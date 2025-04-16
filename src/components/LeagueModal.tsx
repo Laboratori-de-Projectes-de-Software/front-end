@@ -17,9 +17,9 @@ interface LeagueModalProps {
     isOpen: boolean;
     onClose: () => void;
     league: {
-        leagueId: number;
+        id: number;
         name: string;
-        urlImagen: string;
+        imageUrl: string;
         matchTime: number;
         bots: number[];
         rounds: number;
@@ -28,9 +28,9 @@ interface LeagueModalProps {
 }
 
 interface Bot {
-    botId: number;
+    id: number;
     name: string;
-    urlImage: string; // Image URL
+    imageUrl: string; // Image URL
 }
 
 const LeagueModal: React.FC<LeagueModalProps> = ({ isOpen, onClose, league }) => {
@@ -68,34 +68,35 @@ const LeagueModal: React.FC<LeagueModalProps> = ({ isOpen, onClose, league }) =>
                 className="match-card"
                 onClick={() => handleMatchClick(match)} // Abre el modal al hacer clic
             >
-                <img src={bot1.urlImage} alt={bot1.name} />
+                <img src={bot1.imageUrl} alt={bot1.name} />
                 <div className="match-card-content">
                     <p>
                         {bot1.name} vs {bot2.name}
                     </p>
                     <p>Estado: {match.state}</p>
                 </div>
-                <img src={bot2.urlImage} alt={bot2.name} />
+                <img src={bot2.imageUrl} alt={bot2.name} />
             </div>
         );
     };
 
     // Sincronizar currentLeague con league cuando esta cambie
     useEffect(() => {
+        console.log("League prop changed:", league?.id); // Log para probar los datos
         setCurrentLeague(league);
         // if (league && (league.state === "IN_PROCESS" || league.state === "Finished")) {
         //     fetchMatchesByLeague(league.leagueId).then(setMatches).catch(console.error);
         //     fetchStandingsByLeague(league.leagueId).then(setStandings).catch(console.error);
         // }
         if (league) {
-            fetchMatchesByLeague(league.leagueId)
+            fetchMatchesByLeague(league.id)
                 .then((matches) => {
                     console.log("Fetched matches:", matches); // Log para probar los datos
                     setMatches(matches);
                 })
                 .catch(console.error);
 
-            fetchStandingsByLeague(league.leagueId)
+            fetchStandingsByLeague(league.id)
                 .then((standings) => {
                     console.log("Fetched standings:", standings); // Log para probar los datos
                     setStandings(standings);
@@ -126,7 +127,7 @@ const LeagueModal: React.FC<LeagueModalProps> = ({ isOpen, onClose, league }) =>
 
     const reloadLeagueData = () => {
         if (currentLeague) {
-            fetchLeagueById(currentLeague.leagueId)
+            fetchLeagueById(currentLeague.id)
                 .then((updatedLeague) => setCurrentLeague(updatedLeague))
                 .catch((error) => console.error("Error fetching league data:", error));
         }
@@ -153,8 +154,8 @@ const LeagueModal: React.FC<LeagueModalProps> = ({ isOpen, onClose, league }) =>
     const handleStartClick = async () => {
         if (currentLeague) {
             try {
-                console.log("Starting league with ID:", currentLeague.leagueId);
-                await fetchLeagueStart(currentLeague.leagueId);
+                console.log("Starting league with ID:", currentLeague.id);
+                await fetchLeagueStart(currentLeague.id);
                 console.log("League started successfully");
                 reloadLeagueData(); // Refresh league data after starting
             } catch (error) {
@@ -179,9 +180,9 @@ const LeagueModal: React.FC<LeagueModalProps> = ({ isOpen, onClose, league }) =>
                         <div className="bot-images-container">
                             {bots.map((bot) => (
                                 <img
-                                    key={bot.botId}
-                                    src={bot.urlImage}
-                                    alt={`Bot ${bot.botId}`}
+                                    key={bot.id}
+                                    src={bot.imageUrl}
+                                    alt={`Bot ${bot.id}`}
                                     className="bot-league-image"
                                 />
                             ))}
@@ -245,7 +246,7 @@ const LeagueModal: React.FC<LeagueModalProps> = ({ isOpen, onClose, league }) =>
                 <AddBotsModal
                     isOpen={isAddBotsModalOpen}
                     onClose={handleCloseAddBotModal}
-                    leagueId={currentLeague.leagueId}
+                    leagueId={currentLeague.id}
                     currentBots={currentLeague.bots}
                 />
 

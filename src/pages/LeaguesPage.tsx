@@ -23,7 +23,7 @@ const LeaguesPage: React.FC = () => {
         fetchUserLeagues(setLeagues, (error) => {
             console.error("Error fetching leagues:", error);
         }).finally(() => setLoading(false));
-        console.log(leagues);
+        console.log("LEAGUES: ", leagues);
     };
 
     useEffect(() => {
@@ -71,7 +71,7 @@ const LeaguesPage: React.FC = () => {
                                 <div className="league-name">{league.name}</div>
                                 <img
                                     className="league-image"
-                                    src={league.urlImagen || "default-image-url.jpg"} // Default image if none is provided
+                                    src={league.imageUrl} // Default image if none is provided
                                     alt={`Imagen de ${league.name}`}
                                 />
                                 <div className="league-status">Estado: {league.state}</div>

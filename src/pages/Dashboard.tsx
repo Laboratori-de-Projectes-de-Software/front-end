@@ -132,7 +132,7 @@ const Dashboard: React.FC = () => {
                       </div>
                       <div className="league-dsh-image-container">
                         <img
-                          src={league.urlImagen}
+                          src={league.imageUrl}
                           alt={`Imagen de ${league.name}`}
                           className="league-dsh-image"
                         />
