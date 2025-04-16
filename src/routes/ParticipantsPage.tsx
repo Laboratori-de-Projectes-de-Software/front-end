@@ -3,10 +3,11 @@ import ParticipantCard from '@components/ParticipantCard';
 import WhiteButton from '@components/WhiteButton';
 import { getAllBots, getBot } from '@use-cases/UseCases';
 import { BotDTO } from '@DTOClasses/BotDTO';
+import { useNavigate } from "react-router-dom";
 
 const ParticipantsPage: React.FC = () => {
   const [bots, setBots] = useState<BotDTO[]>([]); // Estat per emmagatzemar els bots
-    
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchBots = async () => {
       const fetchedBots = await getAllBots();
@@ -41,7 +42,7 @@ const ParticipantsPage: React.FC = () => {
           ))}
         </div>
         <a href="/add-bot">
-          <WhiteButton>Add</WhiteButton>
+          <WhiteButton onClick={() => navigate("/add-bot")}>Add</WhiteButton>
         </a>
       </main>
     </div>

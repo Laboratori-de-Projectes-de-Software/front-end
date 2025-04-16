@@ -1,8 +1,10 @@
 import React from 'react';
 import WhiteButton from '@components/WhiteButton';
+import { useNavigate } from 'react-router-dom';
 
 const WelcomePage: React.FC = () => {
   const isUserLogged = localStorage.getItem("user") !== null;
+  const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-[var(--secondary)] text-white">
@@ -18,13 +20,13 @@ const WelcomePage: React.FC = () => {
               href="/login"
               className="mt-8"
             >
-              <WhiteButton>Log in</WhiteButton>
+              <WhiteButton onClick={() => navigate("/login")}>Log in</WhiteButton>
             </a>
             <a
               href="/register"
               className="mt-8"
             >
-              <WhiteButton>Register</WhiteButton>
+              <WhiteButton onClick={() => navigate("/register")}>Register</WhiteButton>
             </a>
           </div>
         )}

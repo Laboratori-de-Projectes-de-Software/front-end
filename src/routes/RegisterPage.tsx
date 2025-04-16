@@ -18,7 +18,7 @@ const RegisterPage: React.FC = () => {
     }
 
    userSignUp({user, mail, password });
-   
+   navigate("/");
   };
 
   
