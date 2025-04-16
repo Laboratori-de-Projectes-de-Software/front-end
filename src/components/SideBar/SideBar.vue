@@ -34,79 +34,79 @@ import { ref } from 'vue'
 
 const matches: Match[] = [
   {
-    matchId: 1,
+    id: 1,
     fighters: ['Soberbia', 'Empatía'],
-    state: 'finalizado',
+    state: 'FINALIZADO',
     result: 1,
     roundNumber: 24,
   },
   {
-    matchId: 2,
+    id: 2,
     fighters: ['Educación', 'Simpatía'],
-    state: 'finalizado',
+    state: 'FINALIZADO',
     result: 1,
     roundNumber: 24,
   },
   {
-    matchId: 3,
+    id: 3,
     fighters: ['Soberbia', 'Empatía'],
-    state: 'en curso',
+    state: 'EN_CURSO',
     result: 2,
     roundNumber: 24,
   },
   {
-    matchId: 4,
+    id: 4,
     fighters: ['Educación', 'Simpatía'],
-    state: 'en curso',
+    state: 'EN_CURSO',
     result: 2,
     roundNumber: 24,
   },
   {
-    matchId: 5,
+    id: 5,
     fighters: ['Soberbia', 'Empatía'],
-    state: 'en curso',
+    state: 'EN_CURSO',
     result: 2,
     roundNumber: 24,
   },
   {
-    matchId: 6,
+    id: 6,
     fighters: ['Educación', 'Simpatía'],
-    state: 'en curso',
+    state: 'EN_CURSO',
     result: 2,
     roundNumber: 24,
   },
   {
-    matchId: 7,
+    id: 7,
     fighters: ['Soberbia', 'Empatía'],
-    state: 'en curso',
+    state: 'EN_CURSO',
     result: 2,
     roundNumber: 24,
   },
   {
-    matchId: 8,
+    id: 8,
     fighters: ['Educación', 'Simpatía'],
-    state: 'en curso',
+    state: 'EN_CURSO',
     result: 2,
     roundNumber: 24,
   },
   {
-    matchId: 9,
+    id: 9,
     fighters: ['Soberbia', 'Empatía'],
-    state: 'en curso',
+    state: 'EN_CURSO',
     result: 2,
     roundNumber: 24,
   },
   {
-    matchId: 10,
+    id: 10,
     fighters: ['Educación', 'Simpatía'],
-    state: 'en curso',
+    state: 'EN_CURSO',
     result: 2,
     roundNumber: 24,
   },
   {
-    matchId: 11,
+    id: 11,
     fighters: ['Soberbia', 'Empatía'],
-    state: 'en curso',
+    state: 'EN_CURSO',
     result: 2,
     roundNumber: 24,
   },
@@ -138,13 +138,13 @@ const toggleDarkMode = () => {
     </header>
     <div class="flex flex-col gap-2.5 overflow-y-auto">
       <SectionSideBar
-        title="Finalizado"
-        :matches="matches.filter((match) => match.state === 'finalizado')"
+        title="FINALIZADO"
+        :matches="matches.filter((match) => match.state === 'FINALIZADO')"
         classListButtonChat="w-full sm:w-fit text-[24px] sm:text-[20px]"
       />
       <SectionSideBar
         title="En Progreso"
-        :matches="matches.filter((match) => match.state !== 'finalizado')"
+        :matches="matches.filter((match) => match.state !== 'FINALIZADO')"
         classListButtonChat="w-full sm:w-fit text-[24px] sm:text-[20px]"
       />
     </div>

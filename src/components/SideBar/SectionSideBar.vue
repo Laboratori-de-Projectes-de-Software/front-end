@@ -3,7 +3,6 @@ import ButtonChat from './ButtonChat.vue'
 import type { Match } from '@/types'
 
 const props = defineProps<{ title: string; matches?: Match[]; classListButtonChat?: string }>()
-console.log('Matches:', props.matches)
 </script>
 
 <template>
@@ -14,7 +13,7 @@ console.log('Matches:', props.matches)
     </div>
     <ButtonChat
       v-for="match in props.matches"
-      :key="match.matchId"
+      :key="match.id"
       :classList="props.classListButtonChat"
     >
       {{ match.fighters[0] }} vs {{ match.fighters[1] }}

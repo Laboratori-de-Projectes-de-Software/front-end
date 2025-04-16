@@ -9,12 +9,14 @@ import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
+const isLoading = ref(true)
 const leagueId = Number(route.params.leagueId)
 const token = localStorage.getItem('token')
-const userId = parseInt(localStorage.getItem('userId') || '0')
+// const userId = parseInt(localStorage.getItem('userId') || '0')
 
 const league = ref<League | null>(null)
 const matches = ref<Match[]>([])
+const jornadas = ref<Record<number, Match[]>>({})
 const leaderboard = ref<Participation[]>([])
 const misBots = ref<string[]>([])
 
@@ -51,7 +53,19 @@ const loadMatches = async () => {
     alert('Error al cargar los partidos. Por favor, inténtalo de nuevo.')
   } else {
     const data = await response.json()
+    console.log('Partidos:', data)
     matches.value = data
+    jornadas.value = matches.value.reduce(
+      (acc, combate) => {
+        const round = combate.roundNumber
+        if (!acc[round]) {
+          acc[round] = []
+        }
+        acc[round].push(combate)
+        return acc
+      },
+      {} as Record<number, Match[]>
+    )
   }
 }
 
@@ -73,9 +87,10 @@ async function loadLeaderboard() {
   }
 }
 
-onMounted(() => {
-  loadLeague()
-  loadMyBots()
+onMounted(async () => {
+  await loadLeague()
+  await loadMyBots()
+  isLoading.value = false
 })
 
 async function startLeague() {
@@ -93,7 +108,7 @@ async function startLeague() {
     alert('Error al iniciar la liga. Por favor, inténtalo de nuevo.')
   } else {
     alert('¡Liga iniciada correctamente!')
-    loadLeague()
+    router.push(`/league/${leagueId}`)
   }
 }
 
@@ -116,18 +131,6 @@ const loadMyBots = async () => {
     misBots.value = data.map((bot: Bot) => bot.botId)
   }
 }
-
-const jornadas = matches.value.reduce(
-  (acc, combate) => {
-    const round = combate.roundNumber
-    if (!acc[round]) {
-      acc[round] = []
-    }
-    acc[round].push(combate)
-    return acc
-  },
-  {} as Record<number, Match[]>
-)
 
 const esMiBot = (nombreEquipo: string) => {
   return misBots.value.includes(nombreEquipo)
@@ -154,7 +157,9 @@ const titleHeader = '¡Hola, ' + localStorage.getItem('user') + '!'
 
 <template>
   <HeaderApp :title="titleHeader" :is-heading1="false" />
+  <main v-if="isLoading" class="flex h-screen items-center justify-center"><p>Cargando</p></main>
   <main
+    v-else
     class="mb-15 flex w-full flex-col items-center justify-center gap-5 px-4 sm:px-10 lg:w-[960px]"
   >
     <!-- Contenedor pequeño que incluye solo el header -->
@@ -163,7 +168,9 @@ const titleHeader = '¡Hola, ' + localStorage.getItem('user') + '!'
         <h1 class="text-left text-4xl font-bold">{{ league?.name }}</h1>
 
         <!-- Mostrar botones solo si el user es el owner -->
-        <div class="flex flex-row gap-4 text-xl font-bold" v-if="userId === league?.user">
+        <!-- TODO: Una vez se incluya el userId como owner en el LeagueResponse, este botón se mostrará solo si el userId es el owner -->
+        <!-- <div class="flex flex-row gap-4 text-xl font-bold" v-if="userId === league?.user"> -->
+        <div class="flex flex-row gap-4 text-xl font-bold">
           <!-- Mostrar botón solo si la liga está PENDIENTE -->
           <button
             v-if="league?.state === 'PENDIENTE'"
@@ -174,7 +181,10 @@ const titleHeader = '¡Hola, ' + localStorage.getItem('user') + '!'
           </button>
 
           <!-- Redirigir a configuración (puedes cambiar la ruta) -->
-          <button class="cursor-pointer rounded-3xl bg-[#06f] px-4.5 py-3 text-white">
+          <button
+            v-if="league?.state === 'PENDIENTE'"
+            class="cursor-pointer rounded-3xl bg-[#06f] px-4.5 py-3 text-white"
+          >
             Configuración
           </button>
         </div>

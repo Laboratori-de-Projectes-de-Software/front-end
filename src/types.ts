@@ -40,13 +40,13 @@ export interface Participation {
 }
 
 export interface Message {
-  text: string
-  botId: number
-  time: number
+  mensaje: string
+  idBot: number
+  timestamp: number
 }
 
 export interface Match {
-  matchId: number
+  id: number
   state: 'PENDIENTE' | 'EN_CURSO' | 'FINALIZADO'
   result: 1 | 2 | 3
   fighters: [string, string]

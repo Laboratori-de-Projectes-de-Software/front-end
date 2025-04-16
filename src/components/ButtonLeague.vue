@@ -12,7 +12,7 @@ const imageClass = computed(() => {
 </script>
 
 <template>
-  <RouterLink to="/myLeague">
+  <RouterLink :to="`/league/` + liga.id">
     <div
       class="xs:w-48 xs:h-28 flex h-[90px] w-38.5 items-center justify-center rounded-t-xl border-t-2 border-r-2 border-l-2 border-[#d3d3d3] bg-white px-[40px] py-[12px] sm:h-[145px] sm:w-[250px]"
     >
