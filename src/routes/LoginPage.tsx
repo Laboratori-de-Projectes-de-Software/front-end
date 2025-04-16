@@ -25,7 +25,7 @@ const LoginPage: React.FC = () => {
       alert("Sessió iniciada correctament");
       
       localStorage.setItem("token", res.token);
-      localStorage.setItem("userId", res.userId.toString());
+      localStorage.setItem("userId", res.id.toString());
       localStorage.setItem("user", res.user);
       navigate("/");
     } else {
