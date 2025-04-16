@@ -58,12 +58,11 @@ const AddLeaguePage: React.FC = () => {
     }
 
     // Prepara les dades de la lliga
-    const newLeague = {
+    const newLeague: CreateLeagueDTO = {
       name: leagueName,
-      bots: selectedParticipants,
       rounds: parseInt(rounds),
       matchTime: parseInt(matchTime),
-    } as CreateLeagueDTO;
+    };
 
     try {
       const result = await createLeague(newLeague);  // Utilitzem la funció createLeague
@@ -86,11 +85,6 @@ const AddLeaguePage: React.FC = () => {
   return (
     <div className="min-h-screen">
       <main className="flex flex-row items-start gap-8">
-        <LeagueBar
-          leagues={leagues}
-          selectedLeagueId={null} // null de moment, ja que no estem seleccionant cap lliga
-          onSelectLeague={() => {}}
-        />
         <div className="flex-1 text-center p-10 flex flex-col items-center">
           <h1 className="text-3xl font-bold mb-6">Add League</h1>
 
