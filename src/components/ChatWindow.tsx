@@ -56,11 +56,11 @@ const ChatWindow: React.FC = () => {
             .map((message) => (
               <div
                 key={message.id}
-                className={`message-row ${message.side === 'A' ? 'user-message-row' : 'other-message-row'
+                className={`message-row ${message.side === 'A' ? 'ai-a-message-row' : 'ai-b-message-row'
                   }`}
               >
                 <div
-                  className={`message-bubble ${message.side === 'A' ? 'user-message' : 'other-message'
+                  className={`message-bubble ${message.side === 'A' ? 'ai-a-message' : 'ai-b-message'
                     }`}
                 >
                   <p className="message-text">{message.text}</p>

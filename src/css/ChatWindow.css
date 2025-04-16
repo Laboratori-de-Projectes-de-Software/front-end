@@ -53,8 +53,8 @@
 
 /* Message rows */
 .message-row { display: flex; }
-.user-message-row { justify-content: flex-end; }
-.other-message-row { justify-content: flex-start; }
+.ai-a-message-row { justify-content: flex-end; }
+.ai-b-message-row { justify-content: flex-start; }
 
 /* Message bubbles */
 .message-bubble {
@@ -63,12 +63,12 @@
   border-radius: var(--radius-lg);
 }
 
-.user-message {
+.ai-a-message {
   background: #4f46e5;
   border-top-right-radius: var(--radius-sm);
 }
 
-.other-message {
+.ai-b-message {
   background: #3a3a3a;
   border-top-left-radius: var(--radius-sm);
 }
