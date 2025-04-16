@@ -25,7 +25,8 @@ const ChatWindow: React.FC = () => {
     
     console.log(combatId.combatId);
     window.APIConection.getAllMessagesMatch(Number(combatId.combatId)).then((messages) => {
-      const meses: Message[] = messages.map((mes):Message => ({ id: mes.botId.toString(), text: mes.text, timestamp: (mes.time), sender: mes.botId.toString() }))
+      const mainUserId = messages[0].botId;
+      const meses: Message[] = messages.map((mes):Message => ({ id:  mes.botId.toString(), text: mes.text, timestamp: (mes.time), sender: mes.botId == mainUserId ? "A": "B" }))
       setMessages(meses);
     }).catch();
 
@@ -38,11 +39,7 @@ const ChatWindow: React.FC = () => {
 
   return (
     <div className="chat-container">
-      {/* Chat header */}
-      <div className="chat-header">
-        <h2 className="header-name">{otherUser}</h2>
-        <p className="header-status">Online</p>
-      </div>
+
 
       {/* Messages container */}
       <div className="messages-container">
@@ -69,17 +66,6 @@ const ChatWindow: React.FC = () => {
         </div>
       </div>
 
-      {/* Input area - not functional, just for display */}
-      <div className="input-container">
-        <div className="input-row">
-          <input
-            type="text"
-            placeholder="Type a message..."
-            className="message-input"
-          />
-          <button className="send-button">Send</button>
-        </div>
-      </div>
     </div>
   );
 };
