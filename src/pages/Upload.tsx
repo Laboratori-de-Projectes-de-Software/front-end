@@ -27,35 +27,49 @@ export function Upload() {
       }
 
       try {
-          const response = await fetch("http://localhost:3001/upload-bot", {
-              method: "POST",
-              headers: {
-                  "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                  bot: {
-                      nombre: botName,
-                      tema: theme,
-                      imagen: imagePreview // ya está en base64
-                  }
-              }),
-          });
-
-          const data = await response.json();
-
-          if (response.ok && data.bot) {
-            console.log("Bot recibido del backend:", data.bot);
-            // Mostrar mensaje de éxito
-            alert(`Bot "${data.bot.nombre}" creado con ID: ${data.bot.id}`);
-            // Opcional: redirigir o limpiar formulario
+        const response = await fetch("http://localhost:8080/api/v0/bot", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                bot: {
+                    name: botName,
+                    description: theme,
+                    urlImagen: imagePreview, // Base64
+                    endpoint: "hola"
+                }
+            }),
+        });
+    
+        const data = await response.json();
+    
+        if (response.status === 201 && data) {
+            const {
+                botId,
+                name,
+                description,
+                urlImage,
+                nWins,
+                nLosses,
+                nDraws
+            } = data;
+    
+            console.log("Bot recibido del backend:", data);
+    
+            alert(`Bot "${name}" creado con ID: ${botId}`);
+            
+            // Opcional: mostrar imagen o estadísticas
+            // limpiarFormulario();
+    
         } else {
             setError("No se pudo crear el bot");
         }
-      } catch (error) {
-          setError("Error de conexión con el servidor");
-          console.error(error);
-      }
-  };
+    } catch (error) {
+        setError("Error de conexión con el servidor");
+        console.error(error);
+    }
+    };
 
   return (
     <div>

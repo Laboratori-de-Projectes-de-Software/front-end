@@ -16,7 +16,7 @@ export function Login() {
         }
     
         try {
-            const response = await fetch("http://localhost:3001/auth/login", {
+            const response = await fetch("http://localhost:8080/api/v0/auth/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -28,23 +28,26 @@ export function Login() {
             });
     
             const data = await response.json();
-    
-            if (response.ok) {
-                console.log("Token recibido:", data.token);
-                console.log("Expira en:", data.expiresin, "segundos");
-    
-                // Guardar el token en localStorage (opcional)
-                localStorage.setItem("token", data.token);
-    
-                // Redireccionar a otra ruta (ej: Home)
-                window.location.href = "/Home";
-            } else {
-                setError("Credenciales incorrectas o usuario no encontrado");
-            }
-        } catch (error) {
-            setError("Error de conexión con el servidor");
-            console.error(error);
+
+        if (response.ok) {
+            // Aqui recibes y usas el UserResponseDTO
+            const { token, expiresIn, user, userId } = data;
+
+            // Podés guardarlo en localStorage, context, etc.
+            localStorage.setItem("token", token);
+            localStorage.setItem("user", user);
+            localStorage.setItem("userId", userId.toString());
+            localStorage.setItem("expiresIn", expiresIn);
+
+            console.log("Login exitoso");
+            window.location.href = "/"; // o lo que corresponda
+        } else {
+            setError(data.message || "Usuario o contraseña incorrectos");
         }
+    } catch (error) {
+        setError("Error de conexión con el servidor: " + error);
+        console.error(error);
+    }
     };
     
 

@@ -35,19 +35,18 @@ export function Register() {
                 }),
             });
     
-            const data = await response.json();
-    
-            if (response.ok && data.success) {
+            if (response.ok) {
                 console.log("Registro exitoso");
     
-                // Opcional: redireccionar al login o loguear automáticamente
-                window.location.href = "/"; // o "/Home" si lo deseás
+                // Redirigir al home o login
+                window.location.href = "/";
             } else {
-                // Si data.message viene del backend con info útil, la mostramos
+                // Intentar leer el mensaje de error si viene
+                const data = await response.json();
                 setError(data.message || "No se pudo completar el registro");
             }
         } catch (error) {
-            setError("Error de conexión con el servidor" + error);
+            setError("Error de conexión con el servidor: " + error);
             console.error(error);
         }
     };
