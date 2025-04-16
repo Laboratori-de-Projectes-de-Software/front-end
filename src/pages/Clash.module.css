@@ -1,0 +1,67 @@
+.background {
+    height: 853px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.left, .right {
+    width: 50%;
+    height: 100%;
+    border-top: #4986f7 3px solid;
+    background-color: white;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 800px;
+    color: #4986f7;
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.left h2 {
+    text-align: left;
+    margin: 50px
+}
+
+.right h2 {
+    text-align: right;
+    margin: 50px;
+}
+
+.chat {
+    background-color: #f0f0f0;
+    border-radius: 15px;
+    height: 750px;
+    width:700px;
+    display: flex;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -42.5%);
+    flex-direction: column;
+}
+
+.chatleft, .chatright {
+    max-width: 60%;
+    padding: 10px 15px;
+    border-radius: 15px;
+    font-size: 16px;
+    line-height: 1.4;
+    margin: 10px 10px
+}
+
+.chatleft {
+    align-self: flex-start;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-bottom-left-radius: 0;
+    color: #4986f7;
+}
+
+.chatright {
+    align-self: flex-end;
+    background-color: #4986f7; /* clásico verde WhatsApp */
+    border: 1px solid #4986f7;
+    border-bottom-right-radius: 0;
+    color: #ffffff;
+}
