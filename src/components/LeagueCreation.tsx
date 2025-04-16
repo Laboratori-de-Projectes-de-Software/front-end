@@ -32,6 +32,7 @@ function getCookie(c: string): string {
 export default function LeagueCreation() {
   const [availableBots, setAvailableBots] = useState<BotOption[]>([]);
   useEffect(() => {
+    
     window.APIConection.getAllBotsUser(parseInt(getCookie("userId")))
       .then((bots: BotSummaryResponseDTO[]) => {
         // Wrap the object literal in parentheses to return it directly
@@ -61,6 +62,7 @@ export default function LeagueCreation() {
 
   // Update leagueData.bots when selectedOptions changes
   useEffect(() => {
+    
     setLeagueData(prevData => ({
       ...prevData,
       bots: selectedOptions.map(bot => bot.botId),
@@ -111,7 +113,10 @@ export default function LeagueCreation() {
       bots: leagueData.bots,
       userId: parseInt(getCookie("userId"))
     }
-    window.APIConection.postLeague(leagueInfo).then().catch((error) => console.log(error));
+    if(leagueInfo.bots.length >0){
+    window.APIConection.postLeague(leagueInfo).then().catch((error) => console.log(error));}else{
+      
+    }
   }
   return (
     <>
