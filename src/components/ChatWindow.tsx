@@ -8,6 +8,7 @@ interface Message {
   text: string;
   sender: string;
   timestamp: string;
+  side: string;
 }
 
 type ChatWindowProps = {
@@ -26,7 +27,13 @@ const ChatWindow: React.FC = () => {
     console.log(combatId.combatId);
     window.APIConection.getAllMessagesMatch(Number(combatId.combatId)).then((messages) => {
       const mainUserId = messages[0].botId;
-      const meses: Message[] = messages.map((mes):Message => ({ id:  mes.botId.toString(), text: mes.text, timestamp: (mes.time), sender: mes.botId == mainUserId ? "A": "B" }))
+      const meses: Message[] = messages.map((mes):Message => (
+        { id:  mes.botId.toString(),
+           text: mes.text,
+            timestamp: (mes.time),
+              sender: mes.botId.toString(),
+            side:  mes.botId == mainUserId ? "A": "B"
+            }))
       setMessages(meses);
     }).catch();
 
@@ -49,11 +56,11 @@ const ChatWindow: React.FC = () => {
             .map((message) => (
               <div
                 key={message.id}
-                className={`message-row ${message.sender === 'A' ? 'user-message-row' : 'other-message-row'
+                className={`message-row ${message.side === 'A' ? 'user-message-row' : 'other-message-row'
                   }`}
               >
                 <div
-                  className={`message-bubble ${message.sender === 'A' ? 'user-message' : 'other-message'
+                  className={`message-bubble ${message.side === 'A' ? 'user-message' : 'other-message'
                     }`}
                 >
                   <p className="message-text">{message.text}</p>
