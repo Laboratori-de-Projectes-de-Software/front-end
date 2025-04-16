@@ -1,5 +1,5 @@
 import BotSidebar from "@components/BotSidebar";
-import { LeagueDTO } from "@DTOClasses/LeagueDTO";
+import { BotDTO } from "@DTOClasses/BotDTO";
 import { MatchDTO } from "@DTOClasses/MatchDTO";
 import { MessageDTO } from "@DTOClasses/MessageDTO";
 import { getBot, getMatchesFromLeague, getMessagesFromMatch } from "@use-cases/UseCases";
@@ -10,7 +10,6 @@ const MatchPage: React.FC = () => {
   const params = useParams<{ leagueId: string; matchId: string }>();
   const leagueId = parseInt(params.leagueId!);
   const matchId = parseInt(params.matchId!);
-  const [league, setLeague] = useState<LeagueDTO>({} as LeagueDTO);
   const [match, setMatch] = useState<MatchDTO>({} as MatchDTO);
   const [messages, setMessages] = useState<MessageDTO[]>([]);
   const [timeLeft, setTimeLeft] = useState(180);
