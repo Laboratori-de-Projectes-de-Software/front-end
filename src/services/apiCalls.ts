@@ -17,9 +17,9 @@ export const listarBots = async (data: Object) => await getData("/bot", data);
 
 export const obtenerBot = async (data: number | undefined) => await getData(`/bot/${data}`, {});
 
+export const getEnfrentamiento = async (matchId: number) => await getData(`/match/${matchId}`, {});
 export const deleteBot = async (botId: string | undefined, data: Object) => await deleteData(`/bot/${botId}`, data);
 
-export const getEnfrentamiento = async (matchId: number) => await getData(`/match/${matchId}/message`, {});
 
 export const registerBotToLeague = async (leagueId: number | string, botId: number) =>
     axios.post(`${API}/league/${leagueId}/bot`, botId, {
@@ -27,6 +27,7 @@ export const registerBotToLeague = async (leagueId: number | string, botId: numb
             "Content-Type": "application/json",
         },
     });
+
 
 export const createBot = async (data: Object) => await putData(`/bot`, data);
 
@@ -42,6 +43,7 @@ export const listarTodosBots = async (data: Object) => await getData("/bot/all",
 
 export const iniciarLiga = async (leagueId: string | undefined, data: Object) => await postData(`/league/${leagueId}/start`, data);
 
+export const getConversacion = async (matchId: number) => await getData(`/match/${matchId}/message`, {});
 export const getMatchesByLeague = async (leagueId: string | undefined, data: Object) => await getData(`/league/${leagueId}/match`, data);
 
 export const getLeaguesByUserId = async (data: Object) => await getData(`/league`, data);
