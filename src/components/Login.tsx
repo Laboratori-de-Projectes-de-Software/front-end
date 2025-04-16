@@ -53,6 +53,7 @@ export default function Login() {
               });
               setCookie("token",response.token,response.expiresIn);
               setCookie("userId", response.userId.toString(),response.expiresIn);
+              navigate("/addia");
           })
               .catch((error: any) => {
                   setNotification({

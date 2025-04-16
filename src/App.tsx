@@ -27,6 +27,7 @@ export default function App() {
                     <Route path="/account" element={<Account />}/>
                     <Route path="/misLigas" element={<MisLigas/>}/>
                     <Route path="/leaguecreation" element={<LeagueCreation/>}/>
+                    
                     <Route path="/combat" element={<MatchPage/>}/>
                     <Route path="/addia" element={<AddIA/>}/>
                     <Route path="/updateBot" element={<UpdateBot/>}/>
