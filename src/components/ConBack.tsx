@@ -197,23 +197,6 @@ export class ConBack implements ConAPI {
 
     private generalPost<T>(route: string, paramStructure: any, errorHandler: (error: Error) => void): Promise<T> {
 
-        // Add this before making any requests
-        axios.interceptors.request.use(request => {
-            console.log('Request:', request);
-            return request;
-        });
-
-        axios.interceptors.response.use(
-            response => {
-                console.log('Response:', response);
-                return response;
-            },
-            error => {
-                console.log('Error response:', error.response);
-                return Promise.reject(error);
-            }
-        );
-        console.log(this.getToken());
         return axios.post<T>(`${this.DOMAIN}${route}`, paramStructure, {
             headers: {
 

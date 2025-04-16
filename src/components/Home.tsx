@@ -15,10 +15,13 @@ export default function Home() {
                         
                         > Log In</button>
                     </Link>
-                    <button className="button-round button-grey">Leaderboard</button>
+                    <Link to="/signup">
+                        <button className="button-round button-blue"
+                        
+                        > Sign Up</button>
+                    </Link>
                 </div>
             </div >
-
             <Layout />
         </>
     );

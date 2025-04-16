@@ -14,9 +14,7 @@ const SideBar: React.FC = () => {
         <Link to="/startLeague">
           <div className="sidebar-item">Start Liga</div>
         </Link>
-        <Link to="/account">
-          <div className="sidebar-item">Account</div>
-        </Link>
+
         <Link to="/leaguecreation">
           <div className="sidebar-item">Create League</div>
         </Link>
@@ -24,7 +22,7 @@ const SideBar: React.FC = () => {
           <div className="sidebar-item">Add AIs</div>
         </Link>
       </div>
-      <div className="sidebar-exit">Exit</div>
+      
     </div>
   );
 };

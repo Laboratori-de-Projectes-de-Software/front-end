@@ -41,9 +41,13 @@ export default function Scores() {
   }, []);
 
   const handleStartLeague = (leagueId: number) =>{
+    console.log(leagueId);
     const league = leagues.find(l => l.leagueId === leagueId);
-    {league && league?.bots.length > 0 && window.APIConection.startLeague(leagueId)
+    console.log(league);
+
+    {league  && window.APIConection.startLeague(leagueId)
         .catch((error: any) => {
+          
         setNotification({
             message: error.message || "",
             type: "error"
