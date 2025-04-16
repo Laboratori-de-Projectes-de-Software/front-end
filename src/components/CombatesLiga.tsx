@@ -129,6 +129,9 @@ const combate: React.FC = () => {
                   <p><strong>Resultado:</strong> {combate.result}</p>
                   <p><strong>Nº de rondas:</strong> {combate.roundNumber}</p>
                 </div>
+                <Link to={`/chatwindow/${combate.matchId.toString()}`}>
+                  <button className="button-round button-blue">Ver chat</button>
+                </Link>
               </div>
             ))}
 

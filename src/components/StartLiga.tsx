@@ -45,7 +45,7 @@ export default function Scores() {
     {league && league?.bots.length > 0 && window.APIConection.startLeague(leagueId)
         .catch((error: any) => {
         setNotification({
-            message: error.message || "Failed to log account",
+            message: error.message || "",
             type: "error"
         });
         });

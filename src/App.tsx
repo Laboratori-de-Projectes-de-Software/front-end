@@ -35,7 +35,7 @@ export default function App() {
                     <Route path="/startLeague" element ={<StartLeague/>}/>
                     <Route path="/combatesLiga/:leagueId" element={<CombatesLiga/>}/>
                     <Route path="/addiaLeague/:leagueId" element={<AnadirBotLiga/>}/>
-                    
+                    <Route path="/chatwindow/:combatId" element={<ChatWindow/>}/>
                 </Routes>
             </Router>
         </>
