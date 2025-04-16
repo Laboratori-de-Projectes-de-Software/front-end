@@ -9,6 +9,8 @@ import MatchPage from "./components/MatchPage";
 import AddIA from "./components/AddIA";
 import SignUp from "./components/SignUp";
 import UpdateBot from "./components/updateBot";
+import Profile from "./components/LeagueParam";
+
 import './css/App.css';
 export default function App() {
     return (
@@ -25,6 +27,7 @@ export default function App() {
                     <Route path="/combat" element={<MatchPage/>}/>
                     <Route path="/addia" element={<AddIA/>}/>
                     <Route path="/updateBot" element={<UpdateBot/>}/>
+                    <Route path="/profile/:leagueId" element={<Profile />} />
                 </Routes>
             </Router>
         </>

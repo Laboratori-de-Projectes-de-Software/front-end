@@ -9,21 +9,10 @@ interface NotificationProps {
 }
 
 export default function Scores() {
-  const [leagues, setLeagues] = useState<LeagueResponseDTO[]>([]);
+  const [leagues, setLeagues] = useState<LeagueResponseDTO>();
   const [notification, setNotification] = useState<NotificationProps | null>(null);
 
   useEffect(() => {
-    const userId = 14;
-    window.APIConection.getAllLeaguesUser(userId)
-      .then((response: LeagueResponseDTO[]) => {
-        setLeagues(response);
-      })
-      .catch((error: any) => {
-        setNotification({
-          message: error.message || "Failed to load leagues",
-          type: "error",
-        });
-      });
   }, []);
 
   const notificationStyles = {

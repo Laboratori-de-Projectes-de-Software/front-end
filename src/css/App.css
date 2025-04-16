@@ -189,7 +189,7 @@ li.footer a:hover {
   margin-bottom: 15px;
 }
 
-.match_card {
+.league_card {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -199,7 +199,7 @@ li.footer a:hover {
   margin-bottom: 10px;
 }
 
-.match-info {
+.league_info {
   flex-grow: 1;
 }
 
