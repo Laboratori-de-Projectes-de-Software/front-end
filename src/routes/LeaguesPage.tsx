@@ -9,13 +9,13 @@ import { MatchDTO } from "@DTOClasses/MatchDTO";
 
 const leaguesMockup: LeagueDTO[] = [{id: 1, state: "PENDING", name: "League 1", imageUrl: "", rounds: 3, matchTime: 2, bots: []},
                                       {id: 2, state: "PENDING", name: "League 2", imageUrl: "", rounds: 3, matchTime: 2, bots: []},
-                                      {id: 3, state: "PENDING", name: "League 3", imageUrl: "", rounds: 3, matchTime: 2, bots: []} ];
+                                      {id: 3, state: "PENDING", name: "League 3", imageUrl: "", rounds: 3, matchTime: 2, bots: []}];
 
 const matchesMockup: MatchDTO[] = [{id: 1, state: "PENDING", result: null, roundNumber: 3, fighters: [1, 2]},
                                     {id: 2, state: "PENDING", result: null, roundNumber: 4, fighters: [1, 2]},
                                     {id: 3, state: "IN_PROCESS", result: null, roundNumber: 1, fighters: [1, 2]},
                                     {id: 4, state: "COMPLETED", result: 0, roundNumber: 2, fighters: [1, 2]},
-                                    {id: 5, state: "COMPLETED", result: 1, roundNumber: 3, fighters: [1, 2]},];
+                                    {id: 5, state: "COMPLETED", result: 1, roundNumber: 3, fighters: [1, 2]}];
 
 type componentShow = "Classification" | "Confrontations"
 
@@ -60,7 +60,7 @@ const LeaguesPage: React.FC = () => {
     <div className="min-h-screen">
       <main className="flex flex-row items-start gap-8">
         <LeagueBar
-          leagues={leaguesMockup}
+          leagues={leaguesMockup ? leaguesMockup : leagues}
           selectedLeagueId={selectedLeague ? selectedLeague.id : null}
           onSelectLeague={setSelectedLeague}
         />
@@ -83,8 +83,8 @@ const LeaguesPage: React.FC = () => {
 
             {
                 showComponent === "Classification"
-                ? <LeaderboardComponent participants={[]}/>
-                : <MatchesComponent matches={matchesMockup}/>
+                ? <LeaderboardComponent participants={participants}/>
+                : <MatchesComponent matches={matchesMockup ? matchesMockup : matches}/>
             }
 
         </div>
