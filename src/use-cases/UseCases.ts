@@ -3,7 +3,7 @@ import { CreateLeagueDTO, LeagueDTO } from "@DTOClasses/LeagueDTO";
 import { MatchDTO } from "@DTOClasses/MatchDTO";
 import { MessageDTO } from "@DTOClasses/MessageDTO";
 import { ParticipationDTO } from "@DTOClasses/ParticipationDTO";
-import {UserRegisterDTO, UserDTO } from "@DTOClasses/UserDTO";
+import {UserRegisterDTO, UserDTO, AuthenticatedUserDTO } from "@DTOClasses/UserDTO";
   
 //const BASE_URL = "http://localhost:8080";
 
@@ -26,7 +26,7 @@ export async function userSignUp(userData: UserRegisterDTO): Promise<UserDTO | n
   }
   
 
-  export async function userLoggin(email: string, password: string):  Promise<UserDTO | null> {
+  export async function userLoggin(email: string, password: string):  Promise<AuthenticatedUserDTO | null> {
     try {
         const response = await fetch(`${BASE_URL}/auth/login`, {
         method: "POST",
@@ -36,7 +36,7 @@ export async function userSignUp(userData: UserRegisterDTO): Promise<UserDTO | n
 
         if (!response.ok) return null;
 
-        const data: UserDTO = await response.json();
+        const data: AuthenticatedUserDTO = await response.json();
       
         console.log("Resposta del backend:", data);      
         return data;
@@ -55,6 +55,7 @@ export function userLoggout(): boolean {
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
     localStorage.removeItem("user");
+    localStorage.removeItem("expiresIn")
     return true;
   }
 
