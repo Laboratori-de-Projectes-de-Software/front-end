@@ -142,6 +142,7 @@ const AnadirBotLiga: React.FC = () => {
                 <div className="page_container">
                     <SideBar />
                     <div className="content_container">
+                    {notification && <Notification message={notification.message} type={notification.type} />}
                         <div className="dropdown-container">
                             <MultiselectDropdown
                                 options={availableBots}

@@ -71,3 +71,6 @@ export interface MessageResponseDTO {
     text: string; botId: number; time: string;
 }
 
+export interface botIdForUpdate{
+    botId: number
+}
