@@ -7,13 +7,13 @@ import { useModal } from "@modules/modalManager/ModalProvider";
 const LeagueElement: FC<LeagueResponseDTO> = (element) => {
 
     const navigate = useNavigate();
-    const { openModal } = useModal();
+    const { openModal, leagueId } = useModal();
 
     const getLeagueStatusLabel = () => {
         switch (element.state) {
             case "PENDING":
                 return "Inscripción abierta";
-            case "en curso":
+            case "IN_PROGRESS":
                 return "En curso";
             case "finalizado":
                 return "Finalizada";
@@ -52,7 +52,7 @@ const LeagueElement: FC<LeagueResponseDTO> = (element) => {
                 <div className="league-card-actions">
                     <button className="league-card-button more-details" onClick={() => navigate("/league/" + element.leagueId)}>Ver detalles</button>
                     {element.state === "PENDING" && (
-                        <button className="league-card-button add-bot" onClick={() => openModal("add-bot")}>Inscribir bot</button>
+                        <button className="league-card-button add-bot" onClick={() => openModal("add-bot", element.leagueId)}>Inscribir bot</button>
                     )}
                 </div>
             </div>

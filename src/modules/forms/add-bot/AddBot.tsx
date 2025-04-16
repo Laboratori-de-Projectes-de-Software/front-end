@@ -4,8 +4,11 @@ import { appApi } from "@features/shared/index";
 import "./AddBot.scss";
 import { BotSummaryResponseDTO } from "@interfaces/bot.interface";
 
-const AddBot: React.FC = () => {
+interface AddBotProps {
+    leagueId: number ;
+}
 
+const AddBot: React.FC<AddBotProps> = ({leagueId}) => {
 
     const [addImage, setAddImage] = React.useState<{ [key: number]: string }>({});
     const auth = useAuth();
@@ -13,11 +16,10 @@ const AddBot: React.FC = () => {
     const [postBot, _] = appApi.usePostLeagueLeagueIdBotMutation();
 
     const addBotToLeague = (botId: number) => {
+        console.log(leagueId)
         setAddImage((prev) => ({ ...prev, [botId]: "loading" }));
-        postBot({ leagueId: 1, botId }).then((response) => {
+        postBot({ leagueId, botId }).then(() => {
             setAddImage((prev) => ({ ...prev, [botId]: "add-bot-league" }));
-
-            console.log(response);
         })
     }
 

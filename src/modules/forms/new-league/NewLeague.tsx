@@ -6,10 +6,9 @@ import { useAuth } from "../../../auth/AuthProvider";
 
 const NewLeague = () => {
   const [name, setName] = useState("");
-  const [quantity, setQuantity] = useState(2);
   const [rounds, setRounds] = useState(1);
-  const [duration, setDuration] = useState(10);
-  const [date, setDate] = useState("");
+  const [duration, setDuration] = useState(0);
+  const [urlImagen, setUrlImagen] = useState("");
   const [postLeague] = appApi.usePostLeagueMutation();
   const auth = useAuth();
 
@@ -17,7 +16,7 @@ const NewLeague = () => {
     e.preventDefault();
     postLeague({
       name,
-      urlImagen: "https://example.com/image.png",
+      urlImagen,
       rounds,
       matchTime: duration,
       bots: [],
@@ -34,7 +33,7 @@ const NewLeague = () => {
   };
 
   const renderRoundsOptions = () => {
-    return Array.from({ length: quantity - 1 }, (_, index) => (
+    return Array.from({ length: 5 }, (_, index) => (
       <option key={index + 1} value={index + 1}>
         {index + 1} ronda{index + 1 > 1 ? "s" : ""}
       </option>
@@ -45,7 +44,8 @@ const NewLeague = () => {
     <form onSubmit={handleSubmit} className="new-league-form">
       <h1>Crear Nueva Liga</h1>
       <TextInput value={name} setValue={setName} text="Nombre de la liga" />
-      <div className="new-league-form__quantity">
+      <TextInput value={urlImagen} setValue={setUrlImagen} text="Url de la imagen" />
+      {/* <div className="new-league-form__quantity">
         <select
           value={quantity}
           onChange={(e) => setQuantity(Number(e.target.value))}
@@ -62,7 +62,7 @@ const NewLeague = () => {
           htmlFor="quantity"
           className="new-league-form__quantity-label"
         ></label>
-      </div>
+      </div> */}
       <div className="new-league-form__rounds">
         <select
           value={rounds}
@@ -77,15 +77,6 @@ const NewLeague = () => {
           className="new-league-form__rounds-label"
         ></label>
       </div>
-      <div className="new-league-form__date">
-        <input
-          type="date"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-          className="new-league-form__date-input"
-          placeholder="Fecha de Inicio"
-        />
-      </div>
       <div className="new-league-form__duration">
         <select
           value={duration}
@@ -93,11 +84,11 @@ const NewLeague = () => {
           id="duration"
           className="new-league-form__duration-input"
         >
-          <option value="3">3 minutos</option>
-          <option value="5">5 minutos</option>
-          <option value="10">10 minutos</option>
-          <option value="15">15 minutos</option>
-          <option value="20">20 minutos</option>
+          <option value="0" disabled>Minutos por mensaje</option>
+          <option value="60">1 minuto</option>
+          <option value="120">2 minutos</option>
+          <option value="300">5 minutos</option>
+          <option value="600">10 minutos</option>
         </select>
         <label
           htmlFor="quantity"

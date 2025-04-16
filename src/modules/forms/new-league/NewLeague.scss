@@ -1,25 +1,20 @@
 .new-league-form {
-  display: grid;
-  grid-template-columns: 50% 50%;
-  grid-template-rows: repeat(3, 1fr);
+  display: flex;
+  flex-direction: column;
   gap: 10px;
   width: 100%;
   height: 100%;
   padding: 20px;
 
   h1 {
-    grid-column: 1 / 3;
     font-family: "Shippori Antique", sans-serif;
     font-size: 36px;
     text-align: center;
 
     ~ .form-field__container {
-      grid-column: 1 / 3;
-      grid-row: 2 / 3;
       margin-top: 20px;
     }
   }
-  .new-league-form__quantity,
   .new-league-form__duration,
   .new-league-form__rounds {
     margin: 15px 0;
@@ -27,8 +22,7 @@
   }
 
   .new-league-form__duration-input,
-  .new-league-form__rounds-input,
-  .new-league-form__quantity-input {
+  .new-league-form__rounds-input {
     width: 100%;
     height: 40px;
     border: none;
@@ -41,17 +35,17 @@
     }
   }
 
-  .new-league-form__quantity {
-    grid-column: 1 / 2;
+  // .new-league-form__quantity {
+  //   grid-column: 1 / 2;
 
-    &:has(.new-league-form__quantity-input:focus) {
-      border-bottom-color: #6b00bd;
-    }
-  }
+  //   &:has(.new-league-form__quantity-input:focus) {
+  //     border-bottom-color: #6b00bd;
+  //   }
+  // }
 }
 
 .new-league-form__duration {
-  grid-column: 2 / 3;
+  grid-column: 1 / 2;
 
   &:has(.new-league-form__duration-input:focus) {
     border-bottom-color: #6b00bd;
@@ -63,26 +57,6 @@
 
   &:has(.new-league-form__rounds-input:focus) {
     border-bottom-color: #6b00bd;
-  }
-}
-
-.new-league-form__date {
-  grid-column: 1 / 2;
-  margin: 15px 0;
-  border-bottom: 2px solid black;
-
-  .new-league-form__date-input {
-    border: none;
-    height: 40px;
-    width: 100%;
-    &:focus {
-      outline: none;
-    }
-    &::-webkit-datetime-edit {
-      font-family: "Shippori Antique", sans-serif;
-      font-size: 16px;
-      text-align: center;
-    }
   }
 }
 

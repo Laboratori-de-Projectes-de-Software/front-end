@@ -15,9 +15,11 @@
     position: absolute;
     bottom: 10px;
     left: 20px;
+    z-index: -1;
   }
 
   & .form-field__input {
+    background-color: transparent;
     width: 100%;
     height: 100%;
     border-radius: 0;
@@ -35,7 +37,8 @@
     &:focus,
     &:valid {
       & ~ .form-field__label {
-        transform: translateX(-100px) translateY(-20px) scale(0.7);
+        transform: translateX(-20px) translateY(-20px) scale(0.7);
+        transform-origin: left;
         transition: all 0.3s ease;
         color: gray;
       }

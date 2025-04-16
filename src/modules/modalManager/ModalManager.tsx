@@ -7,25 +7,29 @@ import AddBot from "@modules/forms/add-bot/AddBot"
 
 const ModalManager = () => {
 
-    const { modal, closeModal } = useModal();
+    const { modal, closeModal, leagueId } = useModal();
 
     return (
         <>
-            <Modal onClose={closeModal} isOpen={modal === 'login'}>
-                <Login />
-            </Modal>
-
-            <Modal onClose={closeModal} isOpen={modal === 'register'}>
+            {modal === 'login' &&
+                <Modal onClose={closeModal}>
+                    <Login />
+                </Modal>
+            }
+            {modal === 'register' && <Modal onClose={closeModal}>
                 <Register />
-            </Modal>
+            </Modal>}
 
-            <Modal onClose={closeModal} isOpen={modal === 'new-league'}>
-                <NewLeague />
-            </Modal>
-
-            <Modal onClose={closeModal} isOpen={modal === 'add-bot'}>
-                <AddBot />
-            </Modal>
+            {modal === 'new-league' &&
+                <Modal onClose={closeModal}>
+                    <NewLeague />
+                </Modal>
+            }
+            {modal === 'add-bot' &&
+                <Modal onClose={closeModal}>
+                    <AddBot leagueId={leagueId}/>
+                </Modal>
+            }
         </>
     )
 }

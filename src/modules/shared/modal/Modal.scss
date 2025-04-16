@@ -1,15 +1,18 @@
 .modal {
   --modal-width: 100vw;
+  --modal-height: 100vh;
   width: var(--modal-width);
+  height: var(--modal-height);
   border: none;
   padding: 100px 10px;
   position: fixed;
-  top: 10%;
+  top: 0;
   animation: fadeOut 0.5s forwards;
-
+  z-index: 1000;
+  
   &[open] {
     animation: fadeIn 0.5s forwards;
-
+    
     &::backdrop {
       animation: backdropFadeIn 0.5s forwards;
     }
@@ -25,10 +28,12 @@
 
 @media (min-width: 580px) {
   .modal {
+    --modal-width: 480px;
+    --modal-height: auto;
+    top: 10%;
     padding: 10px;
     border-radius: 10px;
     box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
-    --modal-width: 480px;
     left: calc(50% - var(--modal-width) / 2);
   }
 }

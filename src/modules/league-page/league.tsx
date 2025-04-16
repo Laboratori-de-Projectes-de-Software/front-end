@@ -17,14 +17,29 @@ const League: FC<Props> = ({ leagueId }) => {
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
   })
+
+  const skipFetch = !queryLeague.data || queryLeague.data.body.state === "PENDING"
+
   const queryMatches = appApi.useGetLeagueLeagueIdMatchQuery(leagueId, {
+    skip: skipFetch,
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
   })
   const queryLeaderboard = appApi.useGetLeagueLeagueIdLeaderboardQuery(leagueId, {
+    skip: skipFetch,
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
   })
+
+  const [start] = appApi.usePostLeagueLeagueIdStartMutation();
+
+  const startLeague = () => {
+    start(leagueId).unwrap().then(() => {
+      queryLeague.refetch();
+      queryMatches.refetch();
+      queryLeaderboard.refetch();
+    })
+  }
 
   if (queryLeague.isLoading || queryMatches.isLoading) {
     return <LoadingScreen message="Cargando liga..." />
@@ -35,12 +50,10 @@ const League: FC<Props> = ({ leagueId }) => {
   }
 
   if (!queryLeague.data?.body) return <ErrorPage message="No se encontró la liga" />
-  if (!queryMatches.data?.body) return <ErrorPage message="No se encontraron partidos" />
-  if (!queryLeaderboard.data?.body) return <ErrorPage message="No se encontró la clasificación" />
 
   const leagueInfo = queryLeague.data.body;
   const matches = queryMatches.data?.body;
-  const leaderboard = queryLeaderboard.data.body;
+  const leaderboard = queryLeaderboard?.data?.body;
 
   return (
     <div className="dark-theme">
@@ -64,11 +77,15 @@ const League: FC<Props> = ({ leagueId }) => {
             </div>
           </div>
 
+          {leagueInfo.state === "PENDING" &&
+            <button onClick={startLeague}>Empezar liga</button>
+          }
+
           {/* Pestañas de navegación */}
-          <div className="tabs-container">
-            <div className="tabs-list">
+          <div className="league-tabs-container">
+            <div className="league-tabs-list">
               <button
-                className={`tab-button ${activeTab === "clasificacion" ? "active" : ""}`}
+                className={`league-tab-button ${activeTab === "clasificacion" ? "active" : ""}`}
                 onClick={() => setActiveTab("clasificacion")}
               >
                 Clasificación
@@ -96,7 +113,7 @@ const League: FC<Props> = ({ leagueId }) => {
                         </tr>
                       </thead>
                       <tbody>
-                        {leaderboard.map((team) => (
+                        {leaderboard && leaderboard.map((team) => (
                           <tr key={team.position} className={team.position <= 3 ? "top-position" : ""}>
                             <td className="pos-column">{team.position}</td>
                             <td className="team-column">{team.name}</td>
@@ -116,7 +133,7 @@ const League: FC<Props> = ({ leagueId }) => {
                 <div className="matches-card">
                   <h2 className="section-title">Partidos recientes y próximos</h2>
                   <div className="matches-list">
-                    {matches.map((match) => (
+                    {matches && matches.map((match) => (
                       <div key={match.matchId} className={`match-item ${match.state === "finalizado" ? "completed" : ""}`}>
                         <div className="match-header">
                           <span className={`match-status ${match.state === "finalizado" ? "completed" : "upcoming"}`}>

@@ -8,21 +8,26 @@ const AuthContext = createContext<AuthContextType | null>(null);
 
 const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [login] = appApi.usePostAuthLoginMutation();
-  const [user, setUser] = useState<UserResponseDTO | null>(() => {
+  const [user, setUser] = useState<any>(() => {
     const storedUser = localStorage.getItem("user");
-    return storedUser ? JSON.parse(storedUser).body : null;
+    return storedUser ? JSON.parse(storedUser) : null;
   });
   const [loading, setIsLoading] = useState(false);
 
-  const handleLogin = (userData: UserDTOLogin) => {
+  const handleLogin: Promise<boolean> = (userData: UserDTOLogin) => {
     setIsLoading(true);
-    login(userData).unwrap().then((response: UserResponseDTO) => {
-      localStorage.setItem("user", JSON.stringify(response));
-      setUser(response);
-      setIsLoading(false);
-    }).catch((error) => {
-      setIsLoading(false);
-      console.error("Login error:", error);
+
+    // TODO: No usar anidacion de Promesas, fix rapido
+    return new Promise((resolve, reject) => {
+      login(userData).unwrap().then((response: UserResponseDTO) => {
+        localStorage.setItem("user", JSON.stringify(response));
+        setUser(response);
+        setIsLoading(false);
+        resolve(true);
+      }).catch(() => {
+        setIsLoading(false);
+        reject(false);
+      });
     });
   }
 
@@ -36,7 +41,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   }
 
   const getUser = () => {
-    return user; 
+    return user.body;
   }
 
   return (

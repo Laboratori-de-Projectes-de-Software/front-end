@@ -33,10 +33,14 @@
   opacity: 0.9;
   z-index: 1;
   text-transform: uppercase;
+  color: #1e1e1e;
 
   &.PENDING {
     background-color: #f59e0b;
-    color: #1e1e1e;
+  }
+
+  &.IN_PROGRESS {
+    background-color: aquamarine;
   }
 }
 

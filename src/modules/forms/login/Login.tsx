@@ -12,8 +12,11 @@ const Login: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    auth!.handleLogin({ user, password });
-    closeModal();
+    auth!.handleLogin({ user, password }).then(() => {
+      closeModal();
+    }).catch((error) => {
+      alert("Error al iniciar sesión, por favor verifica tus credenciales.");
+    })
   };
   const { openModal, closeModal } = useModal();
 

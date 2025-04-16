@@ -19,13 +19,9 @@ const TextInput: FC<Props> = ({value, setValue, text}) => {
           onChange={(e) => setValue(e.target.value)}
           value={value || ''}
           />
-          {text ? 
-            <label htmlFor='text-input' className="form-field__label">
-              {text}
-            </label>
-          : 
-            <></>
-          }
+          <label htmlFor={'text-input'} className="form-field__label">
+          {text}
+        </label>
       </div>
   )
 };

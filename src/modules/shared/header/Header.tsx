@@ -27,16 +27,15 @@ const Header: React.FC = () => {
             ) : (
               <>
                 <li>
-                  <button className="top-level-header__login" onClick={() => navigate("leagues")}>Ligas</button>
-                  <div className="top-level-header__login-decoration"></div>
+                  <button className="top-level-header__leagues" onClick={() => navigate("leagues")}>Ligas</button>
+                  <div className="top-level-header__leagues-decoration"></div>
                 </li>
                 <li>
-                  <button className="top-level-header__login" onClick={() => navigate("user")}>Mi cuenta</button>
-                  <div className="top-level-header__login-decoration"></div>
+                  <button className="top-level-header__account" onClick={() => navigate("user")}>Mi cuenta</button>
+                  <div className="top-level-header__account-decoration"></div>
                 </li>
                 <li>
-                  <button className="top-level-header__login" onClick={() => auth?.logout()}>Cerrar sesión</button>
-                  <div className="top-level-header__login-decoration"></div>
+                  <button className="top-level-header__logout" onClick={() => auth?.logout()}>Cerrar sesión</button>
                 </li>
               </>
             )

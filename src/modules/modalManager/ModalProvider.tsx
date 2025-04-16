@@ -2,7 +2,8 @@ import { createContext, useContext, useState } from "react";
 
 const ModalContext = createContext({
     modal: "",
-    openModal: (modalName: string) => {},
+    leagueId: 0,
+    openModal: (modalName: string, leagueId: number) => {},
     closeModal: () => { }
 })
 
@@ -10,9 +11,14 @@ export const useModal = () => useContext(ModalContext);
 
 export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
     const [modal, setModal] = useState<string>("");
+    const [leagueId, setLeagueId] = useState<number>(0);
 
-    const openModal = (modalName: string) => {
+    const openModal = (modalName: string, leagueId: number) => {
+        console.log("open modal", modalName, leagueId)
         setModal(modalName);
+        if (modalName === "add-bot") {
+            setLeagueId(leagueId);
+        }
     }
 
     const closeModal = () => {
@@ -20,7 +26,7 @@ export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     return (
-        <ModalContext.Provider value={{ modal, openModal, closeModal }}>
+        <ModalContext.Provider value={{ modal, leagueId, openModal, closeModal }}>
             {children}
         </ModalContext.Provider>
     )

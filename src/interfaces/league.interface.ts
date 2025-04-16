@@ -1,6 +1,6 @@
 export interface LeagueResponseDTO {
   leagueId: number;
-  state: "PENDING" | "en curso" | "finalizado";
+  state: "PENDING" | "IN_PROGRESS" | "finalizado";
   name: string;
   urlImagen: string;
   user: number; // Owner of the league

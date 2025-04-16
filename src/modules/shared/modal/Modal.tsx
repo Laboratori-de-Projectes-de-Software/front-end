@@ -4,23 +4,13 @@ import "./Modal.scss";
 
 interface ModalProps {
   children: React.ReactNode;
-  isOpen: boolean;
   onClose: () => void;
 }
 
-const Modal: React.FC<ModalProps> = ({ children, isOpen, onClose }) => {
+const Modal: React.FC<ModalProps> = ({ children, onClose }) => {
   const modalRef = React.useRef<HTMLDialogElement>(null);
   const modalWrapper = document.querySelector(".modal-wrapper") as HTMLElement;
 
-  useEffect(() => {
-    const modalElement = modalRef.current;
-    if (!modalElement) return;
-    if (isOpen) {
-      modalElement.showModal();
-    } else {
-      modalElement.close();
-    }
-  }, [isOpen]);
 
   const handleCloseModal = () => {
     if (onClose) {
@@ -35,7 +25,7 @@ const Modal: React.FC<ModalProps> = ({ children, isOpen, onClose }) => {
   };
 
   return createPortal(
-    <dialog className="modal" ref={modalRef} onKeyDown={handleKeyDown}>
+    <dialog open className="modal" ref={modalRef} onKeyDown={handleKeyDown}>
       <button
         className="modal__close-button"
         onClick={handleCloseModal}

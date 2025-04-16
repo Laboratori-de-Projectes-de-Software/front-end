@@ -205,6 +205,11 @@ export const appApi = createApi({
           import.meta.env.VITE_REACT_APP_API_URL
         }/league/${leagueId}/start`,
         method: "POST",
+        headers: {
+          Authorization:
+            "Bearer " +
+            JSON.parse(localStorage.getItem("user") ?? "{}").body.token,
+        },
       }),
     }),
 

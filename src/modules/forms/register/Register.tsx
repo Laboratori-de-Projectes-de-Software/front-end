@@ -1,22 +1,22 @@
 import React, { useState } from "react";
 import { useModal } from "../../modalManager/ModalProvider";
 import "./Register.scss";
-import axios from "axios";
 import TextInput from "@modules/shared/input/text-input/text-input";
 import PasswordInput from "@modules/shared/input/password-input/password-input";
+import { appApi } from "@features/shared/index.ts";
 
 const Register: React.FC = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { openModal } = useModal();
-  const apiUrl = "http://localhost:8081/api/v0/auth/register"; // TODO: Cambiar la url de la api
+  const [register] = appApi.usePostAuthRegisterMutation();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    axios.post(apiUrl, { user: name, mail: email, password }).then((response) => {
-      alert(response);
-    });
+    register({ user: name,  mail: email, password }).unwrap().then(() => {
+      openModal("login");
+    })
   };
 
   return (
