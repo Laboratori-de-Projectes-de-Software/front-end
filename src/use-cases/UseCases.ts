@@ -3,7 +3,7 @@ import { CreateLeagueDTO, LeagueDTO } from "@DTOClasses/LeagueDTO";
 import { MatchDTO } from "@DTOClasses/MatchDTO";
 import { MessageDTO } from "@DTOClasses/MessageDTO";
 import { ParticipationDTO } from "@DTOClasses/ParticipationDTO";
-import {UserRegisterDTO, UserDTO, AuthenticatedUserDTO } from "@DTOClasses/UserDTO";
+import {UserRegisterDTO, AuthenticatedUserDTO } from "@DTOClasses/UserDTO";
   
 const BASE_URL = "http://localhost:8082/api/v0"
 //const BASE_URL = "http://localhost:8082";
