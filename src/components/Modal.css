@@ -1,0 +1,583 @@
+.modal-overlay {
+  position: fixed; /* Ensures the modal stays fixed on the screen */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Aligns the modal to the top */
+  z-index: 1000;
+  padding: 20px; /* Adds spacing around the modal */
+  box-sizing: border-box;
+  overflow-y: auto; /* Allows scrolling for the entire overlay */
+}
+
+.modal-content {
+  background: rgba(30, 30, 30, 0.9); /* Semi-transparent background */
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8);
+  width: 100%;
+  max-width: 500px; /* Limits the modal width */
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  margin: 20px 0; /* Adds spacing between the modal and the edges */
+  max-height: none; /* Removes height restrictions */
+  color: white;
+  box-sizing: border-box;
+}
+
+.modal-content-started {
+  background: rgba(30, 30, 30, 0.9); /* Semi-transparent background */
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8);
+  width: 100%;
+  max-width: 1200px; /* Limits the modal width */
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  margin: 20px 0; /* Adds spacing between the modal and the edges */
+  max-height: none; /* Removes height restrictions */
+  color: white;
+  box-sizing: border-box;
+}
+
+/* Animación al aparecer */
+@keyframes modal-fade-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Responsive para móviles */
+@media (max-width: 480px) {
+  .modal-content {
+    padding: 1.5rem;
+    width: 95%;
+  }
+
+  .modal-preview-img {
+    width: 100px;
+    height: 100px;
+  }
+
+  .modal-form-actions {
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+/* Título del modal */
+.modal-content h2 {
+  margin-top: 0;
+  color: #1db954;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 0.5rem;
+}
+
+/* Centrado de los grupos del formulario */
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.modal-form-group {
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 1.2rem;
+}
+
+/* Etiquetas */
+.modal-form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #c5c8c6;
+}
+
+/* Inputs y textarea */
+.modal-form-group input,
+.modal-form-group textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #3c4043;
+  border-radius: 6px;
+  background-color: #292a2d;
+  color: #e8eaed;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+/* Efecto al enfocar */
+.modal-form-group input:focus,
+.modal-form-group textarea:focus {
+  outline: none;
+  border-color: rgba(29, 185, 84, 0.5);
+  box-shadow: 0 0 0 2px rgba(29, 185, 84, 0.2);
+}
+
+/* Errores */
+.modal-error-message {
+  color: #f28b82;
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+/* Botones de acción */
+.modal-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.modal-cancel-button,
+.modal-submit-button {
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Botón cancelar */
+.modal-cancel-button {
+  background-color: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.modal-cancel-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Botón crear */
+.modal-submit-button {
+  background-color: rgba(29, 185, 84, 0.2);
+  border: 1px solid rgba(29, 185, 84, 0.5);
+  color: white;
+}
+
+.modal-submit-button:hover {
+  background-color: rgba(29, 185, 84, 0.3);
+  border-color: rgba(29, 185, 84, 0.8);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Previsualización de la imagen */
+.modal-image-preview {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.modal-preview-img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.bot-selection-container {
+  max-height: 200px;
+  overflow-y: auto;
+  background-color: #292a2d; /* Fondo más oscuro acorde con el modal */
+  border: 1px solid #3c4043; /* Borde sutil */
+  border-radius: 6px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+/* Mejorar cada item de la lista */
+.bot-selection-item {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  border-bottom: 1px solid #3c4043;
+  transition: background-color 0.2s;
+}
+.bot-selection-item:last-child {
+  border-bottom: none;
+}
+
+/* Efecto hover para cada item (opcional) */
+.bot-selection-item:hover {
+  background-color: rgba(29, 185, 84, 0.1);
+}
+
+/* Estilizar el texto informativo */
+.modal-helper-text {
+  font-size: 0.875rem;
+  color: #b3b3b3;
+  margin-top: 4px;
+  text-align: center; /* Puedes centrar el texto si lo prefieres */
+}
+
+/* Contenedor de la selección de bots */
+.bot-selection-container {
+  max-height: 200px;
+  overflow-y: auto;
+  background-color: #292a2d; /* Fondo oscuro a juego con el modal */
+  border: 1px solid #3c4043;
+  border-radius: 6px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+/* Cada ítem de la lista de bots */
+.bot-selection-item {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Espacio entre el checkbox y el label */
+  padding: 6px 0;
+  transition: background-color 0.2s ease;
+}
+
+.bot-selection-item:hover {
+  background-color: rgba(255, 255, 255, 0.05); /* Un ligero hover */
+}
+
+/* Estilos del label de cada bot */
+.bot-selection-item label {
+  margin: 0;
+  cursor: pointer;
+  color: #e8eaed; /* Texto claro */
+  flex: 1; /* Para que el label ocupe todo el espacio sobrante */
+}
+
+/* ---- Checkboxes personalizados ---- */
+
+/* Ocultamos la apariencia por defecto */
+.bot-selection-item input[type="checkbox"] {
+  -webkit-appearance: none; /* Safari / WebKit */
+  appearance: none; /* Estándar */
+  width: 18px;
+  height: 18px;
+  border: 2px solid #3c4043;
+  border-radius: 4px;
+  outline: none;
+  background-color: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Hover sobre el checkbox */
+.bot-selection-item input[type="checkbox"]:hover {
+  border-color: #1db954;
+}
+
+/* Checkbox marcado */
+.bot-selection-item input[type="checkbox"]:checked {
+  background-color: #1db954;
+  border-color: #1db954;
+}
+
+/* Check visual al marcar */
+.bot-selection-item input[type="checkbox"]:checked::after {
+  content: "";
+  display: block;
+  position: relative;
+  left: 4px;
+  top: 0;
+  width: 3px;
+  height: 8px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.round-navigation, .round-navigation button{
+  margin: 5px;
+}
+
+.bot-images-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin: 15px;
+}
+
+.bot-image {
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ccc;
+}
+
+.bot-league-image {
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ccc;
+}
+
+.league-details {
+  display: flex;
+  gap: 20px;
+}
+
+.round {
+  margin-bottom: 15px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+}
+
+/* MATCHES */
+
+.matches-column {
+  flex: 1;
+  min-width: 0;
+  background-color: #292a2d; /* Fondo oscuro */
+  border-radius: 8px;
+  padding: 15px;
+  color: #e8eaed; /* Texto claro */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.match-card {
+  display: flex;
+  flex-direction: row; /* Alinea los elementos horizontalmente */
+  align-items: center; /* Centra verticalmente los elementos */
+  justify-content: space-between; /* Espacia los elementos horizontalmente */
+  border: 1px solid #3c4043;
+  border-radius: 8px;
+  padding: 10px;
+  margin: 10px 0;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  background-color: #1e1e1e; /* Fondo oscuro */
+  color: #e8eaed; /* Texto claro */
+}
+
+.match-card:hover {
+  background-color: #1e1e1eD4; /* Verde al pasar el mouse */
+  color: white;
+  transform: translateY(-3px); /* Efecto de elevación */
+}
+
+.match-card p {
+  margin: 5px 0;
+  font-size: 1rem;
+}
+
+.match-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.bot-container {
+  text-align: center;
+}
+
+.bot-image {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.chat-container {
+  max-height: 300px;
+  overflow-y: auto;
+  background-color: #f5f5f5;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.chat-message {
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 8px;
+  max-width: 70%;
+}
+
+.bot1-message {
+  background-color: #d1e7dd;
+  align-self: flex-start;
+}
+
+.bot2-message {
+  background-color: #f8d7da;
+  align-self: flex-end;
+}
+
+.round-navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.match-card img {
+  width: 50px; /* Tamaño fijo para las imágenes */
+  height: 50px;
+  border-radius: 50%; /* Hace las imágenes circulares */
+  object-fit: cover; /* Asegura que la imagen se ajuste correctamente */
+  border: 2px solid #ccc;
+}
+
+
+.match-card-content {
+  flex: 1; /* Ocupa el espacio restante entre las imágenes */
+  text-align: center; /* Centra el contenido del enfrentamiento */
+  padding: 0 10px; /* Espaciado horizontal */
+}
+
+.standings-column {
+  flex: 1;
+  min-width: 0;
+  background-color: #292a2d; /* Fondo oscuro */
+  border-radius: 8px;
+  padding: 15px;
+  color: #e8eaed; /* Texto claro */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.standings-column table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.standings-column th {
+  background-color: #1db954; /* Verde para encabezados */
+  color: white;
+  padding: 10px;
+  text-align: left;
+  border-bottom: 2px solid #292a2d;
+}
+
+.standings-column td {
+  padding: 10px;
+  border-bottom: 1px solid #3c4043;
+}
+
+.standings-column tr:hover {
+  background-color: rgba(255, 255, 255, 0.05); /* Hover sutil */
+}
+
+.standings-column td:first-child {
+  font-weight: bold;
+}
+
+/* MATCH MODAL */
+
+.modal-overlay-matchmodal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content-matchmodal {
+  background: #fff;
+  border-radius: 8px;
+  width: 400px;
+  max-height: 80%;
+  overflow-y: auto;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.close-button-matchmodal {
+  background: none;
+  border: none;
+  font-size: 20px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+
+.match-header-matchmodal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.bot-container-matchmodal {
+  text-align: center;
+}
+
+.bot-image-matchmodal {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.chat-container-matchmodal {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.chat-message-matchmodal {
+  max-width: 70%;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.bot1-message-matchmodal {
+  color: white;
+  align-self: flex-start;
+  background-color: #6bdb92;
+  border: 1px solid #b2d8a7;
+}
+
+.bot2-message-matchmodal {
+  color: white;
+  align-self: flex-end;
+  background-color: #267240;
+  border: 1px solid #a8d5c5;
+}

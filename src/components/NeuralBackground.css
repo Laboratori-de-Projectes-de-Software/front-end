@@ -1,0 +1,42 @@
+.gradient-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -2;
+  background: linear-gradient(
+    -45deg,
+    #0d1117,
+    #161b22,
+    #21262d,
+    #30363d,
+    #0d1117
+  );
+  background-size: 400% 400%;
+  animation: gradientAnimation 25s ease infinite;
+}
+
+.neural-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  display: block;
+}
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}

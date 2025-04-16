@@ -1,0 +1,27 @@
+.button{
+    background-color: #0d1117C3; /* Default color */
+    color: white;
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s;
+}
+
+.button:hover {
+    background-color: rgba(29, 185, 84, 0.3); /* Hover effect */
+    color: white;
+    transform: scale(1.05);
+}
+
+.button:active {
+    background-color: rgba(29, 185, 84, 0.7);
+    transform: scale(0.95);
+}
+
+.button-group {
+    display: flex;
+    gap: 10px; /* Espaciado horizontal entre los botones */
+    justify-content: center; /* Centrar los botones */
+}
