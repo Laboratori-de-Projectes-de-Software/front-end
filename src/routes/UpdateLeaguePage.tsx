@@ -4,7 +4,7 @@ import { getAllBots, getAllLeagues } from "@use-cases/UseCases";  // Importa la 
 import LeagueBar from "@components/LeagueBar";
 import WhiteButton from "@components/WhiteButton";
 import { CreateLeagueDTO, LeagueDTO } from "@DTOClasses/LeagueDTO";
-import { BotSummaryResponseDTO } from "@DTOClasses/BotDTO";
+import { BotDTO } from "@DTOClasses/BotDTO";
 
 const UpdateLeaguePage: React.FC = () => {
   const [leagues, setLeagues] = useState<LeagueDTO[]>([]); // Afegim estat per a les lligues
@@ -13,14 +13,14 @@ const UpdateLeaguePage: React.FC = () => {
   const [rounds, setRounds] = useState("");
   const [matchTime, setMatchTime] = useState("");
   const [errorMessage, setErrorMessage] = useState(""); // Per gestionar els missatges d'error
-  const [bots, setBots] = useState<BotSummaryResponseDTO[]>([]); // Estat per emmagatzemar els bots
+  const [bots, setBots] = useState<BotDTO[]>([]); // Estat per emmagatzemar els bots
   const [selectedLeagueId, setSelectedLeagueId] = useState<number | null>(null); // Estat per a la lliga seleccionada
 
   useEffect(() => {
     const fetchLeagueDetails = async () => {
       if (selectedLeagueId !== null) {
         const leagueDetails = await getAllLeagues(1 /* gestió d'usuari actual */);
-        const selectedLeague = leagueDetails.find((league) => league.leagueId === selectedLeagueId);
+        const selectedLeague = leagueDetails.find((league) => league.id === selectedLeagueId);
         if (selectedLeague) {
           setLeagueName(selectedLeague.name);
           setSelectedParticipants(selectedLeague.bots.map((bot) => bot));
