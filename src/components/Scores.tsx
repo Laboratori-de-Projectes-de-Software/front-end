@@ -3,6 +3,7 @@ import SideBar from "./SideBar";
 import { LeagueResponseDTO } from "./ConAPI";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 interface NotificationProps {
   message: string;
@@ -103,12 +104,9 @@ export default function Scores() {
                   <p className="league_state">Estado: {league.state}</p>
                   <p className="league_rounds">Rondas: {league.rounds}</p>
                 </div>
-                <a
-                  className="league_link"
-                >
-                  Ver Liga
-                </a>
-                <Link to={`/addiaLeague/${league.leagueId}`}>Add bots to league</Link>
+                  <Link to={`/clasificacion/${String(leagues[index].leagueId)}`}>
+                    Ver Liga
+                  </Link>
               </div>
             ))}
           </div>

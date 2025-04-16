@@ -65,7 +65,7 @@ export interface MatchResponseDTO {
 }
 
 export interface ParticipationResponseDTO {
-    botId: number; name: string; points: number; postition: number;
+    botId: number; name: string; points: number; position: number; nWins: number; nDraws: number; nLosses: number;
 }
 export interface MessageResponseDTO {
     text: string; botId: number; time: string;
