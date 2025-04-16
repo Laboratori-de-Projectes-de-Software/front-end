@@ -4,7 +4,7 @@ import {
   getBotById,
   updateBot,
   addBotsToLeagueModel,
-  Bot,
+  Bot, Bot_simple,
 } from "../models/BotModel";
 import { jwtDecode } from "jwt-decode";
 
@@ -18,7 +18,7 @@ import { jwtDecode } from "jwt-decode";
 export const handleCreateBot = async (
   formData: {
     name: string;
-    descripcion: string;
+    description: string;
     urlImagen: string;
   },
   navigate: (path: string) => void,
@@ -39,7 +39,7 @@ export const handleCreateBot = async (
 
     const botData = {
       name: formData.name,
-      descripcion: formData.descripcion || "",
+      description: formData.description || "",
       urlImagen: formData.urlImagen || "",
       endpoint: "default",
     };
@@ -80,10 +80,10 @@ export const fetchUserBots = async (
 ) => {
   try {
     const bots = await getUserBots();
-
+    console.log("CONTROLER: Bots obtenidos:", bots);
     // Obtener detalles completos de cada bot
     const detailedBots = await Promise.all(
-        bots.map(async (bot: Bot) => {
+        bots.map(async (bot: Bot_simple) => {
           try {
             return await fetchBotById(bot.id!); // Usar fetchBotById para obtener detalles
           } catch (error) {
@@ -92,7 +92,6 @@ export const fetchUserBots = async (
           }
         })
     );
-
     setBots(detailedBots);
     console.log("Bots obtenidos con éxito:", detailedBots);
   } catch (error) {

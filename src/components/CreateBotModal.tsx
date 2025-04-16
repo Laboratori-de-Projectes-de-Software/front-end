@@ -10,7 +10,7 @@ interface CreateBotModalProps {
 
 interface BotData {
   name: string;
-  descripcion: string;
+  description: string;
   urlImagen: string;
 }
 
@@ -23,7 +23,7 @@ interface FormErrors {
 const CreateBotModal: React.FC<CreateBotModalProps> = ({ isOpen, onClose }) => {
   const [botData, setBotData] = useState<BotData>({
     name: "",
-    descripcion: "",
+    description: "",
     urlImagen: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -108,11 +108,11 @@ const CreateBotModal: React.FC<CreateBotModalProps> = ({ isOpen, onClose }) => {
           </div>
 
           <div className="modal-form-group">
-            <label htmlFor="descripcion">Descripción</label>
+            <label htmlFor="description">Descripción</label>
             <textarea
-              id="descripcion"
-              name="descripcion"
-              value={botData.descripcion}
+              id="description"
+              name="description"
+              value={botData.description}
               onChange={handleChange}
               placeholder="Describe brevemente la estrategia de tu bot"
               rows={3}
@@ -120,7 +120,7 @@ const CreateBotModal: React.FC<CreateBotModalProps> = ({ isOpen, onClose }) => {
           </div>
 
           <div className="modal-form-group">
-            <label htmlFor="urlImage">Imagen del Bot</label>
+            <label htmlFor="urlImagen">Imagen del Bot</label>
             <input
               id="urlImagen"
               name="urlImagen"

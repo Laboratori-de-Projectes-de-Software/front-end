@@ -71,7 +71,7 @@ const LeagueModal: React.FC<LeagueModalProps> = ({ isOpen, onClose, league }) =>
                 <img src={bot1.urlImage} alt={bot1.name} />
                 <div className="match-card-content">
                     <p>
-                        BOT {bot1.name} vs BOT {bot2.name}
+                        {bot1.name} vs {bot2.name}
                     </p>
                     <p>Estado: {match.state}</p>
                 </div>

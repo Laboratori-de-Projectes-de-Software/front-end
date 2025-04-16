@@ -5,15 +5,20 @@ import { getAuthToken } from "../api/AuthUtils";
 /**
  * Interfaz que define la estructura de un bot según la API
  */
-export interface Bot {
+export interface Bot_simple {
   id?: number;
   name: string;
-  descripcion?: string; // Nota: descripcion, no description
-  urlImage?: string; // Nota: urlImagen, no imageUrl
-  endpoint?: string; // Campo requerido por la API
-  userId?: number;
-  createdAt?: string;
-  updatedAt?: string;
+  description?: string; // Nota: descripcion, no description
+}
+
+export interface Bot {
+  botId: number,
+  name: string,
+  description: string,
+  urlImagen: string,
+  nWins: number,
+  nLosses: number,
+  nDraws: number
 }
 
 /**
@@ -23,7 +28,7 @@ export interface Bot {
  */
 export const createBot = async (botData: {
   name: string;
-  descripcion: string;
+  description: string;
   urlImagen: string;
   endpoint?: string;
 }) => {
@@ -185,7 +190,7 @@ export const updateBot = async (
   botData: {
     name: string;
     descripcion: string;
-    urlImage: string;
+    urlImagen: string;
     endpoint?: string;
   }
 ) => {

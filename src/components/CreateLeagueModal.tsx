@@ -54,6 +54,7 @@ const CreateLeagueModal: React.FC<CreateLeagueModalProps> = ({
         (bots) => {
           setAvailableBots(bots);
           setIsLoadingBots(false);
+          console.log("Datos actuales de leagueData:", leagueData); // Log de leagueData
         },
         (error) => {
           console.error("Error al cargar los bots:", error);
@@ -72,6 +73,7 @@ const CreateLeagueModal: React.FC<CreateLeagueModalProps> = ({
           }
         }
       );
+      console.log("League Data with Bots:", leagueData);
     }
   }, [isOpen, navigate]);
 
@@ -135,6 +137,8 @@ const CreateLeagueModal: React.FC<CreateLeagueModalProps> = ({
     e.preventDefault();
 
     if (!validateForm()) return;
+
+    console.log("Datos de la liga antes de enviar:", leagueData); // Log de leagueData
 
     setIsSubmitting(true);
 
@@ -255,15 +259,15 @@ const CreateLeagueModal: React.FC<CreateLeagueModalProps> = ({
             ) : availableBots.length > 0 ? (
               <div className="bot-selection-container">
                 {availableBots.map((bot) => (
-                  <div key={bot.id} className="bot-selection-item">
+                  <div key={bot.botId} className="bot-selection-item">
                     <input
                       type="checkbox"
-                      id={`bot-${bot.id}`}
-                      checked={leagueData.bots.includes(bot.id as number)}
-                      onChange={() => handleBotSelection(bot.id as number)}
+                      id={`bot-${bot.botId}`}
+                      checked={leagueData.bots.includes(bot.botId as number)}
+                      onChange={() => handleBotSelection(bot.botId as number)}
                     />
-                    <label htmlFor={`bot-${bot.id}`}>
-                      {bot.name} {bot.descripcion ? `- ${bot.descripcion}` : ""}
+                    <label htmlFor={`bot-${bot.botId}`}>
+                      {bot.name} {bot.description ? `- ${bot.description}` : ""}
                     </label>
                   </div>
                 ))}
