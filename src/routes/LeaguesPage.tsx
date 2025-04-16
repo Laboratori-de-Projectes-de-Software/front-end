@@ -28,13 +28,8 @@ const LeaguesPage: React.FC = () => {
 
     useEffect(() => {
         const fetchLeagues = async () => {
-            const userId = localStorage.getItem("userId");
-            if(userId) {
-                const leaguesFetch = await getAllLeagues();
-                setLeagues(leaguesFetch);
-            } else {
-                alert("You are not logged in. Complete the login to acces the page");
-            }
+          const leaguesFetch = await getAllLeagues();
+          setLeagues(leaguesFetch);
         }
     }, []);
   
