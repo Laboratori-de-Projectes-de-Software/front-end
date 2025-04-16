@@ -267,7 +267,7 @@ const CreateLeagueModal: React.FC<CreateLeagueModalProps> = ({
                       onChange={() => handleBotSelection(bot.botId as number)}
                     />
                     <label htmlFor={`bot-${bot.botId}`}>
-                      {bot.name} {bot.description ? `- ${bot.description}` : ""}
+                      {bot.name} {bot.quality ? `- ${bot.quality}` : ""}
                     </label>
                   </div>
                 ))}

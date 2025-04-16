@@ -44,7 +44,7 @@ const BotsPage: React.FC = () => {
                 <div className="bot-name">{bot.name}</div>
                 <img
                   className="bot-image"
-                  src={bot.urlImage}
+                  src={bot.imageUrl}
                   alt={`Imagen de ${bot.name}`}
                 />
                 <div className="bot-stats">

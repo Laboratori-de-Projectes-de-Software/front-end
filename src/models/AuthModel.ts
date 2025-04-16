@@ -7,8 +7,8 @@ export const registerUser = async (
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      username: Nombre,
-      email: Correo,
+      user: Nombre,
+      mail: Correo,
       password: Contraseña,
     }),
   });
@@ -19,14 +19,19 @@ export const registerUser = async (
   if (!responseText || responseText.trim() === "") {
     return { success: true };
   }
-  return response.json();
+
+  try {
+    return JSON.parse(responseText);
+  } catch (e) {
+    return { success: true, message: responseText };
+  }
 };
 
-export const loginUser = async (Correo: string, Contraseña: string) => {
+export const loginUser = async (Usuario: string, Contraseña: string) => {
   const response = await fetch("http://localhost:8080/api/v0/auth/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email: Correo, password: Contraseña }),
+    body: JSON.stringify({ user: Usuario, password: Contraseña }),
   });
 
   if (!response.ok) throw new Error(await response.text());

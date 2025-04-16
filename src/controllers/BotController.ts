@@ -4,7 +4,7 @@ import {
   getBotById,
   updateBot,
   addBotsToLeagueModel,
-  Bot, Bot_simple,
+  Bot,
 } from "../models/BotModel";
 import { jwtDecode } from "jwt-decode";
 
@@ -39,8 +39,8 @@ export const handleCreateBot = async (
 
     const botData = {
       name: formData.name,
-      description: formData.description || "",
-      urlImagen: formData.urlImagen || "",
+      quality: formData.description || "",
+      imageUrl: formData.urlImagen || "",
       endpoint: "default",
     };
 
@@ -75,25 +75,15 @@ export const handleCreateBot = async (
  * @param setError Función opcional para manejar errores
  */
 export const fetchUserBots = async (
-    setBots: (bots: Bot[]) => void,
-    setError?: (error: string) => void
+  setBots: (bots: Bot[]) => void,
+  setError?: (error: string) => void
 ) => {
   try {
     const bots = await getUserBots();
     console.log("CONTROLER: Bots obtenidos:", bots);
     // Obtener detalles completos de cada bot
-    const detailedBots = await Promise.all(
-        bots.map(async (bot: Bot_simple) => {
-          try {
-            return await fetchBotById(bot.id!); // Usar fetchBotById para obtener detalles
-          } catch (error) {
-            console.error(`Error al obtener detalles del bot con ID ${bot.id}:`, error);
-            return bot; // Devolver el bot original si ocurre un error
-          }
-        })
-    );
-    setBots(detailedBots);
-    console.log("Bots obtenidos con éxito:", detailedBots);
+    setBots(bots);
+    console.log("Bots obtenidos con éxito:", bots);
   } catch (error) {
     console.error("Error al obtener los bots del usuario:", error);
     if (setError) {

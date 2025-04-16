@@ -6,7 +6,7 @@ import BackgroundCanvas from "../components/BackgroundCanvas";
 
 const LoginPage: React.FC = () => {
   const CamposLogin = [
-    { nombre: "Correo", tipo: "email" },
+    { nombre: "Usuario", tipo: "text" },
     { nombre: "Contraseña", tipo: "password" },
   ];
 

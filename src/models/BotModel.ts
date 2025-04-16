@@ -5,20 +5,15 @@ import { getAuthToken } from "../api/AuthUtils";
 /**
  * Interfaz que define la estructura de un bot según la API
  */
-export interface Bot_simple {
-  id?: number;
-  name: string;
-  description?: string; // Nota: descripcion, no description
-}
 
 export interface Bot {
-  botId: number,
-  name: string,
-  description: string,
-  urlImagen: string,
-  nWins: number,
-  nLosses: number,
-  nDraws: number
+  botId: number;
+  name: string;
+  quality: string;
+  imageUrl: string;
+  nWins: number;
+  nLosses: number;
+  nDraws: number;
 }
 
 /**
@@ -28,9 +23,9 @@ export interface Bot {
  */
 export const createBot = async (botData: {
   name: string;
-  description: string;
-  urlImagen: string;
-  endpoint?: string;
+  quality: string;
+  imageUrl: string;
+  apiUrl?: string;
 }) => {
   const token = localStorage.getItem("token");
 
@@ -43,7 +38,7 @@ export const createBot = async (botData: {
 
     const dataToSend = {
       ...botData,
-      endpoint: botData.endpoint || "default",
+      apiUrl: botData.apiUrl || "default",
     };
 
     const response = await fetch("http://localhost:8080/api/v0/bot", {
@@ -189,9 +184,9 @@ export const updateBot = async (
   botId: number,
   botData: {
     name: string;
-    descripcion: string;
-    urlImagen: string;
-    endpoint?: string;
+    quality: string;
+    imageUrl: string;
+    apiUrl?: string;
   }
 ) => {
   const token = localStorage.getItem("token");
@@ -204,7 +199,7 @@ export const updateBot = async (
     // Asegurar que el endpoint esté definido
     const dataToSend = {
       ...botData,
-      endpoint: botData.endpoint || "default",
+      apiUrl: botData.apiUrl || "default",
     };
 
     const response = await fetch(`http://localhost:8080/api/v0/bot/${botId}`, {

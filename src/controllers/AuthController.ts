@@ -31,10 +31,10 @@ export const handleLogin = async (
   navigate: any,
   setError: any
 ) => {
-  const { Correo, Contraseña } = formData;
+  const { Usuario, Contraseña } = formData;
 
   try {
-    const data = await loginUser(Correo, Contraseña);
+    const data = await loginUser(Usuario, Contraseña);
     console.log("Login exitoso:", data);
 
     // Guardar el token original (no el decodificado)
