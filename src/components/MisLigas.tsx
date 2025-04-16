@@ -84,7 +84,7 @@ export default function Scores() {
         <SideBar />
         <div className="content_container">
           <div className="scores_container">
-            <h1>Scores</h1>
+            <h1>Mis Ligas</h1>
             <h2 className="title">Historical leagues:</h2>
             {notification && (
               <Notification
@@ -104,9 +104,13 @@ export default function Scores() {
                   <p className="league_state">Estado: {league.state}</p>
                   <p className="league_rounds">Rondas: {league.rounds}</p>
                 </div>
-                  <Link to={`/clasificacion/${String(leagues[index].leagueId)}`}>
+                <Link to={`/clasificacion/${String(league.leagueId)}`} className="button-round button-blue">
                     Ver Liga
-                  </Link>
+                </Link>
+                <Link to={`/combatesLiga/${String(league.leagueId)}`} className="button-round button-blue">
+                    Ver Combates
+                </Link>
+
               </div>
             ))}
           </div>

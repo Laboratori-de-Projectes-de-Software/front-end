@@ -8,8 +8,11 @@ const SideBar: React.FC = () => {
         <Link to="/">
           <div className="sidebar-item">Home</div>
         </Link>
-        <Link to="/scores">
-          <div className="sidebar-item">Scores</div>
+        <Link to="/misLigas">
+          <div className="sidebar-item">Mis Ligas</div>
+        </Link>
+        <Link to="/startLeague">
+          <div className="sidebar-item">Start Liga</div>
         </Link>
         <Link to="/account">
           <div className="sidebar-item">Account</div>

@@ -36,6 +36,8 @@ export default function Account() {
   }, []); 
 
 
+
+
   const notificationStyles = {
     container: {
         padding: '12px 16px',
@@ -158,7 +160,7 @@ const toggleOption = (option: string) => {
                         className="counter-input" 
                     />
                 </div>
-                <button className="button-round button-blue">Start</button>
+                <button className="button-round button-blue" >Start</button>
               </div>
           </div>
         </div>
