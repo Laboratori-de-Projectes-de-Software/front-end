@@ -35,10 +35,10 @@ const MatchPage: React.FC = () => {
   }]
   // Simula una petició POST
   const sendMessage = async (sender: string, text: string) => {
-    const newMessage = {
-      id: messages.length + 1,
-      sender,
-      text
+    const newMessage: MessageDTO = {
+      botId: parseInt(sender),
+      text,
+      timeStamp: messages.length.toString() + 1
     };
   
     if (timeLeft > 0){
