@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { userSignUp } from '../use-cases/UseCases';
+import { userSignUp } from '@use-cases/UseCases';
+import WhiteButton from '@components/WhiteButton';
 
 const RegisterPage: React.FC = () => {
   const [user, setUser] = useState('');
-  const [email, setEmail] = useState('');
+  const [mail, setMail] = useState('');
   const [password, setPassword] = useState('');
   const [rPassword, setRPassword] = useState('');
   const navigate = useNavigate();
@@ -16,13 +17,8 @@ const RegisterPage: React.FC = () => {
       return;
     }
 
-    const r = await userSignUp({user, email, password });
-    if (r) {
-      alert("Registre completat correctament");
-      navigate("/login");
-    } else {
-      alert("Error durant el registre");
-    }
+   userSignUp({user, mail, password });
+   navigate("/");
   };
 
   
@@ -51,8 +47,8 @@ const RegisterPage: React.FC = () => {
             <input
               type="email"
               id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={mail}
+              onChange={(e) => setMail(e.target.value)}
               className="w-full p-3 rounded-lg bg-(--input-bkg) border-none"
             />
           </div>
@@ -80,12 +76,7 @@ const RegisterPage: React.FC = () => {
               className="w-full p-3 rounded-lg bg-(--input-bkg) border-none"
             />
           </div>
-          <button
-            type="submit"
-            className="w-full bg-(--btn-bkg) text-black font-bold p-3 rounded-lg hover:bg-gray-300 transition-colors hover:cursor-pointer"
-          >
-            Register
-          </button>
+          <WhiteButton type="submit" className="w-full">Register</WhiteButton>
         </form>
         <div className="mt-4 text-center">
           <p className="text-sm text-gray-400">

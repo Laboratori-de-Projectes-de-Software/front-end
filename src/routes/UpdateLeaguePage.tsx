@@ -1,24 +1,50 @@
 import React, { useState, useEffect } from "react";
-import { addBotToLeague, createLeague } from "@use-cases/UseCases";  // Importa la funció createLeague
-import { getAllBots } from "@use-cases/UseCases";  // Importa la funció getBots i getAllLeagues
+import { updateLeague } from "@use-cases/UseCases";  // Importa la funció updateLeague
+import { getAllBots, getAllLeagues } from "@use-cases/UseCases";  // Importa la funció getBots i getAllLeagues
+import LeagueBar from "@components/LeagueBar";
 import WhiteButton from "@components/WhiteButton";
-import { CreateLeagueDTO } from "@DTOClasses/LeagueDTO";
+import { CreateLeagueDTO, LeagueDTO } from "@DTOClasses/LeagueDTO";
 import { BotDTO } from "@DTOClasses/BotDTO";
+import { useParams } from "react-router-dom";
 
-const AddLeaguePage: React.FC = () => {
+const UpdateLeaguePage: React.FC = () => {
+  const { leagueId } = useParams();
+  const [leagues, setLeagues] = useState<LeagueDTO[]>([]); // Afegim estat per a les lligues
   const [leagueName, setLeagueName] = useState("");
   const [selectedParticipants, setSelectedParticipants] = useState<number[]>([]);
   const [rounds, setRounds] = useState("");
   const [matchTime, setMatchTime] = useState("");
   const [errorMessage, setErrorMessage] = useState(""); // Per gestionar els missatges d'error
   const [bots, setBots] = useState<BotDTO[]>([]); // Estat per emmagatzemar els bots
-  
+  const [selectedLeagueId, setSelectedLeagueId] = useState<number | null>(null); // Estat per a la lliga seleccionada
+
+  useEffect(() => {
+    const fetchLeagueDetails = async () => {
+      if (selectedLeagueId !== null) {
+        const leagueDetails = await getAllLeagues();
+        const selectedLeague = leagueDetails.find((league) => league.id === selectedLeagueId);
+        if (selectedLeague) {
+          setLeagueName(selectedLeague.name);
+          setSelectedParticipants(selectedLeague.bots.map((bot) => bot));
+          setRounds(selectedLeague.rounds.toString());
+          setMatchTime(selectedLeague.matchTime.toString());
+        }
+      }
+    };
+    fetchLeagueDetails();
+  }, [selectedLeagueId]);
+
   useEffect(() => {
     const fetchBots = async () => {
       const fetchedBots = await getAllBots();
       setBots(fetchedBots);
     };
+    const fetchLeagues = async () => {
+      const fetchedLeagues = await getAllLeagues(1 /* gestió d'usuari actual */);
+      setLeagues(fetchedLeagues);
+    };
     fetchBots();
+    fetchLeagues();
   }, []);
 
   // Funció per gestionar el canvi de participants seleccionats
@@ -29,7 +55,7 @@ const AddLeaguePage: React.FC = () => {
   };
 
   // Funció per gestionar el submit de la lliga
-  const handleSubmit = async () => {
+  const handleUpdate = async () => {
     if (!leagueName) {
       setErrorMessage("El nom de la lliga és obligatori.");
       return;
@@ -51,14 +77,15 @@ const AddLeaguePage: React.FC = () => {
     }
 
     // Prepara les dades de la lliga
-    const newLeague: CreateLeagueDTO = {
+    const newLeague = {
       name: leagueName,
+      bots: selectedParticipants,
       rounds: parseInt(rounds),
       matchTime: parseInt(matchTime),
-    };
+    } as CreateLeagueDTO;
 
     try {
-      const result = await createLeague(newLeague);  // Utilitzem la funció createLeague
+      const result = await updateLeague(parseInt(leagueId!), newLeague);  // Utilitzem la funció updateLeague
 
       if (result) {
         // Restableix les dades del formulari
@@ -67,7 +94,6 @@ const AddLeaguePage: React.FC = () => {
         setRounds("");
         setMatchTime("");
         setErrorMessage(""); // Restableix els errors en cas d'èxit
-        selectedParticipants.forEach((botId) => addBotToLeague(result.id, botId));
       } else {
         setErrorMessage("Error al crear la lliga.");
       }
@@ -79,6 +105,11 @@ const AddLeaguePage: React.FC = () => {
   return (
     <div className="min-h-screen">
       <main className="flex flex-row items-start gap-8">
+        <LeagueBar
+          leagues={leagues}
+          selectedLeagueId={1} // Aquí hauries de passar l'ID de la lliga seleccionada
+          onSelectLeague={() => {}}
+        />
         <div className="flex-1 text-center p-10 flex flex-col items-center">
           <h1 className="text-3xl font-bold mb-6">Add League</h1>
 
@@ -132,11 +163,11 @@ const AddLeaguePage: React.FC = () => {
             />
           </div>
 
-          <WhiteButton onClick={handleSubmit}>Add League</WhiteButton>
+          <WhiteButton onClick={handleUpdate}>Update League</WhiteButton>
         </div>
       </main>
     </div>
   );
 };
 
-export default AddLeaguePage;
+export default UpdateLeaguePage;

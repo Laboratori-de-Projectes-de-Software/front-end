@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { userLoggin } from '../use-cases/UseCases';
+import { userLoggin } from '@use-cases/UseCases';
+import WhiteButton from '@components/WhiteButton';
 
 const LoginPage: React.FC = () => {
  
@@ -9,7 +10,7 @@ const LoginPage: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token =  JSON.parse(localStorage.getItem("user") || "{}").token;
+    const token =  JSON.parse(localStorage.getItem("token") || "").token;
     if (token) {
       navigate("/");
     }
@@ -23,7 +24,9 @@ const LoginPage: React.FC = () => {
     if (res && res.token) {
       alert("Sessió iniciada correctament");
       
-      localStorage.setItem("user", JSON.stringify(res));
+      localStorage.setItem("token", res.token);
+      localStorage.setItem("userId", res.id.toString());
+      localStorage.setItem("user", res.user);
       navigate("/");
     } else {
       alert("Error iniciant sessió. Comprova les credencials.");
@@ -60,12 +63,7 @@ const LoginPage: React.FC = () => {
               className="w-full p-3 rounded-lg bg-(--input-bkg) border-none"
             />
           </div>
-          <button
-            type="submit"
-            className="w-full bg-(--btn-bkg) text-black font-bold p-3 rounded-lg hover:bg-gray-300 transition-colors hover:cursor-pointer"
-          >
-            Log In
-          </button>
+          <WhiteButton type="submit" className="w-full">Log In</WhiteButton>
         </form>
         <div className="mt-4 text-center">
           <p className="text-sm text-gray-400">

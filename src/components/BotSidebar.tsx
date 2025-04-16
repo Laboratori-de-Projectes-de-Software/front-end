@@ -1,12 +1,8 @@
+import { BotDTO } from "@DTOClasses/BotDTO";
 import React from "react";
 
-interface BotInfo {
-  name: string;
-  topic: string;
-}
-
 interface BotSidebarProps {
-  bot: BotInfo;
+  bot: BotDTO;
   onSendMessage: (sender: string, text: string) => void;
 }
 
@@ -16,12 +12,12 @@ const BotSidebar: React.FC<BotSidebarProps> = ({ bot, onSendMessage }) => {
       <h2 className="font-bold text-xl">{bot.name}</h2>
       <button
         onClick={() =>
-          onSendMessage(bot.name, "Missatge de prova. A tope amb " + bot.topic)
+          onSendMessage(bot.id.toString(), "Missatge de prova. A tope amb " + bot.quality)
         }
       >
         Simula Missatge
       </button>
-      <p className="text-sm">Tema: {bot.topic}</p>
+      <p className="text-sm">Tema: {bot.quality}</p>
     </aside>
   );
 };

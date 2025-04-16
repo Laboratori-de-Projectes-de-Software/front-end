@@ -1,18 +1,17 @@
-export interface LeagueDTO {
+type LeagueState = "PENDING" | "IN_PROCESS" | "COMPLETED"
+
+export interface CreateLeagueDTO {
   name: string;
-  urlImage: string;
+  imageUrl?: string | null;
   rounds: number;
-  matchTime: number;
-  bots: number[];
-  userId: number;  
+  matchTime: number;  
 }
 
-export interface LeagueResponseDTO {
-  leagueId: number;
-  state: string;
+export interface LeagueDTO {
+  id: number;
   name: string;
-  urlImage: string;
-  user: number;
+  state: LeagueState
+  imageUrl?: string | null;
   rounds: number;
   matchTime: number;
   bots: number[];

@@ -1,26 +1,27 @@
-import { BotDTO, BotResponseDTO, BotSummaryResponseDTO } from "@DTOClasses/BotDTO";
-import { LeagueDTO, LeagueResponseDTO } from "@DTOClasses/LeagueDTO";
-import { ParticipationResponseDTO } from "@DTOClasses/ParticipationDTO";
-import { MatchResponseDTO } from "@DTOClasses/MatchDTO";
-import { MessageResponseDTO } from "@DTOClasses/MessageDTO";
-import {UserDTORegister, UserResponseDTO } from "@DTOClasses/UserDTO";
-
-
+import { CreateBotDTO, BotDTO } from "@DTOClasses/BotDTO";
+import { CreateLeagueDTO, LeagueDTO } from "@DTOClasses/LeagueDTO";
+import { MatchDTO } from "@DTOClasses/MatchDTO";
+import { MessageDTO } from "@DTOClasses/MessageDTO";
+import { ParticipationDTO } from "@DTOClasses/ParticipationDTO";
+import {UserRegisterDTO, AuthenticatedUserDTO } from "@DTOClasses/UserDTO";
   
-//const BASE_URL = "http://localhost:8080";
+const BASE_URL = "http://localhost:8082/api/v0"
+//const BASE_URL = "http://localhost:8082";
 
-const BASE_URL = ""
 
-export async function userSignUp(userData: UserDTORegister): Promise<UserResponseDTO | null> {
+export async function userSignUp(userData: UserRegisterDTO){
     try {
         const response = await fetch(`${BASE_URL}/auth/register`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(userData),
         });
-        if (!response.ok) return null;
+        if (!response.ok) {
+          console.error("Signup response. Status:", response.status);
+        }else{ 
+          console.log("Sigup correcte", response.status);
+        }
 
-        return await response.json();
     } catch (err) {
         console.error("Signup error:", err);
         return null;
@@ -28,7 +29,7 @@ export async function userSignUp(userData: UserDTORegister): Promise<UserRespons
   }
   
 
-  export async function userLoggin(email: string, password: string):  Promise<UserResponseDTO | null> {
+  export async function userLoggin(email: string, password: string):  Promise<AuthenticatedUserDTO | null> {
     try {
         const response = await fetch(`${BASE_URL}/auth/login`, {
         method: "POST",
@@ -38,7 +39,7 @@ export async function userSignUp(userData: UserDTORegister): Promise<UserRespons
 
         if (!response.ok) return null;
 
-        const data: UserResponseDTO = await response.json();
+        const data: AuthenticatedUserDTO = await response.json();
       
         console.log("Resposta del backend:", data);      
         return data;
@@ -55,16 +56,21 @@ export async function userSignUp(userData: UserDTORegister): Promise<UserRespons
  */
 export function userLoggout(): boolean {
     localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("user");
+    localStorage.removeItem("expiresIn")
     return true;
   }
 
-export async function registerBot(botData: BotDTO): Promise<BotResponseDTO | null> {
+export async function registerBot(botData: CreateBotDTO): Promise<BotDTO | null> {
+  const token = localStorage.getItem("token");
     try {
       // Realitzem la petició POST per registrar el bot
       const response = await fetch(`${BASE_URL}/bot`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json", // Indiquem que enviem un JSON
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Indiquem que enviem un JSON
         },
         body: JSON.stringify(botData), // Convertim `botData` en un JSON per enviar-lo
       });
@@ -76,7 +82,7 @@ export async function registerBot(botData: BotDTO): Promise<BotResponseDTO | nul
       }
   
       // Parsegem la resposta com a JSON i la convertim en un objecte `BotResponseDTO`
-      const result: BotResponseDTO = await response.json();
+      const result: BotDTO = await response.json();
   
       // Per fer proves, podem mostrar el resultat a la consola
       console.log("Bot registrat amb èxit:", result);
@@ -88,37 +94,41 @@ export async function registerBot(botData: BotDTO): Promise<BotResponseDTO | nul
     }
 }
 
-export async function getAllBots(userId?: number): Promise<BotSummaryResponseDTO[] | null> {
-    try {
+export async function getAllBots(userId?: number): Promise<BotDTO[]> {
+  const token = localStorage.getItem("token");
+  try {
         // Construcció dinàmica de l'URL amb o sense paràmetre `owner`
         const url = userId ? `${BASE_URL}/bot?owner=${userId}` : `${BASE_URL}/bot`;
   
         const response = await fetch(url, {
             method: "GET",
             headers: {
-                "Content-Type": "application/json",
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
             },
         });
   
         if (!response.ok) {
             console.error("Error al obtenir els bots:", response.statusText);
-            return null;
+            return [];
         }
   
-        const bots: BotSummaryResponseDTO[] = await response.json();
+        const bots: BotDTO[] = await response.json();
         return bots;
     } catch (error) {
         console.error("Error inesperat al obtenir els bots:", error);
-        return null;
+        return [];
     }
 }
 
-export async function getBot(botId: number): Promise<BotResponseDTO | null> {
-    try {
+export async function getBot(botId: number): Promise<BotDTO | null> {
+  const token = localStorage.getItem("token");
+  try {
         const response = await fetch(`${BASE_URL}/bot/${botId}`, {
             method: "GET",
             headers: {
-                "Content-Type": "application/json",
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
             },
         });
   
@@ -127,7 +137,7 @@ export async function getBot(botId: number): Promise<BotResponseDTO | null> {
             return null;
         }
   
-        const bot: BotResponseDTO = await response.json();
+        const bot: BotDTO = await response.json();
         return bot;
     } catch (error) {
         console.error(`Error inesperat en obtenir el bot amb ID ${botId}:`, error);
@@ -135,12 +145,14 @@ export async function getBot(botId: number): Promise<BotResponseDTO | null> {
     }
 }
 
-export async function updateBot(botId: number, botData: BotDTO): Promise<BotResponseDTO | null> {
-    try {
+export async function updateBot(botId: number, botData: CreateBotDTO): Promise<BotDTO | null> {
+  const token = localStorage.getItem("token");
+  try {
         const response = await fetch(`${BASE_URL}/bot/${botId}`, {
             method: "PUT",
             headers: {
-                "Content-Type": "application/json",
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify(botData),
         });
@@ -150,7 +162,7 @@ export async function updateBot(botId: number, botData: BotDTO): Promise<BotResp
             return null;
         }
   
-        const updatedBot: BotResponseDTO = await response.json();
+        const updatedBot: BotDTO = await response.json();
         return updatedBot;
     } catch (error) {
         console.error(`Error inesperat al actualitzar el bot amb ID ${botId}:`, error);
@@ -158,12 +170,14 @@ export async function updateBot(botId: number, botData: BotDTO): Promise<BotResp
     }
 }
 
-export async function createLeague(leagueData: LeagueDTO): Promise<LeagueResponseDTO | null> {
+export async function createLeague(leagueData: CreateLeagueDTO): Promise<LeagueDTO | null> {
+    const token = localStorage.getItem("token");
     try {
         const response = await fetch(`${BASE_URL}/league`, {
           method: "POST",
           headers: {
-            "Content-Type": "application/json", 
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify(leagueData), 
         });
@@ -173,7 +187,7 @@ export async function createLeague(leagueData: LeagueDTO): Promise<LeagueRespons
           return null;
         }
     
-        const result: LeagueResponseDTO = await response.json();
+        const result: LeagueDTO = await response.json();
     
         console.log("Lliga creada amb èxit:", result);
     
@@ -184,11 +198,11 @@ export async function createLeague(leagueData: LeagueDTO): Promise<LeagueRespons
       }
 }
 
-export async function getAllLeagues(userId: number): Promise<LeagueResponseDTO[] | null> {
+export async function getAllLeagues(userId?: number): Promise<LeagueDTO[]> {
     const token = localStorage.getItem("token");
   
     try {
-      const response = await fetch(`/league?owner=${userId}`, {
+      const response = await fetch(userId ? `/league?owner=${userId}` : `/league`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -198,130 +212,130 @@ export async function getAllLeagues(userId: number): Promise<LeagueResponseDTO[]
   
       if (!response.ok) {
         console.error("Error HTTP carregant lligues:", response.status);
-        return null;
+        return [];
       }
   
-      let data: LeagueResponseDTO[];
+      let data: LeagueDTO[];
       try {
         data = await response.json();
       } catch (err) {
         console.error("Error parsejant JSON de lligues:", err);
-        return null;
+        return [];
       }
       return data;
     } catch (err) {
       console.error("Error de connexió a getAllLeagues:", err);
-      return null;
+      return [];
     }
   }
   
-  export async function getLeague(leagueId: number): Promise<LeagueResponseDTO | null> {
+export async function getLeague(leagueId: number): Promise<LeagueDTO | null> {
+  const token = localStorage.getItem("token");
+  try {
+    const response = await fetch(`${BASE_URL}/league/${leagueId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      console.error("Error HTTP obtenint la lliga:", response.status);
+      return null;
+    }
+
+    try {
+      const data: LeagueDTO = await response.json();
+      return data;
+    } catch (err) {
+      console.error("Error parsejant JSON de la lliga:", err);
+      return null;
+    }
+  } catch (error) {
+    console.error("Error obtenint la lliga:", error);
+    return null;
+  }
+}
+
+export async function updateLeague(leagueId: number, leagueData: CreateLeagueDTO): Promise<LeagueDTO | null> {
+  const token = localStorage.getItem("token");
+  try {
+    const response = await fetch(`${BASE_URL}/league/${leagueId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(leagueData),
+    });
+
+    if (!response.ok) {
+      console.error("Error HTTP actualitzant la lliga:", response.status);
+      return null;
+    }
+
+    try {
+      const data: LeagueDTO = await response.json();
+      return data;
+    } catch (err) {
+      console.error("Error parsejant JSON de la lliga actualitzada:", err);
+      return null;
+    }
+  } catch (error) {
+    console.error("Error actualitzant la lliga:", error);
+    return null;
+  }
+}
+
+export async function addBotToLeague(leagueId: number, botId: number): Promise<void> {
+  const token = localStorage.getItem("token");
+  try {
+    const response = await fetch(`${BASE_URL}/league/${leagueId}/bot`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ botId }),
+    });
+
+    if (!response.ok) {
+      console.error("Error HTTP registrant el bot a la lliga:", response.status);
+    }
+  } catch (error) {
+    console.error("Error registrant bot a la lliga:", error);
+  }
+}
+
+export async function getLeagueClassification(leagueId: number): Promise<ParticipationDTO[]> {
+  try {
     const token = localStorage.getItem("token");
-    try {
-      const response = await fetch(`${BASE_URL}/league/${leagueId}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+    const response = await fetch(`/leagues/${leagueId}/leaderboard`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-      if (!response.ok) {
-        console.error("Error HTTP obtenint la lliga:", response.status);
-        return null;
-      }
-
-      try {
-        const data: LeagueResponseDTO = await response.json();
-        return data;
-      } catch (err) {
-        console.error("Error parsejant JSON de la lliga:", err);
-        return null;
-      }
-    } catch (error) {
-      console.error("Error obtenint la lliga:", error);
-      return null;
+    if (!response.ok) {
+      console.error("Error HTTP carregant classificació:", response.status);
+      return [];
     }
-  }
-  
-  export async function updateLeague(leagueId: number, leagueData: LeagueDTO): Promise<LeagueResponseDTO | null> {
-    const token = localStorage.getItem("token");
+
     try {
-      const response = await fetch(`${BASE_URL}/league/${leagueId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(leagueData),
-      });
-
-      if (!response.ok) {
-        console.error("Error HTTP actualitzant la lliga:", response.status);
-        return null;
-      }
-
-      try {
-        const data: LeagueResponseDTO = await response.json();
-        return data;
-      } catch (err) {
-        console.error("Error parsejant JSON de la lliga actualitzada:", err);
-        return null;
-      }
-    } catch (error) {
-      console.error("Error actualitzant la lliga:", error);
-      return null;
+      const data: ParticipationDTO[] = await response.json();
+      return data;
+    } catch (parseError) {
+      console.error("Error parsejant JSON de classificació:", parseError);
+      return [];
     }
+  } catch (error) {
+    console.error("Error durant la petició de classificació:", error);
+    return [];
   }
-
-  export async function addBotToLeague(leagueId: number, botId: number): Promise<void> {
-    const token = localStorage.getItem("token");
-    try {
-      const response = await fetch(`${BASE_URL}/league/${leagueId}/bot`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ botId }),
-      });
-
-      if (!response.ok) {
-        console.error("Error HTTP registrant el bot a la lliga:", response.status);
-      }
-    } catch (error) {
-      console.error("Error registrant bot a la lliga:", error);
-    }
-  }
-
-  export async function getLeagueClassification(leagueId: number): Promise<ParticipationResponseDTO[] | null> {
-    try {
-      const token = localStorage.getItem("token");
-      const response = await fetch(`/leagues/${leagueId}/leaderboard`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-  
-      if (!response.ok) {
-        console.error("Error HTTP carregant classificació:", response.status);
-        return null;
-      }
-  
-      try {
-        const data: ParticipationResponseDTO[] = await response.json();
-        return data;
-      } catch (parseError) {
-        console.error("Error parsejant JSON de classificació:", parseError);
-        return null;
-      }
-    } catch (error) {
-      console.error("Error durant la petició de classificació:", error);
-      return null;
-    }
-  }
+}
 
 export async function deleteLeague(leagueId: number): Promise<boolean> {
   try {
@@ -371,9 +385,9 @@ export async function startLeague(leagueId: number): Promise<boolean> {
   }
 }
 
-export async function getMatchesFromLeague(leagueId: number): Promise<MatchResponseDTO[] | null> {
+export async function getMatchesFromLeague(leagueId: number): Promise<MatchDTO[] | null> {
+  const token = localStorage.getItem("token");
   try {
-    const token = localStorage.getItem("token");
     const response = await fetch(`${BASE_URL}/league/${leagueId}/match`, {
       method: "GET",
       headers: {
@@ -383,48 +397,52 @@ export async function getMatchesFromLeague(leagueId: number): Promise<MatchRespo
     });
 
     if (!response.ok) {
-      console.error("Error HTTP carregant enfrontaments de la lliga:", response.status);
+      console.error("Error HTTP while fething the messages:", response.status);
       return null;
     }
 
     try {
-      const matches: MatchResponseDTO[] = await response.json();
-      return matches;
-    } catch (parseError) {
-      console.error("Error parsejant JSON dels enfrontaments:", parseError);
+      const data: MatchDTO[] = await response.json();
+      return data;
+    } catch (err) {
+      console.error("Error while parsing JSON from messages:", err);
       return null;
     }
   } catch (error) {
-    console.error("Error durant la petició d'enfrontaments de la lliga:", error);
+    console.error("Error while fetching messages", error);
     return null;
   }
 }
 
-export async function getMessagesFromMatch(matchId: number): Promise<MessageResponseDTO[] | null> {
-  try {
-    const token = localStorage.getItem("token");
-    const response = await fetch(`${BASE_URL}/match/${matchId}/message`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    if (!response.ok) {
-      console.error("Error HTTP carregant missatges de l'enfrontament:", response.status);
-      return null;
-    }
-
+export async function getMessagesFromMatch(matchId: number): Promise<MessageDTO[] | null> {
+  const token = localStorage.getItem("token");
     try {
-      const messages: MessageResponseDTO[] = await response.json();
-      return messages;
-    } catch (parseError) {
-      console.error("Error parsejant JSON dels missatges:", parseError);
+      const response = await fetch(`${BASE_URL}/match/${matchId}/message`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        console.error("Error HTTP while fething the messages:", response.status);
+        return null;
+      }
+
+      try {
+        const data: MessageDTO[] = await response.json();
+        return data;
+      } catch (err) {
+        console.error("Error while parsing JSON from messages:", err);
+        return null;
+      }
+    } catch (error) {
+      console.error("Error while fetching messages", error);
       return null;
     }
-  } catch (error) {
-    console.error("Error durant la petició de missatges de l'enfrontament:", error);
-    return null;
-  }
+}
+
+export function isLogged(): boolean {
+  return localStorage.getItem('token') !== null;
 }

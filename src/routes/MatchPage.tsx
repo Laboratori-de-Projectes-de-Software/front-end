@@ -1,27 +1,44 @@
 import BotSidebar from "@components/BotSidebar";
+import { BotDTO } from "@DTOClasses/BotDTO";
+import { MatchDTO } from "@DTOClasses/MatchDTO";
+import { MessageDTO } from "@DTOClasses/MessageDTO";
+import { getBot, getMatchesFromLeague, getMessagesFromMatch } from "@use-cases/UseCases";
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 
-
-interface Message {
-  id: number;
-  sender: string;
-  text: string;
-}
-
-interface BotInfo {
-  name: string;
-  topic: string;
-}
-
 const MatchPage: React.FC = () => {
-  
+  const params = useParams<{ leagueId: string; matchId: string }>();
+  const leagueId = parseInt(params.leagueId!);
+  const matchId = parseInt(params.matchId!);
+  const [match, setMatch] = useState<MatchDTO>({} as MatchDTO);
+  const [messages, setMessages] = useState<MessageDTO[]>([]);
+  const [fighters, setFigthers] = useState<BotDTO[]>([]);
+  const [timeLeft, setTimeLeft] = useState(180);
+  const bots: BotDTO[] = [{
+    id: 1,
+    name: "One",
+    quality: "X",
+    imageUrl: "",
+    apiUrl: "",
+    nWins: 0,
+    nDraws: 0,
+    nLosses: 0
+  }, {
+    id: 2,
+    name: "Two",
+    quality: "Y",
+    imageUrl: "",
+    apiUrl: "",
+    nWins: 0,
+    nDraws: 0,
+    nLosses: 0
+  }]
   // Simula una petició POST
   const sendMessage = async (sender: string, text: string) => {
-    const newMessage = {
-      id: messages.length + 1,
-      sender,
-      text
+    const newMessage: MessageDTO = {
+      botId: parseInt(sender),
+      text,
+      timeStamp: messages.length.toString() + 1
     };
   
     if (timeLeft > 0){
@@ -31,13 +48,7 @@ const MatchPage: React.FC = () => {
     }
     
   };
-  
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [bot1Info, setBot1Info] = useState<BotInfo>({ name: "Paco Torres", topic: "Racisme" });
-  const [bot2Info, setBot2Info] = useState<BotInfo>({ name: "Jaimito", topic: "Spiderman" });
-  const [timeLeft, setTimeLeft] = useState(180);
 
-  const { matchId } = useParams();
   //Scroll chat
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -52,6 +63,43 @@ const MatchPage: React.FC = () => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages]);
 
+  useEffect(() => {
+    async function getMatches() {
+      const matches = await getMatchesFromLeague(leagueId);
+
+      if(matches) {
+        setMatch(matches.filter((matchEl) => matchEl.id === matchId)[0]);
+      } else {
+        alert("Error while fetching the match information");
+      }
+    }
+    getMatches();
+  }, []);
+
+  useEffect(() => {
+    async function getMessages() {
+      const messagesFetch = await getMessagesFromMatch(matchId);
+
+      if(messagesFetch) {
+        setMessages(messagesFetch);
+      }
+    }
+
+    async function getFigthers() {
+      const bot1 = await getBot(match.fighters[0]);
+      const bot2 = await getBot(match.fighters[1]);
+
+      if(bot1 && bot2) {
+        setFigthers([...fighters, bot1, bot2]);
+      } else {
+        alert("Error while fething bots information");
+      }
+    }
+
+    getMessages();
+    getFigthers()
+  }, [timeLeft])
+
   const TimeToString = (t: number): string => {
     const m = Math.floor(t / 60);
     const s = t % 60;
@@ -61,7 +109,7 @@ const MatchPage: React.FC = () => {
   return (
     <div className="flex h-[calc(100vh-5rem)] bg-[--secondary] text-white">
       {/* Columna esquerra */}
-      <BotSidebar bot={bot1Info} onSendMessage={sendMessage} />
+      <BotSidebar bot={bots[0]} onSendMessage={sendMessage} />
 
       {/* Zona central */}
       <main className="flex-1 flex flex-col items-center px-4 py-6">
@@ -73,13 +121,13 @@ const MatchPage: React.FC = () => {
           {messages.map((msg) => (
             <div
               className={`p-3 rounded-xl max-w-[70%] text-white shadow-md ${
-                msg.sender === bot1Info.name ? 
+                msg.botId === bots[0].id ? 
                 "self-start bg-[--chat1-bkg]" : "self-end bg-[--chat2-bkg]"
               }`}
             >
               <div className="flex justify-between text-sm mb-1 font-bold">
-                <span>{msg.sender === bot1Info.name ? bot1Info.name : bot2Info.name}</span>
-                <span className="italic font-normal">{msg.sender === bot1Info.name ? bot1Info.topic : bot2Info.topic}</span>
+                <span>{msg.botId === bots[0].id ? bots[0].name : bots[1].name}</span>
+                <span className="italic font-normal">{msg.botId === bots[0].id ? bots[1].quality : bots[1].quality}</span>
               </div>
 
               <div>{msg.text}</div>
@@ -89,7 +137,7 @@ const MatchPage: React.FC = () => {
       </main>
 
       {/* Columna dreta */}
-      <BotSidebar bot={bot2Info} onSendMessage={sendMessage} />
+      <BotSidebar bot={bots[1]} onSendMessage={sendMessage} />
     </div>
   );
 };
