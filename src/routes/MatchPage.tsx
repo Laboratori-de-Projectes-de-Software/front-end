@@ -6,17 +6,6 @@ import { getBot, getMatchesFromLeague, getMessagesFromMatch } from "@use-cases/U
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 
-interface Message {
-  id: number;
-  sender: string;
-  text: string;
-}
-
-interface BotInfo {
-  name: string;
-  topic: string;
-}
-
 const MatchPage: React.FC = () => {
   const params = useParams<{ leagueId: string; matchId: string }>();
   const leagueId = parseInt(params.leagueId!);
