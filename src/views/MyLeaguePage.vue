@@ -4,27 +4,19 @@ import WinIcon from '@/assets/svg/clasificacion/WinIcon.vue'
 import FooterApp from '@/components/FooterApp.vue'
 import HeaderApp from '@/components/HeaderApp.vue'
 import router from '@/router'
-import type { Participation, Match, League } from '@/types'
-import Swal from 'sweetalert2'
-import { ref } from 'vue'
+import type { Participation, Match, League, Bot } from '@/types'
+import { ref, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
 
-// TODO: Descomentar cuando se tenga la API de partidos de una liga
-// import { onMounted } from 'vue'
-// import type { Match, Participation } from '@/types'
-//import { ref, onMounted } from 'vue'
-//import { useRoute } from 'vue-router'
-//import type { League } from '@/types'
-
-// const matches = ref<Match[]>([])
-
-
-/*
 const route = useRoute()
-const leagueId = route.params.id as string
+const leagueId = Number(route.params.leagueId)
 const token = localStorage.getItem('token')
 const userId = parseInt(localStorage.getItem('userId') || '0')
 
 const league = ref<League | null>(null)
+const matches = ref<Match[]>([])
+const leaderboard = ref<Participation[]>([])
+const misBots = ref<string[]>([])
 
 async function loadLeague() {
   const response = await fetch(`http://localhost:8080/api/v0/league/${leagueId}`, {
@@ -36,19 +28,80 @@ async function loadLeague() {
   })
 
   if (!response.ok) {
-    handleErrorResponse(response.status)
+    alert('Error al cargar la liga. Por favor, inténtalo de nuevo.')
   } else {
     league.value = await response.json()
+    if (league.value && league.value.state !== 'PENDIENTE') {
+      await loadMatches()
+    }
+    loadLeaderboard()
   }
 }
+
+const loadMatches = async () => {
+  const response = await fetch(`http://localhost:8080/api/v0/league/${leagueId}/match`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  })
+
+  if (!response.ok) {
+    alert('Error al cargar los partidos. Por favor, inténtalo de nuevo.')
+  } else {
+    const data = await response.json()
+    matches.value = data
+  }
+}
+
+// Función para obtener la clasificación completa de una liga en base a su ID
+async function loadLeaderboard() {
+  const response = await fetch(`http://localhost:8080/api/v0/league/${leagueId}/leaderboard`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  })
+
+  if (!response.ok) {
+    alert('Error al cargar la clasificación. Por favor, inténtalo de nuevo.')
+  } else {
+    leaderboard.value = await response.json()
+    console.log('Clasificación:', leaderboard)
+  }
+}
+
+onMounted(() => {
+  loadLeague()
+  loadMyBots()
+})
 
 async function startLeague() {
   if (!league.value) return
 
+  const response = await fetch(`http://localhost:8080/api/v0/league/${leagueId}/start`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  })
+
+  if (!response.ok) {
+    alert('Error al iniciar la liga. Por favor, inténtalo de nuevo.')
+  } else {
+    alert('¡Liga iniciada correctamente!')
+    loadLeague()
+  }
+}
+
+const loadMyBots = async () => {
   const response = await fetch(
-    `http://localhost:8080/api/v0/league/${league.value.leagueId}/start`,
+    `http://localhost:8080/api/v0/bot?owner=${localStorage.getItem('userId')}`,
     {
-      method: 'POST',
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
@@ -57,418 +110,14 @@ async function startLeague() {
   )
 
   if (!response.ok) {
-    handleErrorResponse(response.status)
+    alert('Error al cargar los bots. Por favor, inténtalo de nuevo.')
   } else {
-    alert('¡Liga iniciada correctamente!')
-    loadLeague()
+    const data = await response.json()
+    misBots.value = data.map((bot: Bot) => bot.botId)
   }
 }
 
-function handleErrorResponse(status: number) {
-  if (status === 401) alert('No autorizado')
-  else alert('Error al procesar la solicitud')
-}
-*/
-
-// const loadMatches = async () => {
-//   const response = await fetch(
-//     `http://localhost:8080/api/v0/league/${localStorage.getItem('league')}/match`,
-//     {
-//       method: 'GET',
-//       headers: {
-//         'Content-Type': 'application/json',
-//         Authorization: `Bearer ${localStorage.getItem('token')}`,
-//       },
-//     }
-//   )
-
-//   if (!response.ok) {
-//     alert('Error al cargar los partidos. Por favor, inténtalo de nuevo.')
-//   } else {
-//     const data = await response.json()
-//     matches.value = data
-//   }
-// }
-
-// // Para la gestión de la liga y su clasificación completa
-// interface CompleteLeagueSummary {
-//   league: League;
-//   classification: Participation[];
-// }
-
-// // Para guardar múltiples ligas completas
-// const completeLeagueSummaries = ref<CompleteLeagueSummary[]>([]);
-
-// // Función para cargar una liga en base a su ID
-// async function loadLeague(leagueId: number) {
-
-//   // Se hace una llamada a la API para obtener la liga
-//   const response = await fetch(`http://localhost:8080/api/v0/league/${leagueId}`, {
-//     method: 'GET',
-//     headers: {
-//       'Content-Type': 'application/json',
-//       Authorization: `Bearer ${localStorage.getItem('token')}`,
-//     },
-//   });
-
-//   if (!response.ok) {
-//     // Manejo de errores según el código de estado
-//     handleErrorResponse(response.status);
-
-//   } else {
-//     // Si la respuesta es exitosa, se parsea a JSON y se devuelve el objeto LeagueResponseDTO
-//     const league: League = await response.json();
-//     return league;
-//   }
-// }
-
-// // Función para obtener la clasificación completa de una liga en base a su ID
-// async function loadLeaderboard(leagueId: number) {
-
-//   const response = await fetch(`http://localhost:8080/api/v0/league/${leagueId}/leaderboard`, {
-//     method: 'GET',
-//     headers: {
-//       'Content-Type': 'application/json',
-//       Authorization: `Bearer ${localStorage.getItem('token')}`
-//     },
-//   });
-
-//   if (!response.ok) {
-//     // Manejo de errores según el código de estado
-//     handleErrorResponse(response.status);
-
-//   } else {
-//     // Si la respuesta es exitosa, se parsea a JSON y se devuelve el objeto ParticipationResponseDTO[]
-//     const leaderboard: Participation[] = await response.json();
-//     return leaderboard;
-//   }
-// }
-
-// // Función para cargar y almacenar la liga y su clasificación completa
-// async function loadAndStoreLeague(leagueId: number): Promise<void> {
-//   try {
-
-//     // Llamada para cargar la liga
-//     const leagueResponse = await loadLeague(leagueId);
-
-//     if (!leagueResponse) {
-//       throw new Error(`Error al cargar la liga con ID ${leagueId}`);
-//     }
-
-//     // Llamada para cargar la clasificación de la liga
-//     const leaderboardResponse = await loadLeaderboard(leagueId);
-
-//     if (!leaderboardResponse) {
-//       throw new Error(`Error al cargar la clasificación de la liga con ID ${leagueId}`);
-//     }
-
-//     // Se crea el objeto que contiene toda la información de la liga y su leaderboard
-//     const leagueSummary: CompleteLeagueSummary = {
-//       league: leagueResponse,
-//       classification: leaderboardResponse,
-//     };
-
-//     // Se agrega  a la lista de ligas completas
-//     completeLeagueSummaries.value.push(leagueSummary);
-
-//   } catch (error) {
-//     console.error('Error al cargar y almacenar la liga completa:', error);
-//   }
-// }
-
-// function handleErrorResponse(status: number) {
-//   const errorMessages: Record<number, { title: string; text: string }> = {
-//     400: { title: 'Error', text: 'Solicitud incorrecta' },
-//     401: { title: 'Error', text: 'No autorizado' },
-//     404: { title: 'Error', text: 'Liga o Clasificación no encontrada' },
-//     408: { title: 'Error', text: 'Tiempo de espera agotado' },
-//     500: { title: 'Error', text: 'Error interno del servidor. Contacta con el soporte' }
-//   }
-
-//   const error = errorMessages[status] || { title: 'Error', text: 'Error desconocido. Por favor, intenta de nuevo más tarde.' }
-//   showErrorAlert(error.title, error.text)
-// }
-
-// function showErrorAlert(title: string, text: string) {
-//   Swal.fire({
-//     icon: 'error',
-//     title,
-//     text,
-//     customClass: {
-//       confirmButton: 'bg-[#06f] cursor-pointer text-white rounded border-0 text-base px-4 py-2 shadow-md font-medium'
-//     },
-//     buttonsStyling: false
-//   })
-// }
-
-// onMounted(() => {
-//   loadMatches()
-//   loadLeague()
-// })
-
-
-const clasificacion: Participation[] = [
-  {
-    botId: 1,
-    name: 'Bot 1',
-    points: 20,
-    position: 1,
-    nWins: 6,
-    nDraws: 2,
-    nLosses: 2,
-    nMatches: 10,
-  },
-  {
-    botId: 2,
-    name: 'Bot 2',
-    points: 18,
-    position: 2,
-    nWins: 5,
-    nDraws: 3,
-    nLosses: 2,
-    nMatches: 10,
-  },
-  {
-    botId: 3,
-    name: 'Bot 3',
-    points: 17,
-    position: 3,
-    nWins: 5,
-    nDraws: 2,
-    nLosses: 3,
-    nMatches: 10,
-  },
-  {
-    botId: 4,
-    name: 'Bot 4',
-    points: 16,
-    position: 4,
-    nWins: 4,
-    nDraws: 4,
-    nLosses: 2,
-    nMatches: 10,
-  },
-  {
-    botId: 5,
-    name: 'Bot 5',
-    points: 15,
-    position: 5,
-    nWins: 4,
-    nDraws: 3,
-    nLosses: 3,
-    nMatches: 10,
-  },
-  {
-    botId: 6,
-    name: 'Bot 6',
-    points: 14,
-    position: 6,
-    nWins: 4,
-    nDraws: 2,
-    nLosses: 4,
-    nMatches: 10,
-  },
-  {
-    botId: 7,
-    name: 'Bot 7',
-    points: 13,
-    position: 7,
-    nWins: 3,
-    nDraws: 4,
-    nLosses: 3,
-    nMatches: 10,
-  },
-  {
-    botId: 8,
-    name: 'Bot 8',
-    points: 12,
-    position: 8,
-    nWins: 3,
-    nDraws: 3,
-    nLosses: 4,
-    nMatches: 10,
-  },
-  {
-    botId: 9,
-    name: 'Bot 9',
-    points: 11,
-    position: 9,
-    nWins: 3,
-    nDraws: 2,
-    nLosses: 5,
-    nMatches: 10,
-  },
-  {
-    botId: 10,
-    name: 'Bot 10',
-    points: 10,
-    position: 10,
-    nWins: 2,
-    nDraws: 4,
-    nLosses: 4,
-    nMatches: 10,
-  },
-  {
-    botId: 11,
-    name: 'Bot 11',
-    points: 9,
-    position: 11,
-    nWins: 2,
-    nDraws: 3,
-    nLosses: 5,
-    nMatches: 10,
-  },
-  {
-    botId: 12,
-    name: 'Bot 12',
-    points: 8,
-    position: 12,
-    nWins: 2,
-    nDraws: 2,
-    nLosses: 6,
-    nMatches: 10,
-  },
-  {
-    botId: 13,
-    name: 'Bot 13',
-    points: 7,
-    position: 13,
-    nWins: 1,
-    nDraws: 4,
-    nLosses: 5,
-    nMatches: 10,
-  },
-  {
-    botId: 14,
-    name: 'Bot 14',
-    points: 6,
-    position: 14,
-    nWins: 1,
-    nDraws: 3,
-    nLosses: 6,
-    nMatches: 10,
-  },
-];
-
-const ligaNombre = 'LaLiga EA Sports'
-
-// Ejemplo de datos de jornadas con encuentros
-const combates: Match[] = [
-  {
-    matchId: 1,
-    state: 'finalizado',
-    result: 1,
-    fighters: ['Real Madrid', 'Barcelona'],
-    roundNumber: 1,
-  },
-  {
-    matchId: 2,
-    state: 'en curso',
-    result: 1,
-    fighters: ['Atletico', 'Sevilla'],
-    roundNumber: 1,
-  },
-  {
-    matchId: 3,
-    state: 'finalizado',
-    result: 2,
-    fighters: ['Betis', 'Valencia'],
-    roundNumber: 1,
-  },
-  {
-    matchId: 4,
-    state: 'finalizado',
-    result: 1,
-    fighters: ['Villarreal', 'Getafe'],
-    roundNumber: 1,
-  },
-  {
-    matchId: 5,
-    state: 'en curso',
-    result: 1,
-    fighters: ['Celta', 'Almeria'],
-    roundNumber: 1,
-  },
-  {
-    matchId: 6,
-    state: 'finalizado',
-    result: 2,
-    fighters: ['Osasuna', 'Mallorca'],
-    roundNumber: 1,
-  },
-  {
-    matchId: 7,
-    state: 'en curso',
-    result: 1,
-    fighters: ['Granada', 'Cadiz'],
-    roundNumber: 1,
-  },
-  {
-    matchId: 8,
-    state: 'finalizado',
-    result: 1,
-    fighters: ['Rayo Vallecano', 'Girona'],
-    roundNumber: 1,
-  },
-  {
-    matchId: 9,
-    state: 'pendiente',
-    result: 1,
-    fighters: ['Barcelona', 'Atletico'],
-    roundNumber: 2,
-  },
-  {
-    matchId: 10,
-    state: 'pendiente',
-    result: 2,
-    fighters: ['Sevilla', 'Betis'],
-    roundNumber: 2,
-  },
-  {
-    matchId: 11,
-    state: 'pendiente',
-    result: 1,
-    fighters: ['Valencia', 'Villarreal'],
-    roundNumber: 2,
-  },
-  {
-    matchId: 12,
-    state: 'pendiente',
-    result: 1,
-    fighters: ['Real Madrid', 'Getafe'],
-    roundNumber: 2,
-  },
-  {
-    matchId: 13,
-    state: 'pendiente',
-    result: 1,
-    fighters: ['Girona', 'Mallorca'],
-    roundNumber: 2,
-  },
-  {
-    matchId: 14,
-    state: 'pendiente',
-    result: 1,
-    fighters: ['Almeria', 'Celta'],
-    roundNumber: 2,
-  },
-  {
-    matchId: 15,
-    state: 'pendiente',
-    result: 1,
-    fighters: ['Granada', 'Osasuna'],
-    roundNumber: 2,
-  },
-  {
-    matchId: 16,
-    state: 'pendiente',
-    result: 1,
-    fighters: ['Cadiz', 'Rayo Vallecano'],
-    roundNumber: 2,
-  },
-]
-
-const jornadas = combates.reduce(
+const jornadas = matches.value.reduce(
   (acc, combate) => {
     const round = combate.roundNumber
     if (!acc[round]) {
@@ -480,23 +129,11 @@ const jornadas = combates.reduce(
   {} as Record<number, Match[]>
 )
 
-console.log(hola())
-
-function hola() {
-  for (const [jornada, numJornada] of Object.entries(jornadas)) {
-    console.log(jornada)
-    numJornada.forEach((encuentro) => {
-      console.log(encuentro)
-    })
-  }
-}
-const misBots = ['Bot 1', 'Bot 3', 'Bot 5'] // Ejemplo de Bots de un usuario
-
 const esMiBot = (nombreEquipo: string) => {
-  return misBots.includes(nombreEquipo)
+  return misBots.value.includes(nombreEquipo)
 }
 
-// TODO: Verificar si sigue siendo necesario
+// TODO: Verificar si vamos a hacer por jornadas
 // const jornadaNum = ref(1)
 // const jornadaMax = 12
 
@@ -512,10 +149,7 @@ const esMiBot = (nombreEquipo: string) => {
 //   }
 // }
 
-const titleHeader = '¡Hola, ' + localStorage.getItem('username') + '!'
-
-const userIdApi = 0
-const userId = Number(localStorage.getItem('userId') || '0')
+const titleHeader = '¡Hola, ' + localStorage.getItem('user') + '!'
 </script>
 
 <template>
@@ -525,34 +159,31 @@ const userId = Number(localStorage.getItem('userId') || '0')
   >
     <!-- Contenedor pequeño que incluye solo el header -->
     <header class="m-3 flex w-full flex-col gap-3">
-  <div class="flex flex-row justify-between">
-    <h1 class="text-left text-4xl font-bold">{{ league?.name }}</h1>
+      <div class="flex flex-row justify-between">
+        <h1 class="text-left text-4xl font-bold">{{ league?.name }}</h1>
 
-    <!-- Mostrar botones solo si el user es el owner -->
-    <div class="flex flex-row gap-4 font-bold text-xl" v-if="userId === league?.user">
-      <!-- Mostrar botón solo si la liga está pendiente -->
-      <button
-        v-if="league?.state === 'pendiente'"
-        class="cursor-pointer px-4.5 py-3 bg-[#06f] text-white rounded-3xl"
-        @click="startLeague"
-      >
-        Empezar Liga
-      </button>
+        <!-- Mostrar botones solo si el user es el owner -->
+        <div class="flex flex-row gap-4 text-xl font-bold" v-if="userId === league?.user">
+          <!-- Mostrar botón solo si la liga está PENDIENTE -->
+          <button
+            v-if="league?.state === 'PENDIENTE'"
+            class="cursor-pointer rounded-3xl bg-[#06f] px-4.5 py-3 text-white"
+            @click="startLeague"
+          >
+            Empezar Liga
+          </button>
 
-      <!-- Redirigir a configuración (puedes cambiar la ruta) -->
-      <RouterLink
-        :to="`/league/${league?.leagueId}/config`"
-        class="cursor-pointer px-4.5 py-3 bg-[#06f] text-white rounded-3xl"
-      >
-        Configuración
-      </RouterLink>
-    </div>
-  </div>
+          <!-- Redirigir a configuración (puedes cambiar la ruta) -->
+          <button class="cursor-pointer rounded-3xl bg-[#06f] px-4.5 py-3 text-white">
+            Configuración
+          </button>
+        </div>
+      </div>
 
-  <div class="mt-0 h-0 w-full dark:border dark:border-[#525252]"></div>
-</header>
+      <div class="mt-0 h-0 w-full dark:border dark:border-[#525252]"></div>
+    </header>
 
-    <div class="flex w-full flex-col gap-5">
+    <div v-if="league?.state !== 'PENDIENTE'" class="flex w-full flex-col gap-5">
       <div class="w-full bg-[#BBBBBB] p-4 dark:bg-[#525252]">
         <div class="flex items-center justify-center">
           <!--
@@ -600,7 +231,7 @@ const userId = Number(localStorage.getItem('userId') || '0')
                 <!-- Equipo 1 -->
                 <td class="mr-10 flex w-75 justify-end gap-2.5 sm:text-xl">
                   <WinIcon
-                    v-if="encuentro.result === 1 && encuentro.state === 'finalizado'"
+                    v-if="encuentro.result === 1 && encuentro.state === 'FINALIZADO'"
                     classList="h-[27px] w-[27px]"
                   />
                   <div class="text-center">{{ encuentro.fighters[0] }}</div>
@@ -608,11 +239,11 @@ const userId = Number(localStorage.getItem('userId') || '0')
                 <!-- Icono del ganador -->
                 <td>
                   <DrawIcon
-                    v-if="encuentro.result === 2 && encuentro.state === 'finalizado'"
+                    v-if="encuentro.result === 2 && encuentro.state === 'FINALIZADO'"
                     classList="h-5 w-5 sm:h-10 sm:w-21"
                   />
                   <div
-                    v-else-if="encuentro.state === 'en curso'"
+                    v-else-if="encuentro.state === 'EN_CURSO'"
                     class="flex w-21 justify-center rounded-lg bg-red-500 px-2 py-1 text-sm font-bold"
                   >
                     EN VIVO
@@ -628,7 +259,7 @@ const userId = Number(localStorage.getItem('userId') || '0')
                 <td class="ml-10 flex w-75 justify-start gap-2.5 sm:text-xl">
                   <div>{{ encuentro.fighters[1] }}</div>
                   <WinIcon
-                    v-if="encuentro.result === 3 && encuentro.state === 'finalizado'"
+                    v-if="encuentro.result === 3 && encuentro.state === 'FINALIZADO'"
                     classList="h-5 w-5 sm:h-10 sm:w-10"
                   />
                 </td>
@@ -668,29 +299,57 @@ const userId = Number(localStorage.getItem('userId') || '0')
 
           <!-- Cuerpo de la tabla -->
           <tbody>
-            <tr v-for="(equipo, index) in clasificacion" :key="index" class="border-t sm:text-xl">
-              <td :class="['w-16 p-1 text-center', esMiBot(equipo.name) ? 'font-bold text-[#FADA5E]' : '']">
-                {{ equipo.position }}
+            <tr v-for="(equipo, index) in leaderboard" :key="index" class="border-t sm:text-xl">
+              <td
+                :class="[
+                  'w-16 px-1 text-center sm:px-3 md:px-6',
+                  esMiBot(equipo.botName) ? 'font-bold text-[#FADA5E]' : '',
+                ]"
+              >
+                {{ equipo.position + 1 }}
+              </td>
+              <td :class="['w-72 p-2', esMiBot(equipo.botName) ? 'font-bold text-[#FADA5E]' : '']">
+                <!--<img :src="equipo.imagen" alt=" " class="h-6 w-6 lg:h-8 lg:w-8" />-->
+                {{ equipo.botName }}
               </td>
               <td
-                :class="['flex items-center gap-1 p-1', esMiBot(equipo.name) ? 'font-bold text-[#FADA5E]' : '']"
+                :class="[
+                  'w-8 px-1 py-2 text-center sm:px-3 md:px-6',
+                  esMiBot(equipo.botName) ? 'font-bold text-[#FADA5E]' : '',
+                ]"
               >
-                <!--<img :src="equipo.imagen" alt=" " class="h-6 w-6 lg:h-8 lg:w-8" />-->
-                {{ equipo.name }}
+                {{ equipo.nwins + equipo.ndraws + equipo.nlosses }}
               </td>
-              <td :class="['w-8 p-1 text-center', esMiBot(equipo.name) ? 'font-bold text-[#FADA5E]' : '']">
-                {{ equipo.nMatches }}
+              <td
+                :class="[
+                  'w-8 px-1 py-2 text-center sm:px-3 md:px-6',
+                  esMiBot(equipo.botName) ? 'font-bold text-[#FADA5E]' : '',
+                ]"
+              >
+                {{ equipo.nwins }}
               </td>
-              <td :class="['w-8 p-1 text-center', esMiBot(equipo.name) ? 'font-bold text-[#FADA5E]' : '']">
-                {{ equipo.nWins }}
+              <td
+                :class="[
+                  'w-8 px-1 py-2 text-center sm:px-3 md:px-6',
+                  esMiBot(equipo.botName) ? 'font-bold text-[#FADA5E]' : '',
+                ]"
+              >
+                {{ equipo.ndraws }}
               </td>
-              <td :class="['w-8 p-1 text-center', esMiBot(equipo.name) ? 'font-bold text-[#FADA5E]' : '']">
-                {{ equipo.nDraws }}
+              <td
+                :class="[
+                  'w-8 px-1 py-2 text-center sm:px-3 md:px-6',
+                  esMiBot(equipo.botName) ? 'font-bold text-[#FADA5E]' : '',
+                ]"
+              >
+                {{ equipo.nlosses }}
               </td>
-              <td :class="['w-8 p-1 text-center', esMiBot(equipo.name) ? 'font-bold text-[#FADA5E]' : '']">
-                {{ equipo.nLosses }}
-              </td>
-              <td :class="['w-16 p-1 text-center', esMiBot(equipo.name) ? 'font-bold text-[#FADA5E]' : '']">
+              <td
+                :class="[
+                  'w-8 px-1 py-2 text-center sm:px-3 md:px-6',
+                  esMiBot(equipo.botName) ? 'font-bold text-[#FADA5E]' : '',
+                ]"
+              >
                 {{ equipo.points }}
               </td>
             </tr>

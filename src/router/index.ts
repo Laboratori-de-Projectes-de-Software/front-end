@@ -15,7 +15,7 @@ const routes = [
   { path: '/login', component: LoginView },
   { path: '/profile', component: ProfileView, meta: { requiresAuth: true } },
   { path: '/match/:matchId', component: ChatPage, meta: { requiresAuth: true } },
-  { path: '/myLeague', component: MyLeaguePage, meta: { requiresAuth: true } },
+  { path: '/league/:leagueId', component: MyLeaguePage, meta: { requiresAuth: true } },
   { path: '/createLeague', component: NewLeaguePage, meta: { requiresAuth: true } },
   { path: '/myBots', component: MyBotsPage, meta: { requiresAuth: true } },
   { path: '/createBot', component: NewBotPage, meta: { requiresAuth: true } },
