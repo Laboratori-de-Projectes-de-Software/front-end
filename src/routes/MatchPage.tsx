@@ -25,7 +25,25 @@ const MatchPage: React.FC = () => {
   const [match, setMatch] = useState<MatchDTO>({} as MatchDTO);
   const [messages, setMessages] = useState<MessageDTO[]>([]);
   const [timeLeft, setTimeLeft] = useState(180);
-  const bots: BotInfo[] = [{ name: "Paco Torres", topic: "Racisme" }, { name: "Jaimito", topic: "Spiderman" }]
+  const bots: BotDTO[] = [{
+    id: 1,
+    name: "One",
+    quality: "X",
+    imageUrl: "",
+    apiUrl: "",
+    nWins: 0,
+    nDraws: 0,
+    nLosses: 0
+  }, {
+    id: 2,
+    name: "Two",
+    quality: "Y",
+    imageUrl: "",
+    apiUrl: "",
+    nWins: 0,
+    nDraws: 0,
+    nLosses: 0
+  }]
   // Simula una petició POST
   const sendMessage = async (sender: string, text: string) => {
     const newMessage = {
