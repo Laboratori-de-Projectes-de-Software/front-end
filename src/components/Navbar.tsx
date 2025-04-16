@@ -1,5 +1,5 @@
 import React from 'react';
-import Dropdown from 'react-bootstrap/Dropdown';
+import MenuDropdown from './MenuDropdown';
 
 const Navbar: React.FC = () => {
   return (
@@ -12,17 +12,8 @@ const Navbar: React.FC = () => {
         </ul>
       </div>
       
-      <div className="flex items-center">
-        <Dropdown>
-          <Dropdown.Toggle variant="success" id="dropdown-basic" className='hover:underline hover:cursor-pointer'>
-            Menu
-          </Dropdown.Toggle>
-
-          <Dropdown.Menu className='flex flex-col bg-(--primary) px-4 py-2 mt-20 gap-2 rounded-lg'>
-            <Dropdown.Item href="/">View profile</Dropdown.Item>
-            <Dropdown.Item href="/logout">Log out</Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
+      <div>
+        <MenuDropdown />
       </div>
     </nav>
   );

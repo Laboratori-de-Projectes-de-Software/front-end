@@ -17,13 +17,8 @@ const RegisterPage: React.FC = () => {
       return;
     }
 
-    const r = await userSignUp({user, mail, password });
-    if (r) {
-      alert("Registre completat correctament");
-      navigate("/login");
-    } else {
-      alert("Error durant el registre");
-    }
+   userSignUp({user, mail, password });
+   
   };
 
   
