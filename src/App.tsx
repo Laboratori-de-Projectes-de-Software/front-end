@@ -9,6 +9,7 @@ import AddParticipantPage from '@routes/AddParticipantPage'
 import Match from '@routes/MatchPage'
 import LogOutPage from '@routes/LogOutPage'
 import LeaguesPage from '@routes/LeaguesPage'
+import UpdateLeaguePage from '@routes/UpdateLeaguePage'
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/user/:userId/bots" element={<ParticipantsPage />} />
           <Route path="/bots" element={<ParticipantsPage />} />
           <Route path="/leagues" element={<LeaguesPage />} />
+          <Route path="/leagues/:leagueId/update" element={<UpdateLeaguePage />} />
           <Route path="/leagues/:leagueId/matches/:matchId" element={<Match />} />
           <Route path="/add-league" element={<AddLeaguePage />} />
           <Route path="/add-bot" element={<AddParticipantPage />} />
