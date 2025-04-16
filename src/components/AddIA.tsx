@@ -40,18 +40,6 @@ const tableData: TableRow[] = [
   }
 ];
 
-
-function getCookie(c: string): string {
-  console.log(document.cookie);
-  const cookies = document.cookie.split('; ');
-  for (const cookie of cookies) {
-    const [cookieName, value] = cookie.split('=');
-    if (cookieName === c) {
-      return `${decodeURIComponent(value)}`;
-    }
-  }
-  return "";
-}
 export default function Account() {
   // Mueve useNavigate dentro del componente
   const navigate = useNavigate();
