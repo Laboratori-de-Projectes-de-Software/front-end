@@ -122,13 +122,13 @@ const MatchPage: React.FC = () => {
           {messages.map((msg) => (
             <div
               className={`p-3 rounded-xl max-w-[70%] text-white shadow-md ${
-                msg.sender === bots[0].name ? 
+                msg.botId === bots[0].id ? 
                 "self-start bg-[--chat1-bkg]" : "self-end bg-[--chat2-bkg]"
               }`}
             >
               <div className="flex justify-between text-sm mb-1 font-bold">
-                <span>{msg.sender === bots[0].name ? bots[0].name : bots[1].name}</span>
-                <span className="italic font-normal">{msg.sender === bots[0].name ? bots[1].topic : bots[1].topic}</span>
+                <span>{msg.botId === bots[0].id ? bots[0].name : bots[1].name}</span>
+                <span className="italic font-normal">{msg.botId === bots[0].id ? bots[1].quality : bots[1].quality}</span>
               </div>
 
               <div>{msg.text}</div>
