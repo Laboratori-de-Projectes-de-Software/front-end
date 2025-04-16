@@ -51,7 +51,7 @@ function VerEnfrentamientos() {
                         {matches.map((match) => (
                             <tr
                                 key={match.matchId}
-                                onClick={() => navigate(`/match/${match.matchId}/message`)}
+                                onClick={() => navigate(`/enfrentamientos/${leagueId}/${match.matchId}`)}
                             >
 
                                     <td><strong>{match.roundNumber}</strong></td>

@@ -11,7 +11,6 @@ interface Props extends BotDetail {
 function TargetaBotComponent({ name, id, description, urlImage, leagueId, editable = false }: Props) {
     const navigate = useNavigate();
 
-    console.log("Bot:", name, "Editable:", editable);
 
     const goToDetalleBot = (id: number) => {
         navigate(`/mis-bots/${id}`);

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import {perfilUsuario} from "../types/perfilUsuario.tsx";
-import defaultImagen  from "../assets/img/shrekperfil.png"
+import defaultImagen  from "../assets/img/perfil.png"
 import {API_PERFIL} from "../config.tsx";
 
 export const useFetchPerfil = (id: string | undefined) => {
@@ -11,8 +11,7 @@ export const useFetchPerfil = (id: string | undefined) => {
     useEffect(() => {
         const fetchPerfil = async () => {
             try {
-                console.log("ejecuto el hook");
-                //TEMPORAL EL USER ID Q SE PASA
+
                 const response = await fetch(`${API_PERFIL}${id}`);
                 if (!response.ok) {
                     throw new Error("Error al obtener el perfil");
@@ -23,7 +22,6 @@ export const useFetchPerfil = (id: string | undefined) => {
                     ? data.imagenUrl
                     : defaultImagen;
 
-                console.log(data);
                 setPerfil(data);
             } catch (err) {
                 setError((err as Error).message);

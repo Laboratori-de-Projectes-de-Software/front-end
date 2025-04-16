@@ -27,9 +27,7 @@ export const Leaderboard =() => {
                 const response = await fetch(`${API_LEAGUE}/${leagueId}/leaderboard`);
                 if (!response.ok) throw new Error("Error en la respuesta del servidor");
                 const data = await response.json();
-                console.log("leaderboard", data);
                 setBots(data);
-                console.log("bots", bots);
             } catch (error) {
                 console.error("Error al cargar el leaderboard:", error);
             } finally {

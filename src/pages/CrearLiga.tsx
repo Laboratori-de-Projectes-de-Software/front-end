@@ -106,7 +106,6 @@ const CrearLiga: React.FC = () => {
         const numJornadas = numParticipantes - 1;
 
         if(editing){
-            console.log(minutes)
             const response = await updateLeague(
                 leagueEditing.leagueId,
                 {
@@ -139,7 +138,6 @@ const CrearLiga: React.FC = () => {
                     "creador": parseInt(userId)
                 });
 
-                console.log(response);
 
                 navigate('/mis-ligas');
             } catch (err) {

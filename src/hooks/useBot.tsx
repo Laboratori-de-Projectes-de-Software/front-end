@@ -19,7 +19,6 @@ export const useFetchListarBots = () => {
 
                 const data = await response.data;
 
-                console.log(data);
                 setBotList(data);
 
 
@@ -52,7 +51,6 @@ export const useFetchObtenerBot = (id: number | undefined) => {
 
                 const data = await response.data;
 
-                console.log(data);
                 setBot(data);
 
 

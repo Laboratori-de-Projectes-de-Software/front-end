@@ -8,7 +8,6 @@ function DetallesBot() {
 
 
     const {id} = useParams();
-    console.log(id);
     const {bot, loading, error} = useFetchObtenerBot(id);
 
     if (loading) return <p className="text-center mt-5">Cargando detalles bot...</p>;

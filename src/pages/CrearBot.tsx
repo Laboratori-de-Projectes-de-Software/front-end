@@ -30,7 +30,6 @@ const CrearBot: React.FC = () => {
         try {
           const res = await getBotById(botId);
           const bot = res.data;
-          console.log("Datos del bot:", res);
 
           // Aquí ajustamos las propiedades según el console.log
           setNombreBot(bot.name);
