@@ -3,6 +3,7 @@ import {getStatusColor} from "../pages/LeagueOverviewPage.tsx"
 
 import { FC } from "react";
 import { Button } from "react-bootstrap";
+import { useNavigate, useParams} from "react-router-dom";
 type LeagueHeaderProps = {
     creador: string;
     estado: "CERRADA" | "ABIERTA" | "EN CURSO";
@@ -14,7 +15,8 @@ type LeagueHeaderProps = {
 export const LeagueHeader: FC<LeagueHeaderProps> = ({creador, estado, participantes
 }) => {
 
-
+    const {leagueId} = useParams();
+    const navigate = useNavigate();
 
     return (
         <div>
@@ -49,7 +51,7 @@ export const LeagueHeader: FC<LeagueHeaderProps> = ({creador, estado, participan
                     <Button
                         variant="outline-light"
                         size="lg"
-                        //onClick={() => navigate("/enfrentamientos")}
+                        onClick={() => navigate(`/league/${leagueId}/match`)}
                     >
                         Ver Enfrentamientos
                     </Button>
