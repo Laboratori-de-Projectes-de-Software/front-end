@@ -1,45 +1,42 @@
-export interface Participation {
-  botId: number
-  name: string
-  points: number
-  position: number
-  nWins: number
-  nDraws: number
-  nLosses: number
-  nMatches?: number
-}
-
 export interface Bot {
   botId: number
   name: string
   description: string
-  urlImage: string
+  urlImage?: string
   PJ?: number
-  nWins: number
-  nLosses: number
-  nDraws: number
+  nWins?: number
+  nLosses?: number
+  nDraws?: number
 }
 
-// TODO: Cambiar cuando se siga el Contrato de LeagueResponse (ABB-142)
-// export interface League {
-//   leagueId: number
-//   state: "PENDIENTE" | "EN CURSO" | "FINALIZADO"
-//   name: string
-//   urlImagen: string
-//   user: number
-//   rounds: number
-//   matchTime: number
-//   bots: number[]
-// }
+// TODO: (ABB-145) Actualizar cuando siga el Contrato de LeagueResponse
 export interface League {
+  // leagueId: number
   id: number
-  estado: 'PENDIENTE' | 'EN CURSO' | 'FINALIZADO'
-  nombre: string
-  urlImagen: string
+  state: 'PENDIENTE' | 'EN_CURSO' | 'FINALIZADO'
+  name: string
+  // urlImagen: string
+  imageUrl: string
   user: number
-  rondas: number
+  rounds: number
   matchTime: number
   bots: number[]
+}
+
+// TODO: (ABB-146) Actualizar cuando siga el Contrato de ParticipationResponse
+export interface Participation {
+  botId: number
+  // name: string
+  botName: string
+  points: number
+  position: number
+  // nWins: number
+  // nDraws: number
+  // nLosses: number
+  nwins: number
+  ndraws: number
+  nlosses: number
+  nMatches?: number
 }
 
 export interface Message {
@@ -50,7 +47,7 @@ export interface Message {
 
 export interface Match {
   matchId: number
-  state: 'PENDIENTE' | 'EN CURSO' | 'FINALIZADO'
+  state: 'PENDIENTE' | 'EN_CURSO' | 'FINALIZADO'
   result: 1 | 2 | 3
   fighters: [string, string]
   roundNumber: number

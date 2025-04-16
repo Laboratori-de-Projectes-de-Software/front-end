@@ -1,25 +1,18 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-
-// TODO: Cambiar cuando se haya hecho la Tarea ABB-134
-interface BotTemp {
-  id: number
-  name: string
-  description: string
-  urlImage: string
-}
+import type { Bot } from '@/types'
 
 const isOpen = ref(false)
-const selectedOptions = ref<BotTemp[]>([])
+const selectedOptions = ref<Bot[]>([])
 const search = ref('')
 const dropdownContainer = ref()
 
 const props = defineProps<{
-  options: BotTemp[] | undefined
+  options: Bot[] | undefined
 }>()
 const emit = defineEmits(['update:selected'])
 
-const options = ref<BotTemp[] | undefined>(props.options)
+const options = ref<Bot[] | undefined>(props.options)
 
 const toggleDropdown = () => {
   if (!isOpen.value) {
@@ -34,7 +27,7 @@ const closeDropdown = (event: FocusEvent) => {
   }
 }
 
-const toggleOption = (option: BotTemp) => {
+const toggleOption = (option: Bot) => {
   const index = selectedOptions.value.findIndex((item) => item.name === option.name)
   if (index === -1) {
     selectedOptions.value.push(option)
@@ -44,7 +37,7 @@ const toggleOption = (option: BotTemp) => {
   emit('update:selected', selectedOptions.value)
 }
 
-const isSelected = (option: BotTemp) => {
+const isSelected = (option: Bot) => {
   return selectedOptions.value.some((item) => item.name === option.name)
 }
 

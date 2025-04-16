@@ -5,14 +5,9 @@ import HeaderApp from '@/components/HeaderApp.vue'
 import router from '@/router'
 import { onMounted, ref } from 'vue'
 import Swal from 'sweetalert2'
+import type { Bot } from '@/types'
 
-// TODO: Cambiar cuando se haya hecho la Tarea ABB-134
-interface BotTemp {
-  id: number
-  name: string
-  description: string
-  urlImage: string
-}
+
 
 interface BotSummary {
   id: number
@@ -20,7 +15,7 @@ interface BotSummary {
   description: string
 }
 
-const options = ref<BotTemp[]>()
+const options = ref<Bot[]>()
 
 const getAllBotsSummary = async () => {
   const response = await fetch('http://localhost:3000/api/v0/bot', {
@@ -71,7 +66,7 @@ onMounted(() => {
 const name = ref('')
 const rounds = ref(0)
 const matchTime = ref(0)
-const selectedBots = ref<BotTemp[]>([])
+const selectedBots = ref<Bot[]>([])
 
 const createLeagueRequest = async () => {
   // TODO: Implementar la selección de imagenes
@@ -79,7 +74,7 @@ const createLeagueRequest = async () => {
     name: name.value,
     rounds: rounds.value,
     matchTime: matchTime.value,
-    bots: selectedBots.value.map((bot) => bot.id),
+    bots: selectedBots.value.map((bot) => bot.botId),
     imagen: imageUrl.value,
     // urlImagen: imageUrl.value,
   }

@@ -26,13 +26,10 @@ async function loadLeagues() {
     handleErrorResponse(response.status)
   } else {
     const data: League[] = await response.json()
-    // TODO: Cambiar cuando se siga el Contrato de LeagueResponse (ABB-142)
-    // ligasPendientes.value = data.filter((l) => l.state === 'PENDIENTE')
-    // ligasEnJuego.value = data.filter((l) => l.state === 'EN CURSO')
-    // ligasFinalizadas.value = data.filter((l) => l.state === 'FINALIZADO')
-    ligasPendientes.value = data.filter((l) => l.estado === 'PENDIENTE')
-    ligasEnJuego.value = data.filter((l) => l.estado === 'EN CURSO')
-    ligasFinalizadas.value = data.filter((l) => l.estado === 'FINALIZADO')
+    console.log('Ligas:', data)
+    ligasPendientes.value = data.filter((l) => l.state === 'PENDIENTE')
+    ligasEnJuego.value = data.filter((l) => l.state === 'EN_CURSO')
+    ligasFinalizadas.value = data.filter((l) => l.state === 'FINALIZADO')
   }
 }
 
@@ -76,7 +73,7 @@ onMounted(() => {
       </div>
 
       <ul class="flex flex-wrap justify-center gap-x-8 gap-y-5">
-        <!-- TODO: Cambiar cuando se siga el Contrato de LeagueResponse (ABB-142)
+        <!-- TODO: (ABB-145) Cambiar cuando LeagueResponse devuelva leagueId
         <li v-for="liga in ligasPendientes" :key="liga.leagueId" class="w-fit"> -->
         <li v-for="liga in ligasPendientes" :key="liga.id" class="w-fit">
           <ButtonLeague :liga="liga" />
@@ -101,7 +98,7 @@ onMounted(() => {
       </div>
 
       <ul class="flex flex-wrap justify-center gap-x-8 gap-y-5">
-        <!-- TODO: Cambiar cuando se siga el Contrato de LeagueResponse (ABB-142)
+        <!-- TODO: (ABB-145) Cambiar cuando LeagueResponse devuelva leagueId
         <li v-for="liga in ligasEnJuego" :key="liga.leagueId" class="w-fit"> -->
         <li v-for="liga in ligasEnJuego" :key="liga.id" class="w-fit">
           <ButtonLeague :liga="liga" />
@@ -118,7 +115,7 @@ onMounted(() => {
       </div>
 
       <ul class="flex flex-wrap justify-center gap-8">
-        <!-- TODO: Cambiar cuando se siga el Contrato de LeagueResponse (ABB-142)
+        <!-- TODO: (ABB-145) Cambiar cuando LeagueResponse devuelva leagueId
         <li v-for="liga in ligasFinalizadas" :key="liga.leagueId" class="w-fit"> -->
         <li v-for="liga in ligasFinalizadas" :key="liga.id" class="w-fit">
           <ButtonLeague :liga="liga" />

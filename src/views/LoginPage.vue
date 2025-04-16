@@ -88,9 +88,7 @@ const handleLogin = async () => {
     authStore.login(data.token, data.expiresIn)
 
     localStorage.setItem('token', data.token)
-    // Guardar el nombre de usuario en el localStorage
-    // TODO: Descomentar la siguiente línea cuando la API siga el Contrato
-    // localStorage.setItem('userId', data.userId)
+    localStorage.setItem('userId', data.userId)
     localStorage.setItem('user', data.user)
     redirectHome()
   }
