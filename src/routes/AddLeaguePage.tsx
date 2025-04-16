@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { createLeague } from "@use-cases/UseCases";  // Importa la funció createLeague
-import { getAllBots, getAllLeagues } from "@use-cases/UseCases";  // Importa la funció getBots i getAllLeagues
-import LeagueBar from "@components/LeagueBar";
+import { getAllBots } from "@use-cases/UseCases";  // Importa la funció getBots i getAllLeagues
 import WhiteButton from "@components/WhiteButton";
 import { CreateLeagueDTO, LeagueDTO } from "@DTOClasses/LeagueDTO";
 import { BotDTO } from "@DTOClasses/BotDTO";
 
 const AddLeaguePage: React.FC = () => {
-  const [leagues, setLeagues] = useState<LeagueDTO[]>([]); // Afegim estat per a les lligues
   const [leagueName, setLeagueName] = useState("");
   const [selectedParticipants, setSelectedParticipants] = useState<number[]>([]);
   const [rounds, setRounds] = useState("");
@@ -20,12 +18,7 @@ const AddLeaguePage: React.FC = () => {
       const fetchedBots = await getAllBots();
       setBots(fetchedBots);
     };
-    const fetchLeagues = async () => {
-      const fetchedLeagues = await getAllLeagues(1 /* gestió d'usuari actual */);
-      setLeagues(fetchedLeagues);
-    };
     fetchBots();
-    fetchLeagues();
   }, []);
 
   // Funció per gestionar el canvi de participants seleccionats
