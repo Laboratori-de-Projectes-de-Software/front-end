@@ -33,7 +33,7 @@ async function loadLeague() {
     alert('Error al cargar la liga. Por favor, inténtalo de nuevo.')
   } else {
     league.value = await response.json()
-    if (league.value && league.value.state !== 'PENDIENTE') {
+    if (league.value && league.value.state !== 'PENDING') {
       await loadMatches()
     }
     loadLeaderboard()
@@ -128,7 +128,7 @@ const loadMyBots = async () => {
     alert('Error al cargar los bots. Por favor, inténtalo de nuevo.')
   } else {
     const data = await response.json()
-    misBots.value = data.map((bot: Bot) => bot.botId)
+    misBots.value = data.map((bot: Bot) => bot.id)
   }
 }
 
@@ -173,7 +173,7 @@ const titleHeader = '¡Hola, ' + localStorage.getItem('user') + '!'
         <div class="flex flex-row gap-4 text-xl font-bold">
           <!-- Mostrar botón solo si la liga está PENDIENTE -->
           <button
-            v-if="league?.state === 'PENDIENTE'"
+            v-if="league?.state === 'PENDING'"
             class="cursor-pointer rounded-3xl bg-[#06f] px-4.5 py-3 text-white"
             @click="startLeague"
           >
@@ -182,7 +182,7 @@ const titleHeader = '¡Hola, ' + localStorage.getItem('user') + '!'
 
           <!-- Redirigir a configuración (puedes cambiar la ruta) -->
           <button
-            v-if="league?.state === 'PENDIENTE'"
+            v-if="league?.state === 'PENDING'"
             class="cursor-pointer rounded-3xl bg-[#06f] px-4.5 py-3 text-white"
           >
             Configuración
@@ -193,7 +193,7 @@ const titleHeader = '¡Hola, ' + localStorage.getItem('user') + '!'
       <div class="mt-0 h-0 w-full dark:border dark:border-[#525252]"></div>
     </header>
 
-    <div v-if="league?.state !== 'PENDIENTE'" class="flex w-full flex-col gap-5">
+    <div v-if="league?.state !== 'PENDING'" class="flex w-full flex-col gap-5">
       <div class="w-full bg-[#BBBBBB] p-4 dark:bg-[#525252]">
         <div class="flex items-center justify-center">
           <!--
@@ -241,7 +241,7 @@ const titleHeader = '¡Hola, ' + localStorage.getItem('user') + '!'
                 <!-- Equipo 1 -->
                 <td class="mr-10 flex w-75 justify-end gap-2.5 sm:text-xl">
                   <WinIcon
-                    v-if="encuentro.result === 1 && encuentro.state === 'FINALIZADO'"
+                    v-if="encuentro.result === 0 && encuentro.state === 'COMPLETED'"
                     classList="h-[27px] w-[27px]"
                   />
                   <div class="text-center">{{ encuentro.fighters[0] }}</div>
@@ -249,11 +249,11 @@ const titleHeader = '¡Hola, ' + localStorage.getItem('user') + '!'
                 <!-- Icono del ganador -->
                 <td>
                   <DrawIcon
-                    v-if="encuentro.result === 2 && encuentro.state === 'FINALIZADO'"
+                    v-if="encuentro.result === -1 && encuentro.state === 'COMPLETED'"
                     classList="h-5 w-5 sm:h-10 sm:w-21"
                   />
                   <div
-                    v-else-if="encuentro.state === 'EN_CURSO'"
+                    v-else-if="encuentro.state === 'IN_PROGRESS'"
                     class="flex w-21 justify-center rounded-lg bg-red-500 px-2 py-1 text-sm font-bold"
                   >
                     EN VIVO
@@ -269,7 +269,7 @@ const titleHeader = '¡Hola, ' + localStorage.getItem('user') + '!'
                 <td class="ml-10 flex w-75 justify-start gap-2.5 sm:text-xl">
                   <div>{{ encuentro.fighters[1] }}</div>
                   <WinIcon
-                    v-if="encuentro.result === 3 && encuentro.state === 'FINALIZADO'"
+                    v-if="encuentro.result === 1  && encuentro.state === 'COMPLETED'"
                     classList="h-5 w-5 sm:h-10 sm:w-10"
                   />
                 </td>
@@ -328,7 +328,7 @@ const titleHeader = '¡Hola, ' + localStorage.getItem('user') + '!'
                   esMiBot(equipo.botName) ? 'font-bold text-[#FADA5E]' : '',
                 ]"
               >
-                {{ equipo.nwins + equipo.ndraws + equipo.nlosses }}
+                {{ equipo.nWins + equipo.nDraws + equipo.nLosses }}
               </td>
               <td
                 :class="[
@@ -336,7 +336,7 @@ const titleHeader = '¡Hola, ' + localStorage.getItem('user') + '!'
                   esMiBot(equipo.botName) ? 'font-bold text-[#FADA5E]' : '',
                 ]"
               >
-                {{ equipo.nwins }}
+                {{ equipo.nWins }}
               </td>
               <td
                 :class="[
@@ -344,7 +344,7 @@ const titleHeader = '¡Hola, ' + localStorage.getItem('user') + '!'
                   esMiBot(equipo.botName) ? 'font-bold text-[#FADA5E]' : '',
                 ]"
               >
-                {{ equipo.ndraws }}
+                {{ equipo.nDraws }}
               </td>
               <td
                 :class="[
@@ -352,7 +352,7 @@ const titleHeader = '¡Hola, ' + localStorage.getItem('user') + '!'
                   esMiBot(equipo.botName) ? 'font-bold text-[#FADA5E]' : '',
                 ]"
               >
-                {{ equipo.nlosses }}
+                {{ equipo.nLosses }}
               </td>
               <td
                 :class="[

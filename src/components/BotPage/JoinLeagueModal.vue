@@ -21,7 +21,7 @@ async function registerBotToSelectedLeague() {
 
   // Se hace una llamada a la API para registrar el bot en la liga seleccionada
   const response = await fetch(
-    `http://localhost:8080/api/v0/league/${ligaSeleccionada.value.leagueId}/bot`,
+    `http://localhost:8080/api/v0/league/${ligaSeleccionada.value.id}/bot`,
     {
       method: 'POST',
       headers: {
@@ -73,10 +73,10 @@ onMounted(() => {
       <ul class="mx-auto rounded-lg bg-[#DDDDDD] p-2 dark:bg-[#353535]">
         <li
           v-for="liga in ligas"
-          :key="liga.leagueId"
+          :key="liga.id"
           :class="[
             'flex cursor-pointer items-center rounded-md p-2',
-            ligaSeleccionada?.leagueId === liga.leagueId
+            ligaSeleccionada?.id === liga.id
               ? 'border-2 border-blue-500'
               : 'border border-transparent',
           ]"
@@ -84,7 +84,7 @@ onMounted(() => {
         >
           <div class="flex w-full items-center">
             <img
-              :src="liga.urlImagen"
+              :src="liga.imageUrl"
               alt="Liga"
               class="mr-2 h-16 w-16 rounded-md bg-white object-contain p-2"
             />

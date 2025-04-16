@@ -16,13 +16,13 @@ const openEditMenu = (bot: Bot) => {
 
 <template>
   <div class="w-full">
-    <section v-for="bot in props.botsDetails" :key="bot.botId" class="mb-4 w-full px-4 pt-4 pb-4">
+    <section v-for="bot in props.botsDetails" :key="bot.id" class="mb-4 w-full px-4 pt-4 pb-4">
       <!-- Contenedor principal -->
       <div class="flex flex-col gap-4 rounded-lg p-4">
         <!-- Contenedor de la imagen -->
         <div class="flex cursor-pointer items-center justify-center" @click="openEditMenu(bot)">
           <img
-            :src="bot.urlImage"
+            :src="bot.imageUrl"
             alt="Imagen del Bot"
             class="h-[120px] w-[120px] rounded-lg border-2 border-gray-500 shadow-lg transition-transform duration-300 ease-in-out hover:scale-105"
           />
@@ -32,7 +32,7 @@ const openEditMenu = (bot: Bot) => {
           <h2 class="text-center text-[32px] font-bold text-white">
             {{ bot.name.toUpperCase() }}
           </h2>
-          <h3 class="text-center text-[24px] font-semibold text-white">({{ bot.description }})</h3>
+          <h3 class="text-center text-[24px] font-semibold text-white">({{ bot.quality }})</h3>
         </div>
       </div>
 

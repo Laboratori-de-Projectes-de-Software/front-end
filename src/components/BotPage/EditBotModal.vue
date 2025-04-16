@@ -29,7 +29,7 @@ async function saveBotChanges() {
       const updatedBot = await response.json()
 
       // Se busca el índice del bot actualizado dentro del array local.
-      const botIndex = botsDetails.value.findIndex((bot) => bot.botId === selectedBot.value!.botId)
+      const botIndex = botsDetails.value.findIndex((bot) => bot.ID === selectedBot.value!.botId)
 
       // Se actualiza el bot en el array con los datos recibidos de la API.
       if (botIndex !== -1) {

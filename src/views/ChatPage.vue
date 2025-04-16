@@ -23,8 +23,7 @@ let titleHeader = ''
 // Función para cargar los mensajes de la API
 const loadMessages = async () => {
   // TODO: Descomentar cuando este el endpoint bien hecho
-  // const response = await fetch(`http://localhost:8080/api/v0/match/${matchId}/message`, {
-  const response = await fetch(`http://localhost:8080/api/v0/match/${matchId}/messages`, {
+  const response = await fetch(`http://localhost:8080/api/v0/match/${matchId}/message`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -48,7 +47,7 @@ onMounted(() => {
 
 // Función para obtener información más detallada de los bots que pelean
 const obtenerInfoFighters = async (mensajes: Message[]) => {
-  const ids = new Set(mensajes.map((mensaje) => Number(mensaje.idBot)))
+  const ids = new Set(mensajes.map((mensaje) => Number(mensaje.botId)))
   bots.value = await Promise.all(
     Array.from(ids).map(async (id) => {
       const response = await fetch(`http://localhost:8080/api/v0/bot/${id}`, {
@@ -70,10 +69,10 @@ const obtenerInfoFighters = async (mensajes: Message[]) => {
   )
   titleHeader =
     bots.value[0]?.name +
-    ` (${bots.value[0]?.description}) ` +
+    ` (${bots.value[0]?.quality}) ` +
     ' vs ' +
     bots.value[1]?.name +
-    ` (${bots.value[1]?.description}) `
+    ` (${bots.value[1]?.quality}) `
 }
 </script>
 
@@ -95,8 +94,8 @@ const obtenerInfoFighters = async (mensajes: Message[]) => {
           class="mx-auto mb-12 flex max-w-5xl flex-col justify-center gap-3 px-2 sm:gap-6 md:px-8"
         >
           <div v-for="(mensaje, index) in mensajes" :key="index">
-            <MessageApp :id="index" :imgPath="bots.map((bot) => bot?.urlImage)">{{
-              mensaje.mensaje
+            <MessageApp :id="index" :imgPath="bots.map((bot) => bot?.imageUrl)">{{
+              mensaje.text
             }}</MessageApp>
           </div>
         </div>

@@ -79,7 +79,7 @@ async function loadClasificationSection() {
     // Se cargan todas las ligas:
     const allLeagues = await loadAllLeagues()
 
-    const leagueInProcess = allLeagues?.filter((league) => league.state === 'EN_CURSO')
+    const leagueInProcess = allLeagues?.filter((league) => league.state === 'IN_PROGRESS')
 
     // Se obtiene la lista de bots que están en ligas. El key sera el id del bot, y el value el id de la liga
     const botLeagueMap = new Map<number | undefined, number>()
@@ -87,11 +87,11 @@ async function loadClasificationSection() {
     // Se recorre cada bot en la lista
     for (const bot of botSummaries.value) {
       // Busca una liga en la que el bot esté inscrito y que esté en curso
-      const league = leagueInProcess?.find((league) => league.bots.some((b) => b === bot.botId))
+      const league = leagueInProcess?.find((league) => league.bots.some((b) => b === bot.id))
 
       if (league) {
         // Si el bot está en una liga, se añade al mapa
-        botLeagueMap.set(bot.id, league.leagueId)
+        botLeagueMap.set(bot.id, league.id)
       }
     }
     if (botLeagueMap.size !== 0) {

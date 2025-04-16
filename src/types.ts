@@ -1,10 +1,9 @@
-// Cambiar cuando este bien deficnido
 export interface Bot {
-  botId?: number
-  id?: number
+  id: number
   name: string
-  description: string
-  urlImage?: string
+  quality: string
+  imageUrl: string
+  apiUrl: string
   PJ?: number
   nwins?: number
   nlosses?: number
@@ -12,44 +11,37 @@ export interface Bot {
 }
 
 export interface League {
-  leagueId: number
-  state: 'PENDIENTE' | 'EN_CURSO' | 'FINALIZADO'
+  id: number
   name: string
-  urlImagen: string
-  user: number
+  imageUrl: string
   rounds: number
   matchTime: number
   bots: number[]
+  state: 'PENDING' | 'IN_PROGRESS' | 'COMPLETED'
 }
 
-// TODO: (ABB-146) Actualizar cuando siga el Contrato de ParticipationResponse
 export interface Participation {
   botId: number
-  // name: string
   botName: string
   points: number
   position: number
-  // nWins: number
-  // nDraws: number
-  // nLosses: number
-  nwins: number
-  ndraws: number
-  nlosses: number
-  nMatches?: number
-}
-
-export interface Message {
-  mensaje: string
-  idBot: number
-  timestamp: number
+  nWins: number
+  nDraws: number
+  nLosses: number
 }
 
 export interface Match {
   id: number
-  state: 'PENDIENTE' | 'EN_CURSO' | 'FINALIZADO'
-  result: 1 | 2 | 3
-  fighters: [string, string]
+  state: 'PENDING' | 'IN_PROGRESS' | 'COMPLETED'
+  result: -1 | 0 | 1
+  fighters: [Bot, Bot]
   roundNumber: number
+}
+
+export interface Message {
+  botId: number
+  text: string
+  timestamp: number
 }
 
 // Interfaz para la gestión de los bots:

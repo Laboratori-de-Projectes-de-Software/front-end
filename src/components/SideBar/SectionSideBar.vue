@@ -16,7 +16,7 @@ const props = defineProps<{ title: string; matches?: Match[]; classListButtonCha
       :key="match.id"
       :classList="props.classListButtonChat"
     >
-      {{ match.fighters[0] }} vs {{ match.fighters[1] }}
+      {{ match.fighters[0].name }} vs {{ match.fighters[1].name }}
     </ButtonChat>
   </section>
 </template>

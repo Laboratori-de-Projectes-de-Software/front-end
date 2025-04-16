@@ -7,8 +7,8 @@ const props = defineProps<{
 }>()
 
 const botInLeagueId = props.botLeagueSummaries.map((summary) => summary.botId)
-const botInLeague = props.bots.filter((bot) => botInLeagueId.includes(bot.botId))
-const botsNotInLeague = props.bots.filter((bot) => !botInLeagueId.includes(bot.botId))
+const botInLeague = props.bots.filter((bot) => botInLeagueId.includes(bot.id))
+const botsNotInLeague = props.bots.filter((bot) => !botInLeagueId.includes(bot.id))
 
 const emit = defineEmits(['showJoinLeagueModal'])
 
@@ -22,14 +22,14 @@ function handleJoinLeague(botId?: number) {
     <!-- Sección para bots que participan en una liga -->
     <section
       v-for="bot in botInLeague"
-      :key="bot.botId"
+      :key="bot.id"
       class="mb-4 w-full rounded-2xl bg-[#2a2a2a] px-4 pt-4 pb-4"
     >
       <!-- Nombre del Bot y su Cualidad -->
       <h2 class="text-center text-[32px] font-bold text-white">
         {{ bot.name }}
       </h2>
-      <h3 class="text-center text-[32px] font-semibold text-white">({{ bot.description }})</h3>
+      <h3 class="text-center text-[32px] font-semibold text-white">({{ bot.quality }})</h3>
 
       <!-- Línea separadora -->
       <div class="mx-auto mt-1 mb-4 h-[2px] w-2/3 bg-gray-500"></div>
@@ -54,12 +54,12 @@ function handleJoinLeague(botId?: number) {
           <!-- Se itera sobre la clasificación filtrada (por ejemplo: posición superior, actual e inferior) -->
           <tr
             v-for="(entry, index) in botLeagueSummaries.find(
-              (summary) => summary.botId === bot.botId
+              (summary) => summary.botId === bot.id
             )?.classification"
             :key="index"
             class="border-b border-gray-500"
             :class="{
-              'font-bold text-[#FADA5E]': entry.botId === bot.botId,
+              'font-bold text-[#FADA5E]': entry.botId === bot.id,
             }"
           >
             <td class="px-3 py-2 text-center text-[16px]">
@@ -70,19 +70,19 @@ function handleJoinLeague(botId?: number) {
               {{ entry.botName }}
             </td>
             <td class="px-4 py-2 text-left text-[16px]">
-              {{ bots.find((b) => b.botId === entry.botId)?.description }}
+              {{ bots.find((b) => b.id === entry.botId)?.quality }}
             </td>
             <td class="px-2 py-2 text-center text-[16px]">
-              {{ entry.nwins + entry.ndraws + entry.nlosses }}
+              {{ entry.nWins + entry.nDraws + entry.nLosses }}
             </td>
             <td class="px-2 py-2 text-center text-[16px]">
-              {{ entry.nwins }}
+              {{ entry.nWins }}
             </td>
             <td class="px-2 py-2 text-center text-[16px]">
-              {{ entry.ndraws }}
+              {{ entry.nDraws }}
             </td>
             <td class="px-2 py-2 text-center text-[16px]">
-              {{ entry.nlosses }}
+              {{ entry.nLosses }}
             </td>
             <td class="px-3 py-2 text-center text-[16px]">
               {{ entry.points }}
@@ -109,7 +109,7 @@ function handleJoinLeague(botId?: number) {
     <!-- Sección para bots que NO están en ninguna liga -->
     <section
       v-for="bot in botsNotInLeague"
-      :key="bot.botId"
+      :key="bot.id"
       class="mb-4 w-full rounded-2xl bg-[#2a2a2a] px-4 pt-4 pb-4 text-center"
     >
       <!-- Nombre del Bot y su Cualidad -->
@@ -117,7 +117,7 @@ function handleJoinLeague(botId?: number) {
         {{ bot.name }}
       </h2>
       <h3 class="text-center text-[32px] font-semibold text-white">
-        {{ bot.description }}
+        {{ bot.quality }}
       </h3>
 
       <!-- Línea separadora -->

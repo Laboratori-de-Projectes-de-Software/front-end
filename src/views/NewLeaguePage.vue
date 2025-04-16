@@ -74,7 +74,7 @@ const createLeagueRequest = async () => {
     name: name.value,
     rounds: rounds.value,
     matchTime: matchTime.value,
-    bots: selectedBots.value.map((bot) => bot.botId),
+    bots: selectedBots.value.map((bot) => bot.id),
     imagen: imageUrl.value,
     // urlImagen: imageUrl.value,
   }
