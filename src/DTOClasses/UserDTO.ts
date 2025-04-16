@@ -14,3 +14,11 @@ export interface UserDTO {
   user: string;
   mail: string;
 }
+
+export interface AuthenticatedUserDTO {
+  id: number;
+  user: string;
+  mail: string;
+  token: string;
+  expiresIn: string;
+}
