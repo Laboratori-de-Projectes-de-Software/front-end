@@ -63,6 +63,6 @@ export interface BotSummary {
 
 export interface BotLeagueSummary {
   botId: number
-  league: League
+  leagueId: number
   classification: Participation[] // [Pos - 1][Pos][Pos + 1]
 }
