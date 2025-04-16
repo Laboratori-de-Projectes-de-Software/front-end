@@ -56,6 +56,7 @@ export default function Login() {
               navigate("/addia");
           })
               .catch((error: any) => {
+                setCookie("token","",new Date())
                   setNotification({
                       message: error.message || "Failed to log account",
                       type: "error"
