@@ -2,6 +2,7 @@ import Footer from "./Footer";
 import SideBar from "./SideBar";
 import { LeagueResponseDTO } from "./ConAPI";
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 interface NotificationProps {
   message: string;
@@ -107,6 +108,7 @@ export default function Scores() {
                 >
                   Ver Liga
                 </a>
+                <Link to={`/addiaLeague/${league.leagueId}`}>Add bots to league</Link>
               </div>
             ))}
           </div>
