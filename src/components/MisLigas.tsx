@@ -15,7 +15,7 @@ export default function Scores() {
   const [notification, setNotification] = useState<NotificationProps | null>(null);
 
   useEffect(() => {
-    const userId = 14;
+    const userId = 41;
     window.APIConection.getAllLeaguesUser(userId)
       .then((response: LeagueResponseDTO[]) => {
         setLeagues(response);

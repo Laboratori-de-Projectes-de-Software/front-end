@@ -5,7 +5,8 @@ import '../css/ChatWindow.css'; // We'll define this CSS file separately
 interface Message {
   id: string;
   text: string;
-  sender: 'user' | 'other';
+  name: string;
+  sender: 'A' | 'B';
   timestamp: string;
 }
 
@@ -36,10 +37,10 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ messages, otherUser }) => {
           {messages.sort((a, b) => Date.parse(a.timestamp) - Date.parse(b.timestamp)).map((message) => (
             <div
               key={message.id}
-              className={`message-row ${message.sender === 'user' ? 'user-message-row' : 'other-message-row'}`}
+              className={`message-row ${message.sender === 'A' ? 'user-message-row' : 'other-message-row'}`}
             >
               <div
-                className={`message-bubble ${message.sender === 'user'
+                className={`message-bubble ${message.sender === 'A'
                     ? 'user-message'
                     : 'other-message'
                   }`}
