@@ -31,6 +31,7 @@ const LeaguesPage: React.FC = () => {
           const leaguesFetch = await getAllLeagues();
           setLeagues(leaguesFetch);
         }
+        fetchLeagues();
     }, []);
   
     useEffect(() => {
@@ -40,6 +41,7 @@ const LeaguesPage: React.FC = () => {
             const data: ParticipationDTO[] | null = await getLeagueClassification(selectedLeague.id);
             if (data) setParticipants(data);
         };
+        fetchClassification();
     }, [selectedLeague]);
 
     useEffect(() => {
@@ -49,6 +51,7 @@ const LeaguesPage: React.FC = () => {
             const matches: MatchDTO[] | null = await getMatchesFromLeague(selectedLeague.id);
             if (matches) setMatches(matches);
         };
+        fetchMatches();
     }, [selectedLeague]);
 
   return (
