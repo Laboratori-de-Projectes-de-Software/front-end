@@ -1,0 +1,113 @@
+/*/ Message css - Library /*/
+$dark: black, #2d2d2d;
+
+$colour  : nth($dark, 1);
+$colour2 : darken($colour, 10%);
+
+html, body {
+  height: 100%;
+}
+
+body {
+  font: 16px Arial;
+  text-align: center;
+}
+
+.inliner {
+  height: 100%;
+}
+
+.inliner,
+.inliner + .inlined {
+  display        : inline-block;
+  vertical-align : middle;
+}
+
+.bubbles {
+  width : 400px;
+  margin: auto;
+}
+
+%bubble {
+  border-radius: 7px 7px 10px 10px;
+  
+  position      : relative;
+  padding       : 10px;
+  background    : $colour;
+  border-bottom : 5px solid $colour2;
+    
+  &:before,
+  &:after {
+    content  : "";
+    position : absolute;
+    left     : 60%; // Default for right-aligned bubbles
+    top      : 100%;
+    
+    border-top    : 14px solid $colour;
+    border-bottom : none;
+    border-left   : 17px solid transparent;
+    border-right  : 10px solid transparent;
+  }
+  
+  &:before {
+    padding-top      : 10px;
+    border-top-color : $colour2;
+  }
+  
+  &:after {
+    margin-top: -5px;
+  }
+}
+
+%demo {
+  display: inline-block;
+  margin : 10px;
+}
+
+$_cls : nth($dark, 1); // Use the first value (e.g., 'black') as the class name
+$_c1  : nth($dark, 2); // Use the second value (e.g., '#2d2d2d') as the color
+$_c2  : darken($_c1, 10%);
+$_c3  : darken($_c1, 15%);
+
+.bubble-#{$_cls} {
+  @extend %bubble;
+  @extend %demo;
+  
+  text-shadow:
+    0 1px 1px rgba(#fff, 0.5)
+  ;
+      
+  background          : $_c1;
+  border-bottom-color : $_c2;
+  color               : transparent;
+  color               : $_c3;
+  
+  &:before {
+    border-top-color : $_c2;
+  }
+  
+  &:after {
+    border-top-color : $_c1;
+  }
+}
+
+// Left-aligned bubble
+.bubble-left {
+  @extend %bubble;
+  @extend %demo;
+
+  &:before,
+  &:after {
+    left: 10%; // Adjusted for left-aligned bubbles
+  }
+}
+
+.bubble-right {
+  @extend %bubble;
+  @extend %demo;
+
+  &:before,
+  &:after {
+    left: 80%; // Adjusted for left-aligned bubbles
+  }
+}

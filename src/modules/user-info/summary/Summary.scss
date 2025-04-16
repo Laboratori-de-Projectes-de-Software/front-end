@@ -1,0 +1,107 @@
+.profile-card {
+  margin-top: 30px;
+  background-color: #1e1e1e;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+  border-bottom: 1px solid #333;
+  border-top: 1px solid #333;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+
+  @media (min-width: 640px) {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  @media (min-width: 768px) {
+    border: 1px solid #333;
+    border-radius: 0.5rem;
+  }
+
+  & .avatar {
+    width: 6rem;
+    height: 6rem;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    background-color: #2a2a2a;
+    border: 2px solid #6b00bd;
+
+    & .avatar-fallback {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #2a2a2a;
+      color: #aaa;
+      font-weight: 500;
+      font-size: 1.5rem;
+    }
+
+    & img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  & .user-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    text-align: center;
+
+    @media (min-width: 640px) {
+      text-align: left;
+    }
+
+    & .user-name {
+      font-size: 1.5rem;
+      font-weight: 500;
+      color: #ffffff;
+    }
+
+    & .user-location {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #aaaaaa;
+      font-size: 0.875rem;
+
+      & img {
+        margin-right: 0.25rem;
+      }
+
+      @media (min-width: 640px) {
+        justify-content: flex-start;
+      }
+    }
+
+    & .user-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+      justify-content: center;
+
+      & .badge {
+        background-color: #333333;
+        color: #dddddd;
+        font-size: 0.75rem;
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px;
+        font-weight: 500;
+      }
+
+      @media (min-width: 640px) {
+        justify-content: flex-start;
+      }
+    }
+  }
+}

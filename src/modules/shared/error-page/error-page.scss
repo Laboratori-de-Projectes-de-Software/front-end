@@ -1,0 +1,276 @@
+/* Base styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+    "Helvetica Neue", sans-serif;
+  line-height: 1.5;
+}
+
+/* Error Container */
+.error-container {
+  min-height: 100vh;
+  background-color: #121212;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.error-content {
+  max-width: 32rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* Error Icon */
+.error-icon-container {
+  margin-bottom: 2rem;
+}
+
+.error-icon {
+  animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+  animation-delay: 0.5s;
+}
+
+.robot-face {
+  animation: pulse 2s infinite ease-in-out;
+}
+
+.robot-eye {
+  animation: blink 3s infinite;
+}
+
+.robot-eye.right {
+  animation-delay: 0.2s;
+}
+
+.robot-mouth {
+  animation: frown 4s infinite ease-in-out;
+}
+
+.robot-antenna {
+  animation: antenna-wiggle 2s infinite ease-in-out;
+}
+
+.robot-antenna-dot {
+  animation: glow 1.5s infinite alternate;
+}
+
+.error-spark {
+  opacity: 0;
+  animation: spark 2s infinite;
+}
+
+.error-spark:nth-child(2n) {
+  animation-delay: 0.4s;
+}
+
+.error-spark:nth-child(3n) {
+  animation-delay: 0.8s;
+}
+
+/* Error Info */
+.error-info {
+  margin-bottom: 2rem;
+}
+
+.error-title {
+  color: #ffffff;
+  font-size: 1.875rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.error-message {
+  color: #aaaaaa;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.error-code {
+  display: inline-block;
+  background-color: #2a2a2a;
+  color: #ef4444;
+  font-family: monospace;
+  font-size: 0.875rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.25rem;
+  border: 1px solid #333333;
+}
+
+/* Error Actions */
+.error-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 20rem;
+}
+
+@media (min-width: 640px) {
+  .error-actions {
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+
+.error-button {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.error-button.retry {
+  background-color: #ef4444;
+  color: #ffffff;
+}
+
+.error-button.retry:hover:not(:disabled) {
+  background-color: #dc2626;
+}
+
+.error-button.retry:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.error-button.retry.retrying {
+  background-color: #b91c1c;
+}
+
+.error-button.back {
+  background-color: #333333;
+  color: #ffffff;
+}
+
+.error-button.back:hover {
+  background-color: #444444;
+}
+
+/* Spinner */
+.spinner {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #ffffff;
+  animation: spin 1s linear infinite;
+  margin-right: 0.5rem;
+}
+
+/* Animations */
+@keyframes shake {
+  10%,
+  90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  20%,
+  80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-3px, 0, 0);
+  }
+
+  40%,
+  60% {
+    transform: translate3d(3px, 0, 0);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes blink {
+  0%,
+  45%,
+  55%,
+  100% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scaleY(0.1);
+    opacity: 0.8;
+  }
+}
+
+@keyframes frown {
+  0%,
+  100% {
+    d: path("M45 75 Q60 65 75 75");
+  }
+  50% {
+    d: path("M45 75 Q60 67 75 75");
+  }
+}
+
+@keyframes antenna-wiggle {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-10deg);
+  }
+  75% {
+    transform: rotate(10deg);
+  }
+}
+
+@keyframes glow {
+  0% {
+    opacity: 0.5;
+    fill: #ef4444;
+  }
+  100% {
+    opacity: 1;
+    fill: #f87171;
+  }
+}
+
+@keyframes spark {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
