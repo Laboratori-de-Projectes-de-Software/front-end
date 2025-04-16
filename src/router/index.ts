@@ -4,7 +4,7 @@ import HomePage from '@/views/HomePage.vue'
 import ProfileView from '@/views/ProfilePage.vue'
 import { useAuthStore } from '@/store'
 import ChatPage from '@/views/ChatPage.vue'
-import MyLeaguePage from '@/views/MyLeaguePage.vue'
+import LeaguePage from '@/views/LeaguePage.vue'
 import MyBotsPage from '@/views/MyBotsPage.vue'
 import NewLeaguePage from '@/views/NewLeaguePage.vue'
 import RegisterPage from '@/views/RegisterPage.vue'
@@ -15,7 +15,7 @@ const routes = [
   { path: '/login', component: LoginView },
   { path: '/profile', component: ProfileView, meta: { requiresAuth: true } },
   { path: '/match/:matchId', component: ChatPage, meta: { requiresAuth: true } },
-  { path: '/league/:leagueId', component: MyLeaguePage, meta: { requiresAuth: true } },
+  { path: '/league/:leagueId', component: LeaguePage, meta: { requiresAuth: true } },
   { path: '/createLeague', component: NewLeaguePage, meta: { requiresAuth: true } },
   { path: '/myBots', component: MyBotsPage, meta: { requiresAuth: true } },
   { path: '/createBot', component: NewBotPage, meta: { requiresAuth: true } },
