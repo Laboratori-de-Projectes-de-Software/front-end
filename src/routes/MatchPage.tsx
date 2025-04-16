@@ -97,9 +97,7 @@ const MatchPage: React.FC = () => {
     }
 
     getMessages();
-    getFigthers();
-
-
+    getFigthers()
   }, [timeLeft])
 
   const TimeToString = (t: number): string => {
