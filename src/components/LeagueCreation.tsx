@@ -96,7 +96,7 @@ export default function LeagueCreation() {
     setSelectedOptions(selected);
   };
 
-  const canStartLeague = leagueData.name !== "" &&
+  const canCreateLeague = leagueData.name !== "" &&
     leagueData.matchTime > 0 &&
     leagueData.rounds > 0 &&
     leagueData.bots.length > 1;
@@ -109,7 +109,7 @@ export default function LeagueCreation() {
       matchTime: leagueData.matchTime,
       rounds: leagueData.rounds,
       bots: leagueData.bots,
-      userId: 0
+      userId: parseInt(getCookie("userId"))
     }
     window.APIConection.postLeague(leagueInfo).then().catch((error) => console.log(error));
   }
@@ -166,11 +166,11 @@ export default function LeagueCreation() {
                 />
               </div>
               <button
-                className={`button-round ${canStartLeague ? "button-blue" : "button-disabled"}`}
-                disabled={!canStartLeague}
+                className={`button-round ${canCreateLeague ? "button-blue" : "button-disabled"}`}
+                disabled={!canCreateLeague}
                 onClick={handleLeagueCreation}
               >
-                Start
+                Create
               </button>
             </div>
           </div>

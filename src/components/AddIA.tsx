@@ -26,6 +26,18 @@ const tableData: TableRow[] = [
   { trait: "Empathy.................", endpoint: "http://endpoint.com", date: "01/01/2025" },
 ];
 
+
+function getCookie(c: string): string {
+  console.log(document.cookie);
+  const cookies = document.cookie.split('; ');
+  for (const cookie of cookies) {
+    const [cookieName, value] = cookie.split('=');
+    if (cookieName === c) {
+      return `${decodeURIComponent(value)}`;
+    }
+  }
+  return "";
+}
 export default function Account() {
 
   const [botInfo, setBotInfo] = useState<AIInfo>({ name: "", description: "", urlImage: "", endpoint: "" });
@@ -45,8 +57,9 @@ export default function Account() {
     const aiData: BotDTO ={
       name:botInfo.name,
       description:botInfo.description,
-      urlImage:botInfo.urlImage,
-      endpoint:botInfo.endpoint
+      urlImagen:botInfo.urlImage,
+      endpoint:botInfo.endpoint,
+      userId: parseInt(getCookie("userId"))
     }
     window.APIConection.postBot(aiData).then((response: any) => {
       setNotification({

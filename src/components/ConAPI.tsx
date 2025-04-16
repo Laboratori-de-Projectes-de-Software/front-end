@@ -25,7 +25,7 @@ export interface UserDTOLogin {
 }
 
 export interface BotDTO {
-    name: string; description: string; urlImage: string; endpoint: string; userId: number;
+    name: string; description: string; urlImagen: string; endpoint: string; userId: number;
 }
 
 export interface LeagueDTO {
