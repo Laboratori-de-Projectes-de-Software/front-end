@@ -1,6 +1,6 @@
 
-import { FaRobot, FaTrophy } from "react-icons/fa"; // Íconos para estadísticas
-import { FiUser } from "react-icons/fi"; // Ícono para el encabezado//
+import { FaRobot, FaTrophy } from "react-icons/fa";
+import { FiUser } from "react-icons/fi";
 import {useFetchPerfil} from "../hooks/usePerfilUsuario.tsx";
 import robotFoto from "../assets/img/robot.png"
 import ligaFoto from "../assets/img/liga.png"
@@ -10,9 +10,7 @@ import {Link} from "react-router-dom";
 
 const PerfilPage: React.FC = () => {
 
-    //TEMPORAL HASTA QUE ESTÉ LA AUTENTICACIÓN
     const { id } = useParams();
-    console.log(id);
     const { perfil, loading, error } = useFetchPerfil(id);
 
     if (loading) return <p className="text-center mt-5">Cargando perfil...</p>;
@@ -44,7 +42,6 @@ const PerfilPage: React.FC = () => {
                                 borderRadius: "50%",
                             }}
                         />
-                        <button className="btn btn-primary btn-lg">Cambiar Foto</button>
                     </div>
                     {/* Datos del usuario */}
                     <div className="col-md-8">
@@ -60,12 +57,6 @@ const PerfilPage: React.FC = () => {
                         </div>
                     </div>
                 </div>
-            </div>
-
-
-            {/* BOTÓN CERRAR SESIÓN */}
-            <div className="text-center mt-4">
-                <button className="btn btn-primary">Cerrar sesión</button>
             </div>
 
             {/* TARJETAS DE ACCIONES */}

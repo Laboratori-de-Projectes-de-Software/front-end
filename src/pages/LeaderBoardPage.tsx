@@ -1,5 +1,5 @@
-import { LeagueHeader } from "../components/LeagueHeader";
 import {Leaderboard} from "../components/BotClasification.tsx";
+
 
 
 
@@ -9,7 +9,7 @@ export default function LeaderBoardPage() {
         <div className="d-flex vh-100 bg-black text-light">
             <main className="flex-grow-1 p-4 overflow-auto bg-secondary">
                 <div className="container bg-dark p-4 rounded">
-                    <LeagueHeader creador="Antonio" estado="EN CURSO" participantes={8}  />
+
                     <Leaderboard />
 
                 </div>

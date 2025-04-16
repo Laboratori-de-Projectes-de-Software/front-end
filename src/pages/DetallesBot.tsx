@@ -8,7 +8,6 @@ function DetallesBot() {
 
 
     const {id} = useParams();
-    console.log(id);
     const {bot, loading, error} = useFetchObtenerBot(id);
 
     if (loading) return <p className="text-center mt-5">Cargando detalles bot...</p>;
@@ -29,7 +28,7 @@ function DetallesBot() {
                     <div className="col-md-4 ">
                         <img
 
-                            src={iconoBot}
+                            src={bot?.urlImage}
                             alt="Bot"
                             className="card-img-letf"
                             style={{width: "100%", maxHeight: "200px", objectFit: "contain"}}

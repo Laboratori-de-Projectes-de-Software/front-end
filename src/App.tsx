@@ -3,7 +3,6 @@ import {Col, Row} from "react-bootstrap";
 import {Route, Routes, useLocation} from "react-router-dom";
 import Home from "./pages/Home.tsx";
 import MisBots from "./pages/MisBots.tsx";
-import MisLigas from "./pages/MisLigas.tsx";
 import {useState} from "react";
 import PerfilPage from "./pages/PerfilPage.tsx";
 import CrearBot from './pages/CrearBot';
@@ -14,6 +13,7 @@ import LeagueOverviewPage from "./pages/LeagueOverviewPage.tsx";
 import LogIn from "./pages/LogIn.tsx";
 import DetallesBot from "./pages/DetallesBot.tsx";
 import Enfrentamientos from "./pages/Enfrentamientos.tsx";
+import VerEnfrentamientos from "./pages/VerEnfrentamientos.tsx";
 
 export function App() {
     const location = useLocation();
@@ -35,15 +35,20 @@ export function App() {
                             <Route path="/" element={<Home/>}/>
                             <Route path="/mis-bots" element={<MisBots/>}/>
                             <Route path="/mis-bots/:id" element={<DetallesBot/>}/>
-                            <Route path="/mis-ligas" element={<MisLigas/>}/>
+                            <Route path="/mis-ligas" element={<Home/>}/>
                             <Route path="/perfil/:id" element={<PerfilPage/>}/>
                             <Route path="/crear-bot" element={<CrearBot/>}/>
                             <Route path="/crear-liga" element={<CrearLiga/>}/>
-                            <Route path="/league/:leagueId" element={<LeagueOverviewPage leagueId={1}/>}/>
+                            <Route path="/league/:leagueId" element={<LeagueOverviewPage />}/>
                             <Route path="/league/:leagueId/*" element={<LeaderBoardPage/>}/>
                             <Route path="/league/:leagueId/match/:matchId/message" element={<Enfrentamientos />} />
+                            <Route path="/enfrentamientos/:leagueId/:matchId" element={<Enfrentamientos/>}/>
 
-                            <Route path="/enfrentamientos" element={<Enfrentamientos/>}/>
+                            <Route path="/league/:leagueId/match" element={<VerEnfrentamientos />} />
+                           
+
+                            <Route path="/league/:leagueId/register" element={<MisBots />} />
+
                         </Routes>
                     </Col>
                 </Row>
