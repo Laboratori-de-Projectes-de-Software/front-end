@@ -12,6 +12,7 @@ const MatchPage: React.FC = () => {
   const matchId = parseInt(params.matchId!);
   const [match, setMatch] = useState<MatchDTO>({} as MatchDTO);
   const [messages, setMessages] = useState<MessageDTO[]>([]);
+  const [fighters, setFigthers] = useState<BotDTO[]>([]);
   const [timeLeft, setTimeLeft] = useState(180);
   const bots: BotDTO[] = [{
     id: 1,
