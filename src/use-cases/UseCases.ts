@@ -1,4 +1,4 @@
-import { CreateBotDTO, BotDTO, BotSummaryResponseDTO } from "@DTOClasses/BotDTO";
+import { CreateBotDTO, BotDTO } from "@DTOClasses/BotDTO";
 import { CreateLeagueDTO, LeagueDTO } from "@DTOClasses/LeagueDTO";
 import { MatchDTO } from "@DTOClasses/MatchDTO";
 import { MessageDTO } from "@DTOClasses/MessageDTO";
