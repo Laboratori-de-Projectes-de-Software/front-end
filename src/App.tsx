@@ -11,6 +11,7 @@ import SignUp from "./components/SignUp";
 import UpdateBot from "./components/updateBot";
 import Profile from "./components/LeagueParam";
 import AnadirBotLiga from "./components/AnadirBotLiga";
+import ChatWindow from "./components/ChatWindow";
 import './css/App.css';
 export default function App() {
     return (
@@ -29,6 +30,7 @@ export default function App() {
                     <Route path="/updateBot" element={<UpdateBot/>}/>
                     <Route path="/profile/:leagueId" element={<Profile />} />
                     <Route path="/addiaLeague/:leagueId" element={<AnadirBotLiga/>}/>
+                    
                 </Routes>
             </Router>
         </>

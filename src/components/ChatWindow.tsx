@@ -6,7 +6,7 @@ interface Message {
   id: string;
   text: string;
   sender: 'user' | 'other';
-  timestamp: Date;
+  timestamp: string;
 }
 
 // Props for the ChatWindow component
@@ -21,7 +21,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ messages, otherUser }) => {
   const formatTime = (date: Date): string => {
     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
-  
+
   return (
     <div className="chat-container">
       {/* Chat header */}
@@ -29,38 +29,37 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ messages, otherUser }) => {
         <h2 className="header-name">{otherUser}</h2>
         <p className="header-status">Online</p>
       </div>
-      
+
       {/* Messages container */}
       <div className="messages-container">
         <div className="messages-list">
-          {messages.map((message) => (
-            <div 
+          {messages.sort((a, b) => Date.parse(a.timestamp) - Date.parse(b.timestamp)).map((message) => (
+            <div
               key={message.id}
               className={`message-row ${message.sender === 'user' ? 'user-message-row' : 'other-message-row'}`}
             >
-              <div 
-                className={`message-bubble ${
-                  message.sender === 'user' 
-                    ? 'user-message' 
+              <div
+                className={`message-bubble ${message.sender === 'user'
+                    ? 'user-message'
                     : 'other-message'
-                }`}
+                  }`}
               >
                 <p className="message-text">{message.text}</p>
                 <p className="message-time">
-                  {formatTime(message.timestamp)}
+                  {formatTime(new Date(message.timestamp))}
                 </p>
               </div>
             </div>
           ))}
         </div>
       </div>
-      
+
       {/* Input area - not functional, just for display */}
       <div className="input-container">
         <div className="input-row">
-          <input 
-            type="text" 
-            placeholder="Type a message..." 
+          <input
+            type="text"
+            placeholder="Type a message..."
             className="message-input"
           />
           <button className="send-button">
