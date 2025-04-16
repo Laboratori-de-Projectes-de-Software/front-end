@@ -1,7 +1,7 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState, useEffect } from "react";
 import Footer from "./Footer";
 import SideBar from "./SideBar";
-import { BotDTO } from "./ConAPI";
+import { BotSummaryResponseDTO, BotDTO } from "./ConAPI";
 import { useNavigate } from 'react-router-dom';
 
 interface AIInfo {
@@ -55,9 +55,35 @@ function getCookie(c: string): string {
 export default function Account() {
   // Mueve useNavigate dentro del componente
   const navigate = useNavigate();
+
+  function getCookie(c: string): string {
+    console.log(document.cookie);
+    const cookies = document.cookie.split('; ');
+    for (const cookie of cookies) {
+      const [cookieName, value] = cookie.split('=');
+      if (cookieName === c) {
+        return `${decodeURIComponent(value)}`;
+      }
+    }
+    return "";
+  }
+   
   
   const [botInfo, setBotInfo] = useState<AIInfo>({ name: "", description: "", urlImage: "", endpoint: "" });
   const [notification, setNotification] = useState<NotificationProps | null>(null);
+
+    const [availableBots, setAvailableBots] = useState<BotSummaryResponseDTO[]>([]);
+    useEffect(() => {
+      
+      window.APIConection.getAllBotsUser(parseInt(getCookie("userId")))
+        .then((response: BotSummaryResponseDTO[]) => {
+          
+          setAvailableBots(response);
+        })
+        .catch(error => {
+          console.error("Error fetching bots:", error);
+        });
+    }, []);
 
   // Mueve handleUpdateBotClick dentro del componente y arréglalo
   const handleUpdateBotClick = (row: TableRow) => {
@@ -179,26 +205,23 @@ export default function Account() {
                     <tr>
                       <th>Name</th>
                       <th>Description</th>
-                      <th>Url Image</th>
-                      <th>Endpoint</th>
-                      <th>Update</th>
+                      <th>Id</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {tableData.map((row, index) => (
+                    {availableBots.map((row, index) => (
                       <tr key={index}>
                         <td>{row.name}</td>
                         <td>{row.description}</td>
-                        <td>{row.urlImage}</td>
-                        <td>{row.endpoint}</td>
-                        <td>
+                        <td>{row.id}</td>
+                        {/*<td>
                           <button 
                             className="delete-button" 
                             onClick={() => handleUpdateBotClick(row)}
                           >
                             ✖
                           </button>
-                        </td>
+                        </td>*/}
                       </tr>
                     ))}
                   </tbody>

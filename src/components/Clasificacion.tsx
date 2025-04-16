@@ -33,7 +33,7 @@ const Clasificacion: React.FC = () => {
         });
       });
 
-    window.APIConection.getClassLeague(Number(leagueId))
+    window.APIConection.getClassLeague(Number(16))
       .then((response: ParticipationResponseDTO[]) => {
         setClasificaciones(response);
       })
@@ -114,9 +114,7 @@ const Clasificacion: React.FC = () => {
               <div key={leagueId}>
                 <div className="league_info">
                   <p className="league_name"><strong>{league.name}</strong> Estado: {league.state}</p>
-                  <p className="league_state"></p>
                   <p className="league_rounds">Rondas: {league.rounds} Tiempo por combate: {league.matchTime}</p>
-                  <p className="league_time"></p>
                 </div>
               </div>
             )}

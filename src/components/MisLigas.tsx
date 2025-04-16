@@ -14,9 +14,22 @@ export default function Scores() {
   const [leagues, setLeagues] = useState<LeagueResponseDTO[]>([]);
   const [notification, setNotification] = useState<NotificationProps | null>(null);
 
+  function getCookie(c: string): string {
+    console.log(document.cookie);
+    const cookies = document.cookie.split('; ');
+    for (const cookie of cookies) {
+      const [cookieName, value] = cookie.split('=');
+      if (cookieName === c) {
+        return `${decodeURIComponent(value)}`;
+      }
+    }
+    return "";
+  }
+   
+
   useEffect(() => {
-    const userId = 41;
-    window.APIConection.getAllLeaguesUser(userId)
+    //const userId = 14;
+    window.APIConection.getAllLeaguesUser(Number(getCookie("userId")))
       .then((response: LeagueResponseDTO[]) => {
         setLeagues(response);
       })
