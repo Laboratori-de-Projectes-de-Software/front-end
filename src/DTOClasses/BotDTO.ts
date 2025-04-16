@@ -10,5 +10,8 @@ export interface BotDTO {
   name: string;
   quality: string;
   imageUrl: string | null;
-  apiUrl: string
+  apiUrl: string;
+  nWins: number;
+  nDraws: number;
+  nLosses: number;
 }
