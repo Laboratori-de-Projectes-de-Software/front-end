@@ -86,8 +86,17 @@ const MatchPage: React.FC = () => {
 
     async function getFigthers() {
       const bot1 = await getBot(match.fighters[0]);
-      const bot2 = await getBot(match.fighters[1])
+      const bot2 = await getBot(match.fighters[1]);
+
+      if(bot1 && bot2) {
+        setFigthers([...fighters, bot1, bot2]);
+      } else {
+        alert("Error while fething bots information");
+      }
     }
+
+
+
   }, [timeLeft])
 
   const TimeToString = (t: number): string => {
