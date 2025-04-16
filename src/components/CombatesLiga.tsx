@@ -101,7 +101,7 @@ const combate: React.FC = () => {
         <SideBar />
         <div className="content_container">
           <div className="scores_container">
-            <h1>Classificacion</h1>
+            <h1>Combates</h1>
 
             {notification && (
               <Notification
@@ -113,9 +113,9 @@ const combate: React.FC = () => {
             {league && (
               <div key={leagueId}>
                 <div className="league_info">
-                  <p className="league_name"><strong>{league.name}</strong> Estado: {league.state}</p>
+                  <p className="league_name"><strong>{league.name}</strong></p>
                   <p className="league_state"></p>
-                  <p className="league_rounds">Rondas: {league.rounds} Tiempo por combate: {league.matchTime}</p>
+                  <p className="league_rounds"> Tiempo por combate: {league.matchTime}</p>
                   <p className="league_time"></p>
                 </div>
               </div>
