@@ -6,7 +6,7 @@ type AuthContextProps = {
   setTokenExpiry: (expiryTime: string) => void; // ISO or local time string
 };
 
-const AuthContext = createContext<AuthContextProps>({} as AuthContextProps);
+export const AuthContext = createContext<AuthContextProps>({} as AuthContextProps);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isTokenExpired, setIsTokenExpired] = useState<boolean>(false);
@@ -30,7 +30,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <AuthContext
+    <AuthContext.Provider>
+      {children}
+    </AuthContext.Provider>
+
   );
 };
 
