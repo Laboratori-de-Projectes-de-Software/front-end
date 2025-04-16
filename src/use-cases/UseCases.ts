@@ -5,9 +5,9 @@ import { MessageDTO } from "@DTOClasses/MessageDTO";
 import { ParticipationDTO } from "@DTOClasses/ParticipationDTO";
 import {UserRegisterDTO, UserDTO, AuthenticatedUserDTO } from "@DTOClasses/UserDTO";
   
-//const BASE_URL = "http://localhost:8080";
-
 const BASE_URL = ""
+//const BASE_URL = "http://localhost:8082";
+
 
 export async function userSignUp(userData: UserRegisterDTO): Promise<UserDTO | null> {
     try {
@@ -89,7 +89,7 @@ export async function registerBot(botData: CreateBotDTO): Promise<BotDTO | null>
     }
 }
 
-export async function getAllBots(userId?: number): Promise<BotSummaryResponseDTO[]> {
+export async function getAllBots(userId?: number): Promise<BotDTO[]> {
     try {
         // Construcció dinàmica de l'URL amb o sense paràmetre `owner`
         const url = userId ? `${BASE_URL}/bot?owner=${userId}` : `${BASE_URL}/bot`;
@@ -106,7 +106,7 @@ export async function getAllBots(userId?: number): Promise<BotSummaryResponseDTO
             return [];
         }
   
-        const bots: BotSummaryResponseDTO[] = await response.json();
+        const bots: BotDTO[] = await response.json();
         return bots;
     } catch (error) {
         console.error("Error inesperat al obtenir els bots:", error);
