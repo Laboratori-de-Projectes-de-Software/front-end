@@ -12,7 +12,7 @@ const botsNotInLeague = props.bots.filter((bot) => !botInLeagueId.includes(bot.b
 
 const emit = defineEmits(['showJoinLeagueModal'])
 
-function handleJoinLeague(botId: number) {
+function handleJoinLeague(botId?: number) {
   emit('showJoinLeagueModal', botId)
 }
 </script>
@@ -123,11 +123,13 @@ function handleJoinLeague(botId: number) {
       <!-- Línea separadora -->
       <div class="mx-auto mt-1 mb-4 h-[2px] w-2/3 bg-gray-500"></div>
 
-      <p class="mt-6 mb-6 text-[16px] font-bold text-[#8D8D8D]">En ninguna liga actualmente...</p>
+      <p class="mt-6 mb-6 text-[16px] font-bold text-[#8D8D8D]">
+        En ninguna liga en curso actualmente...
+      </p>
       <div class="flex flex-col items-center gap-y-4">
         <button
           class="cursor-pointer rounded-full bg-white px-6 py-2 text-[16px] font-bold text-black"
-          @click="handleJoinLeague(bot.botId)"
+          @click="handleJoinLeague(bot.id)"
         >
           Apuntarse
         </button>

@@ -12,7 +12,9 @@ const token = localStorage.getItem('token')
 const ligasPendientes = ref<League[]>([])
 const ligasEnJuego = ref<League[]>([])
 const ligasFinalizadas = ref<League[]>([])
+let hayLigasRegistradas: boolean
 
+// Función encargada de cargar las ligas desde la API
 async function loadLeagues() {
   const response = await fetch(`http://localhost:8080/api/v0/league`, {
     method: 'GET',
@@ -26,7 +28,8 @@ async function loadLeagues() {
     handleErrorResponse(response.status)
   } else {
     const data: League[] = await response.json()
-    console.log('Ligas:', data)
+    hayLigasRegistradas = data.length > 0
+
     ligasPendientes.value = data.filter((l) => l.state === 'PENDIENTE')
     ligasEnJuego.value = data.filter((l) => l.state === 'EN_CURSO')
     ligasFinalizadas.value = data.filter((l) => l.state === 'FINALIZADO')
@@ -34,6 +37,7 @@ async function loadLeagues() {
 }
 
 function handleErrorResponse(status: number) {
+  // TODO: Implementar un manejo de errores más robusto
   if (status === 401) alert('No autorizado')
   else alert('Error al obtener las ligas')
 }
@@ -41,6 +45,7 @@ function handleErrorResponse(status: number) {
 onMounted(() => {
   loadLeagues()
 })
+
 </script>
 
 <template>
@@ -64,18 +69,14 @@ onMounted(() => {
     </header>
 
     <section class="mb-6 flex w-full flex-col items-center gap-4 font-semibold">
-      <div v-if="ligasPendientes.length == 0" class="mt-8 text-2xl">
-        No se ha creado ninguna liga aún
-      </div>
+      <div v-if="!hayLigasRegistradas" class="mt-8 text-2xl">No se ha creado ninguna liga aún</div>
       <div v-else class="flex w-full flex-col gap-1 text-[#9b9b9b]">
         <h2 class="text-xl">Pendientes</h2>
         <div class="h-0 w-[120px] border"></div>
       </div>
 
       <ul class="flex flex-wrap justify-center gap-x-8 gap-y-5">
-        <!-- TODO: (ABB-145) Cambiar cuando LeagueResponse devuelva leagueId
-        <li v-for="liga in ligasPendientes" :key="liga.leagueId" class="w-fit"> -->
-        <li v-for="liga in ligasPendientes" :key="liga.id" class="w-fit">
+        <li v-for="liga in ligasPendientes" :key="liga.leagueId" class="w-fit">
           <ButtonLeague :liga="liga" />
         </li>
       </ul>
@@ -98,9 +99,7 @@ onMounted(() => {
       </div>
 
       <ul class="flex flex-wrap justify-center gap-x-8 gap-y-5">
-        <!-- TODO: (ABB-145) Cambiar cuando LeagueResponse devuelva leagueId
-        <li v-for="liga in ligasEnJuego" :key="liga.leagueId" class="w-fit"> -->
-        <li v-for="liga in ligasEnJuego" :key="liga.id" class="w-fit">
+        <li v-for="liga in ligasEnJuego" :key="liga.leagueId" class="w-fit">
           <ButtonLeague :liga="liga" />
         </li>
       </ul>
@@ -115,9 +114,7 @@ onMounted(() => {
       </div>
 
       <ul class="flex flex-wrap justify-center gap-8">
-        <!-- TODO: (ABB-145) Cambiar cuando LeagueResponse devuelva leagueId
-        <li v-for="liga in ligasFinalizadas" :key="liga.leagueId" class="w-fit"> -->
-        <li v-for="liga in ligasFinalizadas" :key="liga.id" class="w-fit">
+        <li v-for="liga in ligasFinalizadas" :key="liga.leagueId" class="w-fit">
           <ButtonLeague :liga="liga" />
         </li>
       </ul>

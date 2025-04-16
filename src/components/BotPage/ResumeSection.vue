@@ -18,22 +18,21 @@ const openEditMenu = (bot: Bot) => {
   <div class="w-full">
     <section v-for="bot in props.botsDetails" :key="bot.botId" class="mb-4 w-full px-4 pt-4 pb-4">
       <!-- Contenedor principal -->
-      <div class="flex flex-col gap-4 rounded-lg p-4 sm:flex-row">
+      <div class="flex flex-col gap-4 rounded-lg p-4">
+        <!-- Contenedor de la imagen -->
+        <div class="flex cursor-pointer items-center justify-center" @click="openEditMenu(bot)">
+          <img
+            :src="bot.urlImage"
+            alt="Imagen del Bot"
+            class="h-[120px] w-[120px] rounded-lg border-2 border-gray-500 shadow-lg transition-transform duration-300 ease-in-out hover:scale-105"
+          />
+        </div>
         <!-- Contenedor del texto (nombre y cualidad) -->
         <div class="flex flex-col justify-center text-center sm:text-left">
           <h2 class="text-center text-[32px] font-bold text-white">
             {{ bot.name.toUpperCase() }}
           </h2>
           <h3 class="text-center text-[24px] font-semibold text-white">({{ bot.description }})</h3>
-        </div>
-
-        <!-- Contenedor de la imagen -->
-        <div class="flex cursor-pointer items-center justify-center" @click="openEditMenu(bot)">
-          <img
-            :src="bot.urlImage"
-            alt="Imagen del Bot"
-            class="h-[200px] w-[200px] rounded-lg border-2 border-gray-500 shadow-lg transition-transform duration-300 ease-in-out hover:scale-105"
-          />
         </div>
       </div>
 
@@ -45,7 +44,7 @@ const openEditMenu = (bot: Bot) => {
         <!-- Empates -->
         <div class="flex flex-col items-center">
           <div class="mt-4 text-[32px] font-bold">
-            {{ bot.nDraws }}
+            {{ bot.ndraws }}
           </div>
           <div class="mb-1 h-[1px] w-8 bg-white"></div>
           <div class="text-[20px] font-semibold">Empates</div>
@@ -54,7 +53,7 @@ const openEditMenu = (bot: Bot) => {
         <!-- Victorias -->
         <div class="-mt-4 flex flex-col items-center">
           <div class="text-[48px] font-bold">
-            {{ bot.nWins }}
+            {{ bot.nwins }}
           </div>
           <div class="-mt-2 mb-1 h-[1px] w-8 bg-white"></div>
           <div class="text-[24px] font-semibold">Victorias</div>
@@ -63,7 +62,7 @@ const openEditMenu = (bot: Bot) => {
         <!-- Derrotas -->
         <div class="flex flex-col items-center">
           <div class="mt-4 text-[32px] font-bold">
-            {{ bot.nLosses }}
+            {{ bot.nlosses }}
           </div>
           <div class="mb-1 h-[1px] w-8 bg-white"></div>
           <div class="text-[20px] font-semibold">Derrotas</div>

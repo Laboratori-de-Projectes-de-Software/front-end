@@ -14,6 +14,13 @@ const matchId = route.params.matchId as string
 const mensajes = ref<Message[]>([])
 const bots = ref<(Bot | null)[]>([])
 
+const sideBarHidden = ref(false)
+const toggleSideBar = () => {
+  sideBarHidden.value = !sideBarHidden.value
+}
+let titleHeader = ''
+
+// Función para cargar los mensajes de la API
 const loadMessages = async () => {
   // TODO: Descomentar cuando este el endpoint bien hecho
   // const response = await fetch(`http://localhost:8080/api/v0/match/${matchId}/message`, {
@@ -26,11 +33,12 @@ const loadMessages = async () => {
   })
 
   if (!response.ok) {
+    // TODO: Falta gestión de errores
     alert('Error al cargar los mensajes. Por favor, inténtalo de nuevo.')
   } else {
     const data = await response.json()
     mensajes.value = data
-    obtenerImgsPath(data)
+    obtenerInfoFighters(data)
   }
 }
 
@@ -38,7 +46,8 @@ onMounted(() => {
   loadMessages()
 })
 
-const obtenerImgsPath = async (mensajes: Message[]) => {
+// Función para obtener información más detallada de los bots que pelean
+const obtenerInfoFighters = async (mensajes: Message[]) => {
   const ids = new Set(mensajes.map((mensaje) => Number(mensaje.idBot)))
   bots.value = await Promise.all(
     Array.from(ids).map(async (id) => {
@@ -53,16 +62,18 @@ const obtenerImgsPath = async (mensajes: Message[]) => {
         const data = await response.json()
         return data as Bot
       } else {
+        // TODO: Falta gestión de errores
         console.error(`Failed to fetch image for botId ${id}`)
         return null
       }
     })
   )
-}
-
-const sideBarHidden = ref(false)
-const toggleSideBar = () => {
-  sideBarHidden.value = !sideBarHidden.value
+  titleHeader =
+    bots.value[0]?.name +
+    ` (${bots.value[0]?.description}) ` +
+    ' vs ' +
+    bots.value[1]?.name +
+    ` (${bots.value[1]?.description}) `
 }
 </script>
 
@@ -70,7 +81,7 @@ const toggleSideBar = () => {
   <div class="flex h-screen w-full flex-row">
     <SideBar @toggle-sidebar="toggleSideBar" :isHidden="sideBarHidden" />
     <div class="w-full flex-col sm:flex" :class="sideBarHidden ? 'flex' : 'hidden'">
-      <HeaderApp :isHeading1="true" :title="bots[0]?.name + ` (${bots[0]?.description}) ` + ' vs ' + bots[1]?.name + ` (${bots[1]?.description}) `">
+      <HeaderApp :isHeading1="true" :title="titleHeader">
         <button
           @click="toggleSideBar()"
           :class="sideBarHidden ? 'block' : 'hidden'"

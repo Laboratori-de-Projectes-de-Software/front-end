@@ -1,22 +1,21 @@
+// Cambiar cuando este bien deficnido
 export interface Bot {
-  botId: number
+  botId?: number
+  id?: number
   name: string
   description: string
   urlImage?: string
   PJ?: number
-  nWins?: number
-  nLosses?: number
-  nDraws?: number
+  nwins?: number
+  nlosses?: number
+  ndraws?: number
 }
 
-// TODO: (ABB-145) Actualizar cuando siga el Contrato de LeagueResponse
 export interface League {
-  // leagueId: number
-  id: number
+  leagueId: number
   state: 'PENDIENTE' | 'EN_CURSO' | 'FINALIZADO'
   name: string
-  // urlImagen: string
-  imageUrl: string
+  urlImagen: string
   user: number
   rounds: number
   matchTime: number
@@ -62,7 +61,7 @@ export interface BotSummary {
 }
 
 export interface BotLeagueSummary {
-  botId: number
+  botId?: number
   leagueId: number
   classification: Participation[] // [Pos - 1][Pos][Pos + 1]
 }

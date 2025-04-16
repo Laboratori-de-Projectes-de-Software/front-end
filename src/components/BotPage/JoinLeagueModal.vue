@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { useRouter } from 'vue-router'
 import type { League } from '@/types'
+
+const emit = defineEmits<{
+  (e: 'closeJoinLeagueModal'): void
+}>()
 
 // Estado para almacenar la liga seleccionada
 const ligaSeleccionada = ref<League | null>(null)
@@ -18,7 +21,7 @@ async function registerBotToSelectedLeague() {
 
   // Se hace una llamada a la API para registrar el bot en la liga seleccionada
   const response = await fetch(
-    `http://localhost:8080/api/v0/league/${ligaSeleccionada.value.id}/bot`,
+    `http://localhost:8080/api/v0/league/${ligaSeleccionada.value.leagueId}/bot`,
     {
       method: 'POST',
       headers: {
@@ -34,8 +37,7 @@ async function registerBotToSelectedLeague() {
     alert('Error al inscribir el bot en la liga')
   }
 
-  // Se cierra el modal después de la inscripción
-  useRouter().push('/myBots')
+  emit('closeJoinLeagueModal')
 }
 
 const loadLeagues = async () => {
@@ -71,10 +73,10 @@ onMounted(() => {
       <ul class="mx-auto rounded-lg bg-[#DDDDDD] p-2 dark:bg-[#353535]">
         <li
           v-for="liga in ligas"
-          :key="liga.id"
+          :key="liga.leagueId"
           :class="[
             'flex cursor-pointer items-center rounded-md p-2',
-            ligaSeleccionada?.id === liga.id
+            ligaSeleccionada?.leagueId === liga.leagueId
               ? 'border-2 border-blue-500'
               : 'border border-transparent',
           ]"
@@ -82,7 +84,7 @@ onMounted(() => {
         >
           <div class="flex w-full items-center">
             <img
-              :src="liga.imageUrl"
+              :src="liga.urlImagen"
               alt="Liga"
               class="mr-2 h-16 w-16 rounded-md bg-white object-contain p-2"
             />
