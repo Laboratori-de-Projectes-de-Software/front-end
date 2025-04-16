@@ -7,7 +7,8 @@ const LogOutPage: React.FC = () => {
   useEffect(() => {
     localStorage.removeItem("user");
     localStorage.removeItem("token");
-    navigate("/");
+    localStorage.removeItem("userId");
+    setTimeout(() => navigate("/"), 1000);
   }, [navigate]);
 
   return (
