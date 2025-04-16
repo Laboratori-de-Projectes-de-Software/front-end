@@ -73,6 +73,7 @@ const MatchPage: React.FC = () => {
         alert("Error while fetching the match information");
       }
     }
+    getMatches();
   }, []);
 
   useEffect(() => {
