@@ -95,6 +95,8 @@ const MatchPage: React.FC = () => {
       }
     }
 
+    getMessages();
+    getFigthers();
 
 
   }, [timeLeft])
