@@ -44,7 +44,7 @@ const openEditMenu = (bot: Bot) => {
         <!-- Empates -->
         <div class="flex flex-col items-center">
           <div class="mt-4 text-[32px] font-bold">
-            {{ bot.ndraws }}
+            {{ bot.nDraws }}
           </div>
           <div class="mb-1 h-[1px] w-8 bg-white"></div>
           <div class="text-[20px] font-semibold">Empates</div>
@@ -53,7 +53,7 @@ const openEditMenu = (bot: Bot) => {
         <!-- Victorias -->
         <div class="-mt-4 flex flex-col items-center">
           <div class="text-[48px] font-bold">
-            {{ bot.nwins }}
+            {{ bot.nWins }}
           </div>
           <div class="-mt-2 mb-1 h-[1px] w-8 bg-white"></div>
           <div class="text-[24px] font-semibold">Victorias</div>
@@ -62,7 +62,7 @@ const openEditMenu = (bot: Bot) => {
         <!-- Derrotas -->
         <div class="flex flex-col items-center">
           <div class="mt-4 text-[32px] font-bold">
-            {{ bot.nlosses }}
+            {{ bot.nLosses }}
           </div>
           <div class="mb-1 h-[1px] w-8 bg-white"></div>
           <div class="text-[20px] font-semibold">Derrotas</div>

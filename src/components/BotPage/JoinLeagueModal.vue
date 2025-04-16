@@ -28,7 +28,7 @@ async function registerBotToSelectedLeague() {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
-      body: JSON.stringify({ botId: props.selectedBotId }),
+      body: JSON.stringify([props.selectedBotId]),
     }
   )
 

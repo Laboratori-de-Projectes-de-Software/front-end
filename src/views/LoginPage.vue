@@ -88,7 +88,7 @@ const handleLogin = async () => {
     authStore.login(data.token, data.expiresIn)
 
     localStorage.setItem('token', data.token)
-    localStorage.setItem('userId', data.userId)
+    localStorage.setItem('userId', data.id)
     localStorage.setItem('user', data.user)
     redirectHome()
   }

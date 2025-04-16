@@ -53,9 +53,8 @@ function handleJoinLeague(botId?: number) {
         <tbody>
           <!-- Se itera sobre la clasificación filtrada (por ejemplo: posición superior, actual e inferior) -->
           <tr
-            v-for="(entry, index) in botLeagueSummaries.find(
-              (summary) => summary.botId === bot.id
-            )?.classification"
+            v-for="(entry, index) in botLeagueSummaries.find((summary) => summary.botId === bot.id)
+              ?.classification"
             :key="index"
             class="border-b border-gray-500"
             :class="{
@@ -63,7 +62,7 @@ function handleJoinLeague(botId?: number) {
             }"
           >
             <td class="px-3 py-2 text-center text-[16px]">
-              {{ entry.position }}
+              {{ entry.position + 1 }}
             </td>
             <td class="flex items-center px-4 py-2 text-left text-[16px]">
               <!--<img :src="getBotById(entry.botId)?.urlImage" alt="Imagen del bot" class="mr-2 h-6 w-6" />-->

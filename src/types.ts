@@ -5,9 +5,9 @@ export interface Bot {
   imageUrl: string
   apiUrl: string
   PJ?: number
-  nwins?: number
-  nlosses?: number
-  ndraws?: number
+  nWins?: number
+  nLosses?: number
+  nDraws?: number
 }
 
 export interface League {
