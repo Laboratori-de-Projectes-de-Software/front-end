@@ -113,8 +113,8 @@ const Clasificacion: React.FC = () => {
             {league && (
               <div key={leagueId}>
                 <div className="league_info">
-                  <p className="league_name"><strong>{league.name}</strong> Estado: {league.state}</p>
-                  <p className="league_rounds">Rondas: {league.rounds} Tiempo por combate: {league.matchTime}</p>
+                  <p className="league_name"><strong>{league.name}</strong> State: {league.state}</p>
+                  <p className="league_rounds">Rounds: {league.rounds} Time per match: {league.matchTime}</p>
                 </div>
               </div>
             )}
@@ -122,12 +122,12 @@ const Clasificacion: React.FC = () => {
             {clasificaciones && clasificaciones.map((clasificacion, index) => (
               <div key={index} className="league_card">
                 <div className="league_info">
-                  <p><strong>Posición:</strong> {clasificacion.position}</p>
-                  <p><strong>Nombre:</strong> {clasificacion.name}</p>
-                  <p><strong>Puntos:</strong> {clasificacion.points}</p>
-                  <p><strong>Ganados:</strong> {clasificacion.nWins}</p>
-                  <p><strong>Perdidos:</strong> {clasificacion.nLosses}</p>
-                  <p><strong>Empates:</strong> {clasificacion.nDraws}</p>
+                  <p><strong>Position:</strong> {clasificacion.position}</p>
+                  <p><strong>Name:</strong> {clasificacion.name}</p>
+                  <p><strong>Points:</strong> {clasificacion.points}</p>
+                  <p><strong>Winned points:</strong> {clasificacion.nWins}</p>
+                  <p><strong>Lost points:</strong> {clasificacion.nLosses}</p>
+                  <p><strong>Draws:</strong> {clasificacion.nDraws}</p>
                 </div>
               </div>
             ))}

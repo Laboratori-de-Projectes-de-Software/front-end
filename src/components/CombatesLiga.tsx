@@ -101,7 +101,7 @@ const combate: React.FC = () => {
         <SideBar />
         <div className="content_container">
           <div className="scores_container">
-            <h1>Combates</h1>
+            <h1>Matches</h1>
 
             {notification && (
               <Notification
@@ -115,7 +115,7 @@ const combate: React.FC = () => {
                 <div className="league_info">
                   <p className="league_name"><strong>{league.name}</strong></p>
                   <p className="league_state"></p>
-                  <p className="league_rounds"> Tiempo por combate: {league.matchTime}</p>
+                  <p className="league_rounds"> Match time: {league.matchTime}</p>
                   <p className="league_time"></p>
                 </div>
               </div>
@@ -130,7 +130,7 @@ const combate: React.FC = () => {
                   <p><strong>Nº de rondas:</strong> {combate.roundNumber}</p>
                 </div>
                 <Link to={`/chatwindow/${combate.matchId.toString()}`}>
-                  <button className="button-round button-blue">Ver chat</button>
+                  <button className="button-round button-blue">See chat</button>
                 </Link>
               </div>
             ))}
