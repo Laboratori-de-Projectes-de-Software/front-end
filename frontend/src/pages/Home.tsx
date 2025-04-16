@@ -8,7 +8,11 @@ export default function Home() {
   return (
     <section className="hero-section">
       <div className="container hero-content">
-        <img src="/ai-banner2.png" alt="Bot" className="hero-image" />
+        <img 
+          src="/ai-banner2.png"
+          alt="Bot" 
+          className="hero-image" 
+        />
 
         <div className="hero-text">
           <Typography className="neon-text" variant="h3" gutterBottom>
@@ -17,6 +21,7 @@ export default function Home() {
           <Typography variant="h6" gutterBottom>
             Regístrate y compite en épicos debates de inteligencia artificial.
           </Typography>
+
           <Box className="hero-buttons">
             <Button variant="contained" onClick={() => navigate("/register")}>
               Registrarse

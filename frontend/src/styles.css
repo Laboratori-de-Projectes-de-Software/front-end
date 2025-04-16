@@ -1,23 +1,37 @@
-/* --------- BASE --------- */
+/* --------- RESET Y BASE --------- */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* Nota: Si usas index.css con reglas de "body" que aplican flex, quítalas o modifícalas.
+   En este ejemplo, forzamos que el body se comporte como block para que no centre el contenido. */
 html, body {
+  width: 100%;
   height: 100%;
   font-family: 'Orbitron', sans-serif;
   background: linear-gradient(to top, #0a0f1d, #1a2333);
   color: white;
+  overflow-x: hidden; /* Evita scroll horizontal */
+  display: block;
 }
 
-/* --------- GLOBAL CONTAINER --------- */
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1rem;
+/* Eliminamos restricciones en el contenedor raíz para full-width */
+#root {
   width: 100%;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+}
+
+/* --------- GLOBAL CONTAINER (opcional) --------- */
+/* Si deseas centrar el contenido en un ancho máximo, podrías usar esta clase.
+   Para full-width, asegúrate de que no tenga max-width ni margin auto. */
+.container {
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 /* --------- LAYOUT --------- */
@@ -33,29 +47,29 @@ html, body {
 
 /* --------- NAVBAR --------- */
 .navbar {
-  width: 100vw;
+  width: 100%; /* Ocupa todo el ancho */
   background-color: rgba(0, 0, 0, 0.5);
   box-shadow: 0 2px 10px rgba(0, 255, 255, 0.2);
 }
 
 .navbar-content {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 0;
+  padding: 1rem;
 }
 
 .logo {
   color: cyan;
   font-weight: bold;
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   text-decoration: none;
 }
 
 .nav-links a {
   color: cyan;
-  margin-left: 1.5rem;
-  text-decoration: none;
+  margin-left: 1rem;
   font-weight: bold;
   transition: color 0.3s ease;
 }
@@ -64,79 +78,101 @@ html, body {
   color: #0ff;
 }
 
-/* --------- FOOTER --------- */
-.footer {
-  width: 100vw;
-  background: rgba(0, 0, 0, 0.5);
-  box-shadow: 0px -4px 15px rgba(0, 255, 255, 0.2);
-  padding: 1.5rem 0;
-  font-size: 0.9rem;
-  opacity: 0.9;
-  text-align: center;
-  position: relative;
-}
-
 /* --------- HERO --------- */
 .hero-section {
+  width: 100%;  
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: calc(100vh - 160px);
+  min-height: 70vh;/* Ocupa toda la altura del viewport */
+  padding: 0,5rem;     /* Espaciado reducido para evitar márgenes laterales excesivos */
 }
 
 .hero-content {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 3rem;
-  flex-wrap: wrap;
-  text-align: center;
+  gap: 2rem;
+  text-align: left;           /* Alinea texto a la izquierda */
+  flex-direction: row;        /* Por defecto, imagen a la izquierda y texto a la derecha */
+  max-width: 1200px;          /* Ajusta si quieres un límite de ancho */
+  margin: 0 auto;             /* Centra el bloque en pantallas grandes */
 }
 
 .hero-image {
-  width: 250px;
+  max-width: 300px;  /* Ajusta para el tamaño deseado */
+  width: 100%;
   height: auto;
+  display: block;
 }
 
 .hero-text {
-  max-width: 600px;
+  max-width: 600px;  /* Ajusta si deseas un límite en el ancho del texto */
 }
+
 
 .neon-text {
   color: #0ff;
-  /* text-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 15px #0ff;*/
+  text-shadow: 0 0 5px #0ff, 0 0 10px #0ff;
 }
 
 .hero-buttons {
   display: flex;
-  justify-content: center; /* centra horizontalmente */
-  gap: 1rem;                /* espacio entre botones */
-  margin-top: 2rem;
-  flex-wrap: wrap;          /* para móviles */
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
 }
 
+/* --------- FOOTER --------- */
+.footer {
+  width: 100%; /* Full width */
+  background: rgba(0, 0, 0, 0.5);
+  padding: 1rem 0;
+  text-align: center;
+  font-size: 0.9rem;
+}
 
 /* --------- RESPONSIVE --------- */
 @media (max-width: 768px) {
   .navbar-content {
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.5rem;
+    padding: 0.5rem;
   }
-
+  
   .nav-links a {
     margin: 0 0.5rem;
   }
-
+  
   .hero-content {
-    flex-direction: column;
+    flex-direction: column;    /* Imagen arriba, texto abajo */
+    text-align: center;        /* Centra el texto en móvil (opcional) */
+  }
+
+  .hero-text {
+    max-width: 100%;          /* Ocupa todo el ancho en móvil */
+  }
+
+  .hero-image {
+    max-width: 250px;         /* Ajusta a un tamaño más pequeño si quieres */
+  }
+  
+  /* Reducir tamaño de las letras dentro del hero (opcional) */
+  .neon-text, .hero-text h3 {
+    font-size: 1.6rem;
+  }
+  
+  .hero-text h6 {
+    font-size: 0.9rem;
   }
 }
 
 
-/* --------- REGISTRO --------- */
+/* --------- REGISTRO (LOGIN / SIGNUP) --------- */
 .auth-wrapper {
   height: 100vh;
-  width: 100vw;
+  width: 100%; /* Usamos 100% en lugar de 100vw */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -161,7 +197,7 @@ html, body {
   margin-bottom: 1rem;
 }
 
-/* Estilos adicionales */
+/* Estilos adicionales para componentes de MUI */
 .MuiTextField-root {
   margin-bottom: 1rem;
   color: white;
@@ -184,56 +220,125 @@ html, body {
   outline: 2px solid cyan;
 }
 
-/* Estilos generales para los TextField */
 .MuiTextField-root {
-  background-color: #333; /* Fondo oscuro para que sea coherente con el diseño */
+  background-color: #333;
   border-radius: 4px;
 }
 
-/* Personalización del borde del TextField cuando está en estado normal */
+/* Personalización del borde del TextField */
 .MuiOutlinedInput-root {
   &.Mui-focused .MuiOutlinedInput-notchedOutline {
-      border-color: cyan !important; /* Color azul para el borde */
+    border-color: cyan !important;
   }
   .MuiOutlinedInput-notchedOutline {
-      border-color: cyan; /* Color azul para el borde cuando no está enfocado */
+    border-color: cyan;
   }
 }
 
-/* Estilos para el texto dentro del campo de texto */
 .MuiInputLabel-root {
-  color: cyan !important; /* El texto del label es cyan */
+  color: cyan !important;
 }
 
-/* Personalización del texto dentro del TextField cuando está enfocado */
 .MuiInputBase-root {
-  color: white; /* Texto en blanco para los valores del input */
+  color: white;
 }
 
 .MuiOutlinedInput-root.Mui-focused .MuiInputBase-input {
-  color: white; /* Texto blanco cuando el TextField está enfocado */
+  color: white;
 }
 
-/* Estilo para el borde del TextField en estado normal */
 .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
-  border-color: cyan !important; /* Color cian del borde cuando está en estado normal */
+  border-color: cyan !important;
 }
 
-/* Estilo para el label en estado normal */
 .MuiInputLabel-root.Mui-focused {
-  color: cyan !important; /* Color cian cuando el label está enfocado */
+  color: cyan !important;
 }
 
 .MuiInputBase-input {
   color: white !important;
 }
 
-/* Borde rojo cuando el TextField tiene un error */
 .MuiOutlinedInput-root.Mui-error .MuiOutlinedInput-notchedOutline {
   border-color: red !important;
 }
 
-/* Label en rojo cuando hay error */
 .MuiInputLabel-root.Mui-error {
   color: red !important;
+}
+
+/* --------- SCROLL PARA ENFRENTAMIENTOS --------- */
+.scrollLeague {
+  display: flex;
+  overflow-x: auto;
+  gap: 16px;
+  padding: 16px;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+}
+
+.scrollLeague::-webkit-scrollbar {
+  height: 8px;
+}
+
+.scrollLeague::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 3px;
+}
+
+.scrollLeague-item {
+  flex: 0 0 auto;
+  width: 25%;
+  min-width: 200px;
+  scroll-snap-align: start;
+}
+
+/* --------- BOTONES EN LIGA --------- */
+.league-button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+/* --------- ESTILO PARA CARD DE ENFRENTAMIENTO --------- */
+.enfrentamiento-card {
+  background: linear-gradient(to top, #0a0f1d, #1a2333) !important;
+  color: white !important;
+  border: 1px solid cyan !important;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.5) !important;
+}
+  
+/* --------- TABLA DE CLASIFICACIÓN --------- */
+.tabla-clasificacion {
+  width: 80%;
+  max-width: 1000px;
+  margin: 20px auto;
+  border-collapse: collapse;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+}
+
+.tabla-clasificacion th,
+.tabla-clasificacion td {
+  padding: 12px;
+  text-align: center;
+  color: white;
+}
+
+.tabla-clasificacion th {
+  background-color: #333;
+  font-weight: bold;
+}
+
+.tabla-clasificacion tr:nth-child(even) {
+  background-color: #444;
+}
+
+.tabla-clasificacion tr:nth-child(odd) {
+  background-color: #555;
+}
+
+.tabla-clasificacion tr:hover {
+  background-color: #00bcd4;
 }

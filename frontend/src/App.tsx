@@ -7,6 +7,8 @@ import Register from "./pages/Register";
 import RegisterBot from "./pages/RegisterBot";
 import RegisterLiga from "./pages/RegisterLiga";
 import Dashboard from "./pages/Dashboard";
+import League from "./pages/League";
+import Chat from "./pages/chat";
 
 import "./styles.css";
 
@@ -14,7 +16,8 @@ function AppContent() {
   const location = useLocation();
 
   // Rutas donde no queremos mostrar Navbar ni Footer
-  const hideLayout = ["/login", "/register"].includes(location.pathname);
+  // Ocultar navbar/footer en /login, /register y /dashboard
+  const hideLayout = ["/login", "/register", "/dashboard", "/league", "/chat"].includes(location.pathname);
 
   return (
     <div className="app-layout">
@@ -27,6 +30,8 @@ function AppContent() {
           <Route path="/registerBot" element={<RegisterBot />} />
           <Route path="/registerLiga" element={<RegisterLiga />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/league" element={<League />} />
+          <Route path="/chat" element={<Chat />} />
         </Routes>
       </main>
       {!hideLayout && <Footer />}
