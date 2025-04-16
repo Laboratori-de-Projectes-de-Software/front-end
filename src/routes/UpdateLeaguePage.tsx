@@ -5,8 +5,10 @@ import LeagueBar from "@components/LeagueBar";
 import WhiteButton from "@components/WhiteButton";
 import { CreateLeagueDTO, LeagueDTO } from "@DTOClasses/LeagueDTO";
 import { BotDTO } from "@DTOClasses/BotDTO";
+import { useParams } from "react-router-dom";
 
 const UpdateLeaguePage: React.FC = () => {
+  const { leagueId } = useParams();
   const [leagues, setLeagues] = useState<LeagueDTO[]>([]); // Afegim estat per a les lligues
   const [leagueName, setLeagueName] = useState("");
   const [selectedParticipants, setSelectedParticipants] = useState<number[]>([]);
@@ -19,7 +21,7 @@ const UpdateLeaguePage: React.FC = () => {
   useEffect(() => {
     const fetchLeagueDetails = async () => {
       if (selectedLeagueId !== null) {
-        const leagueDetails = await getAllLeagues(1 /* gestió d'usuari actual */);
+        const leagueDetails = await getAllLeagues();
         const selectedLeague = leagueDetails.find((league) => league.id === selectedLeagueId);
         if (selectedLeague) {
           setLeagueName(selectedLeague.name);
@@ -83,7 +85,7 @@ const UpdateLeaguePage: React.FC = () => {
     } as CreateLeagueDTO;
 
     try {
-      const result = await updateLeague(1, newLeague);  // Utilitzem la funció updateLeague
+      const result = await updateLeague(parseInt(leagueId!), newLeague);  // Utilitzem la funció updateLeague
 
       if (result) {
         // Restableix les dades del formulari
