@@ -29,12 +29,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }, timeUntilExpiry);
   };
 
-  return (
-    <AuthContext.Provider>
-      {children}
-    </AuthContext.Provider>
+  // return (
+  //   <AuthContext.Provider>
+  //     {children}
+  //   </AuthContext.Provider>
 
-  );
+  // );
 };
 
 export const useAuth = () => {
