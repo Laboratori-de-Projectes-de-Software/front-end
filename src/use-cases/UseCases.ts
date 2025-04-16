@@ -5,20 +5,23 @@ import { MessageDTO } from "@DTOClasses/MessageDTO";
 import { ParticipationDTO } from "@DTOClasses/ParticipationDTO";
 import {UserRegisterDTO, UserDTO, AuthenticatedUserDTO } from "@DTOClasses/UserDTO";
   
-const BASE_URL = ""
+const BASE_URL = "http://localhost:8082/api/v0"
 //const BASE_URL = "http://localhost:8082";
 
 
-export async function userSignUp(userData: UserRegisterDTO): Promise<UserDTO | null> {
+export async function userSignUp(userData: UserRegisterDTO){
     try {
         const response = await fetch(`${BASE_URL}/auth/register`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(userData),
         });
-        if (!response.ok) return null;
+        if (!response.ok) {
+          console.error("Signup response. Status:", response.status);
+        }else{ 
+          console.log("Sigup correcte", response.status);
+        }
 
-        return await response.json();
     } catch (err) {
         console.error("Signup error:", err);
         return null;
