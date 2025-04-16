@@ -104,11 +104,15 @@ export default function Scores() {
                   <p className="league_state">Estado: {league.state}</p>
                   <p className="league_rounds">Rondas: {league.rounds}</p>
                 </div>
-                <Link to={`/clasificacion/${String(league.leagueId)}`} className="button-round button-blue">
-                    Ver Liga
+
+                <Link to={`/addiaLeague/${league.leagueId}`} >
+                  <button className="button-round button-blue">Add bots to league</button>
                 </Link>
-                <Link to={`/combatesLiga/${String(league.leagueId)}`} className="button-round button-blue">
-                    Ver Combates
+                <Link to={`/clasificacion/${String(league.leagueId)}`} >
+                  <button className="button-round button-blue">Ver Liga</button>
+                </Link>
+                <Link to={`/combatesLiga/${String(league.leagueId)}`} >
+                  <button className="button-round button-blue">Ver Combates</button>
                 </Link>
 
               </div>
