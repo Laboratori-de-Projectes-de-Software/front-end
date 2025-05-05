@@ -14,8 +14,7 @@ import StartLeague from "./components/StartLiga";
 import CombatesLiga from "./components/CombatesLiga";
 import AnadirBotLiga from "./components/AnadirBotLiga";
 import ChatWindow from "./components/ChatWindow";
-import StartLeague from "./components/StartLiga";
-import CombatesLiga from "./components/CombatesLiga";
+
 import './css/App.css';
 export default function App() {
     return (

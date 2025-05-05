@@ -3,7 +3,6 @@ import SideBar from "./SideBar";
 import { LeagueResponseDTO } from "./ConAPI";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Link } from "react-router-dom";
 
 interface NotificationProps {
   message: string;
@@ -127,7 +126,6 @@ export default function Scores() {
                 <Link to={`/combatesLiga/${String(league.leagueId)}`} >
                   <button className="button-round button-blue">Ver Combates</button>
                 </Link>
-
               </div>
             ))}
           </div>
