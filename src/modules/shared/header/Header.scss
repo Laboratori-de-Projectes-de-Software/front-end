@@ -1,0 +1,122 @@
+.top-level-header {
+  width: 100%;
+  padding: 10px 0;
+  border-bottom: 1px solid #333;
+  .top-level-header__item-list {
+    display: flex;
+    justify-content: flex-end;
+    list-style: none;
+    gap: 50px;
+    align-items: center;
+    padding: 0 20px;
+    height: 100%;
+
+    .top-level-header__login {
+      font-size: 16px;
+      background: none;
+      border: none;
+      font-family: "Shippori Antique", sans-serif;
+      color: white;
+      position: relative;
+
+      &:hover {
+        cursor: pointer;
+
+        & ~ .top-level-header__login-decoration {
+          width: 105px;
+          transition: all 0.2s;
+        }
+      }
+    }
+    .top-level-header__login-decoration {
+      position: absolute;
+      width: 0;
+      height: 2px;
+      background-color: white;
+    }
+
+    .top-level-header__leagues {
+      font-size: 16px;
+      background: none;
+      border: none;
+      font-family: "Shippori Antique", sans-serif;
+      color: white;
+      position: relative;
+
+      &:hover {
+        cursor: pointer;
+
+        & ~ .top-level-header__leagues-decoration {
+          width: 45px;
+          transition: all 0.2s;
+        }
+      }
+    }
+    .top-level-header__leagues-decoration {
+      position: absolute;
+      width: 0;
+      height: 2px;
+      background-color: white;
+    }
+
+    .top-level-header__account {
+      font-size: 16px;
+      background: none;
+      border: none;
+      font-family: "Shippori Antique", sans-serif;
+      color: white;
+      position: relative;
+
+      &:hover {
+        cursor: pointer;
+
+        & ~ .top-level-header__account-decoration {
+          width: 78px;
+          transition: all 0.2s;
+        }
+      }
+    }
+    .top-level-header__account-decoration {
+      position: absolute;
+      width: 0;
+      height: 2px;
+      background-color: white;
+    }
+
+    .top-level-header__register {
+      font-size: 16px;
+      padding: 5px;
+      width: 120px;
+      height: 40px;
+      background-color: transparent;
+      color: white;
+      border: 1px solid white;
+      border-radius: 5px;
+      font-family: "Shippori Antique", sans-serif;
+      transition: all 0.2s;
+
+      &:hover {
+        cursor: pointer;
+        box-shadow: 0px 0px 10px white;
+      }
+    }
+
+    .top-level-header__logout {
+      font-size: 16px;
+      padding: 5px;
+      width: 120px;
+      height: 40px;
+      background-color: transparent;
+      color: white;
+      border: 1px solid white;
+      border-radius: 5px;
+      font-family: "Shippori Antique", sans-serif;
+      transition: all 0.2s;
+
+      &:hover {
+        cursor: pointer;
+        box-shadow: 0px 0px 10px white;
+      }
+    }
+  }
+}

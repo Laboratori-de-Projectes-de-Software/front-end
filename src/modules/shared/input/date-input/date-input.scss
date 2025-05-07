@@ -1,0 +1,19 @@
+.form__date {
+  grid-column: 1 / 2;
+  margin: 15px 0;
+  border-bottom: 2px solid black;
+
+  .form__date-input {
+    border: none;
+    height: 40px;
+    width: 100%;
+    &:focus {
+      outline: none;
+    }
+    &::-webkit-datetime-edit {
+      font-family: "Shippori Antique", sans-serif;
+      font-size: 16px;
+      text-align: center;
+    }
+  }
+}

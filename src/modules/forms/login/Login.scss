@@ -1,0 +1,67 @@
+.login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  
+    h1 {
+      margin: 0;
+      font-family: "Shippori Antique", sans-serif;
+      font-size: 36px;
+      margin: 20px 10px 0 10px;
+    }
+  
+    h3 {
+      margin: 0;
+      font-family: "Shippori Mincho", sans-serif;
+      font-size: 24px;
+      color: rgb(0, 0, 0, 0.4);
+      margin: 0 10px;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+  
+    .form-field__container {
+      width: 85%;
+      margin-bottom: 40px;
+    }
+
+    .password-field__container {
+      width: 85%;
+      margin-bottom: 40px;
+    }
+  
+    .login-form__submit {
+      font-size: 24px;
+      width: 220px;
+      height: 50px;
+      color: white;
+      background-color: #6b00bd;
+      border-radius: 5px;
+      font-family: "Shippori Antique", sans-serif;
+      margin-bottom: 20px;
+      transition: all 0.15s;
+  
+      &:hover {
+        cursor: pointer;
+        background-color: #8E23DF;
+      }
+    }
+  
+    .login-form__sign-up-reminder {
+      font-family: "Shippori Mincho", sans-serif;
+      font-size: 16px;
+      margin-top: 10px;
+      cursor: default;
+  
+      .login-form__sign-up-link {
+        color: #6b00bd;
+        text-decoration: none;
+        font-weight: bold;
+  
+        &:hover {
+          cursor: pointer;
+          text-decoration: underline;
+        }
+      }
+    }
+  }

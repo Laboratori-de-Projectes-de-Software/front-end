@@ -1,0 +1,228 @@
+
+/* Bot Card */
+.bot-card {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+  padding: 1.5rem;
+  font-family: 'Shippori Antique', sans-serif;
+}
+
+/* Bot Form Container */
+.bot-form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+
+
+/* Section Title */
+.section-title {
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: #ffffff;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #333333;
+}
+
+/* Bot Preview */
+.bot-preview {
+  background-color: #252525;
+  border-radius: 0.5rem;
+  border: 1px solid #444;
+  overflow: hidden;
+}
+
+.bot-preview-header {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  background-color: #2a2a2a;
+  border-bottom: 1px solid #444;
+  position: relative;
+}
+
+.bot-avatar {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: #333;
+  border: 2px solid #444;
+  flex-shrink: 0;
+}
+
+.bot-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.bot-info {
+  margin-left: 1rem;
+  flex: 1;
+}
+
+.bot-name {
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: #ffffff;
+  margin-bottom: 0.25rem;
+}
+
+.bot-description-preview {
+  font-size: 0.875rem;
+  color: #aaaaaa;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.bot-status {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+.bot-status.online {
+  background-color: #10b981;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+}
+
+.bot-status.offline {
+  background-color: #ef4444;
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+}
+
+.bot-preview-body {
+  padding: 1rem;
+}
+
+.endpoint-info {
+  background-color: #222;
+  padding: 0.75rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+}
+
+.endpoint-label {
+  color: #aaaaaa;
+  margin-right: 0.5rem;
+}
+
+.endpoint-value {
+  color: #10b981;
+  word-break: break-all;
+}
+
+/* Form Styles */
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  color: #aaaaaa;
+}
+
+.form-input,
+.form-textarea {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #2a2a2a;
+  border: 1px solid #444;
+  border-radius: 0.375rem;
+  color: #ffffff;
+  font-size: 0.875rem;
+  transition: border-color 0.2s;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: #666;
+  box-shadow: 0 0 0 2px rgba(100, 100, 100, 0.3);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.input-help {
+  margin-top: 0.375rem;
+  font-size: 0.75rem;
+  color: #888888;
+}
+
+/* Image Upload */
+.image-upload-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.75rem;
+}
+
+.image-preview {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.375rem;
+  overflow: hidden;
+  background-color: #333;
+  border: 1px solid #444;
+}
+
+.image-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Checkbox */
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.checkbox-input {
+  margin-right: 0.5rem;
+  width: 1rem;
+  height: 1rem;
+  accent-color: #4f46e5;
+}
+
+.checkbox-text {
+  font-size: 0.875rem;
+  color: #dddddd;
+}
+
+/* Buttons */
+.form-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.submit-button {
+  background-color: #4f46e5;
+  color: #ffffff;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0.375rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+
+  @media (min-width: 500px) {
+    width: 300px;
+  }
+}

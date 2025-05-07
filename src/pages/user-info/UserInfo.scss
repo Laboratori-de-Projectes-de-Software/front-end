@@ -1,0 +1,129 @@
+
+  /* Container */
+  .profile-container {
+    min-height: 100vh;
+    background-color: #121212;
+    font-family: 'Shippori Antique', sans-serif;
+  }
+  
+  .profile-content {
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .profile-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  @media (min-width: 640px) {
+    .profile-header {
+      flex-direction: row;
+      align-items: flex-start;
+    }
+  }
+
+  /* Tabs */
+  .tabs-container {
+    width: 100%;
+  }
+  
+  .tabs-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.25rem;
+    margin-bottom: 1rem;
+  }
+  
+  .tab-button {
+    padding: 0.75rem;
+    background-color: transparent;
+    border: none;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #aaaaaa;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+  }
+  
+  .tab-button:hover {
+    background-color: #333333;
+  }
+  
+  .tab-button.active {
+    background-color: #333333;
+    color: #ffffff;
+  }
+  
+  /* Info Card */
+  .info-card {
+    background-color: #1e1e1e;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+    padding: 1.5rem;
+    border: 1px solid #333;
+  }
+  
+  .info-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  @media (min-width: 768px) {
+    .info-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  .info-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  
+  .info-item svg {
+    color: #777777;
+    flex-shrink: 0;
+  }
+  
+  .info-label {
+    font-size: 0.875rem;
+    color: #aaaaaa;
+  }
+  
+  .info-value {
+    font-weight: 500;
+    color: #ffffff;
+  }
+  
+  /* About Section */
+  .about-section {
+    padding-top: 1rem;
+    margin-top: 1rem;
+    border-top: 1px solid #333333;
+  }
+  
+  .about-title {
+    font-size: 1.125rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: #ffffff;
+  }
+  
+  .about-text {
+    color: #dddddd;
+  }
+  
+  /* Empty State */
+  .empty-state {
+    text-align: center;
+    color: #aaaaaa;
+    padding: 1.5rem 0;
+  }
+  
