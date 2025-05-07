@@ -1,0 +1,99 @@
+.background {
+    background-color: #f0f0f0;
+    height: 855px;
+    flex-direction: row;
+    display: flex;
+}
+
+.sidebar {
+    background-color: #4986f7;
+    width: 150px;
+    height: 95.3%;
+    padding: 20px 0;
+    color: white;
+}
+
+.swiper {
+    width: 100px;
+    height: 820px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.slide {
+    background-color: white;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.slide:hover {
+    background-color: #666666;
+    color: white;
+    cursor: pointer;
+    transform: scale(1.1);
+}
+
+.slide pre {
+    color: #666666;
+}
+
+.slide pre:hover {
+    color: white;
+    cursor: pointer;
+}
+
+.match {
+    margin: 100px 300px;
+    width: 60%;
+    justify-content: center;
+}
+
+.match p {
+    align-items: center;
+    text-align: center;
+}
+
+.result {
+    background-color: #ffffff;
+    border-radius: 15px;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 16px 24px;
+    font-weight: bold;
+    transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.result:hover {
+    cursor: pointer;
+    transform: scale(1.05);
+    color: #ffffff;
+    background-color: #4986f7;
+}
+
+.result:hover span {
+    color: #ffffff;
+    transition: color 0.2s ease-in-out;
+}
+
+.result span {
+    font-size: 1.2em;
+    color: #4986f7;
+    font-weight: bold;
+}
+
+.image {
+    object-fit: cover;
+    background-position: center;
+    background-size: 40px 40px;
+    background-repeat: no-repeat;
+    color: transparent !important;
+}

@@ -1,0 +1,63 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    padding: 0em 7.5em;
+    align-items: center;
+    width: 87.5vw;
+    background-color: #ffffff;
+}
+
+.navlink {
+    color: #4986f7;
+    font-size: 1.2em;
+    font-weight: 700;
+    text-decoration: none;
+    display: inline-block;
+    transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.navlink:hover {
+    cursor: pointer;
+    color: #3776e4;
+    transform: scale(1.2);
+}
+
+.linksContainer {
+    display: flex;
+    justify-content: space-around;
+    gap: 3em;
+}
+
+.logo {
+    margin-top: 7px;
+    width: 70px;
+    height: 50px;
+}
+
+.logoText {
+    color: #4986f7;
+    font-size: 1.5em;
+    font-weight: 700;
+}
+
+.logoContainer {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    padding: 0em;
+}
+
+.logoutButton {
+    background-color: transparent;
+    color: red;
+    border: none;
+    font-size: 1.2rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+  
+.logoutButton:hover {
+    color: red;
+    transform: scale(1.2);
+    transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
+}
