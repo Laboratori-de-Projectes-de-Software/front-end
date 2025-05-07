@@ -1,0 +1,30 @@
+.logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px; /* Espaciado debajo del logo */
+  margin-top: 20px; /* Espaciado debajo del logo */
+}
+
+.logo-img {
+  width: 100px; /* Ajusta el tamaño según tu necesidad */
+  height: auto;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.logo-img {
+  width: 100px;
+  height: auto;
+  animation: pulse 2s infinite ease-in-out;
+}
