@@ -1,0 +1,14 @@
+name: AUTO DEPLOY TRIGGER
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  trigger-webhook:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send HTTP GET request
+        run: |
+          curl -X GET "https://updlab.kjorda.com"
