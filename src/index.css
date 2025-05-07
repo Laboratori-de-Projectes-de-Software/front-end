@@ -1,0 +1,55 @@
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap');
+
+:root {
+  line-height: 1.5;
+  font-weight: 400;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  --custom-primary: #262424;
+  --custom-secondary: #D9D9D9;
+  --custom-action: #3C67D6;
+}
+
+body{
+  font-family: "Chakra Petch", sans-serif;
+}
+
+.custom-primary {
+  background-color: var(--custom-primary);
+}
+
+.text-custom-primary{
+  color: var(--custom-primary);
+}
+
+.custom-primary-dark {
+  background-color: color-mix(in srgb, var(--custom-primary) 80%, black);
+}
+
+.custom-secondary {
+  background-color: var(--custom-secondary);
+}
+
+.custom-action {
+  background-color: var(--custom-action);
+  border-color: var(--custom-action);
+}
+
+.custom-select-white {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='white' viewBox='0 0 4 5'%3E%3Cpath d='M2 0L0 2h4L2 0zM2 5L0 3h4l-2 2z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 0.65em auto;
+}
+
+.custom-select-white:focus {
+  outline: none;
+  box-shadow: none;
+  border-color: white;
+}
