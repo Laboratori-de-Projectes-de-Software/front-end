@@ -1,0 +1,11 @@
+{
+  "recommendations": [
+    "Vue.volar",
+    "dbaeumer.vscode-eslint",
+    "EditorConfig.EditorConfig",
+    "esbenp.prettier-vscode",
+    "bradlc.vscode-tailwindcss",
+    "YoavBls.pretty-ts-errors",
+    "pflannery.vscode-versionlens"
+  ]
+}

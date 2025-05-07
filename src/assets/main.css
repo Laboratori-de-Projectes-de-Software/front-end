@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --breakpoint-xs: 30rem;
+}
+
+/* Ancho del scrollbar */
+::-webkit-scrollbar {
+  width: 6px; /* Ajusta el ancho según prefieras */
+}
+
+/* Barra de desplazamiento (el thumb) */
+::-webkit-scrollbar-thumb {
+  background: #444; /* Color gris para que se vea bien */
+  border-radius: 10px;
+}
+
+/* Efecto hover para el thumb */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Se oscurece al pasar el mouse */
+}
+
+@media (max-width: 30rem) {
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Para Firefox */
+  * {
+    scrollbar-width: none;
+  }
+
+  /* Para otros navegadores, asegurarse de que sigue funcionando el scroll */
+  .scroll-container {
+    -ms-overflow-style: none; /* Para Internet Explorer y Edge */
+    overflow-y: scroll; /* Mantiene el desplazamiento activo */
+  }
+}
