@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+@import "../../node_modules/preline/variants.css";
+
+@source "node_modules/preline/dist";
+@source "node_modules/preline/";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  html {
+    font-family: "Poppins", sans-serif;
+  }
+}

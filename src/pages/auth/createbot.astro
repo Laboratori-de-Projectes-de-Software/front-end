@@ -1,0 +1,13 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { CreateBotForm } from "../../components/bots/CreateBotForm.tsx";
+import AplicationLayout from "../../layouts/AplicationLayout.astro";
+
+const user = null;
+---
+
+<Layout title="Create Bot Menu">
+  <AplicationLayout>
+    <CreateBotForm client:only />
+  </AplicationLayout>
+</Layout>

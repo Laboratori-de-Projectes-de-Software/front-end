@@ -1,0 +1,13 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { BotList } from "../../components/BotList.tsx";
+import AplicationLayout from "../../layouts/AplicationLayout.astro";
+
+const user = null;
+---
+
+<Layout title="Bots Menu">
+  <AplicationLayout>
+    <BotList client:only />
+  </AplicationLayout>
+</Layout>

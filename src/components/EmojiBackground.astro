@@ -1,0 +1,95 @@
+---
+/**
+ * EmojiBackground component
+ * Renders a background with randomly falling emojis
+ * 
+ * @prop {string[]} emojis - Array of emoji characters to display
+ * @prop {number} count - Number of emojis to render (default: 20)
+ * @prop {string} zIndex - CSS z-index for the background (default: "-1")
+ */
+
+interface Props {
+    emojis: string[];
+    count?: number;
+    zIndex?: string;
+}
+
+const { 
+    emojis, 
+    count = 20,
+    zIndex = "-1" 
+} = Astro.props;
+---
+
+<div class="emoji-container">
+    <div class="emoji-background" style={`z-index: ${zIndex};`}>
+        {Array.from({ length: count }).map(() => {
+            const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+            const size = Math.floor(Math.random() * 40) + 20; // 20px to 60px
+            const left = Math.floor(Math.random() * 100); // 0% to 100%
+            const delay = Math.random() * 5; // 0s to 5s
+            const duration = Math.random() * 10 + 10; // 10s to 20s
+            
+            return (
+                <div 
+                    class="falling-emoji" 
+                    style={`
+                        left: ${left}%;
+                        font-size: ${size}px;
+                        animation-delay: ${delay}s;
+                        animation-duration: ${duration}s;
+                    `}
+                >
+                    {randomEmoji}
+                </div>
+            );
+        })}
+    </div>
+    <!-- Agregar el slot aquí para renderizar el contenido hijo -->
+    <slot />
+</div>
+<style>
+    .emoji-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+
+    .emoji-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        overflow: hidden;
+    }
+
+    .falling-emoji {
+        position: absolute;
+        top: -10%;
+        opacity: 0.7;
+        animation-name: fall;
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+        user-select: none;
+        pointer-events: none;
+    }
+
+    @keyframes fall {
+        0% {
+            transform: translateY(-10vh) rotate(0deg);
+            opacity: 0;
+        }
+        10% {
+            opacity: 0.7;
+        }
+        90% {
+            opacity: 0.7;
+        }
+        100% {
+            transform: translateY(110vh) rotate(360deg);
+            opacity: 0;
+        }
+    }
+</style>

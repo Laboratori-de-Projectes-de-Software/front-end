@@ -1,0 +1,15 @@
+---
+import { FaHome } from "react-icons/fa";
+import UserCircle from "../components/UserCircle";
+import "../styles/home.css";
+// Titulo de Astro.params
+const { title, href } = Astro.props;
+---
+
+<a class="main-container" href={href}>
+  <UserCircle user={null} />
+  <div class="home-pill flex align-middle justify-center">
+    <FaHome className="text-white text-xl mr-2" />{title}
+  </div>
+  <slot />
+</a>
