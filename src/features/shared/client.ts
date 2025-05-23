@@ -247,5 +247,22 @@ export const appApi = createApi({
         },
       }),
     }),
+
+    postMatchMatchIdStart: builder.mutation<
+      ClientResponse<undefined>,
+      number
+    >({
+      query: (matchId) => ({
+        url: `${
+          import.meta.env.VITE_REACT_APP_API_URL
+        }/match/${matchId}/start`,
+        method: "POST",
+        headers: {
+          Authorization:
+            "Bearer " +
+            JSON.parse(localStorage.getItem("user") ?? "{}").body.token,
+        },
+      }),
+    }),
   }),
 });

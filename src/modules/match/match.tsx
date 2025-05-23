@@ -1,4 +1,4 @@
-import {FC} from 'react';
+import {FC, useState} from 'react';
 import Conversation from './conversation';
 import { appApi } from '@features/shared';
 import LoadingScreen from '@modules/shared/loading-screen/loading-screen';
@@ -11,7 +11,7 @@ export type Props = {
 };
 
 const Match: FC<Props> = ({ leagueId, matchId }) => {
-
+  const [isStarting, setIsStarting] = useState(false);
   
   /*/ Recuperar datos de la API: /*/
 
@@ -73,6 +73,23 @@ const Match: FC<Props> = ({ leagueId, matchId }) => {
   const bot1 = queryB1.data.body;
   const bot2 = queryB2.data.body;
 
+  // Iniciar partido
+  const [startMatch] = appApi.usePostMatchMatchIdStartMutation();
+
+  const handleStartMatch = async () => {
+    try {
+      setIsStarting(true);
+      await startMatch(Number(matchId)).unwrap();
+      // Refrescar los datos
+      queryMatch.refetch();
+      queryMessages.refetch();
+    } catch (error) {
+      console.error('Error starting match:', error);
+    } finally {
+      setIsStarting(false);
+    }
+  };
+
   // Ordenar los mensajes
   const messagesToSent: {
     text:string;
@@ -92,13 +109,21 @@ const Match: FC<Props> = ({ leagueId, matchId }) => {
         <div className="match-header">
           <div className="match-header-title">Match #{matchId}</div>
           <div className="match-header-state">{match?.state}</div>
-          {match?.state === 'finalizado' ? 
+          {match?.state === 'finalizado' ? (
             <div className="match-header-result">
               {match?.result === 0 ? "Empate" : match?.result === 1 ? "Victoria Bot 1" : "Victoria Bot 2"}
             </div> 
-          : 
-          <></>
-        }
+          ) : match?.state === 'pendiente' ? (
+            <button 
+              className="match-start-button" 
+              onClick={handleStartMatch}
+              disabled={isStarting}
+            >
+              {isStarting ? 'Iniciando...' : 'Iniciar Partido'}
+            </button>
+          ) : (
+            <></>
+          )}
         </div>
         <div className="match-fight">
           <div className="match-left">
