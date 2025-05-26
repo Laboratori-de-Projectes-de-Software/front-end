@@ -1,21 +1,20 @@
-export interface LeagueResponseDTO {
-  leagueId: number;
-  state: "PENDING" | "IN_PROGRESS" | "finalizado";
-  name: string;
-  urlImagen: string;
-  user: number; // Owner of the league
-  rounds: number;
-  matchTime: number;
-  bots: number[];
-}
+import { BotDTO } from "./bot.interface";
 
 export interface LeagueDTO {
+  id: number;
+  state: "PENDING" | "IN_PROGRESS" | "COMPLETED";
   name: string;
-  urlImagen: string;
+  imageUrl?: string;
   rounds: number;
-  matchTime: number;
-  bots: number[];
-  userId: number;
+  matchMaxMessages: number;
+  bots: BotDTO[];
+}
+
+export interface CreateLeagueDTO {
+  name: string;
+  imageUrl?: string;
+  rounds: number;
+  matchMaxMessages: number;
 }
 
 // /* Interface propio */

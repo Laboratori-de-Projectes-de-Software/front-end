@@ -2,7 +2,7 @@ import React from "react";
 import { useAuth } from "../../../auth/AuthProvider";
 import { appApi } from "@features/shared/index";
 import "./AddBot.scss";
-import { BotSummaryResponseDTO } from "@interfaces/bot.interface";
+import { BotDTO } from "@interfaces/bot.interface";
 import Modal from "@modules/shared/modal/Modal";
 
 interface AddBotProps {
@@ -27,10 +27,10 @@ const AddBot: React.FC<AddBotProps> = ({ leagueId }) => {
 
     return (
         <>
-            {userBots?.body && userBots.body.map((bot: BotSummaryResponseDTO) => (
+            {userBots?.body && userBots.body.map((bot: BotDTO) => (
                 <div className="add-bots__card" key={bot.id} onClick={() => addBotToLeague(+bot.id)}>
                     <p className="add-bots__card-name">{bot.name}</p>
-                    <p className="add-bots__card-property">{bot.description}</p>
+                    <p className="add-bots__card-property">{bot.quality}</p>
                     <img
                         className="add-bots__card-add"
                         src={`svg/${addImage[bot.id]}.svg`}

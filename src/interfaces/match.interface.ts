@@ -1,7 +1,9 @@
-export interface MatchResponseDTO {
-  matchId: number;
-  result: 0 | 1 | 2; // 0: empate; 1: victoria bot1; 2: victoria bot2
-  state: "pendiente" | "en curso" | "finalizado";
-  fighters: string[];
+import { BotDTO } from "./bot.interface";
+
+export interface MatchDTO {
+  id: number;
+  result: number;
+  state: "PENDING" | "IN_PROGRESS" | "COMPLETED";
+  fighters: BotDTO[];
   roundNumber: number;
 }

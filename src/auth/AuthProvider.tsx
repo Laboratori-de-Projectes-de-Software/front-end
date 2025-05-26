@@ -1,8 +1,8 @@
 import { useContext, createContext, ReactNode, useState } from "react";
 import { appApi } from "../features/shared/index.ts";
 import type { AuthContextType } from "../types/auth/auth-context.ts";
-import { UserDTOLogin } from "../interfaces/user.interface.ts";
-import { UserResponseDTO } from "../interfaces/user.interface.ts";
+import { UserLoginDTO } from "../interfaces/user.interface.ts";
+import { AuthenticatedUserDTO } from "../interfaces/user.interface.ts";
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
@@ -14,12 +14,12 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   });
   const [loading, setIsLoading] = useState(false);
 
-  const handleLogin: Promise<boolean> = (userData: UserDTOLogin) => {
+  const handleLogin: Promise<boolean> = (userData: UserLoginDTO) => {
     setIsLoading(true);
 
     // TODO: No usar anidacion de Promesas, fix rapido
     return new Promise((resolve, reject) => {
-      login(userData).unwrap().then((response: UserResponseDTO) => {
+      login(userData).unwrap().then((response: AuthenticatedUserDTO) => {
         localStorage.setItem("user", JSON.stringify(response));
         setUser(response);
         setIsLoading(false);

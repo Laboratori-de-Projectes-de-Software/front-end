@@ -4,7 +4,7 @@ import './leaguesPage.scss';
 import { appApi } from '../../features/shared/index';
 import { useModal } from '@modules/modalManager/ModalProvider';
 import LoadingScreen from '@modules/shared/loading-screen/loading-screen';
-import { LeagueResponseDTO } from '@interfaces/league.interface';
+import { LeagueDTO } from '@interfaces/league.interface';
 import { useAuth } from '../../auth/AuthProvider';
 
 
@@ -27,8 +27,8 @@ const LeaguesPage: React.FC = () => {
         <button onClick={() => openModal("new-league")}>Crear liga</button>
       </header>
       <div className='leagues-page-leagues-container'>
-        {leaguesData?.body && leaguesData?.body.map((element: LeagueResponseDTO) => (
-          <LeagueElement key={element.leagueId} {...element} />
+        {leaguesData?.body && leaguesData?.body.map((element: LeagueDTO) => (
+          <LeagueElement key={element.id} {...element} />
         ))}
       </div>
     </article>
