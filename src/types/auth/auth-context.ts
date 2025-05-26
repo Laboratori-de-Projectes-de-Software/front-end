@@ -1,11 +1,11 @@
-import { UserResponseDTO } from "@interfaces/user.interface";
-import { UserDTOLogin } from "@interfaces/user.interface";
+import { AuthenticatedUserDTO } from "@interfaces/user.interface";
+import { UserLoginDTO } from "@interfaces/user.interface";
 
 export type AuthContextType = {
-    user: UserResponseDTO | null;
-    handleLogin: (userData: UserDTOLogin) => Promise<boolean>;
+    user: AuthenticatedUserDTO | null;
+    handleLogin: (userData: UserLoginDTO) => Promise<boolean>;
     logout: () => void;
     isUserLoggedIn: () => boolean;
-    getUser: () => UserResponseDTO | null;
+    getUser: () => AuthenticatedUserDTO | null;
     loading: boolean;
 }

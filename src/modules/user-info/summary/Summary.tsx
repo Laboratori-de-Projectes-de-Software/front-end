@@ -1,8 +1,8 @@
-import { UserResponseDTO } from "@interfaces/user.interface";
+import { AuthenticatedUserDTO } from "@interfaces/user.interface";
 import "./Summary.scss";
 
 interface SummaryProps {
-    user: UserResponseDTO | null;
+    user: AuthenticatedUserDTO | null;
 }
 
 const Summary: React.FC<SummaryProps> = ({ user }) => {

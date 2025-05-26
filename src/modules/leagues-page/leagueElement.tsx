@@ -1,13 +1,13 @@
 import { FC } from "react";
 import "./leagueElement.scss";
-import { LeagueResponseDTO } from "@interfaces/league.interface";
+import { LeagueDTO } from "@interfaces/league.interface";
 import { useNavigate } from "react-router-dom";
 import { useModal } from "@modules/modalManager/ModalProvider";
 
-const LeagueElement: FC<LeagueResponseDTO> = (element) => {
+const LeagueElement: FC<LeagueDTO> = (element) => {
 
     const navigate = useNavigate();
-    const { openModal, leagueId } = useModal();
+    const { openModal, id } = useModal();
 
     const getLeagueStatusLabel = () => {
         switch (element.state) {
@@ -15,7 +15,7 @@ const LeagueElement: FC<LeagueResponseDTO> = (element) => {
                 return "Inscripción abierta";
             case "IN_PROGRESS":
                 return "En curso";
-            case "finalizado":
+            case "COMPLETED":
                 return "Finalizada";
             default:
                 return "Desconocido";
@@ -25,7 +25,7 @@ const LeagueElement: FC<LeagueResponseDTO> = (element) => {
     return (
         <article className="league-card">
             <div className="league-card-image">
-                <img src={element.urlImagen || "/image-placeholder.jpg"} alt="" onError={event => {
+                <img src={element.imageUrl || "/image-placeholder.jpg"} alt="" onError={event => {
                     event.target.src = "/image-placeholder.jpg"
                 }
                 } />
@@ -42,7 +42,7 @@ const LeagueElement: FC<LeagueResponseDTO> = (element) => {
                     </li>
                     <li className="league-detail">
                         <span className="detail-label">Duración</span>
-                        <span className="detail-value">{element.matchTime} s</span>
+                        <span className="detail-value">{element.matchMaxMessages} s</span>
                     </li>
                     <li className="league-detail">
                         <span className="detail-label">Participantes</span>
@@ -50,9 +50,9 @@ const LeagueElement: FC<LeagueResponseDTO> = (element) => {
                     </li>
                 </ul>
                 <div className="league-card-actions">
-                    <button className="league-card-button more-details" onClick={() => navigate("/league/" + element.leagueId)}>Ver detalles</button>
+                    <button className="league-card-button more-details" onClick={() => navigate("/league/" + element.id)}>Ver detalles</button>
                     {element.state === "PENDING" && (
-                        <button className="league-card-button add-bot" onClick={() => openModal("add-bot", element.leagueId)}>Inscribir bot</button>
+                        <button className="league-card-button add-bot" onClick={() => openModal("add-bot", element.id)}>Inscribir bot</button>
                     )}
                 </div>
             </div>

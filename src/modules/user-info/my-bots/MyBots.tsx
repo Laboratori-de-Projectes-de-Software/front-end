@@ -1,10 +1,10 @@
-import { BotSummaryResponseDTO } from "@interfaces/bot.interface";
+import { BotDTO } from "@interfaces/bot.interface";
 import "./MyBots.scss";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
 interface MyBotsProps {
-    bots: BotSummaryResponseDTO[];
+    bots: BotDTO[];
 }
 
 const MyBots: React.FC<MyBotsProps> = ({ bots }) => {
@@ -22,7 +22,7 @@ const MyBots: React.FC<MyBotsProps> = ({ bots }) => {
                                 {bot.name}
                             </p>
                             <p className="user-bots__card-property">
-                                {bot.description}
+                                {bot.quality}
                             </p>
 
                             <img src="svg/edit.svg" alt="" width={25} />

@@ -1,19 +1,18 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import type { BotDTO } from "../../interfaces/bot.interface";
+import type { CreateBotDTO } from "../../interfaces/bot.interface";
 import type {
-  BotResponseDTO,
-  BotSummaryResponseDTO,
+  BotDTO,
 } from "../../interfaces/bot.interface";
+import type { CreateLeagueDTO } from "../../interfaces/league.interface";
 import type { LeagueDTO } from "../../interfaces/league.interface";
-import type { LeagueResponseDTO } from "../../interfaces/league.interface";
-import type { ParticipationResponseDTO } from "../../interfaces/participation.interface";
+import type { ParticipationDTO } from "../../interfaces/participation.interface";
 import type {
-  UserDTOLogin,
-  UserDTORegister,
+  UserLoginDTO,
+  UserRegisterDTO,
 } from "../../interfaces/user.interface";
-import type { UserResponseDTO } from "../../interfaces/user.interface";
-import { MatchResponseDTO } from "@interfaces/match.interface";
-import { MessageResponseDTO } from "@interfaces/message.interface";
+import type { AuthenticatedUserDTO } from "../../interfaces/user.interface";
+import { MatchDTO } from "@interfaces/match.interface";
+import { MessageDTO } from "@interfaces/message.interface";
 import { ClientResponse } from "@interfaces/client.interface";
 
 export const appApi = createApi({
@@ -22,7 +21,7 @@ export const appApi = createApi({
     /*/ --- auth --- /*/
     postAuthRegister: builder.mutation<
       ClientResponse<undefined>,
-      UserDTORegister
+      UserRegisterDTO
     >({
       query: (data) => ({
         url: `${import.meta.env.VITE_REACT_APP_API_URL}/auth/register`,
@@ -32,8 +31,8 @@ export const appApi = createApi({
     }),
 
     postAuthLogin: builder.mutation<
-      ClientResponse<UserResponseDTO>,
-      UserDTOLogin
+      ClientResponse<AuthenticatedUserDTO>,
+      UserLoginDTO
     >({
       query: (data) => ({
         url: `${import.meta.env.VITE_REACT_APP_API_URL}/auth/login`,
@@ -43,7 +42,7 @@ export const appApi = createApi({
     }),
 
     /*/ --- bot --- /*/
-    postBot: builder.mutation<ClientResponse<BotResponseDTO>, BotDTO>({
+    postBot: builder.mutation<ClientResponse<BotDTO>, CreateBotDTO>({
       query: (data) => ({
         url: `${import.meta.env.VITE_REACT_APP_API_URL}/bot`,
         method: "POST",
@@ -57,7 +56,7 @@ export const appApi = createApi({
     }),
 
     getBot: builder.query<
-      ClientResponse<BotSummaryResponseDTO[]>,
+      ClientResponse<BotDTO[]>,
       number | undefined
     >({
       query: (owner?: number) => ({
@@ -73,7 +72,7 @@ export const appApi = createApi({
       }),
     }),
 
-    getBotBotId: builder.query<ClientResponse<BotResponseDTO>, number>({
+    getBotBotId: builder.query<ClientResponse<BotDTO>, number>({
       query: (id) => ({
         url: `${import.meta.env.VITE_REACT_APP_API_URL}/bot/${id}`,
         method: "GET",
@@ -86,8 +85,8 @@ export const appApi = createApi({
     }),
 
     putBotBotId: builder.mutation<
-      ClientResponse<BotResponseDTO>,
-      { id: number; bot: BotDTO }
+      ClientResponse<BotDTO>,
+      { id: number; bot: CreateBotDTO }
     >({
       query: (data) => ({
         url: `${import.meta.env.VITE_REACT_APP_API_URL}/bot/${data.id}`,
@@ -97,7 +96,7 @@ export const appApi = createApi({
     }),
 
     /*/ --- league --- /*/
-    postLeague: builder.mutation<ClientResponse<LeagueResponseDTO>, LeagueDTO>({
+    postLeague: builder.mutation<ClientResponse<LeagueDTO>, CreateLeagueDTO>({
       query: (data) => ({
         url: `${import.meta.env.VITE_REACT_APP_API_URL}/league`,
         method: "POST",
@@ -109,7 +108,7 @@ export const appApi = createApi({
         },
       }),
     }),
-    getLeague: builder.query<ClientResponse<LeagueResponseDTO[]>, number>({
+    getLeague: builder.query<ClientResponse<LeagueDTO[]>, number>({
       query: (owner) => ({
         url: `${import.meta.env.VITE_REACT_APP_API_URL}/league${
           owner ? `?owner=${owner}` : ""
@@ -123,7 +122,7 @@ export const appApi = createApi({
       }),
     }),
 
-    getLeagueLeagueId: builder.query<ClientResponse<LeagueResponseDTO>, number>(
+    getLeagueLeagueId: builder.query<ClientResponse<LeagueDTO>, number>(
       {
         query: (id) => ({
           url: `${import.meta.env.VITE_REACT_APP_API_URL}/league/${id}`,
@@ -138,8 +137,8 @@ export const appApi = createApi({
     ),
 
     putLeagueLeagueId: builder.mutation<
-      ClientResponse<LeagueResponseDTO>,
-      { id: number; league: LeagueDTO }
+      ClientResponse<LeagueDTO>,
+      { id: number; league: CreateLeagueDTO }
     >({
       query: (data) => ({
         url: `${import.meta.env.VITE_REACT_APP_API_URL}/league/${data.id}`,
@@ -168,7 +167,7 @@ export const appApi = createApi({
     }),
 
     getLeagueLeagueIdLeaderboard: builder.query<
-      ClientResponse<ParticipationResponseDTO[]>,
+      ClientResponse<ParticipationDTO[]>,
       number
     >({
       query: (leagueId) => ({
@@ -214,7 +213,7 @@ export const appApi = createApi({
     }),
 
     getLeagueLeagueIdMatch: builder.query<
-      ClientResponse<MatchResponseDTO[]>,
+      ClientResponse<MatchDTO[]>,
       number
     >({
       query: (leagueId) => ({
@@ -232,7 +231,7 @@ export const appApi = createApi({
 
     /*/ --- match --- /*/
     getMatchMatchIdMessage: builder.query<
-      ClientResponse<MessageResponseDTO[]>,
+      ClientResponse<MessageDTO[]>,
       number
     >({
       query: (matchId) => ({
