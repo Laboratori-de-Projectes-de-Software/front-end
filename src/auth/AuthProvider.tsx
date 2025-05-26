@@ -41,7 +41,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   }
 
   const getUser = () => {
-    return user.body;
+    return user;
   }
 
   return (
