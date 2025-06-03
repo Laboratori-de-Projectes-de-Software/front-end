@@ -50,7 +50,7 @@ export const appApi = createApi({
         headers: {
           Authorization:
             "Bearer " +
-            JSON.parse(localStorage.getItem("user") ?? "{}").body.token,
+            JSON.parse(localStorage.getItem("user") ?? "{}").token,
         },
       }),
     }),
@@ -67,7 +67,7 @@ export const appApi = createApi({
         headers: {
           Authorization:
             "Bearer " +
-            JSON.parse(localStorage.getItem("user") ?? "{}").body.token,
+            JSON.parse(localStorage.getItem("user") ?? "{}").token,
         },
       }),
     }),
@@ -79,7 +79,7 @@ export const appApi = createApi({
         headers: {
           Authorization:
             "Bearer " +
-            JSON.parse(localStorage.getItem("user") ?? "{}").body.token,
+            JSON.parse(localStorage.getItem("user") ?? "{}").token,
         },
       }),
     }),
@@ -104,7 +104,7 @@ export const appApi = createApi({
         headers: {
           Authorization:
             "Bearer " +
-            JSON.parse(localStorage.getItem("user") ?? "{}").body.token,
+            JSON.parse(localStorage.getItem("user") ?? "{}").token,
         },
       }),
     }),
@@ -117,7 +117,7 @@ export const appApi = createApi({
         headers: {
           Authorization:
             "Bearer " +
-            JSON.parse(localStorage.getItem("user") ?? "{}").body.token,
+            JSON.parse(localStorage.getItem("user") ?? "{}").token,
         },
       }),
     }),
@@ -130,7 +130,7 @@ export const appApi = createApi({
           headers: {
             Authorization:
               "Bearer " +
-              JSON.parse(localStorage.getItem("user") ?? "{}").body.token,
+              JSON.parse(localStorage.getItem("user") ?? "{}").token,
           },
         }),
       }
@@ -160,7 +160,7 @@ export const appApi = createApi({
         headers: {
           Authorization:
             "Bearer " +
-            JSON.parse(localStorage.getItem("user") ?? "{}").body.token,
+            JSON.parse(localStorage.getItem("user") ?? "{}").token,
           "Content-Type": "application/json",
         },
       }),
@@ -178,7 +178,7 @@ export const appApi = createApi({
         headers: {
           Authorization:
             "Bearer " +
-            JSON.parse(localStorage.getItem("user") ?? "{}").body.token,
+            JSON.parse(localStorage.getItem("user") ?? "{}").token,
         },
       }),
     }),
@@ -190,7 +190,7 @@ export const appApi = createApi({
         headers: {
           Authorization:
             "Bearer " +
-            JSON.parse(localStorage.getItem("user") ?? "{}").body.token,
+            JSON.parse(localStorage.getItem("user") ?? "{}").token,
         },
       }),
     }),
@@ -207,7 +207,7 @@ export const appApi = createApi({
         headers: {
           Authorization:
             "Bearer " +
-            JSON.parse(localStorage.getItem("user") ?? "{}").body.token,
+            JSON.parse(localStorage.getItem("user") ?? "{}").token,
         },
       }),
     }),
@@ -224,7 +224,7 @@ export const appApi = createApi({
         headers: {
           Authorization:
             "Bearer " +
-            JSON.parse(localStorage.getItem("user") ?? "{}").body.token,
+            JSON.parse(localStorage.getItem("user") ?? "{}").token,
         },
       }),
     }),
@@ -242,7 +242,7 @@ export const appApi = createApi({
         headers: {
           Authorization:
             "Bearer " +
-            JSON.parse(localStorage.getItem("user") ?? "{}").body.token,
+            JSON.parse(localStorage.getItem("user") ?? "{}").token,
         },
       }),
     }),
@@ -259,7 +259,7 @@ export const appApi = createApi({
         headers: {
           Authorization:
             "Bearer " +
-            JSON.parse(localStorage.getItem("user") ?? "{}").body.token,
+            JSON.parse(localStorage.getItem("user") ?? "{}").token,
         },
       }),
     }),
