@@ -1,8 +1,8 @@
 import { ClientResponse } from "@interfaces/client.interface";
-import { LeagueResponseDTO } from "@interfaces/league.interface";
-import { MatchResponseDTO } from "@interfaces/match.interface";
-import { ParticipationResponseDTO } from "@interfaces/participation.interface";
-import { UserResponseDTO } from "@interfaces/user.interface";
+import { LeagueDTO } from "@interfaces/league.interface";
+import { MatchDTO } from "@interfaces/match.interface";
+import { ParticipationDTO } from "@interfaces/participation.interface";
+import { AuthenticatedUserDTO } from "@interfaces/user.interface";
 import { DateTime } from "luxon";
 import { http, HttpResponse } from "msw";
 
@@ -18,13 +18,13 @@ export const handlers = [
   }),
 
   http.post(`${basePath}/auth/login`, () => {
-    return HttpResponse.json<ClientResponse<UserResponseDTO>>(
+    return HttpResponse.json<ClientResponse<AuthenticatedUserDTO>>(
       {
         code: "200",
         message: "User logged in successfully",
         body: {
           token: "mocked_token",
-          userId: 1,
+          id: 1,
           expiresIn: DateTime.now().plus({ hours: 1 }).toString(),
           user: "mocked_user",
         }
@@ -44,12 +44,14 @@ export const handlers = [
           {
             nombre: "Bot 1",
             id: 1,
-            cualidad: "Cualidad 1",
+            quality: "Cualidad 1",
+            apiUrl: "/",
           },
           {
             nombre: "Bot 2",
             id: 2,
-            cualidad: "Cualidad 2",
+            quality: "Cualidad 2",
+            apiUrl: "/",
           },
         ]
       },
@@ -59,17 +61,16 @@ export const handlers = [
 
   /*/ --- league --- /*/
   http.post(`${basePath}/league`, () => {
-    return HttpResponse.json<ClientResponse<LeagueResponseDTO>>(
+    return HttpResponse.json<ClientResponse<LeagueDTO>>(
       {
         code: "201",
         message: "League created successfully",
         body: {
-          leagueId: 1,
+          id: 1,
           name: "Copa Melón",
-          urlImagen: "",
-          user: 2,
+          imageUrl: "",
           rounds: 3,
-          matchTime: 10,
+          matchMaxMessages: 10,
           state: "PENDING",
           bots: [],
         }
@@ -79,29 +80,27 @@ export const handlers = [
   }),
 
   http.get(`${basePath}/league`, () => {
-    return HttpResponse.json<ClientResponse<LeagueResponseDTO[]>>(
+    return HttpResponse.json<ClientResponse<LeagueDTO[]>>(
       {
         code: "200",
         message: "Leagues retrieved successfully",
         body: [
           {
-            leagueId: 1,
+            id: 1,
             name: "Copa Melón",
-            urlImagen: "",
-            user: 2,
+            imageUrl: "",
             rounds: 3,
-            matchTime: 10,
+            matchMaxMessages: 10,
             state: "PENDING",
             bots: [],
           },
           {
-            leagueId: 2,
+            id: 2,
             name: "Copa Plátano",
-            urlImagen: "",
-            user: 2,
+            imageUrl: "",
             rounds: 5,
-            matchTime: 20,
-            state: "en curso",
+            matchMaxMessages: 20,
+            state: "IN_PROGRESS",
             bots: [],
           },
         ]
@@ -110,17 +109,16 @@ export const handlers = [
     );
   }),
   http.get(`${basePath}/league/1`, () => {
-    return HttpResponse.json<ClientResponse<LeagueResponseDTO>>(
+    return HttpResponse.json<ClientResponse<LeagueDTO>>(
       {  
         code: "200",
         message: "League retrieved successfully",
         body: {
-          leagueId: 1,
+          id: 1,
           name: "Copa Melón",
-          urlImagen: "https://static.vecteezy.com/system/resources/previews/002/703/018/non_2x/soccer-ball-sport-cartoon-in-black-and-white-free-vector.jpg",
-          user: 2,
+          imageUrl: "https://static.vecteezy.com/system/resources/previews/002/703/018/non_2x/soccer-ball-sport-cartoon-in-black-and-white-free-vector.jpg",
           rounds: 3,
-          matchTime: 10,
+          matchMaxMessages: 10,
           state: "PENDING",
           bots: [],
         }
@@ -130,17 +128,16 @@ export const handlers = [
   }),
 
   http.put(`${basePath}/league/1`, () => {
-    return HttpResponse.json<ClientResponse<LeagueResponseDTO>>(
+    return HttpResponse.json<ClientResponse<LeagueDTO>>(
       {
         code: "200",
         message: "League updated successfully",
         body: {
-          leagueId: 1,
+          id: 1,
           name: "Copa Melón",
-          urlImagen: "",
-          user: 2,
+          imageUrl: "",
           rounds: 3,
-          matchTime: 10,
+          matchMaxMessages: 10,
           state: "PENDING",
           bots: [],
         }
@@ -158,7 +155,7 @@ export const handlers = [
   }),
 
   http.get(`${basePath}/league/1/leaderboard`, () => {
-    return HttpResponse.json<ClientResponse<ParticipationResponseDTO[]>>(
+    return HttpResponse.json<ClientResponse<ParticipationDTO[]>>(
       {  
         code: "200",
         message: "Leaderboard retrieved successfully",
@@ -166,26 +163,38 @@ export const handlers = [
           {
             botId: 1,
             points: 10,
-            name: "Bot 1",
+            botName: "Bot 1",
             position: 1,
+            nWins: 0,
+            nLosses: 0,
+            nDraws: 0,
           },
           {
             botId: 2,
             points: 5,
-            name: "Bot 2",
+            botName: "Bot 2",
             position: 2,
+            nWins: 0,
+            nLosses: 0,
+            nDraws: 0,
           },
           {
             botId: 3,
             points: 0,
-            name: "Bot 3",
+            botName: "Bot 3",
             position: 3,
+            nWins: 0,
+            nLosses: 0,
+            nDraws: 0,
           },
           {
             botId: 4,
             points: 0,
-            name: "Bot 4",
+            botName: "Bot 4",
             position: 4,
+            nWins: 0,
+            nLosses: 0,
+            nDraws: 0,
           }
         ]
       },
@@ -208,23 +217,49 @@ export const handlers = [
   }),
 
   http.get(`${basePath}/league/1/match`, () => {
-    return HttpResponse.json<ClientResponse<MatchResponseDTO[]>>(
+    return HttpResponse.json<ClientResponse<MatchDTO[]>>(
       {
         code: "200",
         message: "Matches retrieved successfully",
         body: [
           {
-            matchId: 1,
-            fighters: ["Bot 1", "Bot 2"],
+            id: 1,
+            fighters: [
+              {
+                nombre: "Bot 1",
+                id: 1,
+                quality: "Cualidad 1",
+                apiUrl: "/",
+              },
+              {
+                nombre: "Bot 2",
+                id: 2,
+                quality: "Cualidad 2",
+                apiUrl: "/",
+              },
+            ],
             roundNumber: 1,
-            state: "finalizado",
+            state: "COMPLETED",
             result: 1
           },
           {
-            matchId: 2,
-            fighters: ["Bot 3", "Bot 4"],
+            id: 2,
+            fighters: [
+              {
+                nombre: "Bot 3",
+                id: 3,
+                quality: "Cualidad 3",
+                apiUrl: "/",
+              },
+              {
+                nombre: "Bot 4",
+                id: 4,
+                quality: "Cualidad 4",
+                apiUrl: "/",
+              },
+            ],
             roundNumber: 1,
-            state: "en curso",
+            state: "IN_PROGRESS",
             result: 0
           },
         ]

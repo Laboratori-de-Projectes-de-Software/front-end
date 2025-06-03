@@ -1,28 +1,14 @@
-import { UserResponseDTO } from "@interfaces/user.interface";
+import { AuthenticatedUserDTO } from "@interfaces/user.interface";
 import React from "react";
 
 interface ExtraInfoProps {
-    user: UserResponseDTO | null;
+    user: AuthenticatedUserDTO | null;
 }
 
 const ExtraInfo: React.FC<ExtraInfoProps> = ({ user }) => {
     return (
         <div className="info-card">
             <div className="info-grid">
-                <div className="info-item">
-                    <img src="svg/email.svg" alt="" />
-                    <div>
-                        <p className="info-label">Email</p>
-                        <p className="info-value">{ user?.mail ?? "mock@mock.com" }</p>
-                    </div>
-                </div>
-                <div className="info-item">
-                    <img src="svg/phone.svg" alt="" />
-                    <div>
-                        <p className="info-label">Teléfono</p>
-                        <p className="info-value">{ user?.phone ?? "Añadir teléfono de contacto" }</p>
-                    </div>
-                </div>
                 <div className="info-item">
                     <img src="svg/calendar.svg" alt="" />
                     <div>
